@@ -1,0 +1,25 @@
+const CONTENT = {
+  title: "Giải pháp công nghệ,\n đồng hành cùng doanh nghiệp Việt",
+  description:
+    "ADA Group phát triển sản phẩm và giải pháp công nghệ giúp doanh nghiệp\n số hóa hoạt động, tối ưu quy trình và tạo ra những trải nghiệm tốt hơn cho khách hàng.",
+  mediaPlaceholder: "Animation về trí tuệ nhân tạo",
+};
+
+export default function Hero() {
+  return (
+    <section className="section-y flex flex-col items-center px-6 sm:px-8 lg:px-10">
+      <div className="max-w-360 md:text-center">
+        <h1 className="text-2xl font-bold whitespace-pre-line min-[1322px]:whitespace-normal tracking-tight sm:text-4xl lg:text-5xl">
+          {CONTENT.title}
+        </h1>
+        <p className="mt-(--heading-space) mx-auto md:whitespace-pre-line text-justify md:text-center md:text-base leading-relaxed text-zinc-600 sm:text-lg">
+          {CONTENT.description}
+        </p>
+      </div>
+
+      <div className="mt-(--inner-space) max-w-360 flex aspect-video w-full items-center justify-center rounded-2xl bg-zinc-100">
+        <span className="text-sm text-zinc-400">{CONTENT.mediaPlaceholder}</span>
+      </div>
+    </section>
+  );
+}
