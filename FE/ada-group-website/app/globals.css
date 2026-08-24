@@ -11,15 +11,40 @@
   --font-sans: var(--font-be-vietnam);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-be-vietnam), Arial, Helvetica, sans-serif;
+}
+
+.section-y {
+  --section-padding: 10px;
+  --inner-space: 10px;
+  --heading-space: 5px;
+  padding-top: var(--section-padding);
+  padding-bottom: var(--section-padding);
+}
+
+@media (min-width: 768px) {
+  .section-y {
+    --section-padding: 20px;
+    --inner-space: 12px;
+    --heading-space: 8px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-y {
+    --section-padding: 30px;
+    --inner-space: 16px;
+    --heading-space: 10px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .section-y {
+    --section-padding: 40px;
+    --inner-space: 20px;
+    --heading-space: 12px;
+  }
 }
