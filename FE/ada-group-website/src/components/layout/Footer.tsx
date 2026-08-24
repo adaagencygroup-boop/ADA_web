@@ -146,7 +146,7 @@ function FooterLinkList({
 export default function Footer() {
   return (
     <footer className="border-t border-zinc-200 bg-white">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-360 px-4 py-16 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1.4fr)_repeat(3,minmax(0,1fr))]">
           <div>
             <Link href="/" className="flex items-center gap-2">
