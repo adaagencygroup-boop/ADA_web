@@ -48,7 +48,7 @@ export default function WhyChooseUs() {
           {CONTENT.description}
         </p>
 
-        <div className="mt-(--inner-space) grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-x-6 md:gap-x-36 sm:gap-y-12">
+        <div className="mt-(--inner-space) grid grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-x-6 md:gap-x-36 sm:gap-y-12">
           {REASONS.map((reason) => (
             <div
               key={reason.title}
