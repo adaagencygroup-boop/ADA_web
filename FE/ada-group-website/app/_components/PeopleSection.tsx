@@ -9,7 +9,7 @@ const CONTENT = {
 };
 
 const IMAGE = {
-  src: "/images/home_images/people.png",
+  src: "https://picsum.photos/1372/737",
   alt: "Đội ngũ ADA Group làm việc cùng nhau",
 };
 

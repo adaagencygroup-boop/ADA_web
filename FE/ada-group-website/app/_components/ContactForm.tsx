@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { ContactIcon, ShieldIcon, ZapIcon } from "@/app/_components/icons";
 
 const CONTENT = {
   title: "Bạn đang có bài toán cần giải quyết?",
@@ -33,18 +33,18 @@ const SOLUTION_OPTIONS = [
 
 const BENEFITS = [
   {
-    iconSrc: "/images/home_images/contact.svg",
+    Icon: ContactIcon,
     title: "Tư vấn miễn phí",
     description:
       "Đội ngũ chuyên gia sẽ tư vấn giải pháp phù hợp với nhu cầu của bạn.",
   },
   {
-    iconSrc: "/images/home_images/zap.svg",
+    Icon: ZapIcon,
     title: "Phản hồi nhanh chóng",
     description: "Chúng tôi cam kết phản hồi trong vòng 24 giờ.",
   },
   {
-    iconSrc: "/images/home_images/shield.svg",
+    Icon: ShieldIcon,
     title: "Bảo mật thông tin",
     description: "Thông tin của bạn được bảo mật tuyệt đối.",
   },
@@ -175,7 +175,7 @@ export default function ContactForm() {
             {BENEFITS.map((benefit) => (
               <div key={benefit.title} className="flex items-start gap-4">
                 <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#D8E2FF]">
-                  <Image src={benefit.iconSrc} alt="" width={20} height={20} />
+                  <benefit.Icon className="h-5 w-5" />
                 </span>
                 <div>
                   <h3 className="text-sm font-semibold text-zinc-900">

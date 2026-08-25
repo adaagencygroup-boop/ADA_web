@@ -9,7 +9,7 @@ const CONTENT = {
 };
 
 const IMAGE = {
-  src: "/images/aboutus_images/banner.jpg",
+  src: "https://picsum.photos/1024/558",
   alt: "Sơ đồ hạ tầng mạng lưới công nghệ toàn cầu",
 };
 

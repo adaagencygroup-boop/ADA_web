@@ -98,7 +98,7 @@ const PRINCIPLES = [
 ];
 
 const IMAGE = {
-  src: "/images/aboutus_images/development-strategy.jpg",
+  src: "https://picsum.photos/1236/1000",
   alt: "Đội ngũ ADA Group làm việc cùng nhau trong văn phòng",
 };
 

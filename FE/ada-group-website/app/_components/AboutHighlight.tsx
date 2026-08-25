@@ -15,11 +15,11 @@ const CONTENT = {
 
 const IMAGES = {
   primary: {
-    src: "/images/home_images/home-img1.jpg",
+    src: "https://picsum.photos/700/500",
     alt: "Không gian làm việc tại văn phòng ADA Group",
   },
   secondary: {
-    src: "/images/home_images/home-img2.jpg",
+    src: "https://picsum.photos/701/500",
     alt: "Hệ thống hạ tầng máy chủ của ADA Group",
   },
 };

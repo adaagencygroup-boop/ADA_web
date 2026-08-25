@@ -1,6 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
-import { ArrowRightIcon } from "@/app/_components/icons";
+import { ArrowRightIcon, WhyChoose1Icon, WhyChoose2Icon, WhyChoose3Icon, WhyChoose4Icon } from "@/app/_components/icons";
 
 const CONTENT = {
   title: "Vì sao doanh nghiệp lựa chọn ADA Group?",
@@ -12,25 +11,25 @@ const CONTENT = {
 
 const REASONS = [
   {
-    iconSrc: "/images/home_images/why-choose1.svg",
+    Icon: WhyChoose1Icon,
     title: "Giải pháp theo nhu cầu",
     description:
       "Chúng tôi bắt đầu từ bài toán thực tế của doanh nghiệp để xây dựng giải pháp phù hợp với mục tiêu, quy mô và cách thức vận hành.",
   },
   {
-    iconSrc: "/images/home_images/why-choose2.svg",
+    Icon: WhyChoose2Icon,
     title: "Am hiểu thị trường Việt Nam",
     description:
       "Hiểu nhu cầu, hành vi người dùng và đặc thù vận hành của doanh nghiệp Việt giúp chúng tôi tạo ra những sản phẩm phù hợp hơn.",
   },
   {
-    iconSrc: "/images/home_images/why-choose3.svg",
+    Icon: WhyChoose3Icon,
     title: "Năng lực công nghệ đa dạng",
     description:
       "Từ Website, Web App, Mobile App đến Cloud, AI và tự động hóa, chúng tôi lựa chọn công nghệ phù hợp cho từng bài toán.",
   },
   {
-    iconSrc: "/images/home_images/why-choose4.svg",
+    Icon: WhyChoose4Icon,
     title: "Triển khai linh hoạt",
     description:
       "Giải pháp được thiết kế để dễ triển khai, vận hành và mở rộng theo nhu cầu phát triển của doanh nghiệp.",
@@ -62,7 +61,7 @@ export default function WhyChooseUs() {
                 ].join(" ")}
               >
                 <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#D8E2FF] [grid-area:icon]">
-                  <Image src={reason.iconSrc} alt="" width={20} height={20} />
+                  <reason.Icon className="h-5 w-5" />
                 </span>
                 <h3 className="text-xl font-semibold text-[#001E4B] [grid-area:title]">
                   {reason.title}

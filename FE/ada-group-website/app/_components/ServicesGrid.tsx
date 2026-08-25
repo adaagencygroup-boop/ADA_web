@@ -1,6 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
-import { ArrowRightIcon } from "@/app/_components/icons";
+import { ArrowRightIcon, Service1Icon, Service2Icon, Service3Icon, Service4Icon } from "@/app/_components/icons";
 
 const CONTENT = {
   title: "Công nghệ phục vụ những bài toán thực tế",
@@ -11,28 +10,28 @@ const CONTENT = {
 
 const SERVICES = [
   {
-    iconSrc: "/images/home_images/service1.png",
+    Icon: Service1Icon,
     title: "Web & Web Application",
     description:
       "Phát triển website và ứng dụng web hiện đại, tối ưu cho nhu cầu vận hành và kinh doanh.",
     href: "/dich-vu/web",
   },
   {
-    iconSrc: "/images/home_images/service2.png",
+    Icon: Service2Icon,
     title: "Mobile Application",
     description:
       "Xây dựng ứng dụng di động trải nghiệm trực quan, phù hợp với từng nhóm người dùng.",
     href: "/dich-vu/mobile",
   },
   {
-    iconSrc: "/images/home_images/service3.png",
+    Icon: Service3Icon,
     title: "Hệ thống doanh nghiệp",
     description:
       "Số hoá quy trình quản lý, kết nối dữ liệu và hỗ trợ doanh nghiệp vận hành hiệu quả hơn.",
     href: "/dich-vu/he-thong-doanh-nghiep",
   },
   {
-    iconSrc: "/images/home_images/service4.png",
+    Icon: Service4Icon,
     title: "AI & Automation",
     description:
       "Ứng dụng AI và tự động hoá vào các bài toán phù hợp để nâng cao năng suất và tối ưu hoá.",
@@ -60,13 +59,9 @@ export default function ServicesGrid() {
               className="rounded-2xl border border-zinc-200 bg-[#F3F4F6] p-6"
             >
               <div className="flex items-center gap-3">
-                <Image
-                  src={service.iconSrc}
-                  alt=""
-                  width={48}
-                  height={48}
-                  className="h-12 w-12 shrink-0"
-                />
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#D8E2FF80]">
+                  <service.Icon className="h-6 w-6" />
+                </div>
                 <h3 className="text-base font-semibold text-[#001E4B]">
                   {service.title}
                 </h3>
