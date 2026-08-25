@@ -32,11 +32,11 @@ export default function BusinessProfile() {
           </h2>
 
           <div className="mt-4 lg:mt-6 lg:flex lg:items-center lg:gap-10">
-            <div className="hidden aspect-624/379 w-full max-w-[624px] shrink-0 rounded-lg bg-zinc-200 lg:block" />
+            <div className="hidden aspect-624/379 w-full max-w-156 shrink-0 rounded-lg bg-zinc-200 lg:block" />
 
             <dl className="flex flex-col gap-4 lg:flex-1 lg:items-end lg:gap-3">
               {FIELDS.map((field) => (
-                <div key={field.label} className="w-full lg:max-w-[566px]">
+                <div key={field.label} className="w-full lg:max-w-141.5">
                   <dt className="text-xs font-semibold tracking-wide text-gray-500 uppercase lg:text-sm lg:font-medium lg:tracking-normal lg:normal-case">
                     {field.label}
                   </dt>

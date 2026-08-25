@@ -108,11 +108,11 @@ export default function CoreValues() {
                 <span className="hidden h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-blue-50 lg:flex">
                   <value.icon />
                 </span>
-                <h3 className="text-base font-semibold leading-5.75 text-slate-900 lg:text-xl lg:leading-7">
+                <h3 className="text-base font-semibold leading-[23px] text-slate-900 lg:text-xl lg:leading-7">
                   {value.title}
                 </h3>
               </div>
-              <p className="text-[13px] text-justify leading-[18px] text-slate-600 lg:text-sm lg:leading-5.75 lg:text-gray-600">
+              <p className="text-[13px] text-justify leading-4.5 text-zinc-500 lg:text-sm lg:leading-[23px] lg:text-gray-600">
                 {value.description}
               </p>
             </div>
