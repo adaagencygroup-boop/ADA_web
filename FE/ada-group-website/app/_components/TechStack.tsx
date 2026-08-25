@@ -66,7 +66,7 @@ export default function TechStack() {
                     height={100}
                     className="w-26 object-contain"
                   />
-                  <span className="hidden sm:inline">{tool.name}</span>
+                  <span className="">{tool.name}</span>
                 </div>
               ))}
             </Marquee>

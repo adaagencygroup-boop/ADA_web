@@ -12,7 +12,7 @@ export default function Hero() {
         <h1 className="text-2xl font-semibold whitespace-pre-line min-[1322px]:whitespace-normal tracking-tight sm:text-4xl lg:text-5xl">
           {CONTENT.title}
         </h1>
-        <p className="mt-(--heading-space) mx-auto md:whitespace-pre-line text-justify md:text-center md:text-base leading-relaxed text-zinc-600 sm:text-lg">
+        <p className="mt-(--heading-space) mx-auto md:whitespace-pre-line text-justify md:text-center md:text-base leading-relaxed text-zinc-600 lg:text-lg">
           {CONTENT.description}
         </p>
       </div>
