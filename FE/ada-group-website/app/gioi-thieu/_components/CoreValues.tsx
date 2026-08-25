@@ -92,7 +92,7 @@ export default function CoreValues() {
     <section className="section-y bg-white">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center text-center">
-          <h2 className="text-[22px] font-extrabold leading-8 text-slate-900 lg:text-3xl lg:font-bold lg:leading-9 lg:text-black">
+          <h2 className="text-[22px] font-extrabold leading-8 text-slate-900 lg:text-3xl lg:font-semibold lg:leading-9 lg:text-black">
             {CONTENT.title}
           </h2>
           <span className="mt-4 h-1 w-12 shrink-0 rounded-full bg-[#002A64] lg:bg-blue-900" />
@@ -108,7 +108,7 @@ export default function CoreValues() {
                 <span className="hidden h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-blue-50 lg:flex">
                   <value.icon />
                 </span>
-                <h3 className="text-base font-bold leading-5.75 text-slate-900 lg:text-xl lg:leading-7">
+                <h3 className="text-base font-semibold leading-5.75 text-slate-900 lg:text-xl lg:leading-7">
                   {value.title}
                 </h3>
               </div>

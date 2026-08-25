@@ -115,9 +115,9 @@ export default function WebSolutions() {
               <path d="M2 12h2" /><path d="M20 12h2" />
               <path d="m6.34 17.66-1.41 1.41" /><path d="m19.07 4.93-1.41 1.41" />
             </svg>
-            <span className="text-[11px] font-bold uppercase tracking-widest">GIẢI PHÁP WEB HOÀN CHỈNH</span>
+            <span className="text-[11px] font-semibold uppercase tracking-widest">GIẢI PHÁP WEB HOÀN CHỈNH</span>
           </div>
-          <h2 className="text-3xl font-bold text-zinc-900 sm:text-4xl lg:text-[2.6rem] leading-tight mb-4">
+          <h2 className="text-3xl font-semibold text-zinc-900 sm:text-4xl lg:text-[2.6rem] leading-tight mb-4">
             Giải pháp web cho từng <br className="hidden md:block" />
             giai đoạn <span className="text-blue-600">phát triển doanh nghiệp</span>
           </h2>
@@ -138,19 +138,19 @@ export default function WebSolutions() {
                       <p className="text-[13px] font-semibold text-slate-500 uppercase tracking-wide mb-2">
                         {item.id} &mdash; {item.title}
                       </p>
-                      <h3 className="text-[17px] font-bold text-zinc-900 leading-[1.4]">
+                      <h3 className="text-[17px] font-semibold text-zinc-900 leading-[1.4]">
                         {item.subtitle}
                       </h3>
                     </div>
                     
                     <div className="hidden lg:block">
                       <div className="flex items-center gap-3 mb-6">
-                        <span className="text-3xl lg:text-4xl font-bold text-blue-400">{item.id}</span>
+                        <span className="text-3xl lg:text-4xl font-semibold text-blue-400">{item.id}</span>
                         <div className="bg-white/10 text-blue-400 p-2.5 rounded-xl">
                           {item.icon}
                         </div>
                       </div>
-                      <h3 className="text-2xl font-bold uppercase mb-3 text-white">{item.title}</h3>
+                      <h3 className="text-2xl font-semibold uppercase mb-3 text-white">{item.title}</h3>
                       <p className="text-[15px] font-semibold text-blue-400 mb-6">{item.subtitle}</p>
                     </div>
 
@@ -176,19 +176,19 @@ export default function WebSolutions() {
                       <p className="text-[13px] font-semibold text-slate-500 uppercase tracking-wide mb-2">
                         {item.id} &mdash; {item.title}
                       </p>
-                      <h3 className="text-lg font-bold text-zinc-900 leading-snug">
+                      <h3 className="text-lg font-semibold text-zinc-900 leading-snug">
                         {item.subtitle}
                       </h3>
                     </div>
 
                     <div className="hidden lg:block">
                       <div className="flex items-center gap-3 mb-6">
-                        <span className="text-3xl lg:text-4xl font-bold text-blue-600">{item.id}</span>
+                        <span className="text-3xl lg:text-4xl font-semibold text-blue-600">{item.id}</span>
                         <div className="bg-white text-blue-600 p-2.5 rounded-xl shadow-sm">
                           {item.icon}
                         </div>
                       </div>
-                      <h3 className="text-2xl font-bold uppercase mb-3 text-zinc-900">{item.title}</h3>
+                      <h3 className="text-2xl font-semibold uppercase mb-3 text-zinc-900">{item.title}</h3>
                       <p className="text-[15px] font-semibold text-blue-600 mb-6">{item.subtitle}</p>
                     </div>
 
@@ -213,19 +213,19 @@ export default function WebSolutions() {
                     <p className="text-[13px] font-semibold text-slate-500 uppercase tracking-wide mb-2">
                       {item.id} &mdash; {item.title}
                     </p>
-                    <h3 className="text-[17px] font-bold text-zinc-900 leading-[1.4]">
+                    <h3 className="text-[17px] font-semibold text-zinc-900 leading-[1.4]">
                       {item.subtitle}
                     </h3>
                   </div>
 
                   <div className="hidden lg:block">
                     <div className="flex items-center gap-3 mb-6">
-                      <span className="text-3xl font-bold text-blue-600">{item.id}</span>
+                      <span className="text-3xl font-semibold text-blue-600">{item.id}</span>
                       <div className="bg-blue-50 text-blue-600 p-2.5 rounded-xl">
                         {item.icon}
                       </div>
                     </div>
-                    <h3 className="text-lg lg:text-xl font-bold uppercase mb-3 text-zinc-900 leading-snug">{item.title}</h3>
+                    <h3 className="text-lg lg:text-xl font-semibold uppercase mb-3 text-zinc-900 leading-snug">{item.title}</h3>
                     <p className="text-[14px] font-semibold text-blue-600 mb-4">{item.subtitle}</p>
                   </div>
 

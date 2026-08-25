@@ -7,7 +7,7 @@ export default function WebIntro() {
         
         {/* Text Content */}
         <div className="mx-auto max-w-4xl lg:max-w-5xl text-center mb-0 md:mb-14">
-          <h2 className="text-[1.75rem] font-bold leading-[1.3] sm:text-3xl lg:text-[2.5rem] mb-4 md:mb-8">
+          <h2 className="text-[1.75rem] font-semibold leading-[1.3] sm:text-3xl lg:text-[2.5rem] mb-4 md:mb-8">
             <span className="text-zinc-900 block mb-1 md:mb-2">Không chỉ xây dựng website.</span>
             <span className="text-[#1e3a8a] block">Chúng tôi xây dựng nền tảng cho doanh nghiệp phát triển.</span>
           </h2>

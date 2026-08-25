@@ -108,10 +108,10 @@ export default function DevelopmentStrategy() {
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 items-start gap-x-16 lg:grid-cols-2">
           <div>
-            <span className="text-sm font-bold uppercase leading-5 tracking-wider text-blue-900">
+            <span className="text-sm font-semibold uppercase leading-5 tracking-wider text-blue-900">
               {CONTENT.eyebrow}
             </span>
-            <h2 className="mt-(--heading-space) text-[28px] font-bold leading-8.5 text-zinc-900 lg:text-4xl lg:leading-10">
+            <h2 className="mt-(--heading-space) text-[28px] font-semibold leading-8.5 text-zinc-900 lg:text-4xl lg:leading-10">
               {CONTENT.title}
             </h2>
 
@@ -133,7 +133,7 @@ export default function DevelopmentStrategy() {
                     <principle.icon />
                   </span>
                   <div>
-                    <h3 className="text-base font-bold leading-6 text-slate-900">
+                    <h3 className="text-base font-semibold leading-6 text-slate-900">
                       {principle.title}
                     </h3>
                     <p className="mt-1 text-sm leading-5 text-gray-500">
@@ -160,7 +160,7 @@ export default function DevelopmentStrategy() {
               <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-blue-900">
                 <EyeIcon className="h-6 w-6" />
               </span>
-              <p className="text-base font-bold leading-6 text-slate-900">
+              <p className="text-base font-semibold leading-6 text-slate-900">
                 {CONTENT.ctaText}
               </p>
             </div>

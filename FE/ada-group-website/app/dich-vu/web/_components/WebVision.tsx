@@ -9,7 +9,7 @@ export default function WebVision() {
           
           {/* Left: Content */}
           <div className="w-full lg:w-[55%] flex flex-col justify-center">
-            <h2 className="text-[1.85rem] font-bold leading-[1.3] tracking-tight text-zinc-900 sm:text-4xl lg:text-[2.8rem] lg:leading-[1.15] mb-5">
+            <h2 className="text-[1.85rem] font-semibold leading-[1.3] tracking-tight text-zinc-900 sm:text-4xl lg:text-[2.8rem] lg:leading-[1.15] mb-5">
               Website không chỉ để hiện diện.<br className="hidden lg:block" />
               <span className="lg:hidden"> </span>
               Hãy biến nó thành <span className="text-[#004bb4]">công cụ kinh doanh.</span>

@@ -47,10 +47,10 @@ export default function PartnersSection() {
     <section className="section-y bg-[#EFF6FF] xs:bg-white">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl sm:text-center">
-          <span className="inline-flex items-center rounded-full bg-[#D8E2FF] px-3 py-1 text-sm font-bold text-[#002A64]">
+          <span className="inline-flex items-center rounded-full bg-[#D8E2FF] px-3 py-1 text-sm font-semibold text-[#002A64]">
               {CONTENT.badge}
             </span>
-          <h2 className="mt-(--heading-space) text-2xl font-bold tracking-tight text-zinc-900 sm:text-4xl">
+          <h2 className="mt-(--heading-space) text-2xl font-semibold tracking-tight text-zinc-900 sm:text-4xl">
             {CONTENT.title}
           </h2>
           <p className="mt-(--heading-space) hidden sm:inline text-sm leading-relaxed text-zinc-600 sm:text-base">

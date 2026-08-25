@@ -22,13 +22,13 @@ export default function CTASection() {
         <div className="flex w-full flex-col items-stretch gap-3 lg:w-auto lg:flex-row lg:items-start lg:gap-6">
           <Link
             href={CONTENT.primaryCta.href}
-            className="rounded-lg bg-white px-3.5 py-3.5 text-center text-sm font-bold text-[#002A64] lg:rounded-xl lg:px-20 lg:py-4 lg:text-base lg:font-normal lg:shadow-lg"
+            className="rounded-lg bg-white px-3.5 py-3.5 text-center text-sm font-semibold text-[#002A64] lg:rounded-xl lg:px-20 lg:py-4 lg:text-base lg:font-normal lg:shadow-lg"
           >
             {CONTENT.primaryCta.label}
           </Link>
           <Link
             href={CONTENT.secondaryCta.href}
-            className="rounded-lg border border-white px-3.5 py-3.5 text-center text-sm font-bold text-white lg:rounded-xl lg:border-[#C4C6D2]/30 lg:bg-[#1A4182] lg:px-20 lg:py-4 lg:text-base lg:font-normal"
+            className="rounded-lg border border-white px-3.5 py-3.5 text-center text-sm font-semibold text-white lg:rounded-xl lg:border-[#C4C6D2]/30 lg:bg-[#1A4182] lg:px-20 lg:py-4 lg:text-base lg:font-normal"
           >
             {CONTENT.secondaryCta.label}
           </Link>

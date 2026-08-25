@@ -108,7 +108,7 @@ export default function LeadershipTeam() {
               <div className="relative aspect-417/368 w-full overflow-hidden rounded-t-lg bg-zinc-200 lg:rounded-lg lg:shadow-sm" />
 
               <div className="border-t border-[#003384]/20 p-4 text-center lg:border-none lg:px-0 lg:pt-4">
-                <h3 className="text-sm font-bold text-zinc-900">
+                <h3 className="text-sm font-semibold text-zinc-900">
                   {leader.name}
                 </h3>
                 <p className="mt-1 text-xs text-[#002A64]">{leader.role}</p>

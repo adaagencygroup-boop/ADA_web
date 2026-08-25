@@ -44,7 +44,7 @@ export default function ServicesGrid() {
     <section className="section-y">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-4xl text-center">
-          <h2 className="text-2xl text-start sm:text-center font-bold tracking-tight text-zinc-900 sm:text-4xl">
+          <h2 className="text-2xl text-start sm:text-center font-semibold tracking-tight text-zinc-900 sm:text-4xl">
             {CONTENT.title}
           </h2>
           <p className="mt-(--heading-space) text-sm leading-relaxed whitespace-pre-line text-zinc-600 text-justify md:text-base">

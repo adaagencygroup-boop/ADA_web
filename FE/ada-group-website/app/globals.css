@@ -18,7 +18,7 @@ body {
 }
 
 .section-y {
-  --section-padding: 10px;
+  --section-padding: 20px;
   --inner-space: 10px;
   --heading-space: 5px;
   padding-top: var(--section-padding);
@@ -27,7 +27,7 @@ body {
 
 @media (min-width: 768px) {
   .section-y {
-    --section-padding: 20px;
+    --section-padding: 30px;
     --inner-space: 12px;
     --heading-space: 8px;
   }
@@ -35,7 +35,7 @@ body {
 
 @media (min-width: 1024px) {
   .section-y {
-    --section-padding: 30px;
+    --section-padding: 40px;
     --inner-space: 16px;
     --heading-space: 10px;
   }
@@ -43,7 +43,7 @@ body {
 
 @media (min-width: 1280px) {
   .section-y {
-    --section-padding: 40px;
+    --section-padding: 50px;
     --inner-space: 20px;
     --heading-space: 12px;
   }

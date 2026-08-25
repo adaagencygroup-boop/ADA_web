@@ -37,7 +37,7 @@ export default function BusinessProfile() {
             <dl className="flex flex-col gap-4 lg:flex-1 lg:items-end lg:gap-3">
               {FIELDS.map((field) => (
                 <div key={field.label} className="w-full lg:max-w-[566px]">
-                  <dt className="text-xs font-bold tracking-wide text-gray-500 uppercase lg:text-sm lg:font-medium lg:tracking-normal lg:normal-case">
+                  <dt className="text-xs font-semibold tracking-wide text-gray-500 uppercase lg:text-sm lg:font-medium lg:tracking-normal lg:normal-case">
                     {field.label}
                   </dt>
                   <dd className="mt-1 text-sm leading-5 font-semibold text-zinc-900 lg:text-base lg:leading-6">

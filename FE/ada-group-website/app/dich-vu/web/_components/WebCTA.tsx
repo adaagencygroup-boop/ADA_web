@@ -5,7 +5,7 @@ export default function WebCTA() {
     <section className="bg-[#002A64] section-y max-md:py-5!">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="mx-auto text-center flex flex-col items-center">
-          <h2 className="text-[1.75rem] font-bold leading-snug tracking-tight text-white sm:text-3xl lg:text-[2.5rem] mb-6 max-w-4xl px-2 md:px-0">
+          <h2 className="text-[1.75rem] font-semibold leading-snug tracking-tight text-white sm:text-3xl lg:text-[2.5rem] mb-6 max-w-4xl px-2 md:px-0">
             Bạn đang có một website cần xây dựng<br className="hidden md:block" /> hay một bài toán cần đưa lên Web?
           </h2>
           

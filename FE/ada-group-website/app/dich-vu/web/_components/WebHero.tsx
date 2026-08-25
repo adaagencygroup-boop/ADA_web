@@ -25,7 +25,7 @@ export default function WebHero() {
             {/* Left: Content */}
             <div className="flex flex-col gap-(--heading-space) lg:col-span-5">
               {/* Badge */}
-              <div className="hidden md:inline-flex w-fit items-center rounded-full bg-slate-100 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-blue-900 mb-2">
+              <div className="hidden md:inline-flex w-fit items-center rounded-full bg-slate-100 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-blue-900 mb-2">
                 {data.badge}
               </div>
               <div className="inline-flex md:hidden w-fit items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-zinc-900 mb-2">
@@ -33,7 +33,7 @@ export default function WebHero() {
               </div>
 
               {/* Title */}
-              <h1 className="text-[2.25rem] leading-[1.1] font-bold tracking-tight text-black sm:text-5xl lg:text-[2.75rem]">
+              <h1 className="text-[2.25rem] leading-[1.1] font-semibold tracking-tight text-black sm:text-5xl lg:text-[2.75rem]">
                 {data.title}
               </h1>
 

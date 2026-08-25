@@ -40,7 +40,7 @@ export default function WhyChooseUs() {
   return (
     <section className="section-y">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
-        <h2 className="text-2xl font-bold tracking-tight text-zinc-900 sm:text-4xl">
+        <h2 className="text-2xl font-semibold tracking-tight text-zinc-900 sm:text-4xl">
           {CONTENT.title}
         </h2>
         <p className="mt-(--heading-space) text-sm leading-relaxed text-zinc-600 sm:text-base">

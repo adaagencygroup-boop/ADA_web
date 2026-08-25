@@ -138,12 +138,12 @@ export default function SectorsGrid() {
                   {sector.title}
                 </h3>
                 <p className="mt-4 flex-1 text-sm leading-6 text-[#434750] lg:text-base">
-                  <span className="font-bold text-[#002A64]">
+                  <span className="font-semibold text-[#002A64]">
                     {sector.code}
                   </span>{" "}
                   — {sector.description}
                 </p>
-                <span className="mt-auto inline-flex items-center gap-2 pt-6 text-sm font-bold text-[#002A64] lg:text-base">
+                <span className="mt-auto inline-flex items-center gap-2 pt-6 text-sm font-semibold text-[#002A64] lg:text-base">
                   Khám phá thêm
                   <ArrowRightIcon className="h-3.5 w-3.5" />
                 </span>

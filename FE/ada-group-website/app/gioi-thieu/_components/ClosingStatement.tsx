@@ -19,7 +19,7 @@ export default function ClosingStatement() {
 
           <Link
             href={CONTENT.ctaHref}
-            className="mt-8 inline-flex items-center justify-center gap-2 rounded-xl bg-[#003384] px-8 py-4 text-base font-bold text-white shadow-sm transition-colors hover:bg-[#002a6b] lg:rounded-full lg:bg-[#002A64] lg:px-8 lg:py-3.5 lg:text-lg lg:font-medium lg:shadow-lg lg:hover:bg-blue-900"
+            className="mt-8 inline-flex items-center justify-center gap-2 rounded-xl bg-[#003384] px-8 py-4 text-base font-semibold text-white shadow-sm transition-colors hover:bg-[#002a6b] lg:rounded-full lg:bg-[#002A64] lg:px-8 lg:py-3.5 lg:text-lg lg:font-medium lg:shadow-lg lg:hover:bg-blue-900"
           >
             {CONTENT.ctaLabel}
             <ArrowRightIcon className="hidden h-3.5 w-3.5 lg:inline" />

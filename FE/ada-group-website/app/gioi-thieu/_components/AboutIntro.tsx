@@ -19,7 +19,7 @@ export default function AboutIntro() {
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 items-start gap-x-16 lg:grid-cols-2">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight text-zinc-900 sm:text-4xl">
+            <h1 className="text-2xl font-semibold tracking-tight text-zinc-900 sm:text-4xl">
               {CONTENT.title}
             </h1>
             <span className="mt-4 block h-1 w-11 rounded-full bg-blue-800" />

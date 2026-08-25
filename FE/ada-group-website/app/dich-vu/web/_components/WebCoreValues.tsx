@@ -50,7 +50,7 @@ export default function WebCoreValues() {
     <section className="bg-[#f9fafb] section-y max-md:py-5!">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-4xl lg:max-w-5xl text-center mb-10 md:mb-14">
-          <h2 className="text-[1.75rem] font-bold leading-tight text-zinc-900 sm:text-3xl lg:text-[2.5rem] mb-4 md:mb-6">
+          <h2 className="text-[1.75rem] font-semibold leading-tight text-zinc-900 sm:text-3xl lg:text-[2.5rem] mb-4 md:mb-6">
             Một nền tảng tốt cần tạo ra<br className="md:hidden" /> giá trị lâu dài
           </h2>
           {/* Subtitle Desktop */}
@@ -77,7 +77,7 @@ export default function WebCoreValues() {
                 
                 {/* Mobile Title & Desc container, Desktop just Title */}
                 <div className="flex flex-col gap-1.5">
-                  <h3 className="text-[15px] md:text-[17px] font-bold text-zinc-900 leading-snug">
+                  <h3 className="text-[15px] md:text-[17px] font-semibold text-zinc-900 leading-snug">
                     {item.title}
                   </h3>
                   {/* Mobile only desc */}
