@@ -6,10 +6,8 @@ export default function WebHero() {
     {
       badge: "WEB & WEB APPLICATION",
       title: "Xây dựng nền tảng web phục vụ hoạt động kinh doanh",
-      descDesktop:
+      desc:
         "ADA Group thiết kế và phát triển website, ứng dụng web và các hệ thống trực tuyến theo nhu cầu của doanh nghiệp — từ website giới thiệu thương hiệu đến những nền tảng hỗ trợ quản lý, vận hành.",
-      descMobile:
-        "ADA Group phát triển các sản phẩm web từ website doanh nghiệp, ứng dụng web đến hệ thống quản trị — mỗi sản phẩm được thiết kế để giải quyết đúng nhu cầu và tạo ra giá trị sử dụng lâu dài.",
       imagePlaceholder: "https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/173610/Originals/cong-nghe-so-la-gi-1.jpg",
     },
   ];
@@ -37,14 +35,9 @@ export default function WebHero() {
                 {data.title}
               </h1>
 
-              {/* Description Desktop */}
-              <p className="hidden md:block text-base leading-relaxed text-zinc-600 max-w-lg mt-2 lg:mt-4">
-                {data.descDesktop}
-              </p>
-
-              {/* Description Mobile */}
-              <p className="md:hidden text-[15px] leading-relaxed text-zinc-600 mt-2">
-                {data.descMobile}
+              {/* Description */}
+              <p className="text-[15px] md:text-base leading-relaxed text-zinc-600 max-w-lg mt-2 lg:mt-4">
+                {data.desc}
               </p>
 
               {/* CTA */}

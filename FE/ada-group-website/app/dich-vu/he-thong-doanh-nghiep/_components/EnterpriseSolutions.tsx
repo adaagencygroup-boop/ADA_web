@@ -126,7 +126,7 @@ export default function EnterpriseSolutions() {
         </div>
 
         {/* Grid Container */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12">
           {solutions.map((item) => {
             if (item.layout === "full_dark") {
               return (

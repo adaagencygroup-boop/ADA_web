@@ -6,10 +6,8 @@ export default function EnterpriseHeroSection() {
     {
       badge: "Enterprise System",
       title: "Số hóa quy trình, kết nối hoạt động doanh nghiệp",
-      descDesktop:
+      desc:
         "ADA Group thiết kế và phát triển các hệ thống phần mềm giúp doanh nghiệp quản lý thông tin, chuẩn hóa quy trình và kết nối các hoạt động trên một nền tảng thống nhất.\nTừ một công cụ phục vụ một bộ phận đến hệ thống kết nối nhiều quy trình trong doanh nghiệp, mỗi giải pháp được xây dựng dựa trên cách tổ chức thực sự vận hành, hướng tới việc giảm thao tác thủ công, tập trung dữ liệu và nâng cao hiệu quả quản lý.",
-      descMobile:
-        "ADA Group thiết kế và phát triển các hệ thống phần mềm giúp doanh nghiệp quản lý thông tin, chuẩn hóa quy trình và kết nối các hoạt động trên một nền tảng thống nhất. Mỗi giải pháp được xây dựng dựa trên cách tổ chức thực sự vận hành, hướng tới việc giảm thao tác thủ công và nâng cao hiệu quả quản lý.",
       imagePlaceholder: "https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/173610/Originals/cong-nghe-so-la-gi-1.jpg",
     },
   ];
@@ -37,14 +35,9 @@ export default function EnterpriseHeroSection() {
                 {data.title}
               </h1>
 
-              {/* Description Desktop */}
-              <p className="hidden md:block text-base leading-relaxed text-zinc-600 max-w-lg mt-2 lg:mt-4 whitespace-pre-line">
-                {data.descDesktop}
-              </p>
-
-              {/* Description Mobile */}
-              <p className="md:hidden text-[15px] leading-relaxed text-zinc-600 mt-2 whitespace-pre-line">
-                {data.descMobile}
+              {/* Description */}
+              <p className="text-[15px] md:text-base leading-relaxed text-zinc-600 max-w-lg mt-2 lg:mt-4 whitespace-pre-line">
+                {data.desc}
               </p>
 
               {/* CTA */}
