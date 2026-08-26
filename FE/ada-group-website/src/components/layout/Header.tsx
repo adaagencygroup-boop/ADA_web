@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Navbar from "./Navbar";
 
 function ArrowRightIcon() {
@@ -72,12 +73,10 @@ export default function Header() {
   }, [isMobileMenuOpen]);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-zinc-200 bg-white">
+    <header className="sticky top-0 z-50 border-b border-zinc-200 bg-[#f9fafc]">
       <div className="mx-auto flex h-16 max-w-360 items-center justify-between px-4 sm:px-6 lg:h-20 lg:px-8">
         <Link href="/" className="flex items-center gap-2">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-700 text-xs font-semibold text-white lg:hidden">
-            Logo
-          </span>
+          <Image src="/images/logo/logonobg.png" alt="ADA Group Logo" width={40} height={40} className="h-8 w-auto object-contain" />
           <span className="text-lg font-bold tracking-tight text-zinc-900 lg:text-xl">
             ADA Group
           </span>
@@ -109,9 +108,12 @@ export default function Header() {
       </div>
 
       {isMobileMenuOpen && (
-        <div className="fixed inset-0 z-50 flex flex-col bg-white lg:hidden">
+        <div className="fixed inset-0 z-50 flex flex-col bg-[#f9fafc] lg:hidden">
           <div className="flex items-center justify-between border-b border-zinc-200 px-4 py-4">
-            <span className="text-lg font-bold text-zinc-900">ADA Group</span>
+            <div className="flex items-center gap-2">
+              <Image src="/images/logo/logonobg.png" alt="ADA Group Logo" width={40} height={40} className="h-8 w-auto object-contain" />
+              <span className="text-lg font-bold text-zinc-900">ADA Group</span>
+            </div>
             <button
               type="button"
               onClick={() => setIsMobileMenuOpen(false)}

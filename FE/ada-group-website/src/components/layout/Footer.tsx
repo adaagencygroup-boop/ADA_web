@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 const SERVICE_LINKS = [
   { label: "Web & Web Application", href: "/dich-vu/web" },
@@ -127,7 +128,7 @@ function FooterLinkList({
   return (
     <div>
       <h3 className="text-sm font-semibold text-blue-700">{title}</h3>
-      <ul className="mt-6 space-y-4">
+      <ul className="mt-4 space-y-3">
         {links.map((link) => (
           <li key={link.href}>
             <Link
@@ -145,20 +146,18 @@ function FooterLinkList({
 
 export default function Footer() {
   return (
-    <footer className="border-t border-zinc-200 bg-white">
-      <div className="mx-auto max-w-360 px-4 py-16 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[minmax(0,1.4fr)_repeat(3,minmax(0,1fr))]">
+    <footer className="border-t border-zinc-200 bg-[#f9fafc]">
+      <div className="mx-auto max-w-360 px-4 pt-10 pb-4 lg:pt-12 lg:pb-6 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1.4fr)_repeat(3,minmax(0,1fr))]">
           <div>
             <Link href="/" className="flex items-center gap-2">
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-700 text-xs font-semibold text-white">
-                Logo
-              </span>
+              <Image src="/images/logo/logonobg.png" alt="ADA Group Logo" width={40} height={40} className="h-8 sm:h-10 w-auto object-contain" />
               <span className="text-lg font-bold text-zinc-900">ADA Group</span>
             </Link>
 
             <div className="mt-6 divide-y divide-zinc-200 rounded-xl border border-zinc-200">
               {CONTACT_ROWS.map((row, index) => (
-                <div key={index} className="flex items-start gap-3 px-4 py-4">
+                <div key={index} className="flex items-start gap-3 p-3">
                   <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-50 text-blue-700">
                     <row.icon />
                   </span>
@@ -175,7 +174,7 @@ export default function Footer() {
           <FooterLinkList title="Hỗ trợ" links={SUPPORT_LINKS} />
         </div>
 
-        <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-zinc-200 pt-8 sm:flex-row">
+        <div className="mt-6 lg:mt-8 flex flex-col items-center justify-between gap-4 border-t border-zinc-200 pt-4 sm:flex-row">
           <p className="text-sm text-zinc-500">
             © {new Date().getFullYear()} ADA Group. Redesign Vietnam Initiative. All
             rights reserved.

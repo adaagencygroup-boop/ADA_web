@@ -49,7 +49,7 @@ export default function Navbar({
           link.href === "/" ? pathname === "/" : pathname.startsWith(link.href);
 
         return (
-          <div key={link.href} className="relative group">
+          <div key={link.href} className={`relative group ${!isVertical ? "flex lg:h-20 items-center" : ""}`}>
             <div className={`flex items-center justify-between ${isVertical ? "w-full" : ""}`}>
               <Link
                 href={link.href}
@@ -91,8 +91,8 @@ export default function Navbar({
 
             {/* Desktop Dropdown */}
             {link.subLinks && !isVertical && (
-              <div className="absolute left-0 top-full hidden pt-6 group-hover:block z-50 min-w-64">
-                <div className="bg-white rounded-2xl shadow-xl border border-zinc-100 p-2.5 flex flex-col gap-1 relative before:absolute before:content-[''] before:-top-2 before:left-6 before:w-4 before:h-4 before:bg-white before:border-l before:border-t before:border-zinc-100 before:rotate-45">
+              <div className="absolute left-0 top-full hidden pt-0.4 group-hover:block z-50 min-w-64">
+                <div className="bg-[#f9fafc] rounded-2xl shadow-xl border border-zinc-100 p-2.5 flex flex-col gap-1 relative before:absolute before:content-[''] before:-top-2 before:left-6 before:w-4 before:h-4 before:bg-[#f9fafc] before:border-l before:border-t before:border-zinc-100 before:rotate-45">
                   {link.subLinks.map(sub => (
                     <Link 
                       key={sub.href} 
