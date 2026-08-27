@@ -37,7 +37,7 @@ export default function MissionDetails() {
               <h3 className="text-2xl font-semibold leading-7.75 text-zinc-900">
                 {block.title}
               </h3>
-              <p className="mt-(--heading-space) text-justify text-base leading-6.25 text-gray-600">
+              <p className="mt-(--heading-space) mx-2 text-justify text-base leading-6.25 text-gray-600">
                 {block.paragraph}
               </p>
             </div>

@@ -88,10 +88,10 @@ export default function ServiceHighlights() {
               } ${index < 2 ? "border-b" : ""} border-zinc-300/50`}
             >
               <stat.icon />
-              <h3 className="mt-2 text-sm font-semibold text-[#003384]">
+              <h3 className="mt-2 text-lg font-semibold text-[#003384]">
                 {stat.title}
               </h3>
-              <p className="text-xs leading-4 text-gray-600">{stat.description}</p>
+              <p className="text-base leading-4 text-gray-600">{stat.description}</p>
             </div>
           ))}
         </div>

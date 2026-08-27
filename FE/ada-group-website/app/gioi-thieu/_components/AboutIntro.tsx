@@ -28,7 +28,7 @@ export default function AboutIntro() {
               {CONTENT.paragraphs.map((paragraph) => (
                 <p
                   key={paragraph}
-                  className="text-base text-justify leading-relaxed text-zinc-600 [&+&]:mt-6"
+                  className="mx-2 text-base text-justify leading-relaxed text-zinc-600 [&+&]:mt-6"
                 >
                   {paragraph}
                 </p>

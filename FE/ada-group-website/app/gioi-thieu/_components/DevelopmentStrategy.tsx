@@ -119,7 +119,7 @@ export default function DevelopmentStrategy() {
               {CONTENT.paragraphs.map((paragraph) => (
                 <p
                   key={paragraph}
-                  className="text-sm text-justify sm:text-start leading-5.75 text-gray-600 [&+&]:mt-4"
+                  className="mx-2 text-base text-justify sm:text-start leading-5.75 text-gray-600 [&+&]:mt-4"
                 >
                   {paragraph}
                 </p>
@@ -133,10 +133,10 @@ export default function DevelopmentStrategy() {
                     <principle.icon />
                   </span>
                   <div>
-                    <h3 className="text-base font-semibold leading-6 text-slate-900">
+                    <h3 className="text-lg font-semibold leading-6 text-slate-900">
                       {principle.title}
                     </h3>
-                    <p className="mt-1 text-sm leading-5 text-gray-500">
+                    <p className="mt-1 text-base leading-5 text-gray-500">
                       {principle.description}
                     </p>
                   </div>
