@@ -33,7 +33,7 @@ const TOOLS = [
 
 export default function TechStack() {
   return (
-    <section className="section-y bg-[#EFF6FF] sm:bg-white">
+    <section className="section-y">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="sm:rounded-2xl sm:border sm:border-zinc-200 sm:bg-white sm:p-10">
           <p className="text-lg font-semibold text-zinc-900 sm:hidden">
@@ -51,8 +51,9 @@ export default function TechStack() {
             </div>
 
             <Marquee
-              className="mt-(--inner-space) sm:mt-0 sm:min-w-0 sm:flex-1"
-              durationSeconds={35}
+              className="mt-(--inner-space) -mx-4 bg-[#EFF6FF] px-4 py-4 sm:mx-0 sm:mt-0 sm:min-w-0 sm:flex-1 sm:bg-transparent sm:px-0 sm:py-0"
+              durationSeconds={60}
+              draggable
             >
               {TOOLS.map((tool) => (
                 <div

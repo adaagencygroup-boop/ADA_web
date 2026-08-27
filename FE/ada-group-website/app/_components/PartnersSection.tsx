@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRightIcon } from "@/app/_components/icons";
+import Marquee from "@/app/_components/Marquee";
 
 const CONTENT = {
   badge: "ĐỐI TÁC",
@@ -58,7 +59,33 @@ export default function PartnersSection() {
           </p>
         </div>
 
-        <div className="mt-(--inner-space) grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <Marquee
+          className="mt-(--inner-space) -mx-4 sm:hidden"
+          durationSeconds={60}
+          draggable
+        >
+          {PARTNERS.map((partner) => (
+            <div
+              key={partner.name}
+              className="mx-2 flex h-26 w-44 shrink-0 flex-col items-center rounded-2xl border border-zinc-200 bg-white p-2"
+            >
+              <div className="flex h-11 items-center">
+                <Image
+                  src={partner.logoSrc}
+                  alt={partner.name}
+                  width={partner.logoWidth}
+                  height={partner.logoHeight}
+                  className="h-auto max-h-11 w-autos scale-85"
+                />
+              </div>
+              <p className="mt-1 text-center text-sm text-zinc-600">
+                {partner.description}
+              </p>
+            </div>
+          ))}
+        </Marquee>
+
+        <div className="mt-(--inner-space) hidden grid-cols-2 gap-6 sm:grid lg:grid-cols-4">
           {PARTNERS.map((partner) => (
             <div
               key={partner.name}
