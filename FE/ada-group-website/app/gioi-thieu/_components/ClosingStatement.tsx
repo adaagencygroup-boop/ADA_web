@@ -10,7 +10,7 @@ const CONTENT = {
 
 export default function ClosingStatement() {
   return (
-    <section className="section-y bg-white">
+    <section className="section-y pt-0! bg-white">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="rounded-2xl bg-[#F6F3F5] p-8 text-center shadow-inner lg:rounded-none lg:bg-transparent lg:p-0 lg:shadow-none">
           <p className="text-lg leading-relaxed text-gray-600 lg:mx-auto lg:max-w-5xl lg:text-2xl lg:leading-10">

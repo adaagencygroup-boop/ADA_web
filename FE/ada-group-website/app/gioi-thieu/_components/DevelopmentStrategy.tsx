@@ -104,7 +104,7 @@ const IMAGE = {
 
 export default function DevelopmentStrategy() {
   return (
-    <section className="section-y bg-white">
+    <section className="section-y pt-0! bg-white">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 items-start gap-x-16 lg:grid-cols-2">
           <div>

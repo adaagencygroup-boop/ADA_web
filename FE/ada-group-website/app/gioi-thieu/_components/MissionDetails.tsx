@@ -26,7 +26,7 @@ const BLOCKS = [
 
 export default function MissionDetails() {
   return (
-    <section className="section-y bg-white">
+    <section className="section-y pt-0! bg-white">
       <div className="mx-auto max-w-360 space-y-(--inner-space) px-4 sm:px-6 lg:px-8">
         {BLOCKS.map((block) => (
           <div

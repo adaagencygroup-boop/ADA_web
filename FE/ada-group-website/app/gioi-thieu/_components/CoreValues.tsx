@@ -89,7 +89,7 @@ const VALUES = [
 
 export default function CoreValues() {
   return (
-    <section className="section-y bg-white">
+    <section className="section-y pt-0! bg-white">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center text-center">
           <h2 className="text-[22px] font-extrabold leading-8 text-slate-900 lg:text-3xl lg:font-semibold lg:leading-9 lg:text-black">

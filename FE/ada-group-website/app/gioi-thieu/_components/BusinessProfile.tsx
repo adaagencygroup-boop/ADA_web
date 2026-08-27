@@ -24,7 +24,7 @@ const FIELDS = [
 
 export default function BusinessProfile() {
   return (
-    <section className="section-y bg-white">
+    <section className="section-y md:pt-0! bg-white">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="lg:rounded-xl lg:border lg:border-[#C4C6D2] lg:bg-[#EFF6FF] lg:px-6 lg:py-7.5 lg:shadow-sm">
           <h2 className="border-b border-zinc-300/50 pb-2 text-2xl font-semibold text-[#003384] lg:border-none lg:pb-0 lg:text-center">

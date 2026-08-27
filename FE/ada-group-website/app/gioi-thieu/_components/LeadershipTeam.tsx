@@ -64,7 +64,7 @@ export default function LeadershipTeam() {
   };
 
   return (
-    <section className="section-y bg-white">
+    <section className="section-y pt-0! bg-white">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="flex items-end justify-between gap-4 border-b border-zinc-300/40 pb-4 lg:border-none lg:pb-0">
           <div>
