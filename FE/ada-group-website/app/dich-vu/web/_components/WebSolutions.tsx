@@ -106,8 +106,8 @@ export default function WebSolutions() {
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         
         {/* Header */}
-        <div className="mx-auto max-w-4xl text-left md:text-center mb-10 md:mb-16">
-          <div className="flex items-center justify-start md:justify-center gap-1.5 mb-4 text-blue-600">
+        <div className="mx-auto max-w-4xl text-center mb-10 md:mb-16">
+          <div className="flex items-center justify-center gap-1.5 mb-4 text-blue-600">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
               <circle cx="12" cy="12" r="4" />
               <path d="M12 2v2" /><path d="M12 20v2" />
@@ -121,8 +121,8 @@ export default function WebSolutions() {
             Giải pháp web cho từng <br className="hidden md:block" />
             giai đoạn <span className="text-blue-600">phát triển doanh nghiệp</span>
           </h2>
-          <div className="w-16 h-1 bg-blue-600 ml-0 md:mx-auto rounded-full mb-6"></div>
-          <p className="text-zinc-500 leading-relaxed max-w-2xl md:mx-auto mt-6 text-[15px] lg:text-base pr-4 md:pr-0">
+          <div className="w-16 h-1 bg-blue-600 mx-auto rounded-full mb-6"></div>
+          <p className="text-zinc-500 leading-relaxed max-w-2xl mx-auto mt-6 text-[15px] lg:text-base">
             Từ website giới thiệu thương hiệu đến các nền tảng phức tạp, chúng tôi cung cấp giải pháp web toàn diện, linh hoạt và sẵn sàng đồng hành cùng doanh nghiệp.
           </p>
         </div>
@@ -135,10 +135,10 @@ export default function WebSolutions() {
                 <div key={item.id} className="lg:col-span-2 bg-white lg:bg-[#0b1120] rounded-3xl lg:rounded-4xl flex flex-col-reverse lg:flex-row overflow-hidden text-zinc-900 lg:text-white shadow-[0_2px_20px_rgb(0,0,0,0.04)] lg:shadow-xl border border-slate-100 lg:border-none">
                   <div className="p-6 lg:p-8 flex-1 flex flex-col justify-center lg:max-w-[50%]">
                     <div className="block lg:hidden mb-4">
-                      <p className="text-[13px] font-semibold text-slate-500 uppercase tracking-wide mb-2">
+                      <p className="text-[13px] font-semibold text-slate-500 uppercase tracking-wide mb-2 text-justify">
                         {item.id} &mdash; {item.title}
                       </p>
-                      <h3 className="text-[17px] font-semibold text-zinc-900 leading-[1.4]">
+                      <h3 className="text-[17px] font-semibold text-zinc-900 leading-[1.4] text-justify">
                         {item.subtitle}
                       </h3>
                     </div>
@@ -150,11 +150,11 @@ export default function WebSolutions() {
                           {item.icon}
                         </div>
                       </div>
-                      <h3 className="text-2xl font-semibold uppercase mb-3 text-white">{item.title}</h3>
-                      <p className="text-[15px] font-semibold text-blue-400 mb-6">{item.subtitle}</p>
+                      <h3 className="text-2xl font-semibold uppercase mb-3 text-white text-justify">{item.title}</h3>
+                      <p className="text-[15px] font-semibold text-blue-400 mb-6 text-justify">{item.subtitle}</p>
                     </div>
 
-                    <div className="hidden lg:block text-[14px] text-slate-300 mb-10 leading-relaxed whitespace-pre-line">
+                    <div className="hidden lg:block text-[14px] text-slate-300 mb-10 leading-relaxed whitespace-pre-line text-justify">
                       {item.description}
                     </div>
                     <Link href="/lien-he" className="text-[14px] text-blue-600 lg:text-blue-400 font-medium hover:text-blue-700 lg:hover:text-blue-300 inline-flex items-center gap-1.5 w-fit transition-colors">
@@ -173,10 +173,10 @@ export default function WebSolutions() {
                 <div key={item.id} className="lg:col-span-2 bg-[#f4f6f9] rounded-3xl lg:rounded-4xl flex flex-col-reverse lg:flex-row overflow-hidden shadow-sm border border-slate-100">
                   <div className="p-6 lg:p-8 flex-1 flex flex-col justify-center lg:max-w-[50%]">
                     <div className="block lg:hidden mb-4">
-                      <p className="text-[13px] font-semibold text-slate-500 uppercase tracking-wide mb-2">
+                      <p className="text-[13px] font-semibold text-slate-500 uppercase tracking-wide mb-2 text-justify">
                         {item.id} &mdash; {item.title}
                       </p>
-                      <h3 className="text-lg font-semibold text-zinc-900 leading-snug">
+                      <h3 className="text-lg font-semibold text-zinc-900 leading-snug text-justify">
                         {item.subtitle}
                       </h3>
                     </div>
@@ -188,11 +188,11 @@ export default function WebSolutions() {
                           {item.icon}
                         </div>
                       </div>
-                      <h3 className="text-2xl font-semibold uppercase mb-3 text-zinc-900">{item.title}</h3>
-                      <p className="text-[15px] font-semibold text-blue-600 mb-6">{item.subtitle}</p>
+                      <h3 className="text-2xl font-semibold uppercase mb-3 text-zinc-900 text-justify">{item.title}</h3>
+                      <p className="text-[15px] font-semibold text-blue-600 mb-6 text-justify">{item.subtitle}</p>
                     </div>
 
-                    <div className="hidden lg:block text-[14px] text-zinc-600 mb-10 leading-relaxed whitespace-pre-line">
+                    <div className="hidden lg:block text-[14px] text-zinc-600 mb-10 leading-relaxed whitespace-pre-line text-justify">
                       {item.description}
                     </div>
                     <Link href="/lien-he" className="text-[14px] text-blue-600 font-medium hover:underline inline-flex items-center gap-1.5 w-fit">
@@ -210,10 +210,10 @@ export default function WebSolutions() {
               <div key={item.id} className="bg-white rounded-3xl lg:rounded-4xl border border-slate-100 shadow-[0_2px_20px_rgb(0,0,0,0.04)] overflow-hidden flex flex-col-reverse xl:flex-row h-full">
                 <div className="p-6 lg:p-8 flex-1 flex flex-col">
                   <div className="block lg:hidden mb-4">
-                    <p className="text-[13px] font-semibold text-slate-500 uppercase tracking-wide mb-2">
+                    <p className="text-[13px] font-semibold text-slate-500 uppercase tracking-wide mb-2 text-justify">
                       {item.id} &mdash; {item.title}
                     </p>
-                    <h3 className="text-[17px] font-semibold text-zinc-900 leading-[1.4]">
+                    <h3 className="text-[17px] font-semibold text-zinc-900 leading-[1.4] text-justify">
                       {item.subtitle}
                     </h3>
                   </div>
@@ -225,11 +225,11 @@ export default function WebSolutions() {
                         {item.icon}
                       </div>
                     </div>
-                    <h3 className="text-lg lg:text-xl font-semibold uppercase mb-3 text-zinc-900 leading-snug">{item.title}</h3>
-                    <p className="text-[14px] font-semibold text-blue-600 mb-4">{item.subtitle}</p>
+                    <h3 className="text-lg lg:text-xl font-semibold uppercase mb-3 text-zinc-900 leading-snug text-justify">{item.title}</h3>
+                    <p className="text-[14px] font-semibold text-blue-600 mb-4 text-justify">{item.subtitle}</p>
                   </div>
 
-                  <div className="hidden lg:block text-[14px] text-zinc-500 mb-8 leading-[1.6] whitespace-pre-line flex-1">
+                  <div className="hidden lg:block text-[14px] text-zinc-500 mb-8 leading-[1.6] whitespace-pre-line flex-1 text-justify">
                     {item.description}
                   </div>
                   <Link href="/lien-he" className="text-[14px] text-blue-600 font-medium hover:underline inline-flex items-center gap-1.5 mt-auto w-fit">

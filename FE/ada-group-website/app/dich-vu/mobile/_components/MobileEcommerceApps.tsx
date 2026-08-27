@@ -81,7 +81,7 @@ export default function MobileEcommerceApps() {
                 <h2 className="text-[1.35rem] font-bold lg:font-semibold leading-snug lg:leading-tight tracking-tight text-zinc-900 lg:text-[#0a1a2f] sm:text-4xl lg:text-[2.5rem] mb-3 lg:mb-5">
                   {item.title}
                 </h2>
-                <p className="text-[14px] lg:text-[15px] leading-relaxed text-zinc-500 lg:text-zinc-600 mb-0 max-w-xl">
+                <p className="text-[14px] lg:text-[15px] leading-relaxed text-zinc-500 lg:text-zinc-600 mb-0 text-justify">
                   {item.description}
                 </p>
                 

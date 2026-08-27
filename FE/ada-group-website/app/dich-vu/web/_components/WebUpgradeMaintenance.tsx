@@ -35,7 +35,7 @@ export default function WebUpgradeMaintenance() {
                 Nâng cấp hệ thống hiện có
               </h3>
             </div>
-            <p className="text-[14.5px] lg:text-[15.5px] text-zinc-600 mb-8 leading-relaxed max-w-lg">
+            <p className="text-[14.5px] lg:text-[15.5px] text-zinc-600 mb-8 leading-relaxed text-justify">
               Bạn đã có một hệ thống nhưng nó quá cũ, chậm chạp hoặc không còn đáp ứng được nhu cầu kinh doanh? Chúng tôi cung cấp dịch vụ tái cấu trúc (Refactoring) và nâng cấp toàn diện.
             </p>
             <ul className="flex flex-col gap-4 lg:gap-5 mt-auto">
@@ -62,7 +62,7 @@ export default function WebUpgradeMaintenance() {
                 Duy trì & Hỗ trợ kỹ thuật
               </h3>
             </div>
-            <p className="text-[14.5px] lg:text-[15.5px] text-zinc-600 mb-8 leading-relaxed max-w-lg">
+            <p className="text-[14.5px] lg:text-[15.5px] text-zinc-600 mb-8 leading-relaxed text-justify">
               Đảm bảo hệ thống của bạn luôn online, an toàn và hoạt động trơn tru để bạn tập trung vào kinh doanh cốt lõi.
             </p>
             <ul className="flex flex-col gap-4 lg:gap-5 mt-auto">

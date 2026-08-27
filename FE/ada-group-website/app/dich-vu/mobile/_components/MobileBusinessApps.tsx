@@ -150,7 +150,7 @@ export default function MobileBusinessApps() {
                 <p className="text-[15px] lg:text-[17px] font-medium text-blue-600 mb-4">
                   {item.subtitle}
                 </p>
-                <p className="text-[14px] lg:text-[15px] leading-relaxed text-zinc-500 lg:text-zinc-600 mb-6 lg:mb-8 max-w-xl">
+                <p className="text-[14px] lg:text-[15px] leading-relaxed text-zinc-500 lg:text-zinc-600 mb-6 lg:mb-8 text-justify">
                   {item.description1}
                 </p>
               </div>

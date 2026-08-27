@@ -82,7 +82,7 @@ export default function MobileBackend() {
               <p className="text-[15px] lg:text-[17px] font-medium text-blue-600 mb-4 lg:mb-6">
                 {item.subtitle}
               </p>
-              <p className="text-[14px] lg:text-[15px] leading-relaxed text-zinc-500 lg:text-zinc-600 max-w-xl mb-0">
+              <p className="text-[14px] lg:text-[15px] leading-relaxed text-zinc-500 lg:text-zinc-600 mb-0 text-justify">
                 {item.description1}
               </p>
 

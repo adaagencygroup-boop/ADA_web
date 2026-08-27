@@ -139,8 +139,8 @@ export default function EnterpriseSolutions() {
                       </div>
                     </div>
                     <h3 className="text-2xl font-semibold uppercase mb-3 text-white">{item.title}</h3>
-                    <p className="text-[15px] font-semibold text-blue-400 mb-6">{item.subtitle}</p>
-                    <div className="text-[14px] text-slate-300 mb-10 leading-relaxed whitespace-pre-line">
+                    <p className="text-[15px] font-semibold text-blue-400 mb-6 text-justify">{item.subtitle}</p>
+                    <div className="text-[14px] text-slate-300 mb-10 leading-relaxed whitespace-pre-line text-justify">
                       {item.description}
                     </div>
                     <Link href="/lien-he" className="text-[14px] text-blue-400 font-medium hover:text-blue-300 inline-flex items-center gap-1.5 w-fit transition-colors">
@@ -173,8 +173,8 @@ export default function EnterpriseSolutions() {
                     
                     {/* Desktop Title */}
                     <h3 className="hidden md:block text-2xl font-semibold uppercase mb-3 text-zinc-900">{item.title}</h3>
-                    <p className="text-[15px] font-semibold text-blue-600 mb-6">{item.subtitle}</p>
-                    <div className="text-[14px] text-zinc-600 mb-10 leading-relaxed whitespace-pre-line">
+                    <p className="text-[15px] font-semibold text-blue-600 mb-6 text-justify">{item.subtitle}</p>
+                    <div className="text-[14px] text-zinc-600 mb-10 leading-relaxed whitespace-pre-line text-justify">
                       {item.description}
                     </div>
                     <Link href="/lien-he" className="text-[14px] text-blue-600 font-medium hover:underline inline-flex items-center gap-1.5 w-fit">
@@ -206,8 +206,8 @@ export default function EnterpriseSolutions() {
                   
                   {/* Desktop Title */}
                   <h3 className="hidden md:block text-lg lg:text-xl font-semibold uppercase mb-3 text-zinc-900 leading-snug">{item.title}</h3>
-                  <p className="text-[14px] font-semibold text-blue-600 mb-4">{item.subtitle}</p>
-                  <div className="text-[14px] text-zinc-500 mb-8 leading-[1.6] whitespace-pre-line flex-1">
+                  <p className="text-[14px] font-semibold text-blue-600 mb-4 text-justify">{item.subtitle}</p>
+                  <div className="text-[14px] text-zinc-500 mb-8 leading-[1.6] whitespace-pre-line flex-1 text-justify">
                     {item.description}
                   </div>
                   <Link href="/lien-he" className="text-[14px] text-blue-600 font-medium hover:underline inline-flex items-center gap-1.5 mt-auto w-fit">

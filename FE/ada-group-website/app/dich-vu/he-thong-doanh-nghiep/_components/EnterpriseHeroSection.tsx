@@ -7,7 +7,7 @@ export default function EnterpriseHeroSection() {
       badge: "Enterprise System",
       title: "Số hóa quy trình, kết nối hoạt động doanh nghiệp",
       desc:
-        "ADA Group thiết kế và phát triển các hệ thống phần mềm giúp doanh nghiệp quản lý thông tin, chuẩn hóa quy trình và kết nối các hoạt động trên một nền tảng thống nhất.\nTừ một công cụ phục vụ một bộ phận đến hệ thống kết nối nhiều quy trình trong doanh nghiệp, mỗi giải pháp được xây dựng dựa trên cách tổ chức thực sự vận hành, hướng tới việc giảm thao tác thủ công, tập trung dữ liệu và nâng cao hiệu quả quản lý.",
+        "ADA Group thiết kế và phát triển các hệ thống phần mềm giúp doanh nghiệp quản lý thông tin, chuẩn hóa quy trình và kết nối các hoạt động trên một nền tảng thống nhất. Từ một công cụ phục vụ một bộ phận đến hệ thống kết nối nhiều quy trình trong doanh nghiệp, mỗi giải pháp được xây dựng dựa trên cách tổ chức thực sự vận hành, hướng tới việc giảm thao tác thủ công, tập trung dữ liệu và nâng cao hiệu quả quản lý.",
       imagePlaceholder: "https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/173610/Originals/cong-nghe-so-la-gi-1.jpg",
     },
   ];
@@ -31,12 +31,12 @@ export default function EnterpriseHeroSection() {
               </div>
 
               {/* Title */}
-              <h1 className="text-[2.25rem] leading-[1.1] font-semibold tracking-tight text-black sm:text-5xl lg:text-[2.75rem]">
+              <h1 className="text-[2rem] leading-[1.2] font-semibold tracking-tight text-black sm:text-4xl lg:text-[2.75rem] lg:leading-[1.1]">
                 {data.title}
               </h1>
 
               {/* Description */}
-              <p className="text-[15px] md:text-base leading-relaxed text-zinc-600 max-w-lg mt-2 lg:mt-4 whitespace-pre-line">
+              <p className="text-[15px] md:text-base leading-relaxed text-zinc-600 mt-2 lg:mt-4 whitespace-pre-line text-justify indent-4">
                 {data.desc}
               </p>
 
