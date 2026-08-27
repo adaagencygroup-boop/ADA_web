@@ -38,7 +38,7 @@ export default function PeopleSection() {
             {CONTENT.paragraphs.map((paragraph) => (
               <p
                 key={paragraph}
-                className="text-sm leading-relaxed mt-(--inner-space) text-zinc-600 text-justify sm:text-base [&+&]:mt-4 lg:first-of-type:mt-8"
+                className="mx-2 text-base leading-relaxed mt-(--inner-space) text-zinc-600 text-justify [&+&]:mt-4 lg:first-of-type:mt-8"
               >
                 {paragraph}
               </p>

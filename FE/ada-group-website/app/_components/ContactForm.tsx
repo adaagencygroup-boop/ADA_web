@@ -61,7 +61,7 @@ export default function ContactForm() {
           <h2 className="text-2xl font-semibold tracking-tight text-zinc-900 sm:text-4xl">
             {CONTENT.title}
           </h2>
-          <p className="mt-(--heading-space) text-sm leading-relaxed text-zinc-600 sm:text-base">
+          <p className="mt-(--heading-space) text-base leading-relaxed text-zinc-600">
             {CONTENT.description}
           </p>
         </div>
@@ -181,7 +181,7 @@ export default function ContactForm() {
                   <h3 className="text-sm font-semibold text-zinc-900">
                     {benefit.title}
                   </h3>
-                  <p className="mt-1 text-sm leading-relaxed text-zinc-600">
+                  <p className="mt-1 text-base leading-relaxed text-zinc-600">
                     {benefit.description}
                   </p>
                 </div>

@@ -47,7 +47,7 @@ export default function ServicesGrid() {
           <h2 className="text-2xl text-start sm:text-center font-semibold tracking-tight text-zinc-900 sm:text-4xl">
             {CONTENT.title}
           </h2>
-          <p className="mt-(--heading-space) text-sm leading-relaxed whitespace-pre-line text-zinc-600 text-justify md:text-center md:text-base lg:text-lg">
+          <p className="mt-(--heading-space) mx-2 md:mx-0 text-base leading-relaxed whitespace-pre-line text-zinc-600 text-justify md:text-center lg:text-lg">
             {CONTENT.description}
           </p>
         </div>
@@ -66,7 +66,7 @@ export default function ServicesGrid() {
                   {service.title}
                 </h3>
               </div>
-              <p className="mt-2 text-sm leading-relaxed text-zinc-600">
+              <p className="mt-2 text-base leading-relaxed text-zinc-600">
                 {service.description}
               </p>
               <Link

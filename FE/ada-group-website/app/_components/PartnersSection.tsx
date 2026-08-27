@@ -15,28 +15,28 @@ const PARTNERS = [
   {
     name: "GreenSoft",
     description: "Giải pháp phần mềm",
-    logoSrc: "https://picsum.photos/150/50?random=1",
+    logoSrc: "/images/home_images/partner1.png",
     logoWidth: 149,
     logoHeight: 44,
   },
   {
     name: "CloudOne",
     description: "Dịch vụ Cloud & Hosting",
-    logoSrc: "https://picsum.photos/150/50?random=2",
+    logoSrc: "/images/home_images/partner2.png",
     logoWidth: 155,
     logoHeight: 29,
   },
   {
     name: "MISA SME",
     description: "Phần mềm kế toán",
-    logoSrc: "https://picsum.photos/150/50?random=3",
+    logoSrc: "/images/home_images/partner3.png",
     logoWidth: 149,
     logoHeight: 33,
   },
   {
     name: "SapoGo",
     description: "Giải pháp bán hàng online",
-    logoSrc: "https://picsum.photos/150/50?random=4",
+    logoSrc: "/images/home_images/partner4.png",
     logoWidth: 142,
     logoHeight: 40,
   },
@@ -53,7 +53,7 @@ export default function PartnersSection() {
           <h2 className="mt-(--heading-space) text-2xl font-semibold tracking-tight text-zinc-900 sm:text-4xl">
             {CONTENT.title}
           </h2>
-          <p className="mt-(--inner-space) hidden sm:inline text-sm leading-relaxed text-zinc-600 sm:text-base md:text-lg">
+          <p className="mt-(--inner-space) hidden sm:inline text-base leading-relaxed text-zinc-600 md:text-lg">
             {CONTENT.description}
           </p>
         </div>
@@ -76,7 +76,7 @@ export default function PartnersSection() {
               <h3 className="mt-4 text-base font-semibold text-[#001E4B]">
                 {partner.name}
               </h3>
-              <p className="mt-1 text-sm text-zinc-600">{partner.description}</p>
+              <p className="mt-1 text-base text-zinc-600">{partner.description}</p>
             </div>
           ))}
         </div>

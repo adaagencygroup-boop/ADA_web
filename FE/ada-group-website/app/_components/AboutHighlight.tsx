@@ -62,7 +62,7 @@ export default function AboutHighlight() {
           {CONTENT.paragraphs.map((paragraph) => (
             <p
               key={paragraph}
-              className="text-sm leading-relaxed text-zinc-600 text-justify sm:text-base [&+&]:mt-4 md:text-lg"
+              className="mx-2 text-base leading-relaxed text-zinc-600 text-justify [&+&]:mt-4 md:text-lg"
             >
               {paragraph}
             </p>

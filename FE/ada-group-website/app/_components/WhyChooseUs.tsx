@@ -43,7 +43,7 @@ export default function WhyChooseUs() {
         <h2 className="text-2xl font-semibold tracking-tight text-zinc-900 sm:text-4xl">
           {CONTENT.title}
         </h2>
-        <p className="mt-(--heading-space) text-sm leading-relaxed text-zinc-600 sm:text-base">
+        <p className="mt-(--heading-space) mx-2 text-base leading-relaxed text-zinc-600">
           {CONTENT.description}
         </p>
 
@@ -66,7 +66,7 @@ export default function WhyChooseUs() {
                 <h3 className="text-xl font-semibold text-[#001E4B] [grid-area:title]">
                   {reason.title}
                 </h3>
-                <p className="text-sm leading-relaxed text-zinc-600 [grid-area:desc]">
+                <p className="text-base leading-relaxed text-zinc-600 [grid-area:desc]">
                   {reason.description}
                 </p>
               </div>
