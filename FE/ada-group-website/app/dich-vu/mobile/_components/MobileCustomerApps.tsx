@@ -79,34 +79,34 @@ export default function MobileCustomerApps() {
   return (
     <section className="bg-white section-y max-md:py-5! md:pt-0!">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col xl:grid xl:grid-cols-2 gap-0 xl:gap-16 items-center bg-white rounded-4xl xl:rounded-none border border-slate-100 xl:border-none shadow-sm xl:shadow-none overflow-hidden xl:overflow-visible">
+        <div className="flex flex-col lg:grid lg:grid-cols-2 gap-0 lg:gap-16 lg:items-center bg-white rounded-4xl lg:rounded-none border border-slate-100 lg:border-none shadow-[0_2px_15px_rgb(0,0,0,0.03)] lg:shadow-none overflow-hidden lg:overflow-visible">
           
           {/* Right Column (Image - Top on Mobile) */}
-          <div className="relative w-full aspect-4/3 sm:aspect-video xl:aspect-4/5 bg-slate-100 xl:rounded-4xl overflow-hidden xl:shadow-sm border-b border-slate-100 xl:border-slate-100 order-1 xl:order-2">
+          <div className="relative w-full min-h-64 lg:min-h-0 lg:aspect-4/5 bg-slate-100 lg:rounded-4xl overflow-hidden lg:shadow-sm border-b border-slate-100 lg:border-slate-100 order-1 lg:order-2">
             <Image src="https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/173610/Originals/cong-nghe-so-la-gi-1.jpg" alt="Ứng dụng khách hàng" fill className="object-cover" unoptimized />
           </div>
 
           {/* Left Column (Text - Bottom on Mobile) */}
-          <div className="flex flex-col p-6 sm:p-8 xl:p-0 order-2 xl:order-1">
+          <div className="flex flex-col p-6 sm:p-8 lg:p-0 order-2 lg:order-1">
             {headerContent.map((item, index) => (
               <div key={index}>
-                <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-500 xl:text-blue-800 mb-2 xl:mb-3 block">
+                <span className="text-[11px] font-semibold uppercase tracking-widest text-slate-500 lg:text-blue-800 mb-2 lg:mb-3 block">
                   {item.tag}
                 </span>
-                <h2 className="text-[1.35rem] font-bold xl:font-semibold leading-snug xl:leading-tight tracking-tight text-zinc-900 xl:text-[#0a1a2f] sm:text-4xl xl:text-[2.5rem] mb-3">
+                <h2 className="text-[1.35rem] font-bold lg:font-semibold leading-snug lg:leading-tight tracking-tight text-zinc-900 lg:text-[#0a1a2f] sm:text-4xl lg:text-[2.5rem] mb-3">
                   {item.title}
                 </h2>
-                <p className="text-[15px] xl:text-[17px] font-medium text-blue-600 mb-4">
+                <p className="text-[15px] lg:text-[17px] font-medium text-blue-600 mb-4">
                   {item.subtitle}
                 </p>
-                <p className="text-[14px] xl:text-[15px] leading-relaxed text-zinc-500 xl:text-zinc-600 mb-6 xl:mb-8 max-w-xl">
+                <p className="text-[14px] lg:text-[15px] leading-relaxed text-zinc-500 lg:text-zinc-600 mb-6 lg:mb-8 max-w-xl">
                   {item.description}
                 </p>
               </div>
             ))}
             
             {/* Features Grid (Hidden on Mobile) */}
-            <div className="hidden xl:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+            <div className="hidden lg:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
               {features.map((item, idx) => (
                 <div key={idx} className="bg-white rounded-2xl p-5 border border-slate-100 shadow-[0_2px_15px_rgb(0,0,0,0.03)] flex flex-col items-center text-center">
                   <div className="bg-blue-50 p-2.5 rounded-full mb-3 flex items-center justify-center">
@@ -118,9 +118,8 @@ export default function MobileCustomerApps() {
               ))}
             </div>
             
-            <Link href="/lien-he" className="inline-flex items-center gap-2 text-blue-600 font-semibold text-[14px] xl:text-[14.5px] hover:text-blue-800 transition-colors w-fit">
-              <span className="xl:hidden">Xem chi tiết &rarr;</span>
-              <span className="hidden xl:inline">Nhận tư vấn ngay &rarr;</span>
+            <Link href="/lien-he" className="inline-flex items-center gap-2 text-blue-600 font-semibold text-[14px] lg:text-[14.5px] hover:text-blue-800 transition-colors w-fit">
+              Trao đổi chi tiết &rarr;
             </Link>
           </div>
           

@@ -198,7 +198,7 @@ export default function AIUseCases() {
                     )}
                   </>
                 ) : (
-                  <div className={`relative w-full ${item.id === '01' ? 'aspect-16/10 lg:aspect-4/3' : 'aspect-16/10'} rounded-2xl overflow-hidden ${item.id === '01' ? 'shadow-lg border border-slate-200/50' : 'bg-slate-100'} order-1 ${layout === 'right-text' ? 'lg:order-1' : 'lg:order-2'}`}>
+                  <div className={`relative w-full min-h-64 lg:min-h-0 ${item.id === '01' ? 'lg:aspect-4/3' : 'lg:aspect-16/10'} rounded-2xl overflow-hidden ${item.id === '01' ? 'shadow-lg border border-slate-200/50' : 'bg-slate-100'} order-1 ${layout === 'right-text' ? 'lg:order-1' : 'lg:order-2'}`}>
                     {item.image && (
                       <Image src={item.image} alt={item.title} fill className="object-cover" unoptimized />
                     )}
@@ -228,7 +228,7 @@ export default function AIUseCases() {
               <div key={item.id} className={`${bg} rounded-3xl lg:rounded-[2.5rem] p-6 lg:p-12 ${border} flex flex-col`}>
                 
                 {item.image && (
-                  <div className={`relative w-full aspect-16/10 lg:aspect-4/3 rounded-2xl overflow-hidden mb-6 lg:mb-0 lg:mt-auto order-1 ${item.id === '06' ? 'lg:hidden' : 'lg:order-3'}`}>
+                  <div className={`relative w-full min-h-64 lg:min-h-0 lg:aspect-4/3 rounded-2xl overflow-hidden mb-6 lg:mb-0 lg:mt-auto order-1 ${item.id === '06' ? 'lg:hidden' : 'lg:order-3'}`}>
                     <Image src={item.image} alt={item.title} fill className="object-cover" unoptimized />
                   </div>
                 )}

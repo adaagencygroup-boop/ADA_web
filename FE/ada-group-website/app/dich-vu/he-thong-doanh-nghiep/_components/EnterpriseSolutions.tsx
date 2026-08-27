@@ -214,7 +214,7 @@ export default function EnterpriseSolutions() {
                     Trao đổi chi tiết &rarr;
                   </Link>
                 </div>
-                <div className="w-full xl:w-[45%] bg-slate-100 min-h-55 md:min-h-64 xl:min-h-full relative flex items-center justify-center order-1 xl:order-2 border-b xl:border-b-0 xl:border-l border-slate-100">
+                <div className="w-full xl:w-[45%] bg-slate-100 min-h-64 xl:min-h-full relative flex items-center justify-center order-1 xl:order-2 border-b xl:border-b-0 xl:border-l border-slate-100">
                   <Image src={item.imagePlaceholder} alt={item.title} fill className="object-cover" unoptimized />
                 </div>
               </div>

@@ -76,7 +76,7 @@ export default function Header() {
     <header className="sticky top-0 z-50 border-b border-zinc-200 bg-[#f9fafc]">
       <div className="mx-auto flex h-16 max-w-360 items-center justify-between px-4 sm:px-6 lg:h-20 lg:px-8">
         <Link href="/" className="flex items-center gap-2">
-          <Image src="/images/logo/logonobg.png" alt="ADA Group Logo" width={40} height={40} className="h-8 w-auto object-contain" />
+          <Image src="/images/logo/logo.png" alt="ADA Group Logo" width={40} height={40} className="h-8 w-auto object-contain" />
           <span className="text-lg font-bold tracking-tight text-zinc-900 lg:text-xl">
             ADA Group
           </span>

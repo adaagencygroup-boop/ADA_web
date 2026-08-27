@@ -62,31 +62,31 @@ export default function MobileEcommerceApps() {
   return (
     <section className="bg-white section-y max-md:py-5! md:pt-0!">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col xl:grid xl:grid-cols-2 gap-0 xl:gap-16 items-start bg-white xl:bg-transparent rounded-4xl xl:rounded-none border border-slate-100 xl:border-none shadow-sm xl:shadow-none overflow-hidden xl:overflow-visible">
+        <div className="flex flex-col lg:grid lg:grid-cols-2 gap-0 lg:gap-16 lg:items-start bg-white lg:bg-transparent rounded-4xl lg:rounded-none border border-slate-100 lg:border-none shadow-[0_2px_15px_rgb(0,0,0,0.03)] lg:shadow-none overflow-hidden lg:overflow-visible">
           
           {/* Left Column / Mobile Card */}
-          <div className="flex flex-col xl:col-span-1">
+          <div className="flex flex-col lg:col-span-1">
             
             {/* Image (Top on mobile, Bottom on desktop) */}
-            <div className="relative w-full aspect-4/3 sm:aspect-video xl:aspect-4/3 bg-slate-100 xl:bg-white xl:rounded-4xl overflow-hidden shadow-none xl:shadow-sm border-b xl:border border-slate-100 order-1 xl:order-2 xl:mt-8">
+            <div className="relative w-full min-h-64 lg:min-h-0 lg:aspect-4/3 bg-slate-100 lg:bg-white lg:rounded-4xl overflow-hidden shadow-none lg:shadow-sm border-b lg:border border-slate-100 order-1 lg:order-2 lg:mt-8">
               <Image src="https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/173610/Originals/cong-nghe-so-la-gi-1.jpg" alt="Ứng dụng thương mại" fill className="object-cover" unoptimized />
             </div>
 
             {/* Text (Bottom on mobile, Top on desktop) */}
             {headerContent.map((item, index) => (
-              <div key={index} className="flex flex-col p-6 sm:p-8 xl:p-0 order-2 xl:order-1">
-                <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-500 xl:text-blue-800 mb-2 xl:mb-3 block">
+              <div key={index} className="flex flex-col p-6 sm:p-8 lg:p-0 order-2 lg:order-1">
+                <span className="text-[11px] font-semibold uppercase tracking-widest text-slate-500 lg:text-blue-800 mb-2 lg:mb-3 block">
                   {item.tag}
                 </span>
-                <h2 className="text-[1.35rem] xl:text-[2rem] font-bold xl:font-semibold leading-snug xl:leading-tight tracking-tight text-zinc-900 xl:text-[#0a1a2f] sm:text-4xl lg:text-[2.5rem] mb-3 xl:mb-5">
+                <h2 className="text-[1.35rem] font-bold lg:font-semibold leading-snug lg:leading-tight tracking-tight text-zinc-900 lg:text-[#0a1a2f] sm:text-4xl lg:text-[2.5rem] mb-3 lg:mb-5">
                   {item.title}
                 </h2>
-                <p className="text-[14px] xl:text-[15px] leading-relaxed text-zinc-500 xl:text-zinc-600 mb-0 max-w-xl">
+                <p className="text-[14px] lg:text-[15px] leading-relaxed text-zinc-500 lg:text-zinc-600 mb-0 max-w-xl">
                   {item.description}
                 </p>
                 
-                <Link href="/lien-he" className="xl:hidden mt-6 inline-flex items-center gap-2 text-blue-600 font-semibold text-[14px] hover:text-blue-800 transition-colors w-fit">
-                  Xem chi tiết &rarr;
+                <Link href="/lien-he" className="mt-6 inline-flex items-center gap-2 text-blue-600 font-semibold text-[14px] lg:text-[14.5px] hover:text-blue-800 transition-colors w-fit">
+                  Trao đổi chi tiết &rarr;
                 </Link>
               </div>
             ))}
@@ -94,7 +94,7 @@ export default function MobileEcommerceApps() {
           </div>
 
           {/* Right Column (Categories - Hidden on Mobile) */}
-          <div className="hidden xl:grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6 lg:pt-8 xl:col-span-1">
+          <div className="hidden lg:grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6 lg:pt-8 lg:col-span-1">
             {categories.map((cat, idx) => (
               <div key={idx} className="bg-white rounded-3xl p-6 lg:p-8 border border-slate-100 shadow-[0_2px_15px_rgb(0,0,0,0.03)] flex flex-col">
                 <div className="bg-blue-50 w-12 h-12 rounded-2xl mb-6 flex items-center justify-center">
