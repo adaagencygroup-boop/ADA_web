@@ -37,7 +37,7 @@ const CONTENT = {
 export default function AIEcosystem() {
   return (
     <section className="section-y bg-white">
-      <div className="mx-auto flex max-w-360 flex-col items-start gap-8 px-4 sm:px-6 lg:flex-row lg:items-center lg:justify-center lg:gap-20 lg:px-8">
+      <div className="mx-auto flex max-w-360 flex-col items-start gap-8 px-4 sm:px-6 lg:flex-row lg:items-center lg:justify-center lg:gap-20">
         <div className="flex flex-col items-start gap-4 lg:w-[610px] lg:shrink-0 lg:gap-6">
           <span className="inline-flex items-center rounded-full bg-[#D5E3FD] px-4 py-1.5 text-[11px] font-semibold tracking-widest text-[#57657B] uppercase lg:text-base lg:font-normal lg:tracking-[1.6px]">
             {CONTENT.badge}
