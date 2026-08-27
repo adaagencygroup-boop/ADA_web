@@ -6,10 +6,8 @@ export default function MobileHeroSection() {
     {
       badge: "Mobile Application",
       title: "Đưa sản phẩm và dịch vụ đến gần người dùng hơn",
-      descDesktop:
+      desc:
         "ADA Group thiết kế và phát triển ứng dụng di động phục vụ khách hàng, nhân viên và hoạt động kinh doanh của doanh nghiệp.\nTừ ứng dụng dịch vụ, thương mại đến các ứng dụng quản lý nội bộ, chúng tôi xây dựng sản phẩm hướng tới trải nghiệm trực quan, hoạt động ổn định và khả năng phát triển lâu dài.",
-      descMobile:
-        "ADA Group thiết kế và phát triển ứng dụng di động phục vụ khách hàng, nhân viên và hoạt động kinh doanh của doanh nghiệp. Từ ứng dụng dịch vụ, thương mại đến các ứng dụng quản lý nội bộ, chúng tôi luôn hướng tới trải nghiệm trực quan và ổn định.",
       imagePlaceholder: "https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/173610/Originals/cong-nghe-so-la-gi-1.jpg",
     },
   ];
@@ -37,14 +35,9 @@ export default function MobileHeroSection() {
                 {data.title}
               </h1>
 
-              {/* Description Desktop */}
-              <p className="hidden md:block text-base leading-relaxed text-zinc-600 max-w-lg mt-2 lg:mt-4 whitespace-pre-line">
-                {data.descDesktop}
-              </p>
-
-              {/* Description Mobile */}
-              <p className="md:hidden text-[15px] leading-relaxed text-zinc-600 mt-2 whitespace-pre-line">
-                {data.descMobile}
+              {/* Description */}
+              <p className="text-[15px] md:text-base leading-relaxed text-zinc-600 max-w-lg mt-2 lg:mt-4 whitespace-pre-line">
+                {data.desc}
               </p>
 
               {/* CTA */}

@@ -64,7 +64,7 @@ export default function MobileCrossPlatform() {
         <div className="flex flex-col lg:items-center bg-white lg:bg-[#0a1526] rounded-4xl lg:rounded-[3rem] lg:px-6 lg:py-14 text-left lg:text-center border border-slate-100 lg:border-none shadow-[0_2px_15px_rgb(0,0,0,0.03)] lg:shadow-none overflow-hidden lg:overflow-visible">
           
           {/* Mobile Image (Hidden on Desktop) */}
-          <div className="lg:hidden relative w-full aspect-4/3 sm:aspect-video bg-slate-100 border-b border-slate-100">
+          <div className="lg:hidden relative w-full min-h-64 bg-slate-100 border-b border-slate-100">
             <Image src="https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/173610/Originals/cong-nghe-so-la-gi-1.jpg" alt="Ứng dụng đa nền tảng" fill className="object-cover" unoptimized />
           </div>
 
@@ -89,9 +89,9 @@ export default function MobileCrossPlatform() {
                 {item.description}
               </p>
 
-              {/* Mobile "Xem chi tiết" Link */}
-              <Link href="/lien-he" className="lg:hidden mt-6 inline-flex items-center gap-2 text-blue-600 font-semibold text-[14px] hover:text-blue-800 transition-colors w-fit">
-                Xem chi tiết &rarr;
+              {/* "Xem chi tiết" Link */}
+              <Link href="/lien-he" className="mt-6 inline-flex items-center gap-2 text-blue-600 font-semibold text-[14px] lg:text-[14.5px] hover:text-blue-800 transition-colors w-fit">
+                Trao đổi chi tiết &rarr;
               </Link>
             </div>
           ))}

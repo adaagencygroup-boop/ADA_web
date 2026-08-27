@@ -60,10 +60,10 @@ export default function MobileBackend() {
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         
         {/* Mobile Card / Desktop Top Section */}
-        <div className="flex flex-col lg:grid lg:grid-cols-2 gap-0 lg:gap-16 items-center lg:mb-12 bg-white lg:bg-transparent rounded-4xl lg:rounded-none border border-slate-100 lg:border-none shadow-sm lg:shadow-none overflow-hidden lg:overflow-visible">
+        <div className="flex flex-col lg:grid lg:grid-cols-2 gap-0 lg:gap-16 lg:items-center lg:mb-12 bg-white lg:bg-transparent rounded-4xl lg:rounded-none border border-slate-100 lg:border-none shadow-[0_2px_15px_rgb(0,0,0,0.03)] lg:shadow-none overflow-hidden lg:overflow-visible">
           
           {/* Right Column: Image (Top on Mobile) */}
-          <div className="relative w-full aspect-4/3 sm:aspect-video lg:aspect-16/10 bg-[#0a1526] lg:rounded-[2.5rem] overflow-hidden lg:shadow-xl border-b border-slate-100 lg:border-slate-200 order-1 lg:order-2">
+          <div className="relative w-full min-h-64 lg:min-h-0 lg:aspect-16/10 bg-[#0a1526] lg:rounded-[2.5rem] overflow-hidden lg:shadow-xl border-b border-slate-100 lg:border-slate-200 order-1 lg:order-2">
             <Image src="https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/173610/Originals/cong-nghe-so-la-gi-1.jpg" alt="Backend Infrastructure" fill className="object-cover opacity-80" unoptimized />
           </div>
 
@@ -86,8 +86,8 @@ export default function MobileBackend() {
                 {item.description1}
               </p>
 
-              <Link href="/lien-he" className="lg:hidden mt-6 inline-flex items-center gap-2 text-blue-600 font-semibold text-[14px] hover:text-blue-800 transition-colors w-fit">
-                Xem chi tiết &rarr;
+              <Link href="/lien-he" className="mt-6 inline-flex items-center gap-2 text-blue-600 font-semibold text-[14px] lg:text-[14.5px] hover:text-blue-800 transition-colors w-fit">
+                Trao đổi chi tiết &rarr;
               </Link>
             </div>
           ))}

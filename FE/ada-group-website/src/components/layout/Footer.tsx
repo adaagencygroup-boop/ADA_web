@@ -151,7 +151,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1.4fr)_repeat(3,minmax(0,1fr))]">
           <div>
             <Link href="/" className="flex items-center gap-2">
-              <Image src="/images/logo/logonobg.png" alt="ADA Group Logo" width={40} height={40} className="h-8 sm:h-10 w-auto object-contain" />
+              <Image src="/images/logo/logo.png" alt="ADA Group Logo" width={40} height={40} className="h-8 sm:h-10 w-auto object-contain" />
               <span className="text-lg font-bold text-zinc-900">ADA Group</span>
             </Link>
 
