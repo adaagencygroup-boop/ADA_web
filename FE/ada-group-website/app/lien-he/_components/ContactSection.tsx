@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { submitContact } from "@/src/lib/api/contacts";
 
 const contactInfo = [
   {
@@ -70,11 +71,32 @@ export default function ContactSection() {
     phone: "",
     message: ""
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Send formData to backend API securely
-    console.log("Submitting form data:", formData);
+    setIsSubmitting(true);
+    
+    try {
+      const response = await submitContact({
+        customerFullname: formData.name,
+        customerEmail: formData.email || null,
+        customerPhone: formData.phone || null,
+        message: formData.message,
+      });
+
+      if (response.success) {
+        alert("Gửi liên hệ thành công! Chúng tôi sẽ sớm phản hồi lại bạn.");
+        setFormData({ name: "", email: "", phone: "", message: "" });
+      } else {
+        alert(response.error || "Có lỗi xảy ra khi gửi liên hệ.");
+      }
+    } catch (error) {
+      console.error("Submit contact error:", error);
+      alert("Đã xảy ra lỗi hệ thống.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -173,9 +195,10 @@ export default function ContactSection() {
               <div className="mt-2 lg:mt-4">
                 <button 
                   type="submit" 
-                  className="bg-[#002A64] hover:bg-[#002A64]/90 text-white font-semibold text-[13px] px-8 py-3.5 rounded-lg flex items-center gap-2 transition-colors uppercase tracking-wide w-fit"
+                  disabled={isSubmitting}
+                  className="bg-[#002A64] hover:bg-[#002A64]/90 text-white font-semibold text-[13px] px-8 py-3.5 rounded-lg flex items-center gap-2 transition-colors uppercase tracking-wide w-fit disabled:opacity-70 disabled:cursor-not-allowed"
                 >
-                  GỬI LIÊN HỆ &rarr;
+                  {isSubmitting ? "ĐANG GỬI..." : <>GỬI LIÊN HỆ &rarr;</>}
                 </button>
               </div>
 
