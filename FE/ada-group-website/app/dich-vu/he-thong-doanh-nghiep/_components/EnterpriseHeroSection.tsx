@@ -13,20 +13,20 @@ export default function EnterpriseHeroSection() {
   ];
 
   return (
-    <section className="bg-white section-y max-md:py-5!">
+    <section className="bg-white section-y">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         {heroData.map((data, index) => (
           <div
             key={index}
-            className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-(--inner-space) items-center"
+            className="grid grid-cols-1 lg:grid-cols-12 gap-(--inner-space) items-center"
           >
             {/* Left: Content */}
             <div className="flex flex-col gap-(--heading-space) lg:col-span-5">
               {/* Badge */}
-              <div className="hidden md:inline-flex w-fit items-center rounded-full bg-slate-100 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-blue-900 mb-2">
+              <div className="hidden md:inline-flex w-fit items-center rounded-full bg-slate-100 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-blue-900">
                 {data.badge}
               </div>
-              <div className="inline-flex md:hidden w-fit items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-zinc-900 mb-2">
+              <div className="inline-flex md:hidden w-fit items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-zinc-900">
                 {data.badge}
               </div>
 
@@ -36,12 +36,12 @@ export default function EnterpriseHeroSection() {
               </h1>
 
               {/* Description */}
-              <p className="text-[15px] md:text-base leading-relaxed text-zinc-600 mt-2 lg:mt-4 whitespace-pre-line text-justify px-3 lg:px-0 lg:pl-3">
+              <p className="text-[15px] md:text-base leading-relaxed text-zinc-600 whitespace-pre-line text-justify">
                 {data.desc}
               </p>
 
               {/* CTA */}
-              <div className="pt-2 lg:pt-4">
+              <div className="mt-(--inner-space)">
                 <Link
                   href="/lien-he"
                   className="inline-flex w-full md:w-auto items-center justify-center gap-2 font-semibold text-white transition-colors 
