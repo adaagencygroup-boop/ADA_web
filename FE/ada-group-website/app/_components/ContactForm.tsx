@@ -69,7 +69,7 @@ export default function ContactForm() {
         <div className="mt-(--inner-space) grid grid-cols-1 gap-12 lg:grid-cols-[1.4fr_1fr]">
           <form
             onSubmit={(event) => event.preventDefault()}
-            className="space-y-4 rounded-2xl p-6 sm:p-8"
+            className="space-y-4 rounded-2xl"
           >
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>

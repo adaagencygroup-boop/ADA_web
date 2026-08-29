@@ -119,7 +119,7 @@ export default function DevelopmentStrategy() {
               {CONTENT.paragraphs.map((paragraph) => (
                 <p
                   key={paragraph}
-                  className="mx-2 text-base text-justify sm:text-start leading-5.75 text-gray-600 [&+&]:mt-4"
+                  className="text-base text-justify sm:text-start leading-5.75 text-gray-600 [&+&]:mt-4"
                 >
                   {paragraph}
                 </p>

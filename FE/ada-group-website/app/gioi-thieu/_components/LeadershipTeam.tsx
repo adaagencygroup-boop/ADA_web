@@ -71,7 +71,7 @@ export default function LeadershipTeam() {
             <h2 className="text-2xl font-semibold text-zinc-900">
               {CONTENT.title}
             </h2>
-            <p className="mt-1 mx-2 text-base text-gray-600">
+            <p className="mt-1 text-base text-gray-600">
               {CONTENT.description}
             </p>
           </div>

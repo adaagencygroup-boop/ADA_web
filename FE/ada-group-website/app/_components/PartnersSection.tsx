@@ -67,7 +67,7 @@ export default function PartnersSection() {
           {PARTNERS.map((partner) => (
             <div
               key={partner.name}
-              className="mx-2 flex h-26 w-44 shrink-0 flex-col items-center rounded-2xl border border-zinc-200 bg-white p-2"
+              className="flex h-26 w-44 shrink-0 flex-col items-center rounded-2xl border border-zinc-200 bg-white p-2"
             >
               <div className="flex h-11 items-center">
                 <Image

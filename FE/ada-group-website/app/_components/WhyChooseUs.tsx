@@ -43,7 +43,7 @@ export default function WhyChooseUs() {
         <h2 className="text-2xl font-semibold tracking-tight text-zinc-900 sm:text-4xl">
           {CONTENT.title}
         </h2>
-        <p className="mt-(--heading-space) mx-2 text-base leading-relaxed text-zinc-600">
+        <p className="mt-(--heading-space) text-base leading-relaxed text-zinc-600">
           {CONTENT.description}
         </p>
 
