@@ -169,9 +169,22 @@ export default function Footer() {
             </div>
           </div>
 
-          <FooterLinkList title="Dịch vụ" links={SERVICE_LINKS} />
-          <FooterLinkList title="Về ADA Group" links={ABOUT_LINKS} />
-          <FooterLinkList title="Hỗ trợ" links={SUPPORT_LINKS} />
+          <div className="grid grid-cols-2 gap-x-8 gap-y-8 sm:col-span-3 sm:grid-cols-3">
+            <FooterLinkList
+              title="Dịch vụ"
+              links={SERVICE_LINKS}
+            />
+
+            <FooterLinkList
+              title="Về ADA Group"
+              links={ABOUT_LINKS}
+            />
+
+            <FooterLinkList
+              title="Hỗ trợ"
+              links={SUPPORT_LINKS}
+            />
+          </div>
         </div>
 
         <div className="mt-6 lg:mt-8 flex flex-col items-center justify-between gap-4 border-t border-zinc-200 pt-4 sm:flex-row">
