@@ -65,7 +65,8 @@ export default function TechStack() {
                     alt={tool.name}
                     width={200}
                     height={100}
-                    className="w-26 object-contain"
+                    draggable={false}
+                    className="w-26 select-none object-contain"
                   />
                   <span className="">{tool.name}</span>
                 </div>
