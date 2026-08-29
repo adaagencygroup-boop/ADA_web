@@ -142,9 +142,9 @@ export default function JobApplicationPage() {
 
       {/* Hero Banner */}
       <section className="relative w-full bg-[#002A64] section-y overflow-hidden">
-        {job.coverImageUrl && (
+        {job.coverImageURL && (
           <Image 
-            src={job.coverImageUrl} 
+            src={job.coverImageURL} 
             alt={job.jobTitle} 
             fill 
             className="object-cover" 
@@ -166,7 +166,7 @@ export default function JobApplicationPage() {
             Vui lòng điền thông tin bên dưới để gửi hồ sơ ứng tuyển của bạn.
           </p>
 
-          <div className="pt-6 border-t border-white/20 flex flex-wrap items-center gap-6 text-[13px] text-blue-100/80">
+          <div className="pt-(--inner-space) border-t border-white/20 flex flex-wrap items-center gap-(--inner-space) text-[13px] text-blue-100/80">
             <div className="flex items-center gap-2">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-4 h-4"><rect width="18" height="18" x="3" y="4" rx="2" ry="2" /><line x1="16" x2="16" y1="2" y2="6" /><line x1="8" x2="8" y1="2" y2="6" /><line x1="3" x2="21" y1="10" y2="10" /></svg>
               Đăng ngày: {postDate}
@@ -302,7 +302,7 @@ export default function JobApplicationPage() {
           </div>
 
           {/* Right Column (Sidebar) */}
-          <div className="lg:col-span-4 flex flex-col gap-6 lg:sticky lg:top-24">
+          <div className="lg:col-span-4 flex flex-col gap-(--inner-space) lg:sticky lg:top-24">
             
             {/* Box 1: Thông tin tuyển dụng */}
             <div className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm">
@@ -317,7 +317,7 @@ export default function JobApplicationPage() {
                 <tbody>
                   <tr className="border-b border-slate-50">
                     <td className="py-2.5 flex items-center gap-2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-4 h-4 text-zinc-400"><path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" /></svg> Phòng ban</td>
-                    <td className="py-2.5 text-right font-medium text-zinc-800">{job.department || "Khác"}</td>
+                    <td className="py-2.5 text-right font-medium text-zinc-800">{job.department?.name || "Khác"}</td>
                   </tr>
                   <tr className="border-b border-slate-50">
                     <td className="py-2.5 flex items-center gap-2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-4 h-4 text-zinc-400"><path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" /></svg> Địa điểm</td>

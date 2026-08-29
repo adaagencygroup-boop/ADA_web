@@ -17,7 +17,7 @@ export default function JobBoard() {
     type: "",
   });
 
-  const uniqueDepartments = Array.from(new Set(MOCK_RECRUITMENTS.map(job => job.department))).filter(Boolean) as string[];
+  const uniqueDepartments = Array.from(new Set(MOCK_RECRUITMENTS.map(job => job.department?.name))).filter(Boolean) as string[];
   const uniqueLocations = Array.from(new Set(MOCK_RECRUITMENTS.map(job => job.location))).filter(Boolean) as string[];
   const uniqueTypes = Array.from(new Set(MOCK_RECRUITMENTS.map(job => formatEmploymentType(job.employmentType)))).filter(Boolean) as string[];
 
@@ -42,7 +42,7 @@ export default function JobBoard() {
       );
     }
     if (filters.department) {
-      filtered = filtered.filter((job) => job.department === filters.department);
+      filtered = filtered.filter((job) => job.department?.name === filters.department);
     }
     if (filters.location) {
       filtered = filtered.filter((job) => job.location === filters.location);
@@ -140,9 +140,9 @@ export default function JobBoard() {
                 
                 {/* Left side: Icon + Title + Meta */}
                 <div className="flex items-start lg:items-center gap-4 flex-1">
-                  <div className="w-14 h-14 shrink-0 rounded-2xl bg-slate-100 flex items-center justify-center overflow-hidden border border-slate-100 relative">
-                    {job.coverImageUrl ? (
-                      <Image src={job.coverImageUrl} alt={job.jobTitle} fill sizes="(max-width: 768px) 100vw, 56px" className="object-cover" unoptimized />
+                  <div className="w-12 h-12 lg:w-16 lg:h-16 shrink-0 relative rounded-xl border border-slate-100 overflow-hidden bg-white shadow-xs">
+                    {job.coverImageURL ? (
+                      <Image src={job.coverImageURL} alt={job.jobTitle} fill sizes="(max-width: 768px) 100vw, 56px" className="object-cover" unoptimized />
                     ) : (
                       <div className="w-full h-full bg-[#002A64] text-white flex items-center justify-center font-semibold text-[18px]">
                         {getJobIconLabel(job.jobTitle)}
@@ -155,7 +155,7 @@ export default function JobBoard() {
                     </h3>
                     <div className="flex flex-col gap-1 mt-1.5 text-[13px] text-zinc-500 font-medium">
                       <div className="flex items-center flex-wrap gap-2">
-                        <span>{job.department || "Khác"}</span>
+                        <span>{job.department?.name || "Khác"}</span>
                         <span className="w-1 h-1 rounded-full bg-slate-300"></span>
                         <span>{job.location}</span>
                       </div>
@@ -163,7 +163,7 @@ export default function JobBoard() {
                         <span>{formatEmploymentType(job.employmentType)}</span>
                         <span className="w-1 h-1 rounded-full bg-slate-300"></span>
                         <span className="text-blue-600">
-                          {job.isSalaryNegotiable 
+                          {job.isNegotiable 
                             ? "Thỏa thuận" 
                             : (job.minSalary && job.maxSalary)
                               ? `${(job.minSalary / 1000000).toLocaleString('vi-VN')} - ${(job.maxSalary / 1000000).toLocaleString('vi-VN')} triệu`
@@ -215,7 +215,7 @@ export default function JobBoard() {
 
         {/* Load more button */}
         {jobs.length > displayCount && (
-          <div className="mt-10 flex justify-center">
+          <div className="flex justify-center mt-[calc(var(--section-padding)-var(--inner-space))]">
             <button 
               onClick={() => setDisplayCount(prev => prev + 10)}
               className="px-6 py-2.5 rounded-lg border border-slate-200 bg-white text-zinc-600 font-medium text-[13.5px] hover:bg-slate-50 transition-colors flex items-center gap-2"
