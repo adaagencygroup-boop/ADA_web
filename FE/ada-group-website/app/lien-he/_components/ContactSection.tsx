@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { submitContact } from "@/src/lib/api/contacts";
+import Alert from "@/src/components/common/Alert";
 
 const contactInfo = [
   {
@@ -72,10 +73,21 @@ export default function ContactSection() {
     message: ""
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [alertInfo, setAlertInfo] = useState<{type: 'success'|'error', title: string, message: string} | null>(null);
+
+  useEffect(() => {
+    if (alertInfo) {
+      const timer = setTimeout(() => {
+        setAlertInfo(null);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [alertInfo]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setAlertInfo(null);
     
     try {
       const response = await submitContact({
@@ -86,14 +98,26 @@ export default function ContactSection() {
       });
 
       if (response.success) {
-        alert("Gửi liên hệ thành công! Chúng tôi sẽ sớm phản hồi lại bạn.");
+        setAlertInfo({
+          type: 'success',
+          title: 'Thành công',
+          message: 'Gửi liên hệ thành công. Chúng tôi sẽ phản hồi bạn trong thời gian sớm nhất.'
+        });
         setFormData({ name: "", email: "", phone: "", message: "" });
       } else {
-        alert(response.error || "Có lỗi xảy ra khi gửi liên hệ.");
+        setAlertInfo({
+          type: 'error',
+          title: 'Đã xảy ra lỗi',
+          message: response.error || 'Có lỗi xảy ra khi gửi liên hệ. Vui lòng thử lại.'
+        });
       }
     } catch (error) {
       console.error("Submit contact error:", error);
-      alert("Đã xảy ra lỗi hệ thống.");
+      setAlertInfo({
+        type: 'error',
+        title: 'Đã xảy ra lỗi',
+        message: 'Chúng tôi không thể kết nối tới máy chủ lúc này. Vui lòng kiểm tra lại đường truyền mạng hoặc thử lại sau ít phút.'
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -105,7 +129,17 @@ export default function ContactSection() {
   };
 
   return (
-    <section className="bg-linear-to-b from-[#F0F7FF] to-[#FFFFFF] section-y min-h-screen">
+    <section className="bg-linear-to-b from-[#F0F7FF] to-[#FFFFFF] section-y min-h-screen relative">
+      {alertInfo && (
+        <div className="fixed top-24 right-4 z-50 w-full max-w-[90vw] sm:max-w-md shadow-lg rounded-xl">
+          <Alert 
+            type={alertInfo.type}
+            title={alertInfo.title}
+            description={alertInfo.message}
+            onClose={() => setAlertInfo(null)}
+          />
+        </div>
+      )}
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         
         {/* Header */}

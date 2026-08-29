@@ -49,8 +49,6 @@ const accentStyles = {
 export default function Alert({ type, title, description, onClose }: AlertProps) {
   return (
     <div className={`relative flex items-start gap-3 p-4 rounded-xl border-2 ${styles[type]} bg-white shadow-[0_2px_15px_rgb(0,0,0,0.03)] max-w-xl w-full overflow-hidden`}>
-      {/* Left Accent border replacement - we use border-2 instead but if left accent was meant: */}
-      {/* <div className={`absolute left-0 top-0 bottom-0 w-1 ${accentStyles[type]}`}></div> */}
       <div className="shrink-0 mt-0.5">
         {icons[type]}
       </div>
