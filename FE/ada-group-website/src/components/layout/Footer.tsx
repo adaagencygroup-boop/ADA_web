@@ -161,7 +161,7 @@ export default function Footer() {
                   <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-50 text-blue-700">
                     <row.icon />
                   </span>
-                  <span className="text-sm leading-relaxed text-zinc-600">
+                  <span className="text-sm leading-relaxed text-zinc-600ư mt-1">
                     {row.content}
                   </span>
                 </div>

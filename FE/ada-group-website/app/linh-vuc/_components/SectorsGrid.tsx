@@ -14,7 +14,7 @@ export default function SectorsGrid() {
             <Link
               key={sector.slug}
               href={`/linh-vuc/${sector.slug}`}
-              className="flex flex-col overflow-hidden rounded-2xl border border-[#C4C6D2]/20 bg-white transition-shadow hover:shadow-md"
+              className="flex flex-col overflow-hidden rounded-2xl border border-[#C4C6D2]/20 bg-white transition-shadow shadow-sm hover:shadow-lg"
             >
               <div className="relative aspect-417/224 w-full bg-zinc-200">
                 <Image
