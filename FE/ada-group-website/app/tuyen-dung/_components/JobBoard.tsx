@@ -58,11 +58,11 @@ export default function JobBoard() {
   const displayedJobs = jobs.slice(0, displayCount);
 
   return (
-    <section className="bg-white section-y pt-0! max-md:pb-8!">
-      <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
+    <section className="bg-white section-y pt-0!">
+      <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8 flex flex-col gap-(--inner-space)">
         
         {/* Search & Filter Box */}
-        <div className="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] p-6 lg:p-8 relative z-10 -mt-16 md:-mt-27.5 lg:-mt-17.5 mb-12 border border-slate-100">
+        <div className="bg-white rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] p-6 lg:p-8 relative z-10 -mt-16 md:-mt-27.5 lg:-mt-17.5 border border-slate-100">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-4 lg:gap-6 items-end">
             
             <div className="lg:col-span-4 flex flex-col gap-1.5">
@@ -123,7 +123,7 @@ export default function JobBoard() {
         </div>
 
         {/* Title */}
-        <div className="flex items-center justify-between mb-6 px-1">
+        <div className="flex items-center justify-between px-1">
           <h2 className="text-[18px] lg:text-[20px] font-bold text-zinc-900 uppercase">
             VỊ TRÍ ĐANG TUYỂN
           </h2>
@@ -133,7 +133,7 @@ export default function JobBoard() {
         </div>
 
         {/* Job Cards */}
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-(--inner-space)">
           {displayedJobs.length > 0 ? (
             displayedJobs.map((job) => (
               <div key={job.id} className="bg-white rounded-2xl border border-slate-200 p-5 lg:p-6 flex flex-col lg:flex-row gap-5 lg:gap-6 lg:items-center hover:border-blue-200 hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] transition-all">

@@ -57,15 +57,15 @@ const reasons = [
 
 export default function WhyChooseUs() {
   return (
-    <section className="bg-[#F8FAFC] section-y max-md:py-8!">
-      <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
-        <div className="mb-8 lg:mb-10 text-center lg:text-left">
+    <section className="bg-[#F8FAFC] section-y">
+      <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8 flex flex-col gap-(--inner-space)">
+        <div className="text-center lg:text-left">
           <h2 className="text-2xl lg:text-[1.75rem] font-bold text-[#002A64] uppercase tracking-tight">
             VÌ SAO CHỌN ADA GROUP?
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-(--inner-space)">
           {reasons.map((item) => (
             <div key={item.id} className="bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-[0_2px_15px_rgb(0,0,0,0.03)] flex flex-col hover:shadow-md transition-shadow">
               {/* Image */}
