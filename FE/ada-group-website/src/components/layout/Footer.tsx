@@ -155,13 +155,13 @@ export default function Footer() {
               <span className="text-lg font-bold text-zinc-900">ADA Group</span>
             </Link>
 
-            <div className="mt-6 divide-y divide-zinc-200 rounded-xl border border-zinc-200">
+            <div className="mt-6 divide-y divide-zinc-200 rounded-xl border border-zinc-200 w-full overflow-hidden">
               {CONTACT_ROWS.map((row, index) => (
-                <div key={index} className="flex items-start gap-3 p-3">
+                <div key={index} className="flex items-start gap-3 p-3 w-full">
                   <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-50 text-blue-700">
                     <row.icon />
                   </span>
-                  <span className="text-sm leading-relaxed text-zinc-600ư mt-1">
+                  <span className="text-[13.5px] leading-relaxed text-zinc-600 mt-1 wrap-break-word flex-1">
                     {row.content}
                   </span>
                 </div>
@@ -169,7 +169,7 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-x-8 gap-y-8 sm:col-span-3 sm:grid-cols-3">
+          <div className="grid grid-cols-2 gap-x-8 gap-y-8 sm:grid-cols-3 lg:col-span-3">
             <FooterLinkList
               title="Dịch vụ"
               links={SERVICE_LINKS}
