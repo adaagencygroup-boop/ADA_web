@@ -36,7 +36,7 @@ export default function MobileHeroSection() {
               </h1>
 
               {/* Description */}
-              <p className="text-[15px] md:text-base leading-relaxed text-zinc-600 mt-2 lg:mt-4 whitespace-pre-line text-justify indent-4">
+              <p className="text-[15px] md:text-base leading-relaxed text-zinc-600 mt-2 lg:mt-4 whitespace-pre-line text-justify px-3 lg:px-0 lg:pl-3">
                 {data.desc}
               </p>
 
