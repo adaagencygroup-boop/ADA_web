@@ -24,7 +24,7 @@ export default function RecruitmentCTA() {
 
             {/* Text Group */}
             <div className="flex flex-col gap-3 text-center lg:text-left">
-              <h2 className="font-bold text-[30px] leading-9 text-white">
+              <h2 className="font-semibold text-[30px] leading-9 text-white">
                 Chưa tìm thấy vị trí phù hợp?
               </h2>
               <h3 className="font-semibold text-[24px] leading-8 text-blue-200">

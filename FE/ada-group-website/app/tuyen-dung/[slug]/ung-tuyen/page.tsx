@@ -159,7 +159,7 @@ export default function JobApplicationPage() {
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-3.5 h-3.5"><path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" /></svg>
             Tuyển dụng
           </div>
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-semibold tracking-tight">
             Ứng tuyển vị trí {job.jobTitle}
           </h1>
           <p className="text-blue-100/90 text-[14.5px] lg:text-[16px] mb-(--inner-space)">
@@ -190,7 +190,7 @@ export default function JobApplicationPage() {
                 
                 {/* 1. THÔNG TIN ỨNG VIÊN */}
                 <div>
-                  <h2 className="text-[16px] font-bold text-[#002A64] uppercase flex items-center gap-3 mb-5 border-b border-slate-100 pb-3">
+                  <h2 className="text-[16px] font-semibold text-[#002A64] uppercase flex items-center gap-3 mb-5 border-b border-slate-100 pb-3">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
                     Thông tin ứng viên
                   </h2>
@@ -221,7 +221,7 @@ export default function JobApplicationPage() {
 
                 {/* 2. HỒ SƠ */}
                 <div>
-                  <h2 className="text-[16px] font-bold text-[#002A64] uppercase flex items-center gap-3 mb-5 border-b border-slate-100 pb-3">
+                  <h2 className="text-[16px] font-semibold text-[#002A64] uppercase flex items-center gap-3 mb-5 border-b border-slate-100 pb-3">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="M18.375 12.739l-7.693 7.693a4.5 4.5 0 01-6.364-6.364l10.94-10.94A3 3 0 1119.5 7.372L8.552 18.32m.009-.01l-.01.01m5.699-9.941l-7.81 7.81a1.5 1.5 0 002.112 2.13" /></svg>
                     Hồ sơ
                   </h2>
@@ -249,7 +249,7 @@ export default function JobApplicationPage() {
                         <p className="text-[14px] font-medium text-zinc-700 mb-1">Kéo thả file vào đây hoặc</p>
                       )}
                       {!file && (
-                        <button type="button" className="text-[13px] font-bold text-white bg-[#002A64] hover:bg-[#002A64]/90 px-4 py-2 rounded-lg mt-2 transition-colors">
+                        <button type="button" className="text-[13px] font-semibold text-white bg-[#002A64] hover:bg-[#002A64]/90 px-4 py-2 rounded-lg mt-2 transition-colors">
                           Chọn file
                         </button>
                       )}
@@ -285,7 +285,7 @@ export default function JobApplicationPage() {
                       Tôi đồng ý với việc sử dụng thông tin cá nhân cho <a href="#" className="text-blue-600 font-medium hover:underline">mục đích tuyển dụng</a>.
                     </label>
                   </div>
-                  <button type="submit" disabled={isSubmitting} className="w-full inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-[#002A64] text-white rounded-lg font-bold text-[14px] hover:bg-[#002A64]/90 transition-colors shadow-md group disabled:opacity-70 disabled:cursor-not-allowed">
+                  <button type="submit" disabled={isSubmitting} className="w-full inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-[#002A64] text-white rounded-lg font-semibold text-[14px] hover:bg-[#002A64]/90 transition-colors shadow-md group disabled:opacity-70 disabled:cursor-not-allowed">
                     {isSubmitting ? (
                       "Đang gửi..."
                     ) : (
@@ -306,12 +306,12 @@ export default function JobApplicationPage() {
             
             {/* Box 1: Thông tin tuyển dụng */}
             <div className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm">
-              <h3 className="text-[16px] font-bold text-zinc-900 uppercase flex items-center gap-2 mb-4 pb-4 border-b border-slate-100">
+              <h3 className="text-[16px] font-semibold text-zinc-900 uppercase flex items-center gap-2 mb-4 pb-4 border-b border-slate-100">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-5 h-5 text-blue-600"><path strokeLinecap="round" strokeLinejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0M12 12.75h.008v.008H12v-.008z" /></svg>
                 Thông tin tuyển dụng
               </h3>
               
-              <h4 className="font-bold text-[#002A64] text-[17px] mb-4">{job.jobTitle}</h4>
+              <h4 className="font-semibold text-[#002A64] text-[17px] mb-4">{job.jobTitle}</h4>
               
               <table className="w-full text-[13.5px] text-zinc-600 mb-6 border-collapse">
                 <tbody>
@@ -346,7 +346,7 @@ export default function JobApplicationPage() {
 
             {/* Box 2: Cần hỗ trợ? */}
             <div className="bg-slate-50 rounded-2xl border border-slate-100 p-6 shadow-sm">
-              <h3 className="text-[15px] font-bold text-zinc-900 uppercase flex items-center gap-2 mb-3">
+              <h3 className="text-[15px] font-semibold text-zinc-900 uppercase flex items-center gap-2 mb-3">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-5 h-5 text-blue-600"><path strokeLinecap="round" strokeLinejoin="round" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
                 Cần hỗ trợ?
               </h3>

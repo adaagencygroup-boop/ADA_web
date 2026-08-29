@@ -124,7 +124,7 @@ export default function JobBoard() {
 
         {/* Title */}
         <div className="flex items-center justify-between px-1">
-          <h2 className="text-[18px] lg:text-[20px] font-bold text-zinc-900 uppercase">
+          <h2 className="text-[18px] lg:text-[20px] font-semibold text-zinc-900 uppercase">
             VỊ TRÍ ĐANG TUYỂN
           </h2>
           <div className="text-[13.5px] text-zinc-500 font-medium">
@@ -144,13 +144,13 @@ export default function JobBoard() {
                     {job.coverImageUrl ? (
                       <Image src={job.coverImageUrl} alt={job.jobTitle} fill sizes="(max-width: 768px) 100vw, 56px" className="object-cover" unoptimized />
                     ) : (
-                      <div className="w-full h-full bg-[#002A64] text-white flex items-center justify-center font-bold text-[18px]">
+                      <div className="w-full h-full bg-[#002A64] text-white flex items-center justify-center font-semibold text-[18px]">
                         {getJobIconLabel(job.jobTitle)}
                       </div>
                     )}
                   </div>
                   <div>
-                    <h3 className="font-bold text-zinc-900 text-[16px] lg:text-[18px]">
+                    <h3 className="font-semibold text-zinc-900 text-[16px] lg:text-[18px]">
                       <Link href={`/tuyen-dung/${job.slug}`}>{job.jobTitle}</Link>
                     </h3>
                     <div className="flex flex-col gap-1 mt-1.5 text-[13px] text-zinc-500 font-medium">

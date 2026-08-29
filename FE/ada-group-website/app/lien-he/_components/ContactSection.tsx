@@ -128,7 +128,7 @@ export default function ContactSection() {
           
           {/* Left Column: Form */}
           <div className="flex flex-col gap-(--heading-space)">
-            <h3 className="text-lg lg:text-[1.35rem] font-bold text-zinc-900 uppercase">
+            <h3 className="text-lg lg:text-[1.35rem] font-semibold text-zinc-900 uppercase">
               GỬI CHO CHÚNG TÔI
             </h3>
             <p className="text-[14px] text-zinc-500 leading-relaxed mb-(--inner-space)">
@@ -214,7 +214,7 @@ export default function ContactSection() {
 
           {/* Right Column: Contact Info */}
           <div className="flex flex-col gap-(--heading-space)">
-            <h3 className="text-lg lg:text-[1.35rem] font-bold text-zinc-900 uppercase">
+            <h3 className="text-lg lg:text-[1.35rem] font-semibold text-zinc-900 uppercase">
               THÔNG TIN LIÊN HỆ
             </h3>
             <p className="text-[14px] text-zinc-500 leading-relaxed mb-(--inner-space)">
@@ -228,7 +228,7 @@ export default function ContactSection() {
                     {info.icon}
                   </div>
                   <div className="flex flex-col gap-1">
-                    <h4 className="text-[12px] font-bold text-zinc-900 uppercase tracking-wider">{info.title}</h4>
+                    <h4 className="text-[12px] font-semibold text-zinc-900 uppercase tracking-wider">{info.title}</h4>
                     <p className="text-[14px] text-zinc-600 leading-relaxed whitespace-pre-line">
                       {info.content}
                     </p>
