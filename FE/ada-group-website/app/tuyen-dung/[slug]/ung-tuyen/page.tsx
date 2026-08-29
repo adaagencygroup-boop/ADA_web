@@ -85,6 +85,10 @@ export default function JobApplicationPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!file) {
+      alert("Vui lòng tải lên CV / Resume của bạn!");
+      return;
+    }
     if (!formData.agreeTerm) {
       alert("Vui lòng đồng ý với điều khoản sử dụng thông tin!");
       return;
@@ -117,7 +121,7 @@ export default function JobApplicationPage() {
   };
 
   return (
-    <div className="bg-slate-50 min-h-screen pb-20">
+    <div className="bg-slate-50 w-full flex-1 flex flex-col">
       {/* Breadcrumb Area */}
       <div className="bg-white py-4 border-b border-slate-100">
         <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
@@ -137,7 +141,7 @@ export default function JobApplicationPage() {
       </div>
 
       {/* Hero Banner */}
-      <section className="relative w-full bg-[#002A64] py-16 lg:py-24 overflow-hidden">
+      <section className="relative w-full bg-[#002A64] section-y overflow-hidden">
         {job.coverImageUrl && (
           <Image 
             src={job.coverImageUrl} 
@@ -150,15 +154,15 @@ export default function JobApplicationPage() {
         <div className="absolute inset-0 bg-[#002A64]/65"></div>
         <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 1px, transparent 1px)', backgroundSize: '30px 30px' }}></div>
         
-        <div className="relative z-10 mx-auto max-w-360 px-4 sm:px-6 lg:px-8 text-white">
-          <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 text-white px-3 py-1.5 rounded-full font-semibold text-[11px] uppercase tracking-wider mb-5">
+        <div className="relative z-10 mx-auto max-w-360 px-4 sm:px-6 lg:px-8 text-white flex flex-col gap-(--heading-space)">
+          <div className="inline-flex w-fit items-center gap-2 bg-white/10 border border-white/20 text-white px-3 py-1.5 rounded-full font-semibold text-[11px] uppercase tracking-wider">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-3.5 h-3.5"><path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" /></svg>
             Tuyển dụng
           </div>
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 tracking-tight">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">
             Ứng tuyển vị trí {job.jobTitle}
           </h1>
-          <p className="text-blue-100/90 text-[14.5px] lg:text-[16px] mb-8">
+          <p className="text-blue-100/90 text-[14.5px] lg:text-[16px] mb-(--inner-space)">
             Vui lòng điền thông tin bên dưới để gửi hồ sơ ứng tuyển của bạn.
           </p>
 
@@ -176,13 +180,13 @@ export default function JobApplicationPage() {
       </section>
 
       {/* Main Content */}
-      <section className="section-y max-md:pb-8! max-md:pt-8!">
-        <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <section className="section-y">
+        <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-(--inner-space) items-start">
           
           {/* Left Column (Form) */}
           <div className="lg:col-span-8">
             <div className="bg-white rounded-2xl border border-slate-100 p-6 md:p-8 shadow-sm">
-              <form onSubmit={handleSubmit} className="flex flex-col gap-8">
+              <form onSubmit={handleSubmit} className="flex flex-col gap-(--inner-space)">
                 
                 {/* 1. THÔNG TIN ỨNG VIÊN */}
                 <div>

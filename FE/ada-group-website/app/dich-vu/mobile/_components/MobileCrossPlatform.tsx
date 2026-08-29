@@ -1,13 +1,13 @@
-import Image from "next/image";
-import Link from "next/link";
+import Image from"next/image";
+import Link from"next/link";
 
 export default function MobileCrossPlatform() {
   const headerContent = [
     {
-      tag: "CROSS-PLATFORM",
-      title: "Ứng dụng đa nền tảng",
-      subtitle: "Một trải nghiệm nhất quán trên nhiều thiết bị",
-      description: "ADA Group đánh giá nhu cầu thực tế của từng dự án để lựa chọn phương án phát triển phù hợp cho Android, iOS hoặc đa nền tảng, thay vì áp dụng một công nghệ cố định. Mục tiêu là tạo ra giải pháp cân bằng giữa trải nghiệm người dùng, khả năng phát triển, hiệu quả nguồn lực và định hướng lâu dài của sản phẩm."
+      tag:"CROSS-PLATFORM",
+      title:"Ứng dụng đa nền tảng",
+      subtitle:"Một trải nghiệm nhất quán trên nhiều thiết bị",
+      description:"ADA Group đánh giá nhu cầu thực tế của từng dự án để lựa chọn phương án phát triển phù hợp cho Android, iOS hoặc đa nền tảng, thay vì áp dụng một công nghệ cố định. Mục tiêu là tạo ra giải pháp cân bằng giữa trải nghiệm người dùng, khả năng phát triển, hiệu quả nguồn lực và định hướng lâu dài của sản phẩm."
     }
   ];
 
@@ -19,8 +19,8 @@ export default function MobileCrossPlatform() {
           <polyline points="8 6 2 12 8 18" />
         </svg>
       ),
-      title: "Codebase chung",
-      desc: "Tiết kiệm chi phí phát triển & bảo trì",
+      title:"Codebase chung",
+      desc:"Tiết kiệm chi phí phát triển & bảo trì",
     },
     {
       icon: (
@@ -31,8 +31,8 @@ export default function MobileCrossPlatform() {
           <path d="M16 21v-5h5" />
         </svg>
       ),
-      title: "Trải nghiệm nhất quán",
-      desc: "Đồng bộ giao diện và tính năng",
+      title:"Trải nghiệm nhất quán",
+      desc:"Đồng bộ giao diện và tính năng",
     },
     {
       icon: (
@@ -43,8 +43,8 @@ export default function MobileCrossPlatform() {
           <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5" />
         </svg>
       ),
-      title: "Triển khai nhanh",
-      desc: "Rút ngắn thời gian ra mắt sản phẩm",
+      title:"Triển khai nhanh",
+      desc:"Rút ngắn thời gian ra mắt sản phẩm",
     },
     {
       icon: (
@@ -53,13 +53,13 @@ export default function MobileCrossPlatform() {
           <path d="m9 12 2 2 4-4" />
         </svg>
       ),
-      title: "Vận hành ổn định",
-      desc: "Hiệu năng cao, bảo mật và dễ dàng mở rộng",
+      title:"Vận hành ổn định",
+      desc:"Hiệu năng cao, bảo mật và dễ dàng mở rộng",
     },
   ];
 
   return (
-    <section className="bg-white section-y max-md:py-5! md:pt-0!">
+    <section className="bg-white section-y max-md:py-5! md:pt-(--heading-space)!">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col lg:items-center bg-white lg:bg-[#0a1526] rounded-4xl lg:rounded-[3rem] lg:px-6 lg:py-14 text-left lg:text-center border border-slate-100 lg:border-none shadow-[0_2px_15px_rgb(0,0,0,0.03)] lg:shadow-none overflow-hidden lg:overflow-visible">
           
@@ -71,7 +71,7 @@ export default function MobileCrossPlatform() {
           {/* Text Content */}
           {headerContent.map((item, index) => (
             <div key={index} className="flex flex-col p-6 sm:p-8 lg:p-0 lg:items-center">
-              <div className="flex items-center gap-4 mb-2 lg:mb-6">
+              <div className="flex items-center gap-(--inner-space) mb-(--inner-space)">
                 <div className="hidden lg:block h-px w-8 bg-blue-500/30"></div>
                 <span className="text-slate-500 lg:text-blue-500 text-[11px] font-semibold tracking-widest uppercase">
                   {item.tag}
@@ -79,32 +79,32 @@ export default function MobileCrossPlatform() {
                 <div className="hidden lg:block h-px w-8 bg-blue-500/30"></div>
               </div>
               
-              <h2 className="text-[1.35rem] font-bold lg:font-semibold leading-snug lg:leading-tight tracking-tight text-zinc-900 lg:text-white sm:text-4xl lg:text-[2.75rem] mb-3 lg:mb-4">
+              <h2 className="text-[1.35rem] font-bold lg:font-semibold leading-snug lg:leading-tight tracking-tight text-zinc-900 lg:text-white sm:text-4xl lg:text-[2.75rem] mb-(--inner-space)">
                 {item.title}
               </h2>
-              <p className="text-[15px] lg:text-[17px] font-medium text-blue-600 lg:text-slate-300 mb-4 lg:mb-8">
+              <p className="text-[15px] lg:text-[17px] font-medium text-blue-600 lg:text-slate-300 mb-(--inner-space)">
                 {item.subtitle}
               </p>
               <p className="text-[14px] lg:text-[15px] leading-relaxed text-zinc-500 lg:text-slate-400 text-justify lg:text-center">
                 {item.description}
               </p>
 
-              {/* "Xem chi tiết" Link */}
-              <Link href="/lien-he" className="mt-6 lg:mb-10 inline-flex items-center gap-2 text-blue-600 font-semibold text-[14px] lg:text-[14.5px] hover:text-blue-800 transition-colors w-fit">
+              {/*"Xem chi tiết" Link */}
+              <Link href="/lien-he" className="mt-(--inner-space) lg:mb-(--section-padding) inline-flex items-center gap-(--inner-space) text-blue-600 font-semibold text-[14px] lg:text-[14.5px] hover:text-blue-800 transition-colors w-fit">
                 Trao đổi chi tiết &rarr;
               </Link>
             </div>
           ))}
 
           {/* Features Box (Hidden on Mobile) */}
-          <div className="hidden lg:block w-full max-w-5xl bg-[#111e35] border border-slate-700/50 rounded-2xl p-6 lg:p-10 mb-10">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6 text-left divide-y sm:divide-y-0 sm:divide-x divide-slate-200 lg:divide-slate-700/50">
+          <div className="hidden lg:block w-full max-w-5xl bg-[#111e35] border border-slate-700/50 rounded-2xl p-6 lg:p-10 mb-(--section-padding)">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-(--inner-space) text-left divide-y sm:divide-y-0 sm:divide-x divide-slate-200 lg:divide-slate-700/50">
               {features.map((feature, idx) => (
-                <div key={idx} className={`pt-6 sm:pt-0 ${idx !== 0 ? 'sm:pl-6 lg:pl-6' : ''}`}>
-                  <div className="mb-4">
+                <div key={idx} className={`pt-(--inner-space) sm:pt-(--heading-space) ${idx !== 0 ? 'sm:pl-6 lg:pl-6' : ''}`}>
+                  <div className="mb-(--inner-space)">
                     {feature.icon}
                   </div>
-                  <h4 className="text-zinc-900 lg:text-white font-semibold text-[15px] mb-2">{feature.title}</h4>
+                  <h4 className="text-zinc-900 lg:text-white font-semibold text-[15px] mb-(--heading-space)">{feature.title}</h4>
                   <p className="text-zinc-500 lg:text-slate-400 text-[13px] leading-relaxed">{feature.desc}</p>
                 </div>
               ))}
@@ -112,8 +112,8 @@ export default function MobileCrossPlatform() {
           </div>
 
           {/* OS Icons (Hidden on Mobile) */}
-          <div className="hidden lg:flex items-center gap-16 lg:gap-24">
-            <div className="flex flex-col items-center gap-3">
+          <div className="hidden lg:flex items-center gap-(--section-padding)">
+            <div className="flex flex-col items-center gap-(--inner-space)">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-10 w-10 text-slate-400 lg:text-slate-300">
                 <path d="M12 20.94c1.5 0 2.75 1.06 4 1.06 3 0 6-8 6-12.22A4.91 4.91 0 0 0 17 5c-2.22 0-4 1.44-5 2-1-.56-2.78-2-5-2a4.9 4.9 0 0 0-5 4.78C2 14 5 22 8 22c1.25 0 2.5-1.06 4-1.06Z" />
                 <path d="M10 2c1 .5 2 2 2 5" />
@@ -123,7 +123,7 @@ export default function MobileCrossPlatform() {
             
             <div className="w-px h-12 bg-slate-200 lg:bg-slate-700"></div>
             
-            <div className="flex flex-col items-center gap-3">
+            <div className="flex flex-col items-center gap-(--inner-space)">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-10 w-10 text-slate-400 lg:text-slate-300">
                 <rect width="14" height="20" x="5" y="2" rx="2" ry="2" />
                 <path d="M12 18h.01" />

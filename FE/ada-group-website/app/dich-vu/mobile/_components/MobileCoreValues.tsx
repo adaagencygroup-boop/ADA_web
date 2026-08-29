@@ -1,8 +1,8 @@
 export default function MobileCoreValues() {
   const values = [
     {
-      title: "Trải nghiệm tốt",
-      description: "Thiết kế luồng sử dụng đơn giản, trực quan và phù hợp với hành vi trên thiết bị di động.",
+      title:"Trải nghiệm tốt",
+      description:"Thiết kế luồng sử dụng đơn giản, trực quan và phù hợp với hành vi trên thiết bị di động.",
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
           <circle cx="12" cy="12" r="10" />
@@ -13,8 +13,8 @@ export default function MobileCoreValues() {
       )
     },
     {
-      title: "Đa nền tảng",
-      description: "Lựa chọn phương án phát triển phù hợp với yêu cầu Android, iOS hoặc Cross-platform.",
+      title:"Đa nền tảng",
+      description:"Lựa chọn phương án phát triển phù hợp với yêu cầu Android, iOS hoặc Cross-platform.",
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
           <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
@@ -22,8 +22,8 @@ export default function MobileCoreValues() {
       )
     },
     {
-      title: "Kết nối hệ thống",
-      description: "Ứng dụng có thể kết nối với Backend, API, Web Admin và các hệ thống doanh nghiệp.",
+      title:"Kết nối hệ thống",
+      description:"Ứng dụng có thể kết nối với Backend, API, Web Admin và các hệ thống doanh nghiệp.",
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
           <path d="M18 8h1a4 4 0 0 1 0 8h-1" />
@@ -35,8 +35,8 @@ export default function MobileCoreValues() {
       )
     },
     {
-      title: "Đồng hành lâu dài",
-      description: "Cam kết hỗ trợ, bảo trì và cập nhật liên tục để hệ thống luôn hoạt động ổn định.",
+      title:"Đồng hành lâu dài",
+      description:"Cam kết hỗ trợ, bảo trì và cập nhật liên tục để hệ thống luôn hoạt động ổn định.",
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
           <path d="m11 17 2 2a1 1 0 1 0 3-3" />
@@ -47,10 +47,10 @@ export default function MobileCoreValues() {
   ];
 
   return (
-    <section className="bg-[#f9fafb] section-y max-md:py-5!">
+    <section className="bg-[#f9fafb] section-y">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-4xl lg:max-w-5xl text-center mb-10 md:mb-14">
-          <h2 className="text-[1.75rem] font-semibold leading-tight text-zinc-900 sm:text-3xl lg:text-[2.5rem] mb-4 md:mb-6">
+        <div className="mx-auto max-w-4xl lg:max-w-5xl text-center mb-(--section-padding) md:mb-(--section-padding)">
+          <h2 className="text-[1.75rem] font-semibold leading-tight text-zinc-900 sm:text-3xl lg:text-[2.5rem] mb-(--inner-space) md:mb-(--inner-space)">
             Một trải nghiệm luôn đồng hành cùng người dùng
           </h2>
           {/* Subtitle Desktop */}
@@ -63,20 +63,20 @@ export default function MobileCoreValues() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-(--inner-space) md:gap-(--inner-space)">
           {values.map((item, index) => (
             <div 
               key={index} 
               className="rounded-2xl p-5 md:p-6 md:bg-[#f4f6f9] md:border-none md:shadow-none bg-white border border-slate-100 shadow-sm"
             >
-              <div className="flex items-start md:items-center gap-4 md:mb-4">
+              <div className="flex items-start md:items-center gap-(--inner-space) md:mb-(--inner-space)">
                 {/* Icon */}
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl md:bg-[#1e3a6e] md:text-white bg-[#eef2ff] text-[#1e3a6e] mt-0.5 md:mt-0">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl md:bg-[#1e3a6e] md:text-white bg-[#eef2ff] text-[#1e3a6e] mt-(--heading-space).5 md:mt-(--heading-space)">
                   {item.icon}
                 </div>
                 
                 {/* Mobile Title & Desc container, Desktop just Title */}
-                <div className="flex flex-col gap-1.5">
+                <div className="flex flex-col gap-(--inner-space).5">
                   <h3 className="text-[15px] md:text-[17px] font-semibold text-zinc-900 leading-snug">
                     {item.title}
                   </h3>

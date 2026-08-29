@@ -1,12 +1,12 @@
-import Image from "next/image";
-import Link from "next/link";
+import Image from"next/image";
+import Link from"next/link";
 
 export default function MobileEcommerceApps() {
   const headerContent = [
     {
-      tag: "E-COMMERCE & SERVICES",
-      title: "Ứng dụng thương mại & dịch vụ",
-      description: "ADA Group phát triển Mobile App giúp doanh nghiệp kết nối toàn bộ hành trình khách hàng từ khám phá, lựa chọn đến sử dụng và tương tác với dịch vụ, tạo nên trải nghiệm thống nhất giữa khách hàng và hoạt động vận hành của doanh nghiệp."
+      tag:"E-COMMERCE & SERVICES",
+      title:"Ứng dụng thương mại & dịch vụ",
+      description:"ADA Group phát triển Mobile App giúp doanh nghiệp kết nối toàn bộ hành trình khách hàng từ khám phá, lựa chọn đến sử dụng và tương tác với dịch vụ, tạo nên trải nghiệm thống nhất giữa khách hàng và hoạt động vận hành của doanh nghiệp."
     }
   ];
 
@@ -19,8 +19,8 @@ export default function MobileEcommerceApps() {
           <path d="M16 10a4 4 0 0 1-8 0" />
         </svg>
       ),
-      title: "E-commerce",
-      desc: "Cửa hàng trực tuyến, giỏ hàng, thanh toán và quản lý đơn hàng.",
+      title:"E-commerce",
+      desc:"Cửa hàng trực tuyến, giỏ hàng, thanh toán và quản lý đơn hàng.",
     },
     {
       icon: (
@@ -32,8 +32,8 @@ export default function MobileEcommerceApps() {
           <line x1="14" x2="14" y1="1" y2="3" />
         </svg>
       ),
-      title: "F&B",
-      desc: "Đặt món, quản lý menu, giao hàng và takeaway.",
+      title:"F&B",
+      desc:"Đặt món, quản lý menu, giao hàng và takeaway.",
     },
     {
       icon: (
@@ -42,8 +42,8 @@ export default function MobileEcommerceApps() {
           <circle cx="12" cy="10" r="3" />
         </svg>
       ),
-      title: "Hotel & Travel",
-      desc: "Đặt phòng, tour, vé và các dịch vụ du lịch.",
+      title:"Hotel & Travel",
+      desc:"Đặt phòng, tour, vé và các dịch vụ du lịch.",
     },
     {
       icon: (
@@ -54,38 +54,38 @@ export default function MobileEcommerceApps() {
           <line x1="3" x2="21" y1="10" y2="10" />
         </svg>
       ),
-      title: "Booking & Event",
-      desc: "Đặt lịch, đặt chỗ và quản lý sự kiện.",
+      title:"Booking & Event",
+      desc:"Đặt lịch, đặt chỗ và quản lý sự kiện.",
     },
   ];
 
   return (
-    <section className="bg-white section-y max-md:py-5! md:pt-0!">
+    <section className="bg-white section-y max-md:py-5! md:pt-(--heading-space)!">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col lg:grid lg:grid-cols-2 gap-0 lg:gap-16 lg:items-start bg-white lg:bg-transparent rounded-4xl lg:rounded-none border border-slate-100 lg:border-none shadow-[0_2px_15px_rgb(0,0,0,0.03)] lg:shadow-none overflow-hidden lg:overflow-visible">
+        <div className="flex flex-col lg:grid lg:grid-cols-2 gap-(--section-padding) lg:items-start bg-white lg:bg-transparent rounded-4xl lg:rounded-none border border-slate-100 lg:border-none shadow-[0_2px_15px_rgb(0,0,0,0.03)] lg:shadow-none overflow-hidden lg:overflow-visible">
           
           {/* Left Column / Mobile Card */}
           <div className="flex flex-col lg:col-span-1">
             
             {/* Image (Top on mobile, Bottom on desktop) */}
-            <div className="relative w-full min-h-64 lg:min-h-0 lg:aspect-4/3 bg-slate-100 lg:bg-white lg:rounded-4xl overflow-hidden shadow-none lg:shadow-sm border-b lg:border border-slate-100 order-1 lg:order-2 lg:mt-8">
+            <div className="relative w-full min-h-64 lg:min-h-0 lg:aspect-4/3 bg-slate-100 lg:bg-white lg:rounded-4xl overflow-hidden shadow-none lg:shadow-sm border-b lg:border border-slate-100 order-1 lg:order-2 lg:mt-(--inner-space)">
               <Image src="https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/173610/Originals/cong-nghe-so-la-gi-1.jpg" alt="Ứng dụng thương mại" fill className="object-cover" unoptimized />
             </div>
 
             {/* Text (Bottom on mobile, Top on desktop) */}
             {headerContent.map((item, index) => (
               <div key={index} className="flex flex-col p-6 sm:p-8 lg:p-0 order-2 lg:order-1">
-                <span className="text-[11px] font-semibold uppercase tracking-widest text-slate-500 lg:text-blue-800 mb-2 lg:mb-3 block">
+                <span className="text-[11px] font-semibold uppercase tracking-widest text-slate-500 lg:text-blue-800 mb-(--heading-space) block">
                   {item.tag}
                 </span>
-                <h2 className="text-[1.35rem] font-bold lg:font-semibold leading-snug lg:leading-tight tracking-tight text-zinc-900 lg:text-[#0a1a2f] sm:text-4xl lg:text-[2.5rem] mb-3 lg:mb-5">
+                <h2 className="text-[1.35rem] font-bold lg:font-semibold leading-snug lg:leading-tight tracking-tight text-zinc-900 lg:text-[#0a1a2f] sm:text-4xl lg:text-[2.5rem] mb-(--inner-space)">
                   {item.title}
                 </h2>
-                <p className="text-[14px] lg:text-[15px] leading-relaxed text-zinc-500 lg:text-zinc-600 mb-0 text-justify">
+                <p className="text-[14px] lg:text-[15px] leading-relaxed text-zinc-500 lg:text-zinc-600 mb-(--heading-space) text-justify">
                   {item.description}
                 </p>
                 
-                <Link href="/lien-he" className="mt-6 inline-flex items-center gap-2 text-blue-600 font-semibold text-[14px] lg:text-[14.5px] hover:text-blue-800 transition-colors w-fit">
+                <Link href="/lien-he" className="mt-(--inner-space) inline-flex items-center gap-(--inner-space) text-blue-600 font-semibold text-[14px] lg:text-[14.5px] hover:text-blue-800 transition-colors w-fit">
                   Trao đổi chi tiết &rarr;
                 </Link>
               </div>
@@ -94,13 +94,13 @@ export default function MobileEcommerceApps() {
           </div>
 
           {/* Right Column (Categories - Hidden on Mobile) */}
-          <div className="hidden lg:grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6 lg:pt-8 lg:col-span-1">
+          <div className="hidden lg:grid grid-cols-1 sm:grid-cols-2 gap-(--inner-space) lg:pt-(--inner-space) lg:col-span-1">
             {categories.map((cat, idx) => (
               <div key={idx} className="bg-white rounded-3xl p-6 lg:p-8 border border-slate-100 shadow-[0_2px_15px_rgb(0,0,0,0.03)] flex flex-col">
-                <div className="bg-blue-50 w-12 h-12 rounded-2xl mb-6 flex items-center justify-center">
+                <div className="bg-blue-50 w-12 h-12 rounded-2xl mb-(--inner-space) flex items-center justify-center">
                   {cat.icon}
                 </div>
-                <h4 className="font-semibold text-[17px] text-zinc-900 mb-3">{cat.title}</h4>
+                <h4 className="font-semibold text-[17px] text-zinc-900 mb-(--heading-space)">{cat.title}</h4>
                 <p className="text-[14px] text-zinc-500 leading-relaxed">{cat.desc}</p>
               </div>
             ))}

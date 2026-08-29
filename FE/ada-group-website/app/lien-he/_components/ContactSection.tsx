@@ -110,34 +110,34 @@ export default function ContactSection() {
         
         {/* Header */}
         {headerData.map((item, index) => (
-          <div key={index} className="max-w-xl mb-12 lg:mb-16">
-            <h1 className="text-[2rem] leading-[1.2] font-semibold tracking-tight text-zinc-900 sm:text-4xl lg:text-[2.75rem] lg:leading-[1.1] mb-3 lg:mb-4">
+          <div key={index} className="max-w-xl mb-(--section-padding) flex flex-col gap-(--heading-space)">
+            <h1 className="text-[2rem] leading-[1.2] font-semibold tracking-tight text-zinc-900 sm:text-4xl lg:text-[2.75rem] lg:leading-[1.1]">
               {item.title}
             </h1>
-            <h2 className="text-[19px] lg:text-[21px] font-semibold text-zinc-900 mb-5 lg:mb-6 leading-snug">
+            <h2 className="text-[19px] lg:text-[21px] font-semibold text-zinc-900 leading-snug">
               {item.subtitle}
             </h2>
-            <p className="text-zinc-500 leading-relaxed text-[14.5px] lg:text-[15px] text-justify indent-4">
+            <p className="text-zinc-500 leading-relaxed text-[14.5px] lg:text-[15px] text-justify mt-(--inner-space)">
               {item.description}
             </p>
           </div>
         ))}
 
         {/* Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-(--section-padding)">
           
           {/* Left Column: Form */}
-          <div>
-            <h3 className="text-lg lg:text-[1.35rem] font-bold text-zinc-900 uppercase mb-2">
+          <div className="flex flex-col gap-(--heading-space)">
+            <h3 className="text-lg lg:text-[1.35rem] font-bold text-zinc-900 uppercase">
               GỬI CHO CHÚNG TÔI
             </h3>
-            <p className="text-[14px] text-zinc-500 mb-6 lg:mb-8 leading-relaxed">
+            <p className="text-[14px] text-zinc-500 leading-relaxed mb-(--inner-space)">
               Hãy điền thông tin, đội ngũ của ADA sẽ phản hồi bạn trong thời gian sớm nhất.
             </p>
 
-            <form onSubmit={handleSubmit} className="flex flex-col gap-4 lg:gap-5">
-              <div>
-                <label htmlFor="name" className="block text-[14px] font-semibold text-zinc-800 mb-2">Họ và tên *</label>
+            <form onSubmit={handleSubmit} className="flex flex-col gap-(--inner-space)">
+              <div className="flex flex-col gap-2">
+                <label htmlFor="name" className="text-[14px] font-semibold text-zinc-800">Họ và tên *</label>
                 <input 
                   id="name"
                   name="name"
@@ -150,8 +150,8 @@ export default function ContactSection() {
                 />
               </div>
 
-              <div>
-                <label htmlFor="email" className="block text-[14px] font-semibold text-zinc-800 mb-2">Email *</label>
+              <div className="flex flex-col gap-2">
+                <label htmlFor="email" className="text-[14px] font-semibold text-zinc-800">Email *</label>
                 <input 
                   id="email"
                   name="email"
@@ -164,8 +164,8 @@ export default function ContactSection() {
                 />
               </div>
 
-              <div>
-                <label htmlFor="phone" className="block text-[14px] font-semibold text-zinc-800 mb-2">Số điện thoại *</label>
+              <div className="flex flex-col gap-2">
+                <label htmlFor="phone" className="text-[14px] font-semibold text-zinc-800">Số điện thoại *</label>
                 <input 
                   id="phone"
                   name="phone"
@@ -178,8 +178,8 @@ export default function ContactSection() {
                 />
               </div>
 
-              <div>
-                <label htmlFor="message" className="block text-[14px] font-semibold text-zinc-800 mb-2">Nội dung *</label>
+              <div className="flex flex-col gap-2">
+                <label htmlFor="message" className="text-[14px] font-semibold text-zinc-800">Nội dung *</label>
                 <textarea 
                   id="message"
                   name="message"
@@ -192,7 +192,7 @@ export default function ContactSection() {
                 />
               </div>
 
-              <div className="mt-2 lg:mt-4">
+              <div className="mt-2">
                 <button 
                   type="submit" 
                   disabled={isSubmitting}
@@ -202,7 +202,7 @@ export default function ContactSection() {
                 </button>
               </div>
 
-              <div className="flex items-center gap-2 mt-2 lg:mt-3 text-[12.5px] text-zinc-400">
+              <div className="flex items-center gap-2 mt-2 text-[12.5px] text-zinc-400">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5 shrink-0">
                   <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
                   <path d="M7 11V7a5 5 0 0 1 10 0v4" />
@@ -213,22 +213,22 @@ export default function ContactSection() {
           </div>
 
           {/* Right Column: Contact Info */}
-          <div>
-            <h3 className="text-lg lg:text-[1.35rem] font-bold text-zinc-900 uppercase mb-2">
+          <div className="flex flex-col gap-(--heading-space)">
+            <h3 className="text-lg lg:text-[1.35rem] font-bold text-zinc-900 uppercase">
               THÔNG TIN LIÊN HỆ
             </h3>
-            <p className="text-[14px] text-zinc-500 mb-6 lg:mb-8 leading-relaxed">
+            <p className="text-[14px] text-zinc-500 leading-relaxed mb-(--inner-space)">
               Bạn cũng có thể liên hệ với chúng tôi qua các kênh dưới đây.
             </p>
 
-            <div className="flex flex-col gap-3 lg:gap-4">
+            <div className="flex flex-col gap-(--inner-space)">
               {contactInfo.map((info, idx) => (
-                <div key={idx} className="bg-white border border-slate-100 rounded-xl p-5 flex gap-4 lg:gap-5 items-start shadow-[0_2px_20px_rgb(0,0,0,0.02)]">
+                <div key={idx} className="bg-white border border-slate-100 rounded-xl p-5 flex gap-(--inner-space) items-start shadow-[0_2px_20px_rgb(0,0,0,0.02)]">
                   <div className="bg-[#f0f4f9] text-[#2c5282] p-2.5 rounded-full shrink-0 flex items-center justify-center">
                     {info.icon}
                   </div>
-                  <div>
-                    <h4 className="text-[12px] font-bold text-zinc-900 uppercase mb-1 tracking-wider">{info.title}</h4>
+                  <div className="flex flex-col gap-1">
+                    <h4 className="text-[12px] font-bold text-zinc-900 uppercase tracking-wider">{info.title}</h4>
                     <p className="text-[14px] text-zinc-600 leading-relaxed whitespace-pre-line">
                       {info.content}
                     </p>

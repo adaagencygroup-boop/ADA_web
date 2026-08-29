@@ -1,13 +1,13 @@
-import Link from "next/link";
-import Image from "next/image";
+import Link from"next/link";
+import Image from"next/image";
 
 export default function MobileCustomerApps() {
   const headerContent = [
     {
-      tag: "CUSTOMER APPS",
-      title: "Ứng dụng dành cho khách hàng",
-      subtitle: "Tạo một kênh kết nối trực tiếp giữa doanh nghiệp và người dùng",
-      description: "ADA Group phát triển ứng dụng di động giúp doanh nghiệp đưa sản phẩm, dịch vụ và thương hiệu đến gần khách hàng hơn, tạo kênh kết nối trực tiếp để người dùng thuận tiện tìm hiểu, sử dụng dịch vụ và duy trì tương tác lâu dài."
+      tag:"CUSTOMER APPS",
+      title:"Ứng dụng dành cho khách hàng",
+      subtitle:"Tạo một kênh kết nối trực tiếp giữa doanh nghiệp và người dùng",
+      description:"ADA Group phát triển ứng dụng di động giúp doanh nghiệp đưa sản phẩm, dịch vụ và thương hiệu đến gần khách hàng hơn, tạo kênh kết nối trực tiếp để người dùng thuận tiện tìm hiểu, sử dụng dịch vụ và duy trì tương tác lâu dài."
     }
   ];
 
@@ -21,8 +21,8 @@ export default function MobileCustomerApps() {
           <path d="M16 3.13a4 4 0 0 1 0 7.75" />
         </svg>
       ),
-      title: "Trải nghiệm khách hàng",
-      desc: "Xây dựng hành trình sử dụng thuận tiện và nhất quán.",
+      title:"Trải nghiệm khách hàng",
+      desc:"Xây dựng hành trình sử dụng thuận tiện và nhất quán.",
     },
     {
       icon: (
@@ -31,8 +31,8 @@ export default function MobileCustomerApps() {
           <path d="M12 18h.01" />
         </svg>
       ),
-      title: "Dịch vụ trực tuyến",
-      desc: "Đưa sản phẩm và dịch vụ của doanh nghiệp lên thiết bị di động.",
+      title:"Dịch vụ trực tuyến",
+      desc:"Đưa sản phẩm và dịch vụ của doanh nghiệp lên thiết bị di động.",
     },
     {
       icon: (
@@ -40,8 +40,8 @@ export default function MobileCustomerApps() {
           <path d="m3 21 1.9-5.7a8.5 8.5 0 1 1 3.8 3.8z" />
         </svg>
       ),
-      title: "Tương tác & kết nối",
-      desc: "Tạo kênh kết nối trực tiếp giữa doanh nghiệp và người dùng.",
+      title:"Tương tác & kết nối",
+      desc:"Tạo kênh kết nối trực tiếp giữa doanh nghiệp và người dùng.",
     },
     {
       icon: (
@@ -50,8 +50,8 @@ export default function MobileCustomerApps() {
           <circle cx="12" cy="7" r="4" />
         </svg>
       ),
-      title: "Cá nhân hóa trải nghiệm",
-      desc: "Điều chỉnh nội dung và trải nghiệm phù hợp với từng nhóm.",
+      title:"Cá nhân hóa trải nghiệm",
+      desc:"Điều chỉnh nội dung và trải nghiệm phù hợp với từng nhóm.",
     },
     {
       icon: (
@@ -61,8 +61,8 @@ export default function MobileCustomerApps() {
           <path d="m20 22-5-5" />
         </svg>
       ),
-      title: "Tích hợp hệ thống",
-      desc: "Kết nối ứng dụng với dữ liệu và nền tảng hiện có.",
+      title:"Tích hợp hệ thống",
+      desc:"Kết nối ứng dụng với dữ liệu và nền tảng hiện có.",
     },
     {
       icon: (
@@ -71,15 +71,15 @@ export default function MobileCustomerApps() {
           <polyline points="16 7 22 7 22 13" />
         </svg>
       ),
-      title: "Phát triển & mở rộng",
-      desc: "Sẵn sàng bổ sung và phát triển theo nhu cầu kinh doanh.",
+      title:"Phát triển & mở rộng",
+      desc:"Sẵn sàng bổ sung và phát triển theo nhu cầu kinh doanh.",
     },
   ];
 
   return (
-    <section className="bg-white section-y max-md:py-5! md:pt-0!">
+    <section className="bg-white section-y max-md:py-5! md:pt-(--heading-space)!">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col lg:grid lg:grid-cols-2 gap-0 lg:gap-16 lg:items-center bg-white rounded-4xl lg:rounded-none border border-slate-100 lg:border-none shadow-[0_2px_15px_rgb(0,0,0,0.03)] lg:shadow-none overflow-hidden lg:overflow-visible">
+        <div className="flex flex-col lg:grid lg:grid-cols-2 gap-(--section-padding) lg:items-center bg-white rounded-4xl lg:rounded-none border border-slate-100 lg:border-none shadow-[0_2px_15px_rgb(0,0,0,0.03)] lg:shadow-none overflow-hidden lg:overflow-visible">
           
           {/* Right Column (Image - Top on Mobile) */}
           <div className="relative w-full min-h-64 lg:min-h-0 lg:aspect-4/5 bg-slate-100 lg:rounded-4xl overflow-hidden lg:shadow-sm border-b border-slate-100 lg:border-slate-100 order-1 lg:order-2">
@@ -90,35 +90,35 @@ export default function MobileCustomerApps() {
           <div className="flex flex-col p-6 sm:p-8 lg:p-0 order-2 lg:order-1">
             {headerContent.map((item, index) => (
               <div key={index}>
-                <span className="text-[11px] font-semibold uppercase tracking-widest text-slate-500 lg:text-blue-800 mb-2 lg:mb-3 block">
+                <span className="text-[11px] font-semibold uppercase tracking-widest text-slate-500 lg:text-blue-800 mb-(--heading-space) block">
                   {item.tag}
                 </span>
-                <h2 className="text-[1.35rem] font-bold lg:font-semibold leading-snug lg:leading-tight tracking-tight text-zinc-900 lg:text-[#0a1a2f] sm:text-4xl lg:text-[2.5rem] mb-3">
+                <h2 className="text-[1.35rem] font-bold lg:font-semibold leading-snug lg:leading-tight tracking-tight text-zinc-900 lg:text-[#0a1a2f] sm:text-4xl lg:text-[2.5rem] mb-(--heading-space)">
                   {item.title}
                 </h2>
-                <p className="text-[15px] lg:text-[17px] font-medium text-blue-600 mb-4">
+                <p className="text-[15px] lg:text-[17px] font-medium text-blue-600 mb-(--inner-space)">
                   {item.subtitle}
                 </p>
-                <p className="text-[14px] lg:text-[15px] leading-relaxed text-zinc-500 lg:text-zinc-600 mb-6 lg:mb-8 text-justify">
+                <p className="text-[14px] lg:text-[15px] leading-relaxed text-zinc-500 lg:text-zinc-600 mb-(--inner-space) text-justify">
                   {item.description}
                 </p>
               </div>
             ))}
             
             {/* Features Grid (Hidden on Mobile) */}
-            <div className="hidden lg:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+            <div className="hidden lg:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-(--inner-space) mb-(--inner-space)">
               {features.map((item, idx) => (
                 <div key={idx} className="bg-white rounded-2xl p-5 border border-slate-100 shadow-[0_2px_15px_rgb(0,0,0,0.03)] flex flex-col items-center text-center">
-                  <div className="bg-blue-50 p-2.5 rounded-full mb-3 flex items-center justify-center">
+                  <div className="bg-blue-50 p-2.5 rounded-full mb-(--heading-space) flex items-center justify-center">
                     {item.icon}
                   </div>
-                  <h4 className="font-semibold text-[13px] text-zinc-900 mb-2 leading-snug">{item.title}</h4>
+                  <h4 className="font-semibold text-[13px] text-zinc-900 mb-(--heading-space) leading-snug">{item.title}</h4>
                   <p className="text-[12px] text-zinc-500 leading-relaxed">{item.desc}</p>
                 </div>
               ))}
             </div>
             
-            <Link href="/lien-he" className="inline-flex items-center gap-2 text-blue-600 font-semibold text-[14px] lg:text-[14.5px] hover:text-blue-800 transition-colors w-fit">
+            <Link href="/lien-he" className="inline-flex items-center gap-(--inner-space) text-blue-600 font-semibold text-[14px] lg:text-[14.5px] hover:text-blue-800 transition-colors w-fit">
               Trao đổi chi tiết &rarr;
             </Link>
           </div>

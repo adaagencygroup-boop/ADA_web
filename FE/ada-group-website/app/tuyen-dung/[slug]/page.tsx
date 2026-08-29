@@ -32,7 +32,7 @@ export default async function JobDetailsPage({ params }: PageProps) {
   const fallbackBens = job.benefits || "Thu nhập cạnh tranh theo năng lực.\nXét tăng lương và thưởng hiệu quả công việc.\nĐược tham gia các dự án lớn, làm việc cùng chuyên gia.\nMôi trường trẻ trung, năng động, khuyến khích sáng tạo.\nHưởng đầy đủ các chế độ theo quy định của pháp luật.";
 
   return (
-    <div className="bg-slate-50 min-h-screen">
+    <div className="bg-slate-50 w-full flex-1 flex flex-col">
       {/* Breadcrumb Area (White Background) */}
       <div className="bg-white py-4 border-b border-slate-100">
         <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
@@ -50,7 +50,7 @@ export default async function JobDetailsPage({ params }: PageProps) {
       </div>
 
       {/* Hero Banner */}
-      <section className="relative w-full bg-[#002A64] py-16 lg:py-24 overflow-hidden">
+      <section className="relative w-full bg-[#002A64] section-y overflow-hidden">
         {job.coverImageUrl && (
           <Image 
             src={job.coverImageUrl} 
@@ -65,13 +65,13 @@ export default async function JobDetailsPage({ params }: PageProps) {
         <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 1px, transparent 1px)', backgroundSize: '30px 30px' }}></div>
         
         <div className="relative z-10 mx-auto max-w-360 px-4 sm:px-6 lg:px-8 text-white">
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8">
-            <div className="flex-1">
-              <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 text-white px-3 py-1.5 rounded-full font-semibold text-[11px] uppercase tracking-wider mb-5">
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-(--inner-space)">
+            <div className="flex-1 flex flex-col gap-(--heading-space)">
+              <div className="inline-flex w-fit items-center gap-2 bg-white/10 border border-white/20 text-white px-3 py-1.5 rounded-full font-semibold text-[11px] uppercase tracking-wider">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-3.5 h-3.5"><path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" /></svg>
                 Tuyển dụng
               </div>
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 tracking-tight">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">
                 {job.jobTitle}
               </h1>
               <div className="flex flex-wrap items-center gap-4 lg:gap-8 text-[14px] md:text-[15px] font-medium text-blue-100">
@@ -102,7 +102,7 @@ export default async function JobDetailsPage({ params }: PageProps) {
             </div>
           </div>
 
-          <div className="mt-8 pt-6 border-t border-white/20 flex flex-wrap items-center gap-6 text-[13px] text-blue-100/80">
+          <div className="mt-(--inner-space) pt-6 border-t border-white/20 flex flex-wrap items-center gap-6 text-[13px] text-blue-100/80">
             <div className="flex items-center gap-2">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-4 h-4"><rect width="18" height="18" x="3" y="4" rx="2" ry="2" /><line x1="16" x2="16" y1="2" y2="6" /><line x1="8" x2="8" y1="2" y2="6" /><line x1="3" x2="21" y1="10" y2="10" /></svg>
               Đăng ngày: {postDate}
@@ -116,11 +116,11 @@ export default async function JobDetailsPage({ params }: PageProps) {
       </section>
 
       {/* Main Content */}
-      <section className="section-y max-md:pb-8! max-md:pt-8!">
-        <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <section className="section-y">
+        <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-(--inner-space) items-start">
           
           {/* Left Column (Job Info) */}
-          <div className="lg:col-span-8 flex flex-col gap-6">
+          <div className="lg:col-span-8 flex flex-col gap-(--inner-space)">
             
             <div className="bg-white rounded-2xl border border-slate-100 p-6 md:p-8 shadow-sm">
               <h2 className="text-[17px] font-bold text-zinc-900 uppercase flex items-center gap-3 mb-6">
@@ -164,7 +164,7 @@ export default async function JobDetailsPage({ params }: PageProps) {
               </ul>
             </div>
 
-            <div className="bg-white rounded-2xl border border-slate-100 p-6 md:p-8 shadow-sm mb-6">
+            <div className="bg-white rounded-2xl border border-slate-100 p-6 md:p-8 shadow-sm">
               <h2 className="text-[17px] font-bold text-zinc-900 uppercase flex items-center gap-3 mb-6">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-5 h-5 text-blue-600"><path strokeLinecap="round" strokeLinejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" /></svg>
                 Thông tin chung
@@ -200,10 +200,10 @@ export default async function JobDetailsPage({ params }: PageProps) {
           </div>
 
           {/* Right Column (Sidebar) */}
-          <div className="lg:col-span-4 flex flex-col gap-6 lg:sticky lg:top-24">
+          <div className="lg:col-span-4 flex flex-col gap-(--inner-space) lg:sticky lg:top-24">
             
             {/* Box 1: Ứng tuyển vị trí này */}
-            <div className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm">
+            <div className="bg-white rounded-2xl border border-slate-100 p-6 md:p-8 shadow-sm">
               <h3 className="text-[16px] font-bold text-zinc-900 uppercase mb-5 pb-4 border-b border-slate-100">
                 Ứng tuyển vị trí này
               </h3>
@@ -237,7 +237,7 @@ export default async function JobDetailsPage({ params }: PageProps) {
             </div>
 
             {/* Box 2: Thông tin liên hệ */}
-            <div className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm">
+            <div className="bg-white rounded-2xl border border-slate-100 p-6 md:p-8 shadow-sm">
               <h3 className="text-[16px] font-bold text-zinc-900 uppercase mb-4 pb-4 border-b border-slate-100">
                 Thông tin liên hệ
               </h3>
@@ -261,7 +261,7 @@ export default async function JobDetailsPage({ params }: PageProps) {
             </div>
 
             {/* Box 3: Về ADA Group */}
-            <div className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm">
+            <div className="bg-white rounded-2xl border border-slate-100 p-6 md:p-8 shadow-sm">
               <h3 className="text-[16px] font-bold text-zinc-900 uppercase mb-4 pb-4 border-b border-slate-100">
                 Về ADA GROUP
               </h3>
@@ -286,7 +286,7 @@ export default async function JobDetailsPage({ params }: PageProps) {
       </section>
 
       {/* Footer Call to Action */}
-      <section className="bg-[#002A64] py-12 lg:py-16 mt-8">
+      <section className="bg-[#002A64] py-12 lg:py-16 mt-auto">
         <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-5 text-white">
             <div className="w-14 h-14 shrink-0 bg-white/10 rounded-xl flex items-center justify-center border border-white/20">
