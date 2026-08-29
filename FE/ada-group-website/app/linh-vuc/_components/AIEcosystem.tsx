@@ -39,28 +39,28 @@ export default function AIEcosystem() {
     <section className="section-y bg-white">
       <div className="mx-auto flex max-w-360 flex-col items-start gap-8 px-4 sm:px-6 lg:grid lg:grid-cols-2 lg:items-center lg:gap-20 lg:px-8">
         <div className="flex flex-col items-start gap-4 lg:gap-6">
-          <span className="inline-flex items-center rounded-full bg-[#D5E3FD] px-4 py-1.5 text-[11px] font-semibold tracking-widest text-[#57657B] uppercase lg:text-base lg:font-normal lg:tracking-[1.6px]">
+          <span className="inline-flex items-center rounded-full bg-[#D5E3FD] px-4 py-1.5 text-[11px] font-semibold tracking-widest text-[#57657B] uppercase lg:text-sm lg:font-normal lg:tracking-[1.6px]">
             {CONTENT.badge}
           </span>
 
-          <h2 className="text-[28px] leading-[1.21] font-extrabold text-[#002A64] lg:text-5xl lg:leading-[1.25] lg:font-semibold lg:tracking-[-0.96px]">
+          <h2 className="text-[28px] leading-[1.21] font-semibold text-[#002A64] lg:text-5xl lg:leading-[1.25] lg:font-semibold lg:tracking-[-0.96px]">
             {CONTENT.heading}
           </h2>
 
           <div className="flex flex-col items-start gap-4 lg:gap-5.75 lg:pt-1.5">
-            <p className="text-sm leading-[1.57] text-[#475569] lg:text-lg lg:leading-[1.6] lg:text-[#434750]">
+            <p className="text-base leading-[1.57] text-[#475569] lg:text-lg lg:leading-[1.6] lg:text-[#434750]">
               {CONTENT.paragraph}
             </p>
 
             <div className="flex flex-col items-start gap-3">
-              <p className="text-sm font-semibold text-zinc-900 lg:text-lg lg:text-[#191C1E]">
+              <p className="text-base font-semibold text-zinc-900 lg:text-lg lg:text-[#191C1E]">
                 {CONTENT.criteriaHeading}
               </p>
               <ul className="flex flex-col items-start gap-3">
                 {CONTENT.criteria.map((item) => (
                   <li key={item} className="flex items-start gap-3">
                     <CheckCircleIcon className="mt-1 h-5 w-5 shrink-0 text-[#002A64]" />
-                    <span className="text-sm leading-[1.57] text-[#475569] lg:text-lg lg:leading-[1.6] lg:text-[#434750]">
+                    <span className="text-base leading-[1.57] text-[#475569] lg:text-lg lg:leading-[1.6] lg:text-[#434750]">
                       {item}
                     </span>
                   </li>
