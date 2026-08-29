@@ -37,11 +37,11 @@ export default function MobileAdminCMS() {
               <p className="text-[15px] lg:text-[17px] font-medium text-blue-600 mb-4 lg:mb-6">
                 {item.subtitle}
               </p>
-              <p className="text-[14px] lg:text-[15px] leading-relaxed text-zinc-500 lg:text-zinc-600 mb-4 max-w-xl">
+              <p className="text-[14px] lg:text-[15px] leading-relaxed text-zinc-500 lg:text-zinc-600 mb-4 text-justify">
                 {item.description1}
               </p>
               {item.description2 && (
-                <p className="hidden lg:block text-[15px] leading-relaxed text-zinc-600 max-w-xl">
+                <p className="hidden lg:block text-[15px] leading-relaxed text-zinc-600 text-justify">
                   {item.description2}
                 </p>
               )}

@@ -22,10 +22,10 @@ export default function AIEcosystem() {
                 <span className="text-[11px] font-semibold uppercase tracking-widest text-blue-300 mb-4 block">
                   {item.tag}
                 </span>
-                <h2 className="text-[2rem] font-semibold leading-tight tracking-tight text-white sm:text-4xl lg:text-[2.25rem] mb-5 max-w-xl">
+                <h2 className="text-[2rem] font-semibold leading-tight tracking-tight text-white sm:text-4xl lg:text-[2.25rem] mb-5 text-justify">
                   {item.title}
                 </h2>
-                <p className="text-[14px] lg:text-[15px] leading-relaxed text-blue-100/80 mb-8 max-w-xl">
+                <p className="text-[14px] lg:text-[15px] leading-relaxed text-blue-100/80 mb-8 text-justify">
                   {item.description}
                 </p>
               </div>

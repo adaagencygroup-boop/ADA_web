@@ -29,10 +29,10 @@ export default function AIProblemSolving() {
                 <p className="text-[17px] font-medium text-blue-600 mb-6 leading-snug">
                   {item.subtitle}
                 </p>
-                <p className="text-[15px] leading-relaxed text-zinc-600 mb-4 max-w-xl">
+                <p className="text-[15px] leading-relaxed text-zinc-600 mb-4 max-w-xl text-justify">
                   {item.description1}
                 </p>
-                <p className="text-[15px] leading-relaxed text-zinc-600 mb-8 max-w-xl">
+                <p className="text-[15px] leading-relaxed text-zinc-600 mb-8 max-w-xl text-justify">
                   {item.description2}
                 </p>
               </div>

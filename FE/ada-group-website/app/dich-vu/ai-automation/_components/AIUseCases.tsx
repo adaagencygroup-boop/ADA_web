@@ -161,12 +161,12 @@ export default function AIUseCases() {
                   <span className="text-[11px] font-semibold uppercase tracking-wider text-blue-600 mb-3 block">
                     {item.badge}
                   </span>
-                  <h3 className={`text-[1.5rem] font-semibold leading-tight tracking-tight text-[#0a1a2f] sm:text-3xl lg:text-[2rem] mb-4 lg:mb-6 ${layout === 'custom' ? 'pr-4' : ''}`}>
+                  <h3 className={`text-[1.5rem] font-semibold leading-tight tracking-tight text-[#0a1a2f] sm:text-3xl lg:text-[2rem] mb-4 lg:mb-6 ${layout === 'custom' ? 'pr-4' : ''} text-justify`}>
                     {item.title}
                   </h3>
                   
                   {item.descriptions.map((desc, idx) => (
-                    <p key={idx} className={`text-[15px] leading-relaxed text-zinc-600 ${idx === item.descriptions.length - 1 && !item.note ? 'mb-6 lg:mb-8' : 'mb-4'} ${idx > 0 ? 'hidden md:block' : ''}`}>
+                    <p key={idx} className={`text-[15px] leading-relaxed text-zinc-600 ${idx === item.descriptions.length - 1 && !item.note ? 'mb-6 lg:mb-8' : 'mb-4'} ${idx > 0 ? 'hidden md:block' : ''} text-justify`}>
                       {desc}
                     </p>
                   ))}
@@ -237,12 +237,12 @@ export default function AIUseCases() {
                   <span className="text-[11px] font-semibold uppercase tracking-wider text-blue-600 mb-3 block">
                     {item.badge}
                   </span>
-                  <h3 className="text-[1.5rem] font-semibold leading-tight tracking-tight text-[#0a1a2f] sm:text-2xl mb-4 lg:mb-6">
+                  <h3 className="text-[1.5rem] font-semibold leading-tight tracking-tight text-[#0a1a2f] sm:text-2xl mb-4 lg:mb-6 text-justify">
                     {item.title}
                   </h3>
                   
                   {item.descriptions.map((desc, idx) => (
-                    <p key={idx} className={`text-[14.5px] leading-relaxed text-zinc-600 ${idx === item.descriptions.length - 1 ? 'mb-6 lg:mb-8' : 'mb-4'} ${idx > 0 ? 'hidden md:block' : ''}`}>
+                    <p key={idx} className={`text-[14.5px] leading-relaxed text-zinc-600 ${idx === item.descriptions.length - 1 ? 'mb-6 lg:mb-8' : 'mb-4'} ${idx > 0 ? 'hidden md:block' : ''} text-justify`}>
                       {desc}
                     </p>
                   ))}

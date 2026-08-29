@@ -7,7 +7,7 @@ export default function MobileHeroSection() {
       badge: "Mobile Application",
       title: "Đưa sản phẩm và dịch vụ đến gần người dùng hơn",
       desc:
-        "ADA Group thiết kế và phát triển ứng dụng di động phục vụ khách hàng, nhân viên và hoạt động kinh doanh của doanh nghiệp.\nTừ ứng dụng dịch vụ, thương mại đến các ứng dụng quản lý nội bộ, chúng tôi xây dựng sản phẩm hướng tới trải nghiệm trực quan, hoạt động ổn định và khả năng phát triển lâu dài.",
+        "ADA Group thiết kế và phát triển ứng dụng di động phục vụ khách hàng, nhân viên và hoạt động kinh doanh của doanh nghiệp. Từ ứng dụng dịch vụ, thương mại đến các ứng dụng quản lý nội bộ, chúng tôi xây dựng sản phẩm hướng tới trải nghiệm trực quan, hoạt động ổn định và khả năng phát triển lâu dài.",
       imagePlaceholder: "https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/173610/Originals/cong-nghe-so-la-gi-1.jpg",
     },
   ];
@@ -31,12 +31,12 @@ export default function MobileHeroSection() {
               </div>
 
               {/* Title */}
-              <h1 className="text-[2.25rem] leading-[1.1] font-semibold tracking-tight text-black sm:text-5xl lg:text-[2.75rem]">
+              <h1 className="text-[2rem] leading-[1.2] font-semibold tracking-tight text-black sm:text-4xl lg:text-[2.75rem] lg:leading-[1.1]">
                 {data.title}
               </h1>
 
               {/* Description */}
-              <p className="text-[15px] md:text-base leading-relaxed text-zinc-600 max-w-lg mt-2 lg:mt-4 whitespace-pre-line">
+              <p className="text-[15px] md:text-base leading-relaxed text-zinc-600 mt-2 lg:mt-4 whitespace-pre-line text-justify px-3 lg:px-0 lg:pl-3">
                 {data.desc}
               </p>
 

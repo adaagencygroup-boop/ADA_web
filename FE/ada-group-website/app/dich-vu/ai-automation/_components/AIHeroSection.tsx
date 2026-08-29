@@ -5,12 +5,8 @@ export default function AIHeroSection() {
   const heroData = [
     {
       badge: "AI & Automation",
-      title: (
-        <>
-          Ứng dụng <span className="text-blue-600">AI và tự động hóa</span>{" "}
-          vào những bài toán thực tế
-        </>
-      ),
+      title:
+        "Ứng dụng AI và tự động hóa vào những bài toán thực tế",
       desc:
         "ADA Group hỗ trợ doanh nghiệp ứng dụng trí tuệ nhân tạo và tự động hóa để khai thác thông tin, cải thiện quy trình và nâng cao hiệu quả hoạt động. Mỗi dự án bắt đầu từ bài toán thực tế, dữ liệu hiện có và giá trị doanh nghiệp muốn đạt được, sau đó mới lựa chọn công nghệ phù hợp.",
       imagePlaceholder: "https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/173610/Originals/cong-nghe-so-la-gi-1.jpg",
@@ -38,7 +34,7 @@ export default function AIHeroSection() {
               </h1>
 
               {/* Description */}
-              <p className="text-[15px] leading-relaxed text-zinc-600 max-w-lg mt-2 lg:mt-3">
+              <p className="text-[15px] leading-relaxed text-zinc-600 mt-2 lg:mt-3 text-justify px-3 lg:px-0 lg:pl-3">
                 {data.desc}
               </p>
 

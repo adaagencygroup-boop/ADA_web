@@ -31,12 +31,12 @@ export default function WebHero() {
               </div>
 
               {/* Title */}
-              <h1 className="text-[2.25rem] leading-[1.1] font-semibold tracking-tight text-black sm:text-5xl lg:text-[2.75rem]">
+              <h1 className="text-[2rem] leading-[1.2] font-semibold tracking-tight text-black sm:text-4xl lg:text-[2.75rem] lg:leading-[1.1]">
                 {data.title}
               </h1>
 
               {/* Description */}
-              <p className="text-[15px] md:text-base leading-relaxed text-zinc-600 max-w-lg mt-2 lg:mt-4">
+              <p className="text-[15px] md:text-base leading-relaxed text-zinc-600 mt-2 lg:mt-4 text-justify px-3 lg:px-0 lg:pl-3">
                 {data.desc}
               </p>
 
@@ -44,7 +44,7 @@ export default function WebHero() {
               <div className="pt-2 lg:pt-4">
                 <Link
                   href="/lien-he"
-                  className="inline-flex items-center gap-2 font-semibold text-white transition-colors 
+                  className="inline-flex w-full md:w-auto items-center justify-center gap-2 font-semibold text-white transition-colors 
                   rounded-lg bg-[#004bb4] px-6 py-3 text-[15px] hover:bg-blue-700 
                   md:rounded-md md:bg-[#1e3a6e] md:text-sm md:hover:bg-blue-900"
                 >

@@ -85,12 +85,12 @@ export default function MobileCrossPlatform() {
               <p className="text-[15px] lg:text-[17px] font-medium text-blue-600 lg:text-slate-300 mb-4 lg:mb-8">
                 {item.subtitle}
               </p>
-              <p className="text-[14px] lg:text-[15px] leading-relaxed text-zinc-500 lg:text-slate-400 lg:mb-10 max-w-3xl">
+              <p className="text-[14px] lg:text-[15px] leading-relaxed text-zinc-500 lg:text-slate-400 text-justify lg:text-center">
                 {item.description}
               </p>
 
               {/* "Xem chi tiết" Link */}
-              <Link href="/lien-he" className="mt-6 inline-flex items-center gap-2 text-blue-600 font-semibold text-[14px] lg:text-[14.5px] hover:text-blue-800 transition-colors w-fit">
+              <Link href="/lien-he" className="mt-6 lg:mb-10 inline-flex items-center gap-2 text-blue-600 font-semibold text-[14px] lg:text-[14.5px] hover:text-blue-800 transition-colors w-fit">
                 Trao đổi chi tiết &rarr;
               </Link>
             </div>

@@ -81,14 +81,14 @@ export default function MobileCoreValues() {
                     {item.title}
                   </h3>
                   {/* Mobile only desc */}
-                  <p className="md:hidden text-sm text-zinc-600 leading-relaxed">
+                  <p className="md:hidden text-sm text-zinc-600 leading-relaxed text-justify">
                     {item.description}
                   </p>
                 </div>
               </div>
               
               {/* Desktop only desc */}
-              <p className="hidden md:block text-[14px] text-zinc-600 leading-[1.6]">
+              <p className="hidden md:block text-[14px] text-zinc-600 leading-[1.6] text-justify">
                 {item.description}
               </p>
             </div>
