@@ -54,7 +54,13 @@ export default function LoginForm() {
           </div>
         </div>
 
-        <PasswordField />
+        <PasswordField
+          id="password"
+          name="password"
+          label="Mật khẩu"
+          placeholder="Nhập mật khẩu"
+          autoComplete="current-password"
+        />
 
         <div className="flex items-center justify-between pb-2">
           <label className="flex items-center gap-2 text-sm text-[#1E293B]">

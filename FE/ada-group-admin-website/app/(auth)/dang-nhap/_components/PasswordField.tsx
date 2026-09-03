@@ -4,22 +4,36 @@ import { useState } from "react";
 import { Eye, EyeOff, Lock } from "lucide-react";
 import { Input } from "@/src/components/ui/input";
 
-export default function PasswordField() {
+type PasswordFieldProps = {
+  id: string;
+  name: string;
+  label: string;
+  placeholder?: string;
+  autoComplete?: string;
+};
+
+export default function PasswordField({
+  id,
+  name,
+  label,
+  placeholder = "Nhập mật khẩu",
+  autoComplete = "current-password",
+}: PasswordFieldProps) {
   const [visible, setVisible] = useState(false);
 
   return (
     <div className="flex flex-col gap-1.5">
-      <label htmlFor="password" className="text-sm font-medium text-[#1E293B]">
-        Mật khẩu
+      <label htmlFor={id} className="text-sm font-medium text-[#1E293B]">
+        {label}
       </label>
       <div className="relative">
         <Lock className="pointer-events-none absolute top-1/2 left-3.5 size-5 -translate-y-1/2 text-[#9CA3AF]" />
         <Input
-          id="password"
-          name="password"
+          id={id}
+          name={name}
           type={visible ? "text" : "password"}
-          placeholder="Nhập mật khẩu"
-          autoComplete="current-password"
+          placeholder={placeholder}
+          autoComplete={autoComplete}
           className="h-11.5 border-[#E2E8F0] pr-11 pl-11 text-sm text-[#1E293B] placeholder:text-[#9CA3AF] focus-visible:border-[#1A56DB]"
         />
         <button
