@@ -143,7 +143,7 @@ export default function JobApplicationPage() {
           description={alertInfo.message}
           onClose={() => setAlertInfo(null)}
           actionText={alertInfo.type === 'success' ? "Về trang chủ" : "Đóng"}
-          actionLink={alertInfo.type === 'success' ? "/" : undefined}
+          actionLink={alertInfo.type === 'success' ? "/" : ""}
         />
       )}
       {/* Breadcrumb Area */}
