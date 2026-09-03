@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 
 type AlertType = 'success' | 'error' | 'warning' | 'info';
 
@@ -7,66 +8,65 @@ interface AlertProps {
   title: string;
   description: string;
   onClose?: () => void;
+  actionText?: string;
+  actionLink?: string;
 }
 
 const icons = {
   success: (
-    <svg className="w-5 h-5 text-emerald-500" viewBox="0 0 20 20" fill="currentColor">
-      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clipRule="evenodd" />
-    </svg>
+    <div className="w-16 h-16 rounded-full bg-emerald-50 text-emerald-500 flex items-center justify-center mb-6 shrink-0">
+      <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+      </svg>
+    </div>
   ),
   error: (
-    <svg className="w-5 h-5 text-red-500" viewBox="0 0 20 20" fill="currentColor">
-      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clipRule="evenodd" />
-    </svg>
+    <div className="w-16 h-16 rounded-full bg-red-50 text-red-500 flex items-center justify-center mb-6 shrink-0">
+      <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </div>
   ),
   warning: (
-    <svg className="w-5 h-5 text-amber-500" viewBox="0 0 20 20" fill="currentColor">
-      <path fillRule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
-    </svg>
+    <div className="w-16 h-16 rounded-full bg-amber-50 text-amber-500 flex items-center justify-center mb-6 shrink-0">
+      <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+      </svg>
+    </div>
   ),
   info: (
-    <svg className="w-5 h-5 text-sky-500" viewBox="0 0 20 20" fill="currentColor">
-      <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z" clipRule="evenodd" />
-    </svg>
+    <div className="w-16 h-16 rounded-full bg-sky-50 text-sky-500 flex items-center justify-center mb-6 shrink-0">
+      <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    </div>
   )
 };
 
-const styles = {
-  success: "border-emerald-100",
-  error: "border-red-100",
-  warning: "border-amber-100",
-  info: "border-sky-100"
-};
-
-const accentStyles = {
-  success: "bg-emerald-500",
-  error: "bg-red-500",
-  warning: "bg-amber-500",
-  info: "bg-sky-500"
-};
-
-export default function Alert({ type, title, description, onClose }: AlertProps) {
+export default function Alert({ type, title, description, onClose, actionText = "Về trang chủ", actionLink = "/" }: AlertProps) {
   return (
-    <div className={`relative flex items-start gap-3 p-4 rounded-xl border-2 ${styles[type]} bg-white shadow-[0_2px_15px_rgb(0,0,0,0.03)] max-w-xl w-full overflow-hidden`}>
-      <div className="shrink-0 mt-0.5">
+    <div className="fixed inset-0 z-100 flex items-center justify-center p-4">
+      <div 
+        className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity"
+        onClick={onClose}
+      />
+      
+      <div className="relative w-full max-w-105 bg-white rounded-3xl p-8 md:p-10 flex flex-col items-center text-center shadow-2xl animate-in fade-in zoom-in-95 duration-200">
         {icons[type]}
+        
+        <h3 className="text-[22px] font-bold text-[#002A64] mb-3 leading-tight">{title}</h3>
+        <p className="text-[14.5px] text-zinc-500 leading-relaxed mb-8">{description}</p>
+        
+        {actionLink ? (
+          <Link href={actionLink} className="w-full py-3.5 bg-[#1a56db] hover:bg-[#1e40af] text-white font-semibold rounded-xl transition-colors text-[15px] shadow-sm">
+            {actionText}
+          </Link>
+        ) : (
+          <button onClick={onClose} className="w-full py-3.5 bg-[#1a56db] hover:bg-[#1e40af] text-white font-semibold rounded-xl transition-colors text-[15px] shadow-sm">
+            {actionText}
+          </button>
+        )}
       </div>
-      <div className="flex-1">
-        <h3 className="text-[14.5px] font-semibold text-zinc-800 mb-1 leading-snug">{title}</h3>
-        <p className="text-[13.5px] text-zinc-500 leading-relaxed">{description}</p>
-      </div>
-      {onClose && (
-        <button 
-          onClick={onClose}
-          type="button"
-          className="shrink-0 text-zinc-400 hover:text-zinc-700 transition-colors p-1 rounded-md hover:bg-zinc-100 -mr-1 -mt-1"
-        >
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-      )}
     </div>
   );
 }
