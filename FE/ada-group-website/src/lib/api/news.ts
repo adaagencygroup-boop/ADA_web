@@ -31,6 +31,59 @@ const RAW_ARTICLES: Omit<NewsArticle, "slug">[] = [
     date: "03/07/2026",
     imageUrl: "https://picsum.photos/seed/ada-news-recruit/700/500",
     featured: true,
+    views: 1248,
+    body: [
+      {
+        type: "paragraph",
+        text: "Đồng hành cùng chiến lược phát triển hệ sinh thái AI giai đoạn 2026-2030, ADA Group mở rộng tuyển dụng nhiều vị trí tiềm năng trên toàn quốc.",
+      },
+      {
+        type: "paragraph",
+        text: "Trong bối cảnh AI đang thay đổi mọi lĩnh vực, ADA Group xác định con người là yếu tố cốt lõi tạo nên lợi thế cạnh tranh. Do đó, chúng tôi không ngừng tìm kiếm những nhân tài xuất sắc để cùng chúng tôi xây dựng các giải pháp công nghệ tiên tiến, mang tính đột phá, mang lại giá trị thực tiễn cho cộng đồng và doanh nghiệp.",
+      },
+      { type: "heading", text: "Chiến lược phát triển AI của ADA Group" },
+      {
+        type: "paragraph",
+        text: "ADA Group tập trung xây dựng hệ sinh thái AI toàn diện, từ nghiên cứu, phát triển công nghệ lõi đến ứng dụng thực tiễn - trong các lĩnh vực trọng điểm. Chúng tôi đầu tư mạnh mẽ vào hạ tầng dữ liệu, mô hình AI và các nền tảng Automation nhằm kiến tạo những giải pháp thông minh, giúp doanh nghiệp tối ưu vận hành và nâng cao năng lực cạnh tranh.",
+      },
+      {
+        type: "paragraph",
+        text: "Mục tiêu dài hạn đến 2030, ADA Group trở thành đơn vị dẫn đầu tại Việt Nam trong việc cung cấp các giải pháp AI và chuyển đổi số, đóng góp nền tảng hợp tác quốc tế để đưa trí tuệ Việt vươn tầm khu vực.",
+      },
+      { type: "heading", text: "Cơ hội phát triển cùng ADA Group" },
+      {
+        type: "paragraph",
+        text: "Chúng tôi tin rằng mỗi thành viên đều có thể tạo nên sự khác biệt. Tại ADA Group, bạn sẽ được trao quyền để chủ động sáng tạo, thỏa sức thể hiện năng lực, cùng với lộ trình thăng tiến rõ ràng, cơ hội chuyên môn trong công nghệ hiện đại, linh hoạt.",
+      },
+      {
+        type: "paragraph",
+        text: "Bên cạnh mức thu nhập cạnh tranh, chúng tôi còn mang đến lộ trình phát triển rõ ràng, các chương trình đào tạo chuyên sâu, cơ hội tham gia dự án lớn và làm việc cùng đội ngũ chuyên gia giàu kinh nghiệm trong và ngoài nước.",
+      },
+      { type: "heading", text: "Các dự án nổi bật" },
+      {
+        type: "paragraph",
+        text: "Ứng viên gia nhập ADA Group sẽ có cơ hội tham gia vào các dự án AI, Big Data, Cloud và Automation quy mô lớn như: nền tảng phân tích dữ liệu thông minh, giải pháp AI Agent hỗ trợ vận hành doanh nghiệp, hệ thống nhận diện hình ảnh và xử lý ngôn ngữ tự nhiên, cùng nhiều sản phẩm phục vụ chuyển đổi số cho khách hàng trong ngành tài chính - ngân hàng, sản xuất, logistics, giáo dục...",
+      },
+      {
+        type: "paragraph",
+        text: "Chúng tôi luôn khuyến khích tinh thần đổi mới, tư duy phản biện và văn hóa làm việc cởi mở để mỗi cá nhân có thể phát huy tối đa năng lực và đóng góp giá trị bền vững cho xã hội.",
+      },
+      { type: "heading", text: "Gia nhập ADA Group ngay hôm nay!" },
+      {
+        type: "paragraph",
+        text: "Nếu bạn đam mê công nghệ, yêu thích những thách thức và mong muốn phát triển sự nghiệp trong lĩnh vực AI, hãy gia nhập ADA Group để cùng chúng tôi kiến tạo tương lai thông minh hơn.",
+      },
+      {
+        type: "paragraph",
+        emphasis: true,
+        text: "Ứng viên quan tâm vui lòng gửi CV về email: tuyendung@adagroup.vn hoặc ứng tuyển trực tiếp qua website.",
+      },
+      {
+        type: "paragraph",
+        emphasis: true,
+        text: "Hạn nộp hồ sơ: 31/07/2026.",
+      },
+    ],
   },
   {
     category: "Tin tức công ty",
@@ -201,6 +254,21 @@ export async function getArticleBySlug(
   slug: string,
 ): Promise<NewsArticle | undefined> {
   return ARTICLES.find((article) => article.slug === slug);
+}
+
+export async function getRelatedArticles(
+  current: NewsArticle,
+  limit = 3,
+): Promise<NewsArticle[]> {
+  const sameCategory = ARTICLES.filter(
+    (article) =>
+      article.slug !== current.slug && article.category === current.category,
+  );
+  const others = ARTICLES.filter(
+    (article) =>
+      article.slug !== current.slug && article.category !== current.category,
+  );
+  return [...sameCategory, ...others].slice(0, limit);
 }
 
 export function buildNewsHref(category: string, page: number) {

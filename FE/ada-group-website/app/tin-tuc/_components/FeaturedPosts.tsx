@@ -22,7 +22,7 @@ function CalendarIcon({ className = "h-3 w-3" }: { className?: string }) {
 
 export default function FeaturedPosts({ posts }: { posts: NewsArticle[] }) {
   return (
-    <div className="rounded-2xl bg-white p-6 shadow-[0_1px_2px_rgba(0,0,0,0.05)]">
+    <div className="rounded-2xl bg-white p-6 shadow-[0_1px_2px_rgba(0,0,0,0.3)]">
       <h2 className="border-b border-gray-100 pb-2 text-lg font-semibold text-[#111827]">
         Bài viết nổi bật
       </h2>

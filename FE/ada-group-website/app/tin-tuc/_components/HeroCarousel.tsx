@@ -165,7 +165,7 @@ export default function HeroCarousel() {
   ).join("\n");
 
   return (
-    <section className="section-y">
+    <section className="section-y pb-0!">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="hero-carousel relative overflow-hidden rounded-2xl bg-linear-to-br from-[#0B1F4D] via-[#0F2A63] to-[#173B82]">
           <style>{slideCss}</style>

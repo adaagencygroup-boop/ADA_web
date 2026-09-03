@@ -22,7 +22,7 @@ function CalendarIcon({ className = "h-3 w-3" }: { className?: string }) {
 
 export default function NewsCard({ article }: { article: NewsArticle }) {
   return (
-    <article className="flex w-full flex-col overflow-hidden rounded-2xl bg-white shadow-[0_1px_2px_rgba(0,0,0,0.05)] sm:flex-row">
+    <article className="flex w-full flex-col overflow-hidden rounded-2xl bg-white shadow-[0_1px_2px_rgba(0,0,0,0.3)] sm:flex-row">
       <Link
         href={`/tin-tuc/${article.slug}`}
         className="relative h-48 w-full shrink-0 sm:h-auto sm:w-70"
