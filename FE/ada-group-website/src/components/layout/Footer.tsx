@@ -146,16 +146,16 @@ function FooterLinkList({
 
 export default function Footer() {
   return (
-    <footer className="border-t border-zinc-200 bg-[#f9fafc]">
-      <div className="mx-auto max-w-360 px-4 pt-10 pb-4 lg:pt-12 lg:pb-6 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1.4fr)_repeat(3,minmax(0,1fr))]">
+    <footer className="border-t border-zinc-200 bg-[#f9fafc] section-y">
+      <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 gap-(--section-padding) lg:grid-cols-[minmax(0,1.4fr)_repeat(3,minmax(0,1fr))]">
           <div>
             <Link href="/" className="flex items-center gap-2">
               <Image src="/images/logo/logo.png" alt="ADA Group Logo" width={40} height={40} className="h-8 sm:h-10 w-auto object-contain" />
               <span className="text-lg font-bold text-zinc-900">ADA Group</span>
             </Link>
 
-            <div className="mt-6 divide-y divide-zinc-200 rounded-xl border border-zinc-200 w-full overflow-hidden">
+            <div className="mt-(--inner-space) divide-y divide-zinc-200 rounded-xl border border-zinc-200 w-full overflow-hidden">
               {CONTACT_ROWS.map((row, index) => (
                 <div key={index} className="flex items-start gap-3 p-3 w-full">
                   <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-50 text-blue-700">
@@ -169,7 +169,7 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-x-8 gap-y-8 sm:grid-cols-3 lg:col-span-3">
+          <div className="grid grid-cols-2 gap-(--inner-space) sm:grid-cols-3 lg:col-span-3">
             <FooterLinkList
               title="Dịch vụ"
               links={SERVICE_LINKS}
@@ -187,7 +187,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-6 lg:mt-8 flex flex-col items-center justify-between gap-4 border-t border-zinc-200 pt-4 sm:flex-row">
+        <div className="mt-(--section-padding) flex flex-col items-center justify-between gap-(--inner-space) border-t border-zinc-200 pt-(--inner-space) sm:flex-row">
           <p className="text-sm text-zinc-500">
             © {new Date().getFullYear()} ADA Group. Redesign Vietnam Initiative. All
             rights reserved.
