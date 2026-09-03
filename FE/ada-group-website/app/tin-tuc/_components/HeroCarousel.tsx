@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowRightIcon } from "@/app/_components/icons";
 
@@ -167,8 +168,17 @@ export default function HeroCarousel() {
   return (
     <section className="section-y pb-0!">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
-        <div className="hero-carousel relative overflow-hidden rounded-2xl bg-linear-to-br from-[#0B1F4D] via-[#0F2A63] to-[#173B82]">
+        <div className="hero-carousel relative overflow-hidden rounded-2xl bg-[#003274]">
           <style>{slideCss}</style>
+
+          <div className="absolute inset-0 bg-linear-to-r from-[#001A40] to-[#003274] opacity-90" />
+          <Image
+            src="https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/news-banner.jpg"
+            alt=""
+            fill
+            sizes="100vw"
+            className="object-cover mix-blend-overlay opacity-50"
+          />
 
           {SLIDES.map((_, index) => (
             <input
@@ -180,11 +190,6 @@ export default function HeroCarousel() {
               className="sr-only"
             />
           ))}
-
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0 z-10 bg-[radial-gradient(circle_at_1px_1px,rgba(147,197,253,0.35)_1px,transparent_0)] bg-size-[28px_28px] opacity-40"
-          />
 
           {SLIDES.length > 1 &&
             SLIDES.map((_, index) => (
