@@ -11,6 +11,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "adagroup.com.vn",
       },
+      {
+        protocol: "https",
+        hostname: "wtxsbaavzdvpzogiwoei.supabase.co",
+      },
     ],
   },
 };
