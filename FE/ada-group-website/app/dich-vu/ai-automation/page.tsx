@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import AIHeroSection from "./_components/AIHeroSection";
+import Hero from "@/app/dich-vu/_components/Hero";
 import AIProblemSolving from "./_components/AIProblemSolving";
 import AIEcosystem from "./_components/AIEcosystem";
 import AIUseCases from "./_components/AIUseCases";
@@ -14,7 +14,12 @@ export const metadata: Metadata = {
 export default function AIAutomationServicePage() {
   return (
     <>
-      <AIHeroSection />
+      <Hero
+        badge="AI & Automation"
+        title="Ứng dụng AI và tự động hóa vào những bài toán thực tế"
+        desc="ADA Group hỗ trợ doanh nghiệp ứng dụng trí tuệ nhân tạo và tự động hóa để khai thác thông tin, cải thiện quy trình và nâng cao hiệu quả hoạt động. Mỗi dự án bắt đầu từ bài toán thực tế, dữ liệu hiện có và giá trị doanh nghiệp muốn đạt được, sau đó mới lựa chọn công nghệ phù hợp."
+        imagePlaceholder="https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/173610/Originals/cong-nghe-so-la-gi-1.jpg"
+      />
       <AIProblemSolving />
       <AIUseCases />
       <AIEcosystem />

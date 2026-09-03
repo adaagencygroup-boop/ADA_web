@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import EnterpriseHeroSection from "./_components/EnterpriseHeroSection";
+import Hero from "@/app/dich-vu/_components/Hero";
 import EnterpriseCoreValues from "./_components/EnterpriseCoreValues";
 import EnterpriseSolutions from "./_components/EnterpriseSolutions";
 import EnterpriseIntro from "./_components/EnterpriseIntro";
@@ -14,7 +14,12 @@ export const metadata: Metadata = {
 export default function EnterpriseServicePage() {
   return (
     <>
-      <EnterpriseHeroSection />
+      <Hero
+        badge="Enterprise System"
+        title="Số hóa quy trình, kết nối hoạt động doanh nghiệp"
+        desc="ADA Group thiết kế và phát triển các hệ thống phần mềm giúp doanh nghiệp quản lý thông tin, chuẩn hóa quy trình và kết nối các hoạt động trên một nền tảng thống nhất. Từ một công cụ phục vụ một bộ phận đến hệ thống kết nối nhiều quy trình trong doanh nghiệp, mỗi giải pháp được xây dựng dựa trên cách tổ chức thực sự vận hành, hướng tới việc giảm thao tác thủ công, tập trung dữ liệu và nâng cao hiệu quả quản lý."
+        imagePlaceholder="https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/173610/Originals/cong-nghe-so-la-gi-1.jpg"
+      />
       <EnterpriseCoreValues />
       <EnterpriseSolutions />
       <EnterpriseIntro />

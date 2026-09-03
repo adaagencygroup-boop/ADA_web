@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import WebHero from "./_components/WebHero";
+import Hero from "@/app/dich-vu/_components/Hero";
 import WebVision from "./_components/WebVision";
 import WebCoreValues from "./_components/WebCoreValues";
 import WebSolutions from "./_components/WebSolutions";
@@ -16,7 +16,12 @@ export const metadata: Metadata = {
 export default function WebServicePage() {
   return (
     <div className="flex flex-col">
-      <WebHero />
+      <Hero
+        badge="WEB & WEB APPLICATION"
+        title="Xây dựng nền tảng web phục vụ hoạt động kinh doanh"
+        desc="ADA Group thiết kế và phát triển website, ứng dụng web và các hệ thống trực tuyến theo nhu cầu của doanh nghiệp — từ website giới thiệu thương hiệu đến những nền tảng hỗ trợ quản lý, vận hành."
+        imagePlaceholder="https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/173610/Originals/cong-nghe-so-la-gi-1.jpg"
+      />
       <WebCoreValues />
       <WebSolutions />
       <WebIntro />

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import MobileHeroSection from "./_components/MobileHeroSection";
+import Hero from "@/app/dich-vu/_components/Hero";
 import MobileIntro from "./_components/MobileIntro";
 import MobileCustomerApps from "./_components/MobileCustomerApps";
 import MobileBusinessApps from "./_components/MobileBusinessApps";
@@ -20,7 +20,12 @@ export const metadata: Metadata = {
 export default function MobileServicePage() {
   return (
     <>
-      <MobileHeroSection />
+      <Hero
+        badge="Mobile Application"
+        title="Đưa sản phẩm và dịch vụ đến gần người dùng hơn"
+        desc="ADA Group thiết kế và phát triển ứng dụng di động phục vụ khách hàng, nhân viên và hoạt động kinh doanh của doanh nghiệp. Từ ứng dụng dịch vụ, thương mại đến các ứng dụng quản lý nội bộ, chúng tôi xây dựng sản phẩm hướng tới trải nghiệm trực quan, hoạt động ổn định và khả năng phát triển lâu dài."
+        imagePlaceholder="https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/173610/Originals/cong-nghe-so-la-gi-1.jpg"
+      />
       <MobileCoreValues />
       <MobileIntro />
       <MobileCustomerApps />
