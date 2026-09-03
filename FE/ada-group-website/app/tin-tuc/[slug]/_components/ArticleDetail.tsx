@@ -147,14 +147,14 @@ export default function ArticleDetail({ article }: { article: NewsArticle }) {
           block.type === "heading" ? (
             <h3
               key={index}
-              className="mt-2 text-lg leading-[27px] font-semibold text-black"
+              className="mt-2 text-lg leading-6.75 font-semibold text-black"
             >
               {block.text}
             </h3>
           ) : (
             <p
               key={index}
-              className={`text-base leading-[26px] text-[#334155] ${
+              className={`text-base leading-6.75 text-[#334155] ${
                 block.emphasis ? "font-semibold" : ""
               }`}
             >
