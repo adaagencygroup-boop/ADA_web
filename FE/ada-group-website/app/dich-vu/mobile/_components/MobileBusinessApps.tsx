@@ -119,7 +119,7 @@ export default function MobileBusinessApps() {
           {/* Left Column (Image & Highlights - Top on Mobile) */}
           <div className="flex flex-col lg:gap-(--inner-space) order-1">
             <div className="relative w-full min-h-64 lg:min-h-0 lg:aspect-16/10 bg-slate-100 lg:rounded-3xl overflow-hidden lg:shadow-sm border-b border-slate-100 lg:border-slate-100">
-              <Image src="https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/173610/Originals/cong-nghe-so-la-gi-1.jpg" alt="Ứng dụng doanh nghiệp" fill className="object-cover" unoptimized />
+              <Image src="https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/dong-hanh-cung-doanh-nghiep-tren-hanh-trinh-chuyen-doi-so-02.jpg" alt="Ứng dụng doanh nghiệp" fill className="object-cover" />
             </div>
             
             <div className="hidden lg:flex flex-col gap-(--inner-space)">

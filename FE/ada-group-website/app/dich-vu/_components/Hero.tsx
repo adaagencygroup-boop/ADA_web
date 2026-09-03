@@ -49,7 +49,7 @@ export default function Hero({ badge, title, desc, imagePlaceholder }: HeroProps
           {/* Right: Image */}
           <div className="lg:col-span-7 mt-4 lg:mt-0">
             <div className="relative aspect-692/393 w-full overflow-hidden rounded-4xl bg-slate-100 flex items-center justify-center border border-slate-200">
-              <Image src={imagePlaceholder} alt={title} fill className="object-cover" unoptimized priority />
+              <Image src={imagePlaceholder} alt={title} fill className="object-cover" priority />
             </div>
           </div>
         </div>

@@ -44,11 +44,10 @@ export default function RecruitmentHero() {
         {/* Mobile Background */}
         <div className="absolute inset-0 lg:hidden">
           <Image 
-            src="https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/173610/Originals/cong-nghe-so-la-gi-1.jpg" 
+            src="https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/dong-hanh-cung-doanh-nghiep-tren-hanh-trinh-chuyen-doi-so-02.jpg" 
             alt="ADA Group Office" 
             fill 
             className="object-cover" 
-            unoptimized 
           />
           {/* Overlay to ensure text readability */}
           <div className="absolute inset-0 bg-[#003274]/85"></div>
@@ -59,11 +58,10 @@ export default function RecruitmentHero() {
           <div className="absolute inset-0 bg-[#003274]"></div>
           <div className="absolute top-0 right-0 bottom-0 w-1/2 bg-slate-100 [clip-path:polygon(10%_0,100%_0,100%_100%,0_100%)]">
             <Image 
-              src="https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/173610/Originals/cong-nghe-so-la-gi-1.jpg" 
+              src="https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/dong-hanh-cung-doanh-nghiep-tren-hanh-trinh-chuyen-doi-so-02.jpg" 
               alt="ADA Group Office" 
               fill 
               className="object-cover" 
-              unoptimized 
             />
           </div>
         </div>

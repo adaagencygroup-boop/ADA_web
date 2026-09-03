@@ -65,7 +65,7 @@ export default function MobileCrossPlatform() {
           
           {/* Mobile Image (Hidden on Desktop) */}
           <div className="lg:hidden relative w-full min-h-64 bg-slate-100 border-b border-slate-100">
-            <Image src="https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/173610/Originals/cong-nghe-so-la-gi-1.jpg" alt="Ứng dụng đa nền tảng" fill className="object-cover" unoptimized />
+            <Image src="https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/dong-hanh-cung-doanh-nghiep-tren-hanh-trinh-chuyen-doi-so-02.jpg" alt="Ứng dụng đa nền tảng" fill className="object-cover" />
           </div>
 
           {/* Text Content */}

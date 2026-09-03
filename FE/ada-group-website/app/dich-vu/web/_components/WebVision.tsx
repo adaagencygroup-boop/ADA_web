@@ -42,7 +42,7 @@ export default function WebVision() {
             
             {/* Image Container */}
             <div className="relative w-full aspect-4/3 lg:aspect-16/11 bg-white rounded-3xl overflow-hidden shadow-[0_10px_50px_-10px_rgba(0,0,0,0.1)] border border-slate-100 flex items-center justify-center p-4">
-              <Image src="https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/173610/Originals/cong-nghe-so-la-gi-1.jpg" alt="ADA Group Mockup" fill className="object-cover rounded-2xl" unoptimized />
+              <Image src="https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/dong-hanh-cung-doanh-nghiep-tren-hanh-trinh-chuyen-doi-so-02.jpg" alt="ADA Group Mockup" fill className="object-cover rounded-2xl" />
             </div>
           </div>
           

@@ -9,7 +9,7 @@ export default function WebSolutions() {
       subtitle:"Xây dựng hình ảnh chuyên nghiệp trên môi trường số",
       description:
 "ADA Group thiết kế và phát triển website chuyên nghiệp, giúp doanh nghiệp giới thiệu thương hiệu, sản phẩm và dịch vụ, đồng thời hỗ trợ kết nối khách hàng, truyền thông và phát triển kinh doanh.",
-      imagePlaceholder:"https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/173610/Originals/cong-nghe-so-la-gi-1.jpg",
+      imagePlaceholder:"https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/dong-hanh-cung-doanh-nghiep-tren-hanh-trinh-chuyen-doi-so-02.jpg",
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
           <rect width="20" height="14" x="2" y="3" rx="2" />
@@ -25,7 +25,7 @@ export default function WebSolutions() {
       subtitle:"Đưa dịch vụ và quy trình nghiệp vụ lên nền tảng web",
       description:
 "ADA Group phát triển ứng dụng web giúp doanh nghiệp quản lý dữ liệu, cung cấp dịch vụ và số hóa quy trình nghiệp vụ trên một nền tảng tập trung, có thể hoạt động độc lập hoặc tích hợp vào hệ thống doanh nghiệp.",
-      imagePlaceholder:"https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/173610/Originals/cong-nghe-so-la-gi-1.jpg",
+      imagePlaceholder:"https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/dong-hanh-cung-doanh-nghiep-tren-hanh-trinh-chuyen-doi-so-02.jpg",
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
           <rect width="7" height="7" x="3" y="3" rx="1" />
@@ -42,7 +42,7 @@ export default function WebSolutions() {
       subtitle:"Xây dựng nền tảng bán hàng trực tuyến hiệu quả",
       description:
 "ADA Group phát triển website và nền tảng thương mại điện tử phù hợp với mô hình kinh doanh, sản phẩm và hành vi mua sắm của từng nhóm khách hàng.\n\nChúng tôi không chỉ tập trung vào giao diện cửa hàng mà xem xét toàn bộ hành trình mua hàng — từ tìm kiếm sản phẩm, lựa chọn, đặt hàng và thanh toán đến theo dõi đơn hàng và quản lý khách hàng.",
-      imagePlaceholder:"https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/173610/Originals/cong-nghe-so-la-gi-1.jpg",
+      imagePlaceholder:"https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/dong-hanh-cung-doanh-nghiep-tren-hanh-trinh-chuyen-doi-so-02.jpg",
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
           <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
@@ -58,7 +58,7 @@ export default function WebSolutions() {
       subtitle:"Quản lý tập trung, kiểm soát hiệu quả",
       description:
 "Phía sau một website hay ứng dụng web thường là hệ thống quản trị dành riêng cho doanh nghiệp.\n\nADA Group xây dựng các trang quản trị giúp đội ngũ vận hành quản lý dữ liệu, theo dõi hoạt động, xử lý nghiệp vụ và nắm bắt thông tin quan trọng trên một giao diện thống nhất.",
-      imagePlaceholder:"https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/173610/Originals/cong-nghe-so-la-gi-1.jpg",
+      imagePlaceholder:"https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/dong-hanh-cung-doanh-nghiep-tren-hanh-trinh-chuyen-doi-so-02.jpg",
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
           <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
@@ -73,7 +73,7 @@ export default function WebSolutions() {
       subtitle:"Kết nối thông tin, nâng cao trải nghiệm",
       description:
 "ADA Group xây dựng cổng thông tin dành cho khách hàng và đối tác, giúp tập trung thông tin, tài liệu và dịch vụ trên một nền tảng thống nhất, từ đó đơn giản hóa quá trình trao đổi, quản lý và kết nối giữa doanh nghiệp với các bên liên quan.",
-      imagePlaceholder:"https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/173610/Originals/cong-nghe-so-la-gi-1.jpg",
+      imagePlaceholder:"https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/dong-hanh-cung-doanh-nghiep-tren-hanh-trinh-chuyen-doi-so-02.jpg",
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
           <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
@@ -90,7 +90,7 @@ export default function WebSolutions() {
       subtitle:"Kết nối linh hoạt, mở rộng không giới hạn",
       description:
 "Một ứng dụng web trong thực tế hiếm khi hoạt động độc lập. Hệ thống có thể cần kết nối với phần mềm quản lý, cổng thanh toán, dịch vụ gửi thông báo hoặc các nền tảng mà doanh nghiệp đang sử dụng.\n\nADA Group xây dựng API và các giải pháp tích hợp giúp dữ liệu được trao đổi giữa các hệ thống một cách thống nhất, hạn chế những quy trình nhập liệu hoặc xử lý thủ công không cần thiết.",
-      imagePlaceholder:"https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/173610/Originals/cong-nghe-so-la-gi-1.jpg",
+      imagePlaceholder:"https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/dong-hanh-cung-doanh-nghiep-tren-hanh-trinh-chuyen-doi-so-02.jpg",
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
           <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
@@ -162,7 +162,7 @@ export default function WebSolutions() {
                     </Link>
                   </div>
                   <div className="w-full lg:flex-1 bg-slate-100 lg:bg-[#111827] min-h-64 lg:min-h-75 relative flex items-center justify-center lg:p-8">
-                    <Image src={item.imagePlaceholder} alt={item.title} fill className="object-cover rounded-xl opacity-80" unoptimized />
+                    <Image src={item.imagePlaceholder} alt={item.title} fill className="object-cover rounded-xl opacity-80" />
                   </div>
                 </div>
               );
@@ -200,7 +200,7 @@ export default function WebSolutions() {
                     </Link>
                   </div>
                   <div className="w-full lg:flex-1 bg-slate-200 min-h-75 relative flex items-center justify-center">
-                    <Image src={item.imagePlaceholder} alt={item.title} fill className="object-cover" unoptimized />
+                    <Image src={item.imagePlaceholder} alt={item.title} fill className="object-cover" />
                   </div>
                 </div>
               );
@@ -237,7 +237,7 @@ export default function WebSolutions() {
                   </Link>
                 </div>
                 <div className="w-full xl:w-[45%] bg-slate-100 min-h-64 xl:min-h-full relative flex items-center justify-center">
-                  <Image src={item.imagePlaceholder} alt={item.title} fill className="object-cover" unoptimized />
+                  <Image src={item.imagePlaceholder} alt={item.title} fill className="object-cover" />
                 </div>
               </div>
             );

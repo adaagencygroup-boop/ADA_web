@@ -171,8 +171,7 @@ export default function JobApplicationPage() {
             src={job.coverImageURL} 
             alt={job.jobTitle} 
             fill 
-            className="object-cover" 
-            unoptimized 
+            className="object-cover"  
           />
         )}
         <div className="absolute inset-0 bg-[#002A64]/65"></div>

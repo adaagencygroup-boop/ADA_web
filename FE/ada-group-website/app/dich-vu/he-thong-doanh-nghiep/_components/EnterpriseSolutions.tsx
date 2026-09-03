@@ -9,7 +9,7 @@ export default function EnterpriseSolutions() {
       subtitle:"Tập trung thông tin, kết nối hoạt động kinh doanh",
       description:
 "ADA Group xây dựng hệ thống giúp doanh nghiệp tập trung thông tin khách hàng và kết nối với hoạt động bán hàng, chăm sóc và quản lý, tạo góc nhìn rõ ràng về khách hàng và nâng cao hiệu quả phối hợp giữa các bộ phận.",
-      imagePlaceholder:"https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/173610/Originals/cong-nghe-so-la-gi-1.jpg",
+      imagePlaceholder:"https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/dong-hanh-cung-doanh-nghiep-tren-hanh-trinh-chuyen-doi-so-02.jpg",
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
           <rect width="20" height="14" x="2" y="3" rx="2" />
@@ -25,7 +25,7 @@ export default function EnterpriseSolutions() {
       subtitle:"Kết nối con người với hoạt động nội bộ",
       description:
 "ADA Group phát triển hệ thống giúp doanh nghiệp tổ chức thông tin nhân sự và các hoạt động nội bộ trên một môi trường thống nhất, giúp nhân viên, quản lý và các bộ phận phối hợp thuận tiện hơn, đồng thời tạo nền tảng hỗ trợ doanh nghiệp quản lý và phát triển đội ngũ một cách lâu dài.",
-      imagePlaceholder:"https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/173610/Originals/cong-nghe-so-la-gi-1.jpg",
+      imagePlaceholder:"https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/dong-hanh-cung-doanh-nghiep-tren-hanh-trinh-chuyen-doi-so-02.jpg",
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
           <rect width="7" height="7" x="3" y="3" rx="1" />
@@ -42,7 +42,7 @@ export default function EnterpriseSolutions() {
       subtitle:"Tập trung hoạt động trên một nền tảng thống nhất",
       description:
 "ADA Group xây dựng các hệ thống giúp doanh nghiệp tập trung hoạt động, dữ liệu và thông tin vận hành trên một môi trường thống nhất, giúp các bộ phận dễ dàng theo dõi, phối hợp và quản lý công việc hiệu quả hơn. Giải pháp được thiết kế linh hoạt theo đặc thù từng doanh nghiệp và có khả năng mở rộng khi quy mô, nhu cầu vận hành thay đổi.",
-      imagePlaceholder:"https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/173610/Originals/cong-nghe-so-la-gi-1.jpg",
+      imagePlaceholder:"https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/dong-hanh-cung-doanh-nghiep-tren-hanh-trinh-chuyen-doi-so-02.jpg",
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
           <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
@@ -58,7 +58,7 @@ export default function EnterpriseSolutions() {
       subtitle:"Tập trung hoạt động trên một nền tảng thống nhất",
       description:
 "ADA Group xây dựng các hệ thống giúp doanh nghiệp tập trung hoạt động, dữ liệu và thông tin vận hành, giúp các bộ phận dễ dàng theo dõi, phối hợp và quản lý công việc. Giải pháp được thiết kế linh hoạt và có thể mở rộng theo nhu cầu phát triển của doanh nghiệp.",
-      imagePlaceholder:"https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/173610/Originals/cong-nghe-so-la-gi-1.jpg",
+      imagePlaceholder:"https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/dong-hanh-cung-doanh-nghiep-tren-hanh-trinh-chuyen-doi-so-02.jpg",
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
           <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" />
@@ -73,7 +73,7 @@ export default function EnterpriseSolutions() {
       subtitle:"Biến dữ liệu thành góc nhìn hỗ trợ quản lý",
       description:
 "ADA Group xây dựng các nền tảng giúp doanh nghiệp tổng hợp, quan sát và khai thác dữ liệu một cách trực quan, giúp thông tin được trình bày rõ ràng theo từng nhu cầu, từ theo dõi hoạt động hằng ngày đến hỗ trợ quản lý có góc nhìn tổng quan.",
-      imagePlaceholder:"https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/173610/Originals/cong-nghe-so-la-gi-1.jpg",
+      imagePlaceholder:"https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/dong-hanh-cung-doanh-nghiep-tren-hanh-trinh-chuyen-doi-so-02.jpg",
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
           <path d="M21.21 15.89A10 10 0 1 1 8 2.83" />
@@ -88,7 +88,7 @@ export default function EnterpriseSolutions() {
       subtitle:"Kết nối thay vì tạo thêm những nền tảng tách biệt",
       description:
 "ADA Group phát triển giải pháp có khả năng kết nối với website, ứng dụng, phần mềm và các nguồn dữ liệu hiện có, giúp thông tin được trao đổi xuyên suốt và hạn chế dữ liệu phân tán. Qua đó, doanh nghiệp có thể tận dụng hạ tầng công nghệ hiện tại và từng bước xây dựng môi trường vận hành thống nhất hơn.",
-      imagePlaceholder:"https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/173610/Originals/cong-nghe-so-la-gi-1.jpg",
+      imagePlaceholder:"https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/dong-hanh-cung-doanh-nghiep-tren-hanh-trinh-chuyen-doi-so-02.jpg",
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
           <circle cx="9" cy="21" r="1" />
@@ -148,7 +148,7 @@ export default function EnterpriseSolutions() {
                     </Link>
                   </div>
                   <div className="w-full lg:flex-1 bg-[#111827] min-h-75 relative flex items-center justify-center p-8">
-                    <Image src={item.imagePlaceholder} alt={item.title} fill className="object-cover rounded-xl opacity-80" unoptimized />
+                    <Image src={item.imagePlaceholder} alt={item.title} fill className="object-cover rounded-xl opacity-80" />
                   </div>
                 </div>
               );
@@ -182,7 +182,7 @@ export default function EnterpriseSolutions() {
                     </Link>
                   </div>
                   <div className="w-full lg:flex-1 bg-slate-200 min-h-60 md:min-h-75 relative flex items-center justify-center order-1 lg:order-2">
-                    <Image src={item.imagePlaceholder} alt={item.title} fill className="object-cover" unoptimized />
+                    <Image src={item.imagePlaceholder} alt={item.title} fill className="object-cover" />
                   </div>
                 </div>
               );
@@ -215,7 +215,7 @@ export default function EnterpriseSolutions() {
                   </Link>
                 </div>
                 <div className="w-full xl:w-[45%] bg-slate-100 min-h-64 xl:min-h-full relative flex items-center justify-center order-1 xl:order-2 border-b xl:border-b-0 xl:border-l border-slate-100">
-                  <Image src={item.imagePlaceholder} alt={item.title} fill className="object-cover" unoptimized />
+                  <Image src={item.imagePlaceholder} alt={item.title} fill className="object-cover" />
                 </div>
               </div>
             );

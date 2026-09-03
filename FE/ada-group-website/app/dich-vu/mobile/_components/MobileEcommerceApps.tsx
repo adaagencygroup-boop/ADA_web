@@ -69,7 +69,7 @@ export default function MobileEcommerceApps() {
             
             {/* Image (Top on mobile, Bottom on desktop) */}
             <div className="relative w-full min-h-64 lg:min-h-0 lg:aspect-4/3 bg-slate-100 lg:bg-white lg:rounded-4xl overflow-hidden shadow-none lg:shadow-sm border-b lg:border border-slate-100 order-1 lg:order-2 lg:mt-(--inner-space)">
-              <Image src="https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/173610/Originals/cong-nghe-so-la-gi-1.jpg" alt="Ứng dụng thương mại" fill className="object-cover" unoptimized />
+              <Image src="https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/dong-hanh-cung-doanh-nghiep-tren-hanh-trinh-chuyen-doi-so-02.jpg" alt="Ứng dụng thương mại" fill className="object-cover" />
             </div>
 
             {/* Text (Bottom on mobile, Top on desktop) */}

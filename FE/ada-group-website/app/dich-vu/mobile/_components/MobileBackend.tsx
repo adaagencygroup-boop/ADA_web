@@ -64,7 +64,7 @@ export default function MobileBackend() {
           
           {/* Right Column: Image (Top on Mobile) */}
           <div className="relative w-full min-h-64 lg:min-h-0 lg:aspect-16/10 bg-[#0a1526] lg:rounded-[2.5rem] overflow-hidden lg:shadow-xl border-b border-slate-100 lg:border-slate-200 order-1 lg:order-2">
-            <Image src="https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/173610/Originals/cong-nghe-so-la-gi-1.jpg" alt="Backend Infrastructure" fill className="object-cover opacity-80" unoptimized />
+            <Image src="https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/dong-hanh-cung-doanh-nghiep-tren-hanh-trinh-chuyen-doi-so-02.jpg" alt="Backend Infrastructure" fill className="object-cover" />
           </div>
 
           {/* Left Column: Text (Bottom on Mobile) */}

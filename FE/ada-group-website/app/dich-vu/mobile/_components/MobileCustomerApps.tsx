@@ -83,7 +83,7 @@ export default function MobileCustomerApps() {
           
           {/* Right Column (Image - Top on Mobile) */}
           <div className="relative w-full min-h-64 lg:min-h-0 lg:aspect-4/5 bg-slate-100 lg:rounded-4xl overflow-hidden lg:shadow-sm border-b border-slate-100 lg:border-slate-100 order-1 lg:order-2">
-            <Image src="https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/173610/Originals/cong-nghe-so-la-gi-1.jpg" alt="Ứng dụng khách hàng" fill className="object-cover" unoptimized />
+            <Image src="https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/dong-hanh-cung-doanh-nghiep-tren-hanh-trinh-chuyen-doi-so-02.jpg" alt="Ứng dụng khách hàng" fill className="object-cover" />
           </div>
 
           {/* Left Column (Text - Bottom on Mobile) */}

@@ -13,7 +13,7 @@ const mainUseCases = [
 "Mục tiêu không chỉ là tạo ra một giao diện hội thoại, mà là giúp người dùng tiếp cận đúng nguồn thông tin trong bối cảnh họ đang làm việc."
     ],
     note:"Giải pháp có thể được tích hợp trên website, ứng dụng di động hoặc hệ thống nội bộ, tùy theo nhu cầu của doanh nghiệp.",
-    image:"https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/173610/Originals/cong-nghe-so-la-gi-1.jpg",
+    image:"https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/dong-hanh-cung-doanh-nghiep-tren-hanh-trinh-chuyen-doi-so-02.jpg",
   },
   {
     id:"02",
@@ -23,7 +23,7 @@ const mainUseCases = [
 "Một lượng lớn thông tin doanh nghiệp vẫn tồn tại dưới dạng tài liệu, hồ sơ và nội dung văn bản. Khi quy mô tăng lên, việc tìm kiếm và tổng hợp thông tin thủ công ngày càng khó khăn.",
 "ADA Group ứng dụng công nghệ để hỗ trợ tổ chức, tìm kiếm và khai thác nội dung từ tài liệu, từ đó giúp thông tin dễ tiếp cận hơn và có thể tiếp tục được sử dụng trong các hệ thống hoặc quy trình nghiệp vụ."
     ],
-    image:"https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/173610/Originals/cong-nghe-so-la-gi-1.jpg",
+    image:"https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/dong-hanh-cung-doanh-nghiep-tren-hanh-trinh-chuyen-doi-so-02.jpg",
   },
   {
     id:"03",
@@ -33,7 +33,7 @@ const mainUseCases = [
 "Không phải mọi công việc đều cần con người thực hiện thủ công từ đầu đến cuối. ADA Group giúp doanh nghiệp xác định những bước có thể được đơn giản hóa hoặc tự động hóa bằng phần mềm, đồng thời ứng dụng AI tại những điểm mà công nghệ này mang lại giá trị phù hợp.",
 "Tự động hóa có thể bắt đầu từ một phần nhỏ của quy trình và tiếp tục phát triển khi doanh nghiệp nhận thấy hiệu quả trong thực tế."
     ],
-    image:"https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/173610/Originals/cong-nghe-so-la-gi-1.jpg",
+    image:"https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/dong-hanh-cung-doanh-nghiep-tren-hanh-trinh-chuyen-doi-so-02.jpg",
   },
   {
     id:"04",
@@ -43,7 +43,7 @@ const mainUseCases = [
 "Doanh nghiệp có thể sở hữu nhiều dữ liệu nhưng vẫn gặp khó khăn trong việc tìm kiếm, tổng hợp và sử dụng thông tin khi cần thiết.",
 "ADA Group kết hợp các phương pháp xử lý dữ liệu với AI khi phù hợp để tổ chức và khai thác thông tin hiệu quả hơn, giúp dữ liệu có thể hỗ trợ tốt hơn cho hoạt động vận hành và quản lý."
     ],
-    image:"https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/173610/Originals/cong-nghe-so-la-gi-1.jpg",
+    image:"https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/dong-hanh-cung-doanh-nghiep-tren-hanh-trinh-chuyen-doi-so-02.jpg",
   }
 ];
 
@@ -55,7 +55,7 @@ const splitUseCases = [
     descriptions: [
 "Tùy theo bài toán và nguồn dữ liệu, ADA Group có thể nghiên cứu ứng dụng công nghệ xử lý hình ảnh để hỗ trợ nhận biết, phân loại và khai thác thông tin trực quan. Giải pháp có thể trở thành một phần của ứng dụng, hệ thống quản lý hoặc các sản phẩm chuyên biệt."
     ],
-    image:"https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/173610/Originals/cong-nghe-so-la-gi-1.jpg",
+    image:"https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/dong-hanh-cung-doanh-nghiep-tren-hanh-trinh-chuyen-doi-so-02.jpg",
   },
   {
     id:"06",
@@ -66,7 +66,7 @@ const splitUseCases = [
 "AI có thể trở thành một phần của sản phẩm hiện có, hỗ trợ người dùng tiếp cận thông tin thuận tiện hơn, khai thác dữ liệu hiệu quả hơn hoặc cải thiện những hoạt động đang tốn nhiều thời gian và nguồn lực. Việc tích hợp được thực hiện dựa trên nhu cầu thực tế, dữ liệu sẵn có và cách hệ thống hiện tại đang hoạt động, thay vì thay đổi toàn bộ nền tảng chỉ để ứng dụng một công nghệ mới.",
 "Cách tiếp cận này giúp doanh nghiệp tận dụng những khoản đầu tư công nghệ đã có, đồng thời từng bước bổ sung các khả năng mới khi nhu cầu phát triển. AI từ đó trở thành một phần tự nhiên của sản phẩm và quy trình vận hành, thay vì tồn tại như một công cụ độc lập bên ngoài hệ thống."
     ],
-    image:"https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/173610/Originals/cong-nghe-so-la-gi-1.jpg",
+    image:"https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/dong-hanh-cung-doanh-nghiep-tren-hanh-trinh-chuyen-doi-so-02.jpg",
   }
 ];
 
@@ -193,14 +193,14 @@ export default function AIUseCases() {
                     </div>
                     {item.image && (
                       <div className="relative w-full aspect-16/10 rounded-2xl overflow-hidden bg-slate-100 order-1 lg:hidden">
-                        <Image src={item.image} alt={item.title} fill className="object-cover" unoptimized />
+                        <Image src={item.image} alt={item.title} fill className="object-cover" />
                       </div>
                     )}
                   </>
                 ) : (
                   <div className={`relative w-full min-h-64 lg:min-h-0 ${item.id === '01' ? 'lg:aspect-4/3' : 'lg:aspect-16/10'} rounded-2xl overflow-hidden ${item.id === '01' ? 'shadow-lg border border-slate-200/50' : 'bg-slate-100'} order-1 ${layout === 'right-text' ? 'lg:order-1' : 'lg:order-2'}`}>
                     {item.image && (
-                      <Image src={item.image} alt={item.title} fill className="object-cover" unoptimized />
+                      <Image src={item.image} alt={item.title} fill className="object-cover" />
                     )}
                     {imageBadge && (
                       <div className="absolute top-4 right-4 bg-white/95 backdrop-blur px-4 py-2.5 rounded-xl shadow-lg border border-slate-100 flex items-center gap-(--inner-space)">
@@ -229,7 +229,7 @@ export default function AIUseCases() {
                 
                 {item.image && (
                   <div className={`relative w-full min-h-64 lg:min-h-0 lg:aspect-4/3 rounded-2xl overflow-hidden mb-(--inner-space) lg:mt-auto order-1 ${item.id === '06' ? 'lg:hidden' : 'lg:order-3'}`}>
-                    <Image src={item.image} alt={item.title} fill className="object-cover" unoptimized />
+                    <Image src={item.image} alt={item.title} fill className="object-cover" />
                   </div>
                 )}
 

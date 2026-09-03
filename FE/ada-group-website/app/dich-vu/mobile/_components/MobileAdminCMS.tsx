@@ -19,7 +19,7 @@ export default function MobileAdminCMS() {
         {/* Mobile Card / Desktop Top Section */}
         <div className="flex flex-col lg:grid lg:grid-cols-2 gap-(--section-padding) lg:items-center lg:mb-(--section-padding) bg-white lg:bg-transparent rounded-4xl lg:rounded-none border border-slate-100 lg:border-none shadow-[0_2px_15px_rgb(0,0,0,0.03)] lg:shadow-none overflow-hidden lg:overflow-visible">
           <div className="relative w-full min-h-64 lg:min-h-0 lg:aspect-16/10 bg-slate-100 lg:rounded-3xl overflow-hidden shadow-none lg:shadow-sm border-b lg:border border-slate-100 order-1">
-            <Image src="https://cdn2.fptshop.com.vn/unsafe/Uploads/images/tin-tuc/173610/Originals/cong-nghe-so-la-gi-1.jpg" alt="Web Admin" fill className="object-cover" unoptimized />
+            <Image src="https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/dong-hanh-cung-doanh-nghiep-tren-hanh-trinh-chuyen-doi-so-02.jpg" alt="Web Admin" fill className="object-cover" />
           </div>
 
           {/* Right Column: Content (Bottom on Mobile) */}

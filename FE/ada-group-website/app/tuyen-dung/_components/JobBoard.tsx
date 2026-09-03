@@ -142,7 +142,7 @@ export default function JobBoard() {
                 <div className="flex items-start lg:items-center gap-4 flex-1">
                   <div className="w-12 h-12 lg:w-16 lg:h-16 shrink-0 relative rounded-xl border border-slate-100 overflow-hidden bg-white shadow-xs">
                     {job.coverImageURL ? (
-                      <Image src={job.coverImageURL} alt={job.jobTitle} fill sizes="(max-width: 768px) 100vw, 56px" className="object-cover" unoptimized />
+                      <Image src={job.coverImageURL} alt={job.jobTitle} fill sizes="(max-width: 768px) 100vw, 56px" className="object-cover" />
                     ) : (
                       <div className="w-full h-full bg-[#002A64] text-white flex items-center justify-center font-semibold text-[18px]">
                         {getJobIconLabel(job.jobTitle)}
