@@ -6,6 +6,7 @@ import Link from "next/link";
 import { notFound, useParams } from "next/navigation";
 import { MOCK_RECRUITMENTS, formatEmploymentType } from "@/src/lib/api/recruitments";
 import { submitApplication } from "@/src/lib/api/candidates";
+import Alert from "@/src/components/common/Alert";
 
 export default function JobApplicationPage() {
   const params = useParams();
@@ -23,6 +24,7 @@ export default function JobApplicationPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [alertInfo, setAlertInfo] = useState<{type: 'success'|'error'|'warning'|'info', title: string, message: string} | null>(null);
 
   if (!job) {
     notFound();
@@ -50,13 +52,13 @@ export default function JobApplicationPage() {
     const fileName = selectedFile.name.toLowerCase();
     
     if (!validExtensions.some(ext => fileName.endsWith(ext))) {
-      alert("Chỉ chấp nhận file định dạng PDF, DOC hoặc DOCX!");
+      setAlertInfo({ type: 'warning', title: 'Định dạng file không hợp lệ', message: 'Chỉ chấp nhận file định dạng PDF, DOC hoặc DOCX!' });
       if (fileInputRef.current) fileInputRef.current.value = "";
       return;
     }
     
     if (selectedFile.size > 5 * 1024 * 1024) {
-      alert("Dung lượng file không được vượt quá 5MB!");
+      setAlertInfo({ type: 'warning', title: 'File quá lớn', message: 'Dung lượng file không được vượt quá 5MB!' });
       if (fileInputRef.current) fileInputRef.current.value = "";
       return;
     }
@@ -86,11 +88,11 @@ export default function JobApplicationPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!file) {
-      alert("Vui lòng tải lên CV / Resume của bạn!");
+      setAlertInfo({ type: 'warning', title: 'Thiếu thông tin', message: 'Vui lòng tải lên CV / Resume của bạn!' });
       return;
     }
     if (!formData.agreeTerm) {
-      alert("Vui lòng đồng ý với điều khoản sử dụng thông tin!");
+      setAlertInfo({ type: 'warning', title: 'Chưa đồng ý điều khoản', message: 'Vui lòng đồng ý với điều khoản sử dụng thông tin trước khi nộp hồ sơ!' });
       return;
     }
 
@@ -106,22 +108,44 @@ export default function JobApplicationPage() {
       });
 
       if (response.success) {
-        alert("Nộp hồ sơ thành công! (Dữ liệu đã được lưu vào hệ thống mock)");
+        setAlertInfo({
+          type: 'success',
+          title: 'Ứng tuyển thành công!',
+          message: 'Cảm ơn bạn đã gửi hồ sơ ứng tuyển. Chúng tôi sẽ liên hệ với bạn sớm nhất.'
+        });
         setFormData({ fullname: "", email: "", phone: "", message: "", agreeTerm: false });
         setFile(null);
       } else {
-        alert(response.error || "Có lỗi xảy ra khi nộp hồ sơ.");
+        setAlertInfo({
+          type: 'error',
+          title: 'Đã xảy ra lỗi',
+          message: response.error || 'Có lỗi xảy ra khi nộp hồ sơ. Vui lòng thử lại.'
+        });
       }
     } catch (error) {
       console.error("Submit error:", error);
-      alert("Đã xảy ra lỗi hệ thống.");
+      setAlertInfo({
+        type: 'error',
+        title: 'Đã xảy ra lỗi',
+        message: 'Chúng tôi không thể kết nối tới máy chủ lúc này. Vui lòng thử lại sau ít phút.'
+      });
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <div className="bg-slate-50 w-full flex-1 flex flex-col">
+    <div className="bg-slate-50 w-full flex-1 flex flex-col relative">
+      {alertInfo && (
+        <Alert 
+          type={alertInfo.type}
+          title={alertInfo.title}
+          description={alertInfo.message}
+          onClose={() => setAlertInfo(null)}
+          actionText={alertInfo.type === 'success' ? "Về trang chủ" : "Đóng"}
+          actionLink={alertInfo.type === 'success' ? "/" : undefined}
+        />
+      )}
       {/* Breadcrumb Area */}
       <div className="bg-white py-4 border-b border-slate-100">
         <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
