@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRightIcon } from "@/app/_components/icons";
@@ -154,23 +157,61 @@ const SLIDES = [
   },
 ];
 
-const SLIDE_ID = (index: number) => `hero-slide-${index}`;
+// Classic infinite-carousel technique: a clone of the last slide is
+// prepended and a clone of the first slide is appended. The track can then
+// always slide in the direction the user clicked; once the transition onto
+// a clone finishes, we snap (no transition) back to the matching real
+// slide at the same visual position, so the loop point looks seamless.
+const SLIDE_COUNT = SLIDES.length;
+const EXTENDED_SLIDES = [SLIDES[SLIDE_COUNT - 1], ...SLIDES, SLIDES[0]];
 
 export default function HeroCarousel() {
-  const slideCss = SLIDES.map(
-    (_, index) =>
-      `.hero-carousel:has(#${SLIDE_ID(index)}:checked) .hero-track { transform: translateX(-${index * 100}%); }` +
-      `.hero-carousel:has(#${SLIDE_ID(index)}:checked) .hero-dot-${index} { background-color: rgba(255,255,255,1); }` +
-      `.hero-carousel:has(#${SLIDE_ID(index)}:checked) .hero-prev-${index} { display: flex; }` +
-      `.hero-carousel:has(#${SLIDE_ID(index)}:checked) .hero-next-${index} { display: flex; }`,
-  ).join("\n");
+  const [trackIndex, setTrackIndex] = useState(1);
+  const [withTransition, setWithTransition] = useState(true);
+
+  const currentIndex =
+    ((trackIndex - 1) % SLIDE_COUNT + SLIDE_COUNT) % SLIDE_COUNT;
+
+  useEffect(() => {
+    if (withTransition) return;
+    const raf = requestAnimationFrame(() => {
+      requestAnimationFrame(() => setWithTransition(true));
+    });
+    return () => cancelAnimationFrame(raf);
+  }, [withTransition]);
+
+  function goNext() {
+    setWithTransition(true);
+    setTrackIndex((index) => index + 1);
+  }
+
+  function goPrev() {
+    setWithTransition(true);
+    setTrackIndex((index) => index - 1);
+  }
+
+  function goTo(index: number) {
+    setWithTransition(true);
+    setTrackIndex(index + 1);
+  }
+
+  function handleTransitionEnd(event: React.TransitionEvent<HTMLDivElement>) {
+    if (event.target !== event.currentTarget) return;
+    if (event.propertyName !== "transform") return;
+
+    if (trackIndex === 0) {
+      setWithTransition(false);
+      setTrackIndex(SLIDE_COUNT);
+    } else if (trackIndex === SLIDE_COUNT + 1) {
+      setWithTransition(false);
+      setTrackIndex(1);
+    }
+  }
 
   return (
     <section className="section-y pb-0!">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
-        <div className="hero-carousel relative overflow-hidden rounded-2xl bg-[#003274]">
-          <style>{slideCss}</style>
-
+        <div className="relative overflow-hidden rounded-2xl bg-[#003274]">
           <div className="absolute inset-0 bg-linear-to-r from-[#001A40] to-[#003274] opacity-90" />
           <Image
             src="https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/news-banner.jpg"
@@ -180,44 +221,41 @@ export default function HeroCarousel() {
             className="object-cover mix-blend-overlay opacity-50"
           />
 
-          {SLIDES.map((_, index) => (
-            <input
-              key={SLIDE_ID(index)}
-              type="radio"
-              name="hero-slide"
-              id={SLIDE_ID(index)}
-              defaultChecked={index === 0}
-              className="sr-only"
-            />
-          ))}
-
-          {SLIDES.length > 1 &&
-            SLIDES.map((_, index) => (
-              <div key={SLIDE_ID(index)}>
-                <label
-                  htmlFor={SLIDE_ID(
-                    (index - 1 + SLIDES.length) % SLIDES.length,
-                  )}
-                  aria-label="Slide trước"
-                  className={`hero-prev-${index} absolute top-1/2 left-3 z-20 hidden h-9 w-9 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 lg:left-6`}
-                >
-                  <ChevronLeftIcon />
-                </label>
-                <label
-                  htmlFor={SLIDE_ID((index + 1) % SLIDES.length)}
-                  aria-label="Slide tiếp theo"
-                  className={`hero-next-${index} absolute top-1/2 right-3 z-20 hidden h-9 w-9 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 lg:right-6`}
-                >
-                  <ChevronRightIcon />
-                </label>
-              </div>
-            ))}
+          {SLIDE_COUNT > 1 && (
+            <>
+              <button
+                type="button"
+                aria-label="Slide trước"
+                onClick={goPrev}
+                className="absolute top-1/2 left-3 z-20 flex h-9 w-9 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 lg:left-6"
+              >
+                <ChevronLeftIcon />
+              </button>
+              <button
+                type="button"
+                aria-label="Slide tiếp theo"
+                onClick={goNext}
+                className="absolute top-1/2 right-3 z-20 flex h-9 w-9 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20 lg:right-6"
+              >
+                <ChevronRightIcon />
+              </button>
+            </>
+          )}
 
           <div className="overflow-hidden">
-            <div className="hero-track flex transition-transform duration-500 ease-in-out">
-              {SLIDES.map((slide) => (
+            <div
+              className="flex"
+              style={{
+                transform: `translateX(-${trackIndex * 100}%)`,
+                transition: withTransition
+                  ? "transform 500ms ease-in-out"
+                  : "none",
+              }}
+              onTransitionEnd={handleTransitionEnd}
+            >
+              {EXTENDED_SLIDES.map((slide, i) => (
                 <div
-                  key={slide.title}
+                  key={i}
                   className="flex w-full shrink-0 flex-col items-start gap-6 px-6 py-10 sm:px-10 lg:flex-row lg:items-center lg:justify-between lg:gap-12 lg:px-16 lg:py-12"
                 >
                   <div className="flex flex-col items-start gap-2 lg:w-150">
@@ -263,14 +301,17 @@ export default function HeroCarousel() {
             </div>
           </div>
 
-          {SLIDES.length > 1 && (
+          {SLIDE_COUNT > 1 && (
             <div className="relative z-20 flex items-center justify-center gap-2 pb-4">
               {SLIDES.map((slide, index) => (
-                <label
+                <button
                   key={slide.title}
-                  htmlFor={SLIDE_ID(index)}
+                  type="button"
                   aria-label={`Đến slide ${index + 1}`}
-                  className={`hero-dot-${index} h-2 w-2 cursor-pointer rounded-full bg-white/40`}
+                  onClick={() => goTo(index)}
+                  className={`h-2 w-2 cursor-pointer rounded-full transition-colors ${
+                    index === currentIndex ? "bg-white" : "bg-white/40"
+                  }`}
                 />
               ))}
             </div>
