@@ -9,7 +9,7 @@ const CONTENT = {
 };
 
 const IMAGE = {
-  src: "https://picsum.photos/1372/737",
+  src: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/cong-nghe-vi-nguoi-viet.jpg",
   alt: "Đội ngũ ADA Group làm việc cùng nhau",
 };
 
@@ -28,7 +28,7 @@ export default function PeopleSection() {
             width={1372}
             height={737}
             sizes="(min-width: 1024px) 50vw, 100vw"
-            className="mt-(--inner-space) h-auto w-full lg:col-start-1 lg:row-start-1 lg:mt-0"
+            className="mt-(--inner-space) h-auto w-full lg:col-start-1 lg:row-start-1 lg:mt-0 rounded-2xl"
           />
 
           <div className="mt-(--inner-space) lg:col-start-2 lg:row-start-1 lg:mt-0">

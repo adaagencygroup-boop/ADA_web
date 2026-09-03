@@ -1,5 +1,12 @@
+import Image from "next/image";
+
 const CONTENT = {
   title: "Thông tin doanh nghiệp",
+};
+
+const IMAGE = {
+  src: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/thong-tin-doanh-nghiep.jpg",
+  alt: "Văn phòng ADA Group",
 };
 
 const FIELDS = [
@@ -32,7 +39,15 @@ export default function BusinessProfile() {
           </h2>
 
           <div className="mt-4 lg:mt-6 lg:flex lg:items-center lg:gap-10">
-            <div className="hidden aspect-624/379 w-full max-w-156 shrink-0 rounded-lg bg-zinc-200 lg:block" />
+            <div className="relative hidden aspect-624/379 w-full max-w-156 shrink-0 overflow-hidden rounded-lg lg:block">
+              <Image
+                src={IMAGE.src}
+                alt={IMAGE.alt}
+                fill
+                sizes="624px"
+                className="object-cover"
+              />
+            </div>
 
             <dl className="flex flex-col gap-4 lg:flex-1 lg:items-end lg:gap-3">
               {FIELDS.map((field) => (

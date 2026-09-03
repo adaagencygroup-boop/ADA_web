@@ -9,7 +9,7 @@ const CONTENT = {
 };
 
 const IMAGE = {
-  src: "https://picsum.photos/1024/558",
+  src: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/about-banner.jpg",
   alt: "Sơ đồ hạ tầng mạng lưới công nghệ toàn cầu",
 };
 
