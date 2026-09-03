@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Breadcrumb from "@/app/tin-tuc/_components/Breadcrumb";
+import CallToAction from "@/app/tin-tuc/_components/CallToAction";
 import HeroCarousel from "@/app/tin-tuc/_components/HeroCarousel";
 import NewsListing from "@/app/tin-tuc/_components/NewsListing";
 import SearchBar from "@/app/tin-tuc/_components/SearchBar";
@@ -23,6 +24,7 @@ export default async function TinTucPage({ searchParams }: TinTucPageProps) {
       <SearchBar />
       <Breadcrumb />
       <NewsListing category={category} page={page} />
+      <CallToAction />
     </>
   );
 }

@@ -6,11 +6,11 @@ import {
   getRelatedArticles,
 } from "@/src/lib/api/news";
 import Breadcrumb from "@/app/tin-tuc/_components/Breadcrumb";
+import CallToAction from "@/app/tin-tuc/_components/CallToAction";
 import FeaturedPosts from "@/app/tin-tuc/_components/FeaturedPosts";
 import SearchBar from "@/app/tin-tuc/_components/SearchBar";
 import AISolutionBanner from "@/app/tin-tuc/[slug]/_components/AISolutionBanner";
 import ArticleDetail from "@/app/tin-tuc/[slug]/_components/ArticleDetail";
-import CallToAction from "@/app/tin-tuc/[slug]/_components/CallToAction";
 import RelatedArticles from "@/app/tin-tuc/[slug]/_components/RelatedArticles";
 
 type ArticlePageProps = {
