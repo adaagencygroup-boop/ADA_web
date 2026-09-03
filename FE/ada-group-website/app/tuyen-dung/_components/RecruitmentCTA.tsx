@@ -2,7 +2,7 @@ import React from "react";
 
 export default function RecruitmentCTA() {
   return (
-    <section className="bg-white section-y max-md:py-8!">
+    <section className="bg-white section-y">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         
         <div className="bg-[#002A64] shadow-xl rounded-2xl p-8 lg:p-12 flex flex-col lg:flex-row justify-center lg:justify-start items-center relative overflow-hidden lg:h-60">
