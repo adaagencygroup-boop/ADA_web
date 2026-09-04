@@ -9,7 +9,7 @@ import { SidebarTrigger } from "@/src/components/ui/sidebar";
 
 export default function Topbar() {
   return (
-    <header className="flex h-16 shrink-0 items-center justify-between border-b bg-[#F8F9FB] px-6">
+    <header className="sticky top-0 z-30 flex h-16 shrink-0 items-center justify-between border-b bg-[#F8F9FB] px-6">
       <SidebarTrigger className="text-foreground/70 hover:text-foreground" />
 
       <div className="flex items-center gap-4">
