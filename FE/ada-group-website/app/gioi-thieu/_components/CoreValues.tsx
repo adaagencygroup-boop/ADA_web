@@ -89,7 +89,7 @@ const VALUES = [
 
 export default function CoreValues() {
   return (
-    <section className="section-y pt-0! bg-white">
+    <section className="section-y">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center text-center">
           <h2 className="text-[22px] font-extrabold leading-8 text-slate-900 lg:text-3xl lg:font-semibold lg:leading-9 lg:text-black">
@@ -98,11 +98,11 @@ export default function CoreValues() {
           <span className="mt-4 h-1 w-12 shrink-0 rounded-full bg-[#002A64] lg:bg-blue-900" />
         </div>
 
-        <div className="mt-(--inner-space) grid grid-cols-2 gap-x-5 gap-y-4 lg:grid-cols-4 lg:gap-2.5">
+        <div className="mt-(--inner-space) grid grid-cols-2 gap-x-5 gap-y-4 lg:grid-cols-4 lg:gap-5">
           {VALUES.map((value) => (
             <div
               key={value.title}
-              className="flex flex-col gap-2 rounded-xl bg-slate-100 p-4 lg:gap-3 lg:rounded-2xl lg:border lg:border-[#F3F4F6] lg:bg-[#F3F4F6] lg:p-8 lg:shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.05),0px_2px_4px_-1px_rgba(0,0,0,0.03)]"
+              className="flex flex-col gap-2 rounded-xl bg-slate-100 p-4 lg:gap-3 lg:rounded-2xl lg:border lg:border-[#ffffff] lg:bg-[#ffffff] lg:p-8 lg:shadow-[0px_4px_6px_-1px_rgba(0,0,0,0.05),0px_2px_4px_-1px_rgba(0,0,0,0.03)]"
             >
               <div className="flex items-center gap-2.5">
                 <span className="hidden h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-blue-50 lg:flex">

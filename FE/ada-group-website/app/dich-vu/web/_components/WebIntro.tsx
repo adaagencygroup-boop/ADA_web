@@ -2,7 +2,7 @@ import Image from"next/image";
 
 export default function WebIntro() {
   return (
-    <section className="bg-white section-y max-md:py-5! md:pt-(--heading-space)!">
+    <section className="bg-white section-y">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         
         {/* Text Content */}

@@ -94,8 +94,9 @@ const CustomFlowchart = () => (
 
     <div className="bg-white w-full sm:w-1/3 aspect-square max-w-35 rounded-2xl flex flex-col items-center justify-center p-4 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 hover:-translate-y-1 transition-transform cursor-default">
       <div className="bg-blue-100 w-12 h-12 rounded-full flex items-center justify-center mb-(--inner-space)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 text-blue-600">
-          <path d="M12 2v20M17 5l-5-3-5 3M17 19l-5 3-5-3M2 12h20M5 7l-3 5 3 5M19 7l3 5-3 5" />
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 text-blue-800">
+          <circle cx="12" cy="12" r="3" />
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
         </svg>
       </div>
       <span className="text-[12px] font-semibold text-blue-600 text-center">Xử lý tự động</span>
@@ -122,14 +123,14 @@ const CustomFlowchart = () => (
 
 export default function AIUseCases() {
   return (
-    <section className="bg-white section-y pt-0!">
+    <section className="section-y">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         
         {/* Header */}
         <div className="text-center max-w-3xl mx-auto mb-(--section-padding)">
           <div className="inline-flex items-center gap-(--inner-space) rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-600 mb-(--inner-space)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-3 w-3">
-              <path d="M12 2v20M17 5l-5-3-5 3M17 19l-5 3-5-3M2 12h20M5 7l-3 5 3 5M19 7l3 5-3 5" />
+            <svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 0.8C8 0.358468 7.64153 0 7.2 0C6.75847 0 6.4 0.358468 6.4 0.8V1.6C6.4 2.04153 6.75847 2.4 7.2 2.4C7.64153 2.4 8 2.04153 8 1.6V0.8ZM11.7256 3.0056C12.0288 2.6917 12.0244 2.19273 11.7159 1.88415C11.4073 1.57556 10.9083 1.57122 10.5944 1.8744L10.0288 2.44C9.72562 2.7539 9.72996 3.25287 10.0385 3.56146C10.3471 3.87004 10.8461 3.87438 11.16 3.5712L11.7256 3.0056ZM13.6 6.4C13.6 6.84153 13.2415 7.2 12.8 7.2H12C11.5585 7.2 11.2 6.84153 11.2 6.4C11.2 5.95847 11.5585 5.6 12 5.6H12.8C13.2415 5.6 13.6 5.95847 13.6 6.4ZM11.7256 9.7944C12.0379 10.1068 12.0379 10.6132 11.7256 10.9256L11.16 11.4912C10.9591 11.6992 10.6617 11.7826 10.382 11.7094C10.1023 11.6361 9.88385 11.4177 9.81064 11.138C9.73743 10.8583 9.82084 10.5609 10.0288 10.36L10.5944 9.7944C10.9068 9.48209 11.4132 9.48209 11.7256 9.7944ZM7.2 12.8C6.75847 12.8 6.4 12.4415 6.4 12V11.2C6.4 10.7585 6.75847 10.4 7.2 10.4C7.64153 10.4 8 10.7585 8 11.2V12C8 12.4415 7.64153 12.8 7.2 12.8ZM3.8056 10.9256C3.4932 11.2379 2.9868 11.2379 2.6744 10.9256L2.1088 10.36C1.90083 10.1591 1.81743 9.8617 1.89064 9.58199C1.96385 9.30229 2.18229 9.08385 2.46199 9.01064C2.7417 8.93743 3.03914 9.02083 3.24 9.2288L3.8056 9.7944C4.11791 10.1068 4.11791 10.6132 3.8056 10.9256ZM2.4 6.4C2.4 6.84153 2.04153 7.2 1.6 7.2H0.8C0.358468 7.2 0 6.84153 0 6.4C0 5.95847 0.358468 5.6 0.8 5.6H1.6C2.04153 5.6 2.4 5.95847 2.4 6.4ZM4.3712 3.0056C4.67438 2.6917 4.67004 2.19273 4.36145 1.88415C4.05287 1.57556 3.5539 1.57122 3.24 1.8744L2.6744 2.44C2.46643 2.64086 2.38303 2.9383 2.45624 3.21801C2.52945 3.49771 2.74789 3.71615 3.02759 3.78936C3.3073 3.86257 3.60474 3.77917 3.8056 3.5712L4.3712 3.0056Z" fill="#2563EB"/>
             </svg>
             AI & Automation
           </div>
@@ -146,9 +147,8 @@ export default function AIUseCases() {
           
           {/* Main Use Cases (1-4) */}
           {mainUseCases.map((item) => {
-            const isOdd = item.id ==="01" || item.id ==="03";
-            const bg = isOdd ?"bg-[#f8fafc]" :"bg-white";
-            const border = isOdd ?"" :"border border-slate-200 shadow-sm";
+            const bg = "bg-white";
+            const border = "border border-slate-200 shadow-sm";
             const layout = item.id ==="03" ?"custom" : (item.id ==="02" || item.id ==="04" ?"right-text" :"left-text");
             const imageBadge = item.id ==="02" ?"Từ tài liệu rời rạc đến nguồn thông tin có thể sử dụng" : undefined;
 
@@ -221,8 +221,8 @@ export default function AIUseCases() {
           {/* Split Container (5 & 6) */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-(--inner-space)">
             {splitUseCases.map((item) => {
-              const bg = item.id ==="05" ?"bg-[#f8fafc]" :"bg-white";
-              const border = item.id ==="05" ?"border border-slate-100" :"border border-slate-200 shadow-sm";
+              const bg = "bg-white";
+              const border = "border border-slate-200 shadow-sm";
 
               return (
               <div key={item.id} className={`${bg} rounded-3xl lg:rounded-[2.5rem] p-6 lg:p-12 ${border} flex flex-col`}>

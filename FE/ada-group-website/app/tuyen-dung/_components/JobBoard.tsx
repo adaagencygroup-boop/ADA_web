@@ -58,7 +58,7 @@ export default function JobBoard() {
   const displayedJobs = jobs.slice(0, displayCount);
 
   return (
-    <section className="bg-white section-y pt-0!">
+    <section className="section-y pt-0!">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8 flex flex-col gap-(--inner-space)">
         
         {/* Search & Filter Box */}
@@ -182,7 +182,7 @@ export default function JobBoard() {
                 </div>
 
                 {/* Right side: Dates & Button */}
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between lg:justify-end gap-4 lg:gap-6 shrink-0 mt-3 lg:mt-0 w-full lg:w-auto border-t lg:border-t-0 border-slate-100 pt-4 lg:pt-0">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between lg:justify-end gap-4 lg:gap-6 shrink-0 mt-3 lg:mt-0 w-full lg:flex-1 border-t lg:border-t-0 border-slate-100 pt-4 lg:pt-0">
                   <div className="flex flex-col gap-1.5 text-[12.5px] text-zinc-500 w-full sm:w-40">
                     <div className="flex items-center gap-2">
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>

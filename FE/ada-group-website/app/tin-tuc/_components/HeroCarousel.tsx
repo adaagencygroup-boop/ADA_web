@@ -157,11 +157,6 @@ const SLIDES = [
   },
 ];
 
-// Classic infinite-carousel technique: a clone of the last slide is
-// prepended and a clone of the first slide is appended. The track can then
-// always slide in the direction the user clicked; once the transition onto
-// a clone finishes, we snap (no transition) back to the matching real
-// slide at the same visual position, so the loop point looks seamless.
 const SLIDE_COUNT = SLIDES.length;
 const EXTENDED_SLIDES = [SLIDES[SLIDE_COUNT - 1], ...SLIDES, SLIDES[0]];
 
@@ -209,7 +204,7 @@ export default function HeroCarousel() {
   }
 
   return (
-    <section className="section-y pb-0!">
+    <section className="section-y bg-[#f2f2f7]">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="relative overflow-hidden rounded-2xl bg-[#003274]">
           <div className="absolute inset-0 bg-linear-to-r from-[#001A40] to-[#003274] opacity-90" />

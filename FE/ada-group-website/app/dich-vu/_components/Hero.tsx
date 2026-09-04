@@ -10,7 +10,7 @@ interface HeroProps {
 
 export default function Hero({ badge, title, desc, imagePlaceholder }: HeroProps) {
   return (
-    <section className="bg-white section-y">
+    <section className=" section-y">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-(--inner-space) items-center">
           {/* Left: Content */}

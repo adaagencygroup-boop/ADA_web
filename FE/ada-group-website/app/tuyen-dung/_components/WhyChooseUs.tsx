@@ -57,7 +57,7 @@ const reasons = [
 
 export default function WhyChooseUs() {
   return (
-    <section className="bg-[#F8FAFC] section-y">
+    <section className="bg-white section-y">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8 flex flex-col gap-(--inner-space)">
         <div className="text-center lg:text-left">
           <h2 className="text-2xl lg:text-[1.75rem] font-semibold text-[#002A64] uppercase tracking-tight">

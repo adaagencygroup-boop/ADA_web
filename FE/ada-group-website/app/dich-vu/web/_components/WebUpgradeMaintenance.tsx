@@ -23,7 +23,7 @@ export default function WebUpgradeMaintenance() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-(--inner-space)">
           
           {/* Nâng cấp hệ thống hiện có */}
-          <div className="bg-[#C4C6D24D] rounded-3xl lg:rounded-4xl p-6 lg:p-8 xl:p-10 flex flex-col border border-slate-100 shadow-sm">
+          <div className="bg-white rounded-3xl lg:rounded-4xl p-6 lg:p-8 xl:p-10 flex flex-col border border-slate-100 shadow-sm">
             <div className="flex items-center gap-(--inner-space) mb-(--inner-space)">
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[0.8rem] bg-[#0b246a] text-white">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-5.5 w-5.5">
@@ -51,7 +51,7 @@ export default function WebUpgradeMaintenance() {
           </div>
 
           {/* Duy trì & Hỗ trợ kỹ thuật */}
-          <div className="bg-[#C4C6D24D] rounded-3xl lg:rounded-4xl p-6 lg:p-8 xl:p-10 flex flex-col border border-slate-100 shadow-sm">
+          <div className="bg-white rounded-3xl lg:rounded-4xl p-6 lg:p-8 xl:p-10 flex flex-col border border-slate-100 shadow-sm">
             <div className="flex items-center gap-(--inner-space) mb-(--inner-space)">
               <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[0.8rem] bg-[#0b246a] text-white">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">

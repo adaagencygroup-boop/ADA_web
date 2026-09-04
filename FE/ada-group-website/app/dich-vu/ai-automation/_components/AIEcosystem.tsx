@@ -11,7 +11,7 @@ export default function AIEcosystem() {
   ];
 
   return (
-    <section className="bg-white section-y pt-0!">
+    <section className="bg-white section-y">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="bg-[#0a2347] rounded-3xl lg:rounded-4xl px-8 py-12 lg:p-16 flex flex-col lg:flex-row items-center gap-(--section-padding) shadow-lg">
           

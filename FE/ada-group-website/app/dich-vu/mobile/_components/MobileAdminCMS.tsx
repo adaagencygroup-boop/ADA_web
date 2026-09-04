@@ -13,7 +13,7 @@ export default function MobileAdminCMS() {
   ];
 
   return (
-    <section className="bg-white section-y max-md:py-5! md:pt-(--heading-space)!">
+    <section className="section-y max-md:py-5! md:pt-(--heading-space)!">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         
         {/* Mobile Card / Desktop Top Section */}
@@ -57,7 +57,7 @@ export default function MobileAdminCMS() {
         <div className="hidden lg:grid grid-cols-1 md:grid-cols-3 gap-(--inner-space) mb-(--inner-space)">
           
           {/* Column 1: Quản lý hoạt động */}
-          <div className="bg-[#f8fafc] rounded-3xl p-6 lg:p-8 border border-slate-100 flex flex-col items-center text-center">
+          <div className="bg-white rounded-3xl p-6 lg:p-8 border border-slate-100 flex flex-col items-center text-center">
             <div className="flex items-center gap-(--inner-space) mb-(--inner-space)">
               <div className="bg-blue-50 w-10 h-10 rounded-full flex items-center justify-center shrink-0">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 text-blue-600">
@@ -104,7 +104,7 @@ export default function MobileAdminCMS() {
           </div>
 
           {/* Column 2: Quản lý nội dung & dữ liệu */}
-          <div className="bg-[#f8fafc] rounded-3xl p-6 lg:p-8 border border-slate-100 flex flex-col items-center text-center">
+          <div className="bg-white rounded-3xl p-6 lg:p-8 border border-slate-100 flex flex-col items-center text-center">
             <div className="flex items-center gap-(--inner-space) mb-(--inner-space)">
               <div className="bg-blue-50 w-10 h-10 rounded-full flex items-center justify-center shrink-0">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 text-blue-600">
@@ -156,7 +156,7 @@ export default function MobileAdminCMS() {
           </div>
 
           {/* Column 3: Theo dõi & đánh giá */}
-          <div className="bg-[#f8fafc] rounded-3xl p-6 lg:p-8 border border-slate-100 flex flex-col items-center text-center">
+          <div className="bg-white rounded-3xl p-6 lg:p-8 border border-slate-100 flex flex-col items-center text-center">
             <div className="flex items-center gap-(--inner-space) mb-(--inner-space)">
               <div className="bg-blue-50 w-10 h-10 rounded-full flex items-center justify-center shrink-0">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 text-blue-600">

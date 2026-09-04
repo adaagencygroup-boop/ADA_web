@@ -55,7 +55,7 @@ function ChevronDownIcon({ className = "h-3 w-3" }: IconProps) {
 
 export default function SearchBar() {
   return (
-    <section className="bg-white pt-8 pb-2">
+    <section className="pt-8 pb-2">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-stretch">
           <div className="flex flex-1 items-stretch overflow-hidden rounded-md bg-white shadow-[0_1px_2px_rgba(0,0,0,0.1)]">

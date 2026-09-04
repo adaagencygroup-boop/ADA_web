@@ -21,7 +21,7 @@ function ChevronRightIcon({ className = "h-3 w-3" }: IconProps) {
 
 export default function Breadcrumb({ current }: { current?: string }) {
   return (
-    <nav aria-label="Breadcrumb" className="bg-white py-4">
+    <nav aria-label="Breadcrumb" className="py-4">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <ol className="flex items-center gap-2 text-sm">
           <li className="shrink-0 whitespace-nowrap">

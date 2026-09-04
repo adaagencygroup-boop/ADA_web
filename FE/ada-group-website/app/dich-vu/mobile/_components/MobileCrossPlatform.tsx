@@ -59,7 +59,7 @@ export default function MobileCrossPlatform() {
   ];
 
   return (
-    <section className="bg-white section-y max-md:py-5! md:pt-(--heading-space)!">
+    <section className="section-y max-md:py-5! md:pt-(--heading-space)!">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col lg:items-center bg-white lg:bg-[#0a1526] rounded-4xl lg:rounded-[3rem] lg:px-6 lg:py-14 text-left lg:text-center border border-slate-100 lg:border-none shadow-[0_2px_15px_rgb(0,0,0,0.03)] lg:shadow-none overflow-hidden lg:overflow-visible">
           
@@ -85,7 +85,7 @@ export default function MobileCrossPlatform() {
               <p className="text-[15px] lg:text-[17px] font-medium text-blue-600 lg:text-slate-300 mb-(--inner-space)">
                 {item.subtitle}
               </p>
-              <p className="text-[14px] lg:text-[15px] leading-relaxed text-zinc-500 lg:text-slate-400 text-justify lg:text-center">
+              <p className="w-full max-w-5xl lg:px-12 text-[14px] lg:text-[15px] leading-relaxed text-zinc-500 lg:text-slate-400 text-justify lg:text-center">
                 {item.description}
               </p>
 
