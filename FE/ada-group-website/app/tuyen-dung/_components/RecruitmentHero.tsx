@@ -72,13 +72,13 @@ export default function RecruitmentHero() {
         {/* Left Content (Text) */}
         <div className="flex flex-col justify-center px-4 sm:px-6 lg:px-8 py-10 lg:py-16 xl:py-24 text-white">
           <div className="max-w-xl mx-auto lg:mx-0 w-full">
-            <div className="inline-block bg-[#1a56db] border border-blue-400/30 text-white px-3 py-1.5 rounded-full font-semibold tracking-widest uppercase mb-4 text-[10px] lg:text-[12px] w-fit">
+            <div className="inline-block bg-[#1a56db] border border-blue-400/30 text-white px-3 py-1.5 rounded-full font-semibold tracking-widest uppercase mb-4 text-[12px] lg:text-[12px] w-fit">
               CƠ HỘI NGHỀ NGHIỆP TẠI
             </div>
-            <h1 className="text-[1.8rem] sm:text-4xl lg:text-5xl xl:text-6xl font-semibold mb-4 lg:mb-6 tracking-tight uppercase leading-tight lg:leading-none">
+            <h1 className="text-[28px] lg:text-[44px] font-semibold mb-4 lg:mb-6 tracking-tight uppercase leading-[1.2] lg:leading-[1.1]">
               ADA GROUP
             </h1>
-            <p className="text-blue-100/90 text-[14px] lg:text-[17px] leading-relaxed mb-6 lg:mb-12 max-w-md">
+            <p className="text-blue-100/90 text-[14px] lg:text-[16px] leading-relaxed mb-6 lg:mb-12 max-w-md">
               Chúng tôi tìm kiếm những con người đam mê công nghệ, sẵn sàng đổi mới và tạo ra giá trị thực tế cho cộng đồng.
             </p>
 

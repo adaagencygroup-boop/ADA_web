@@ -10,11 +10,11 @@ export default function Hero() {
     <section className="section-y flex flex-col">
       <div className="mx-auto w-full max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="md:text-center">
-          <h1 className="text-2xl font-semibold whitespace-pre-line min-[1322px]:whitespace-normal tracking-tight sm:text-4xl lg:text-5xl">
+          <h1 className="text-[28px] leading-[1.2] font-semibold tracking-tight text-black lg:text-[44px] lg:leading-[1.1] whitespace-pre-line min-[1322px]:whitespace-normal">
             {CONTENT.title}
           </h1>
 
-          <p className="mt-5 md:mx-auto md:whitespace-pre-line text-justify md:text-center text-base leading-relaxed text-zinc-600 lg:text-lg">
+          <p className="mt-5 md:mx-auto md:whitespace-pre-line text-justify md:text-center text-[14px] lg:text-[16px] leading-relaxed text-zinc-600">
             {CONTENT.description}
           </p>
         </div>

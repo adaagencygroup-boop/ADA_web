@@ -16,20 +16,20 @@ export default function Hero({ badge, title, desc, imagePlaceholder }: HeroProps
           {/* Left: Content */}
           <div className="flex flex-col gap-(--heading-space) lg:col-span-5">
             {/* Badge */}
-            <div className="hidden md:inline-flex w-fit items-center rounded-full bg-slate-100 px-3 py-1 text-[11px] font-semibold uppercase tracking-wider text-blue-900">
+            <div className="hidden md:inline-flex w-fit items-center rounded-full bg-slate-100 px-3 py-1 lg:text-[12px] font-semibold uppercase tracking-wider text-blue-900">
               {badge}
             </div>
-            <div className="inline-flex md:hidden w-fit items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-zinc-900">
+            <div className="inline-flex md:hidden w-fit items-center rounded-full bg-slate-100 px-3 py-1 text-[12px] font-semibold text-zinc-900">
               {badge}
             </div>
 
             {/* Title */}
-            <h1 className="text-[2rem] leading-[1.2] font-semibold tracking-tight text-black sm:text-4xl lg:text-[2.75rem] lg:leading-[1.1]">
+            <h1 className="text-[28px] leading-[1.2] font-semibold tracking-tight text-black sm:text-4xl lg:text-[44px] lg:leading-[1.1]">
               {title}
             </h1>
 
             {/* Description */}
-            <p className="text-[15px] md:text-base leading-relaxed text-zinc-600 whitespace-pre-line text-justify">
+            <p className="text-[14px] lg:text-[16px] leading-relaxed text-zinc-600 whitespace-pre-line text-justify">
               {desc}
             </p>
 

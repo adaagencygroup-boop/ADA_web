@@ -87,13 +87,13 @@ export default function ContactSection() {
         {/* Header */}
         {headerData.map((item, index) => (
           <div key={index} className="max-w-xl mb-(--section-padding) flex flex-col gap-(--heading-space)">
-            <h1 className="text-[2rem] leading-[1.2] font-semibold tracking-tight text-zinc-900 sm:text-4xl lg:text-[2.75rem] lg:leading-[1.1]">
+            <h1 className="text-[28px] leading-[1.2] font-semibold tracking-tight text-zinc-900 lg:text-[44px] lg:leading-[1.1]">
               {item.title}
             </h1>
             <h2 className="text-[19px] lg:text-[21px] font-semibold text-zinc-900 leading-snug">
               {item.subtitle}
             </h2>
-            <p className="text-zinc-500 leading-relaxed text-[14.5px] lg:text-[15px] text-justify mt-(--inner-space)">
+            <p className="text-zinc-500 leading-relaxed text-[14px] lg:text-[16px] text-justify mt-(--inner-space)">
               {item.description}
             </p>
           </div>
@@ -103,11 +103,11 @@ export default function ContactSection() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-(--section-padding)">
           
           {/* Left Column: Form */}
-          <div className="flex flex-col gap-(--heading-space)">
-            <h3 className="text-lg lg:text-[1.35rem] font-semibold text-zinc-900 uppercase">
+          <div className="bg-white border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-2xl lg:rounded-3xl p-6 sm:p-8 lg:p-10 flex flex-col gap-(--heading-space)">
+            <h3 className="text-[19px] lg:text-[21px] font-semibold text-zinc-900 leading-snug uppercase">
               GỬI CHO CHÚNG TÔI
             </h3>
-            <p className="text-[14px] text-zinc-500 leading-relaxed mb-(--inner-space)">
+            <p className="text-[14px] lg:text-[16px] text-zinc-500 leading-relaxed mb-(--inner-space)">
               Hãy điền thông tin, đội ngũ của ADA sẽ phản hồi bạn trong thời gian sớm nhất.
             </p>
 
