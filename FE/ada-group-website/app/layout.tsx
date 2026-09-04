@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Be_Vietnam_Pro } from "next/font/google";
 import Header from "@/src/components/layout/Header";
 import Footer from "@/src/components/layout/Footer";
+import FloatingContact from "@/src/components/common/FloatingContact";
 import "./globals.css";
 
 const beVietnamPro = Be_Vietnam_Pro({
@@ -26,6 +27,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Header />
         <main className="flex flex-1 flex-col">{children}</main>
         <Footer />
+        <FloatingContact />
       </body>
     </html>
   );

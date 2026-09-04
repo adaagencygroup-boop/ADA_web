@@ -36,7 +36,7 @@ const CONTENT = {
 
 export default function AIEcosystem() {
   return (
-    <section className="section-y bg-[#f2f2f7]">
+    <section className="section-y">
       <div className="mx-auto flex max-w-360 flex-col items-start gap-8 px-4 sm:px-6 lg:grid lg:grid-cols-2 lg:items-center lg:gap-20 lg:px-8">
         <div className="flex flex-col items-start gap-4 lg:gap-6">
           <span className="inline-flex items-center rounded-full bg-[#D5E3FD] px-4 py-1.5 text-[11px] font-semibold tracking-widest text-[#57657B] uppercase lg:text-sm lg:font-normal lg:tracking-[1.6px]">
@@ -70,8 +70,8 @@ export default function AIEcosystem() {
           </div>
         </div>
 
-        <div className="relative flex aspect-610/500 w-full items-center justify-center overflow-hidden rounded-2xl border border-[#C4C6D2]/10 bg-[#E6E8EA] p-6 shadow-2xl lg:rounded-3xl">
-          <div className="flex w-full max-w-96 flex-col items-center gap-2 rounded-2xl border border-white/20 bg-white/80 px-8 py-8 text-center shadow-xl backdrop-blur-md">
+        <div className="relative flex aspect-610/500 w-full items-center justify-center overflow-hidden rounded-2xl border border-[#C4C6D2]/10 bg-[#E6E8EA] p-6 lg:rounded-3xl">
+          <div className="flex w-full max-w-96 flex-col items-center gap-2 rounded-2xl border border-white/20 bg-white/80 px-8 py-8 text-center backdrop-blur-md">
             <AiChipIcon className="h-10 w-10 text-[#1A4182]" />
             <h3 className="mt-1 text-2xl font-semibold text-[#002A64]">
               {CONTENT.card.title}

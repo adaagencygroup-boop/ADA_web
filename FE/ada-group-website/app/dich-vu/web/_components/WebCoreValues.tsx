@@ -64,7 +64,7 @@ export default function WebCoreValues() {
             >
               <div className="flex items-start md:items-center gap-(--inner-space) md:mb-(--inner-space)">
                 {/* Icon */}
-                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl md:bg-[#1e3a6e] md:text-white bg-[#eef2ff] text-[#1e3a6e] mt-(--heading-space).5 md:mt-(--heading-space)">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl md:bg-[#1e3a6e] md:text-white bg-[#eef2ff] text-[#1e3a6e] mt-1 md:mt-0">
                   {item.icon}
                 </div>
                 

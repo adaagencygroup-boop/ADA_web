@@ -43,7 +43,7 @@ export default function MobileScalability() {
   ];
 
   return (
-    <section className="section-y max-md:py-5! md:pt-(--heading-space)!">
+    <section className="section-y bg-white">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         
         {/* Top Header */}

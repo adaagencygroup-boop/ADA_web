@@ -204,7 +204,7 @@ export default function HeroCarousel() {
   }
 
   return (
-    <section className="section-y bg-[#f2f2f7]">
+    <section className="section-y pb-0!">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="relative overflow-hidden rounded-2xl bg-[#003274]">
           <div className="absolute inset-0 bg-linear-to-r from-[#001A40] to-[#003274] opacity-90" />
