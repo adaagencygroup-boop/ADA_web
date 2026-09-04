@@ -188,7 +188,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-(--section-padding) flex flex-col items-center justify-between gap-(--inner-space) border-t border-zinc-200 pt-(--inner-space) sm:flex-row">
-          <p className="text-sm text-zinc-500">
+          <p className="text-sm text-zinc-500 text-center sm:text-left">
             © {new Date().getFullYear()} ADA Group. Redesign Vietnam Initiative. All
             rights reserved.
           </p>
