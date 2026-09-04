@@ -13,10 +13,10 @@ export default function MobileEcommerceApps() {
   const categories = [
     {
       icon: (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6 text-blue-600">
-          <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
-          <path d="M3 6h18" />
-          <path d="M16 10a4 4 0 0 1-8 0" />
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M16 10C16 12.2077 14.2077 14 12 14C9.79234 14 8 12.2077 8 10" stroke="#1A4182" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M3.10156 6.03516H20.8956" stroke="#1A4182" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M3.4 5.467C3.14036 5.81319 3 6.23426 3 6.667V20C3 21.1038 3.89617 22 5 22H19C20.1038 22 21 21.1038 21 20V6.667C21 6.23426 20.8596 5.81319 20.6 5.467L18.6 2.8C18.2223 2.29639 17.6295 2 17 2H7C6.37049 2 5.77771 2.29639 5.4 2.8L3.4 5.467" stroke="#1A4182" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       ),
       title:"E-commerce",
@@ -24,12 +24,10 @@ export default function MobileEcommerceApps() {
     },
     {
       icon: (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6 text-blue-600">
-          <path d="M18 8h1a4 4 0 0 1 0 8h-1" />
-          <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" />
-          <line x1="6" x2="6" y1="1" y2="3" />
-          <line x1="10" x2="10" y1="1" y2="3" />
-          <line x1="14" x2="14" y1="1" y2="3" />
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 2V9C3 10.1 3.9 11 5 11H9C10.1038 11 11 10.1038 11 9V2" stroke="#1A4182" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M7 2V22" stroke="#1A4182" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M21 15V2C18.2404 2 16 4.24042 16 7V13C16 14.1 16.9 15 18 15H21V15M21 15V22" stroke="#1A4182" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       ),
       title:"F&B",
@@ -37,9 +35,9 @@ export default function MobileEcommerceApps() {
     },
     {
       icon: (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6 text-blue-600">
-          <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
-          <circle cx="12" cy="10" r="3" />
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 10C20 14.993 14.461 20.193 12.601 21.799C12.245 22.0667 11.755 22.0667 11.399 21.799C9.539 20.193 4 14.993 4 10C4 5.58468 7.58468 2 12 2C16.4153 2 20 5.58468 20 10" stroke="#1A4182" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M9 10C9 11.6557 10.3443 13 12 13C13.6557 13 15 11.6557 15 10C15 8.34425 13.6557 7 12 7C10.3443 7 9 8.34425 9 10V10" stroke="#1A4182" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       ),
       title:"Hotel & Travel",
@@ -47,11 +45,11 @@ export default function MobileEcommerceApps() {
     },
     {
       icon: (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6 text-blue-600">
-          <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
-          <line x1="16" x2="16" y1="2" y2="6" />
-          <line x1="8" x2="8" y1="2" y2="6" />
-          <line x1="3" x2="21" y1="10" y2="10" />
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 2V5" stroke="#1A4182" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M16 2V5" stroke="#1A4182" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M5 3H19C20.1038 3 21 3.89617 21 5V19C21 20.1038 20.1038 21 19 21H5C3.89617 21 3 20.1038 3 19V5C3 3.89617 3.89617 3 5 3V3" stroke="#1A4182" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M3 9H21" stroke="#1A4182" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       ),
       title:"Booking & Event",
