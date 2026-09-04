@@ -14,9 +14,9 @@ export default function MobileEcommerceApps() {
     {
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M16 10C16 12.2077 14.2077 14 12 14C9.79234 14 8 12.2077 8 10" stroke="#1A4182" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M3.10156 6.03516H20.8956" stroke="#1A4182" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M3.4 5.467C3.14036 5.81319 3 6.23426 3 6.667V20C3 21.1038 3.89617 22 5 22H19C20.1038 22 21 21.1038 21 20V6.667C21 6.23426 20.8596 5.81319 20.6 5.467L18.6 2.8C18.2223 2.29639 17.6295 2 17 2H7C6.37049 2 5.77771 2.29639 5.4 2.8L3.4 5.467" stroke="#1A4182" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M16 10C16 12.2077 14.2077 14 12 14C9.79234 14 8 12.2077 8 10" stroke="#1A4182" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M3.10156 6.03516H20.8956" stroke="#1A4182" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        <path d="M3.4 5.467C3.14036 5.81319 3 6.23426 3 6.667V20C3 21.1038 3.89617 22 5 22H19C20.1038 22 21 21.1038 21 20V6.667C21 6.23426 20.8596 5.81319 20.6 5.467L18.6 2.8C18.2223 2.29639 17.6295 2 17 2H7C6.37049 2 5.77771 2.29639 5.4 2.8L3.4 5.467" stroke="#1A4182" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
       ),
       title:"E-commerce",
@@ -25,9 +25,9 @@ export default function MobileEcommerceApps() {
     {
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M3 2V9C3 10.1 3.9 11 5 11H9C10.1038 11 11 10.1038 11 9V2" stroke="#1A4182" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M7 2V22" stroke="#1A4182" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M21 15V2C18.2404 2 16 4.24042 16 7V13C16 14.1 16.9 15 18 15H21V15M21 15V22" stroke="#1A4182" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M3 2V9C3 10.1 3.9 11 5 11H9C10.1038 11 11 10.1038 11 9V2" stroke="#1A4182" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M7 2V22" stroke="#1A4182" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M21 15V2C18.2404 2 16 4.24042 16 7V13C16 14.1 16.9 15 18 15H21V15M21 15V22" stroke="#1A4182" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
       ),
       title:"F&B",
@@ -36,8 +36,8 @@ export default function MobileEcommerceApps() {
     {
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M20 10C20 14.993 14.461 20.193 12.601 21.799C12.245 22.0667 11.755 22.0667 11.399 21.799C9.539 20.193 4 14.993 4 10C4 5.58468 7.58468 2 12 2C16.4153 2 20 5.58468 20 10" stroke="#1A4182" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M9 10C9 11.6557 10.3443 13 12 13C13.6557 13 15 11.6557 15 10C15 8.34425 13.6557 7 12 7C10.3443 7 9 8.34425 9 10V10" stroke="#1A4182" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M20 10C20 14.993 14.461 20.193 12.601 21.799C12.245 22.0667 11.755 22.0667 11.399 21.799C9.539 20.193 4 14.993 4 10C4 5.58468 7.58468 2 12 2C16.4153 2 20 5.58468 20 10" stroke="#1A4182" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M9 10C9 11.6557 10.3443 13 12 13C13.6557 13 15 11.6557 15 10C15 8.34425 13.6557 7 12 7C10.3443 7 9 8.34425 9 10V10" stroke="#1A4182" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
       ),
       title:"Hotel & Travel",
@@ -46,10 +46,10 @@ export default function MobileEcommerceApps() {
     {
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M8 2V5" stroke="#1A4182" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M16 2V5" stroke="#1A4182" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M5 3H19C20.1038 3 21 3.89617 21 5V19C21 20.1038 20.1038 21 19 21H5C3.89617 21 3 20.1038 3 19V5C3 3.89617 3.89617 3 5 3V3" stroke="#1A4182" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M3 9H21" stroke="#1A4182" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M8 2V5" stroke="#1A4182" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M16 2V5" stroke="#1A4182" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M5 3H19C20.1038 3 21 3.89617 21 5V19C21 20.1038 20.1038 21 19 21H5C3.89617 21 3 20.1038 3 19V5C3 3.89617 3.89617 3 5 3V3" stroke="#1A4182" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M3 9H21" stroke="#1A4182" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
       ),
       title:"Booking & Event",
