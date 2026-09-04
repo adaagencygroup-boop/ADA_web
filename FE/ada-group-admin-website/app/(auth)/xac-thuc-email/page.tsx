@@ -1,5 +1,5 @@
 import AuthBanner from "@/app/(auth)/_components/AuthBanner";
-import OtpForm from "@/app/(auth)/xac-thuc-email/_components/OtpForm";
+import OtpForm from "@/src/components/shared/OtpForm";
 
 const WELCOME_TITLE = "Chào mừng trở lại!";
 const WELCOME_TEXT =

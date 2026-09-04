@@ -22,11 +22,21 @@ function formatTime(totalSeconds: number) {
 
 type OtpFormProps = {
   email: string;
-  nextHref: string;
-  backHref: string;
+  /** Page usage: navigate here on success/back. */
+  nextHref?: string;
+  backHref?: string;
+  /** Embedded usage (e.g. a dialog): call back instead of navigating. */
+  onVerified?: () => void;
+  onBack?: () => void;
 };
 
-export default function OtpForm({ email, nextHref, backHref }: OtpFormProps) {
+export default function OtpForm({
+  email,
+  nextHref,
+  backHref,
+  onVerified,
+  onBack,
+}: OtpFormProps) {
   const router = useRouter();
   const [otp, setOtp] = useState("");
   const [expiresIn, setExpiresIn] = useState(EXPIRES_IN_SECONDS);
@@ -68,7 +78,8 @@ export default function OtpForm({ email, nextHref, backHref }: OtpFormProps) {
       <form
         onSubmit={(event) => {
           event.preventDefault();
-          router.push(nextHref);
+          if (onVerified) onVerified();
+          else if (nextHref) router.push(nextHref);
         }}
         className="flex w-full flex-col items-center"
       >
@@ -113,12 +124,22 @@ export default function OtpForm({ email, nextHref, backHref }: OtpFormProps) {
         </button>
       </form>
 
-      <Link
-        href={backHref}
-        className="text-sm font-medium text-[#1A56DB] hover:underline"
-      >
-        Quay lại
-      </Link>
+      {onBack ? (
+        <button
+          type="button"
+          onClick={onBack}
+          className="text-sm font-medium text-[#1A56DB] hover:underline"
+        >
+          Quay lại
+        </button>
+      ) : (
+        <Link
+          href={backHref ?? "/dang-nhap"}
+          className="text-sm font-medium text-[#1A56DB] hover:underline"
+        >
+          Quay lại
+        </Link>
+      )}
     </div>
   );
 }
