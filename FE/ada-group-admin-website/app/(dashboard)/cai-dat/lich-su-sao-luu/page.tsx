@@ -7,20 +7,20 @@ export default function LichSuSaoLuuPage() {
     <div className="flex flex-1 flex-col gap-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div className="flex flex-col gap-1">
-          <nav className="flex items-center gap-2 text-sm text-[#6B7280]">
-            <Link href="/" className="hover:text-[#111827]">
+          <nav className="flex items-center gap-2 text-sm text-[#434750]">
+            <Link href="/" className="hover:text-[#1C1B1B]">
               Dashboard
             </Link>
             <ChevronRight className="size-3" />
-            <Link href="/cai-dat" className="hover:text-[#111827]">
+            <Link href="/cai-dat" className="hover:text-[#1C1B1B]">
               Cài đặt
             </Link>
             <ChevronRight className="size-3" />
-            <span className="font-medium text-[#111827]">
+            <span className="font-medium text-[#1C1B1B]">
               Lịch sử sao lưu
             </span>
           </nav>
-          <h1 className="text-2xl font-bold text-[#111827]">
+          <h1 className="text-3xl font-semibold text-[#1C1B1B]">
             Lịch sử sao lưu
           </h1>
           <p className="text-sm text-[#6B7280]">

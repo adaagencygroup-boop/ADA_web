@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Download } from "lucide-react";
+import Link from "next/link";
+import { ChevronRight, Download } from "lucide-react";
 import type { DateRange } from "react-day-picker";
 import DateRangeButton from "@/app/(dashboard)/tuyen-dung/_components/DateRangeButton";
 import StatsGrid from "@/app/(dashboard)/tuyen-dung/_components/StatsGrid";
@@ -19,7 +20,14 @@ export default function RecruitmentDashboard() {
     <div className="flex flex-1 flex-col gap-7.5">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="flex flex-col gap-1">
-          <h1 className="text-4xl font-semibold text-[#1C1B1B]">
+          <nav className="flex items-center gap-2 text-sm text-[#434750]">
+            <Link href="/" className="hover:text-[#1C1B1B]">
+              Dashboard
+            </Link>
+            <ChevronRight className="size-3" />
+            <span className="font-medium text-[#1C1B1B]">Tuyển dụng</span>
+          </nav>
+          <h1 className="text-3xl font-semibold text-[#1C1B1B]">
             Dashboard tuyển dụng
           </h1>
           <p className="text-sm text-[#434750]">

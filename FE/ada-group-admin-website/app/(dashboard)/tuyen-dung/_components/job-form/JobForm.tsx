@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
+  ChevronRight,
   Eye,
   ImagePlus,
   Mail,
@@ -119,22 +120,22 @@ export default function JobForm({
     <div className="flex flex-1 flex-col gap-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div className="flex flex-col gap-1">
-          <h1 className="text-[28px] font-semibold text-[#001E4B]">
-            {isEdit ? "Sửa thông tin tuyển dụng" : "Thêm tin tuyển dụng mới"}
-          </h1>
           <nav className="flex items-center gap-2 text-sm text-[#434750]">
             <Link href="/" className="hover:text-[#1C1B1B]">
               Dashboard
             </Link>
-            <span>›</span>
+            <ChevronRight className="size-3" />
             <Link href="/tuyen-dung" className="hover:text-[#1C1B1B]">
               Tuyển dụng
             </Link>
-            <span>›</span>
+            <ChevronRight className="size-3" />
             <span className="font-medium text-[#1C1B1B]">
               {isEdit ? "Sửa tin tuyển dụng" : "Thêm tin tuyển dụng"}
             </span>
           </nav>
+          <h1 className="text-3xl font-semibold text-[#1C1B1B]">
+            {isEdit ? "Sửa thông tin tuyển dụng" : "Thêm tin tuyển dụng mới"}
+          </h1>
         </div>
 
         <div className="flex items-center gap-3">

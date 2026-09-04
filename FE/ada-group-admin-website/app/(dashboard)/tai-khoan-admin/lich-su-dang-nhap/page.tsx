@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Info, ShieldAlert } from "lucide-react";
+import { ChevronRight, Info, ShieldAlert } from "lucide-react";
 import DeviceSessionsTable from "@/app/(dashboard)/tai-khoan-admin/lich-su-dang-nhap/_components/DeviceSessionsTable";
 
 export default function LichSuDangNhapPage() {
@@ -7,15 +7,19 @@ export default function LichSuDangNhapPage() {
     <div className="flex flex-1 flex-col gap-6">
       <div className="flex flex-col gap-2">
         <nav className="flex items-center gap-2 text-sm text-[#434750]">
+          <Link href="/" className="hover:text-[#1C1B1B]">
+            Dashboard
+          </Link>
+          <ChevronRight className="size-3" />
           <Link href="/tai-khoan-admin" className="hover:text-[#1C1B1B]">
             Tài khoản admin
           </Link>
-          <span>/</span>
+          <ChevronRight className="size-3" />
           <span className="font-medium text-[#1C1B1B]">
             Thiết bị đang đăng nhập
           </span>
         </nav>
-        <h1 className="text-4xl font-bold tracking-tight text-[#1C1B1B]">
+        <h1 className="text-3xl font-semibold text-[#1C1B1B]">
           Lịch sử đăng nhập
         </h1>
       </div>

@@ -6,6 +6,7 @@ import {
   CalendarClock,
   CalendarDays,
   CheckCircle2,
+  ChevronRight,
   ClipboardList,
   Eye,
   Folder,
@@ -50,14 +51,14 @@ export default function JobDetailView({ job }: { job: JobDetail }) {
             <Link href="/" className="hover:text-[#1C1B1B]">
               Dashboard
             </Link>
-            <span>/</span>
+            <ChevronRight className="size-3" />
             <Link href="/tuyen-dung" className="hover:text-[#1C1B1B]">
               Tuyển dụng
             </Link>
-            <span>/</span>
+            <ChevronRight className="size-3" />
             <span className="font-medium text-[#1C1B1B]">{job.title}</span>
           </nav>
-          <h1 className="text-4xl font-bold text-[#001E4B]">
+          <h1 className="text-3xl font-semibold text-[#1C1B1B]">
             Xem bài tuyển dụng
           </h1>
         </div>
