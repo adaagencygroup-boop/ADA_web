@@ -54,7 +54,7 @@ export default function PartnersSection() {
           <h2 className="mt-(--heading-space) text-2xl font-semibold tracking-tight text-zinc-900 sm:text-4xl">
             {CONTENT.title}
           </h2>
-          <p className="mt-(--inner-space) hidden sm:inline text-base leading-relaxed text-zinc-600 md:text-lg">
+          <p className="mt-2 text-base leading-relaxed text-zinc-600 md:text-lg">
             {CONTENT.description}
           </p>
         </div>

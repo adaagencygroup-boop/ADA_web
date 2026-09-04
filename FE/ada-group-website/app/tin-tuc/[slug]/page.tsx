@@ -49,7 +49,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       </div>
       <Breadcrumb current={article.title} />
 
-      <section className="section-y pt-2! bg-white">
+      <section className="section-y pt-2!">
         <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-8">
             <div className="flex min-w-0 flex-1 flex-col items-start gap-8">

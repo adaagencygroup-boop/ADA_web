@@ -41,7 +41,7 @@ const SERVICES = [
 
 export default function ServicesGrid() {
   return (
-    <section className="section-y md:pt-0!">
+    <section className="section-y">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-5xl text-center">
           <h2 className="text-2xl text-start sm:text-center font-semibold tracking-tight text-zinc-900 sm:text-4xl">
@@ -56,7 +56,7 @@ export default function ServicesGrid() {
           {SERVICES.map((service) => (
             <div
               key={service.title}
-              className="rounded-2xl border border-zinc-200 bg-[#F3F4F6] p-6"
+              className="rounded-2xl border border-zinc-200 bg-white p-6"
             >
               <div className="flex items-center gap-3">
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#D8E2FF80]">

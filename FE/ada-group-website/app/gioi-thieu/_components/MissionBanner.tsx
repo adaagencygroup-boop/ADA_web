@@ -6,7 +6,7 @@ const CONTENT = {
 
 export default function MissionBanner() {
   return (
-    <section className="section-y pt-0!">
+    <section className="section-y bg-white">
       <div className="mx-auto max-w-360 lg:px-8">
         <div className="bg-[#002A64] lg:rounded-2xl">
           <div className="flex flex-col items-center gap-4 p-6 text-center lg:rounded-2xl lg:px-56 lg:py-16 lg:shadow-xl">

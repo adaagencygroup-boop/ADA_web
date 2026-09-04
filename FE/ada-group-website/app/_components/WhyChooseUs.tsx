@@ -38,7 +38,7 @@ const REASONS = [
 
 export default function WhyChooseUs() {
   return (
-    <section className="section-y pt-0!">
+    <section className="section-y ">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <h2 className="text-2xl font-semibold tracking-tight text-zinc-900 sm:text-4xl">
           {CONTENT.title}
@@ -47,11 +47,11 @@ export default function WhyChooseUs() {
           {CONTENT.description}
         </p>
 
-        <div className="mt-(--inner-space) grid grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-x-6 md:gap-x-36 sm:gap-y-12">
+        <div className="mt-(--inner-space) grid grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-x-6 md:gap-x-12 sm:gap-y-12">
           {REASONS.map((reason) => (
             <div
               key={reason.title}
-              className="rounded-2xl border border-zinc-200 p-6 sm:rounded-none sm:border-0 sm:p-0"
+              className="rounded-2xl border border-zinc-200 p-6 sm:border-0 bg-white "
             >
               <div
                 className={[
@@ -74,7 +74,7 @@ export default function WhyChooseUs() {
           ))}
         </div>
 
-        <div className="mt-(--inner-space) flex justify-center">
+        <div className="mt-(--inner-space) pt-5 flex justify-center">
           <Link
             href={CONTENT.ctaHref}
             className="inline-flex items-center gap-2 rounded-full bg-blue-950 px-6 py-3.5 text-sm font-medium text-white transition-colors hover:bg-blue-900 sm:text-base"

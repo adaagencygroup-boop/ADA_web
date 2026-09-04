@@ -2,7 +2,7 @@ import Link from"next/link";
 
 export default function AICTASection() {
   return (
-    <section className="bg-white section-y pt-0!">
+    <section className="section-y">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-4xl text-center flex flex-col items-center gap-(--inner-space)">
           <h2 className="text-[1.75rem] font-semibold leading-tight tracking-tight text-[#0a1a2f] sm:text-3xl lg:text-[2.75rem]">

@@ -23,7 +23,7 @@ export default function SectorApproach({ sector }: { sector: Sector }) {
   if (!approach) return null;
 
   return (
-    <section className="section-y pt-0! bg-white">
+    <section className="section-y pt-0!">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center gap-4">
           <h2 className="text-center text-2xl leading-10 font-bold text-[#001D4A] lg:text-3xl">
@@ -53,7 +53,7 @@ export default function SectorApproach({ sector }: { sector: Sector }) {
               </div>
 
               <div className="flex min-w-0 flex-col items-start gap-6">
-                <p className="text-base leading-[26px] text-[#4B5563]">
+                <p className="text-base leading-6.5 text-[#4B5563]">
                   {block.paragraph}
                 </p>
                 <ul className="flex flex-col items-start gap-4">

@@ -33,7 +33,7 @@ const TOOLS = [
 
 export default function TechStack() {
   return (
-    <section className="section-y">
+    <section className="section-y bg-[#EFF6FF]">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="sm:rounded-2xl sm:border sm:border-zinc-200 sm:bg-white sm:p-10">
           <p className="text-lg font-semibold text-zinc-900 sm:hidden">

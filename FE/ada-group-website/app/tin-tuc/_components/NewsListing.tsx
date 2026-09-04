@@ -25,7 +25,7 @@ export default async function NewsListing({
   const categories = getCategoryCounts();
 
   return (
-    <section id={NEWS_LISTING_ANCHOR} className="scroll-mt-28 scroll-smooth bg-white py-6">
+    <section id={NEWS_LISTING_ANCHOR} className="scroll-mt-28 scroll-smooth py-6">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-8">
           <div className="flex min-w-0 flex-1 flex-col items-start gap-6">

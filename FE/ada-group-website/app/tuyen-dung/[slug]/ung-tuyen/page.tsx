@@ -147,7 +147,7 @@ export default function JobApplicationPage() {
         />
       )}
       {/* Breadcrumb Area */}
-      <div className="bg-white py-4 border-b border-slate-100">
+      <div className="py-4 border-b border-slate-100">
         <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
           <nav className="flex items-center text-[10px] sm:text-[11px] md:text-[13px] text-zinc-500 font-medium whitespace-nowrap overflow-x-auto no-scrollbar">
             <Link href="/" className="flex items-center gap-1.5 hover:text-blue-600 transition-colors shrink-0">
@@ -368,7 +368,7 @@ export default function JobApplicationPage() {
             </div>
 
             {/* Box 2: Cần hỗ trợ? */}
-            <div className="bg-slate-50 rounded-2xl border border-slate-100 p-6 shadow-sm">
+            <div className="bg-white rounded-2xl border border-slate-100 p-6 shadow-sm">
               <h3 className="text-[15px] font-semibold text-zinc-900 uppercase flex items-center gap-2 mb-3">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-5 h-5 text-blue-600"><path strokeLinecap="round" strokeLinejoin="round" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
                 Cần hỗ trợ?
@@ -377,9 +377,9 @@ export default function JobApplicationPage() {
                 Nếu bạn cần hỗ trợ trong quá trình ứng tuyển, vui lòng liên hệ với chúng tôi.
               </p>
               <div className="flex flex-col gap-3 text-[13px] text-zinc-800 font-medium">
-                <a href="tel:0243456678" className="flex items-center gap-3 hover:text-blue-600 transition-colors">
+                <a href="tel:0924574444" className="flex items-center gap-3 hover:text-blue-600 transition-colors">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-4 h-4 text-blue-500"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-2.896-1.596-5.25-3.95-6.847-6.847l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" /></svg>
-                  (+84) 024 345 678
+                  (+84) 924 574 444
                 </a>
                 <a href="mailto:hr@adagroup.vn" className="flex items-center gap-3 hover:text-blue-600 transition-colors">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-4 h-4 text-blue-500"><path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" /></svg>

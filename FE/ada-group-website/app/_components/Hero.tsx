@@ -14,7 +14,7 @@ export default function Hero() {
             {CONTENT.title}
           </h1>
 
-          <p className="mt-(--heading-space) md:mx-auto md:whitespace-pre-line text-justify md:text-center text-base leading-relaxed text-zinc-600 lg:text-lg">
+          <p className="mt-5 md:mx-auto md:whitespace-pre-line text-justify md:text-center text-base leading-relaxed text-zinc-600 lg:text-lg">
             {CONTENT.description}
           </p>
         </div>

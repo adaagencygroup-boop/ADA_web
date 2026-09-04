@@ -4,58 +4,7 @@ import React, { useState } from "react";
 import { submitContact } from "@/src/lib/api/contacts";
 import Alert from "@/src/components/common/Alert";
 
-const contactInfo = [
-  {
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
-        <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
-        <circle cx="12" cy="10" r="3" />
-      </svg>
-    ),
-    title: "ĐỊA CHỈ",
-    content: "Tầng 7, Tòa nhà An Phú,\n285 Cách Mạng Tháng 8, Phường 12, Quận 10,\nTP. Hồ Chí Minh, Việt Nam",
-  },
-  {
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
-        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-      </svg>
-    ),
-    title: "ĐIỆN THOẠI",
-    content: "(+84) 28 7300 6464",
-  },
-  {
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
-        <rect width="20" height="16" x="2" y="4" rx="2" />
-        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-      </svg>
-    ),
-    title: "EMAIL",
-    content: "contact@adagroup.vn",
-  },
-  {
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
-        <circle cx="12" cy="12" r="10" />
-        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-        <path d="M2 12h20" />
-      </svg>
-    ),
-    title: "WEBSITE",
-    content: "www.adagroup.vn",
-  },
-  {
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
-        <circle cx="12" cy="12" r="10" />
-        <polyline points="12 6 12 12 16 14" />
-      </svg>
-    ),
-    title: "GIỜ LÀM VIỆC",
-    content: "Thứ 2 - Thứ 6: 8:30 - 17:30\n(Nghỉ thứ 7, Chủ nhật và ngày lễ)",
-  },
-];
+
 
 const headerData = [
   {
@@ -122,7 +71,7 @@ export default function ContactSection() {
   };
 
   return (
-    <section className="bg-linear-to-b from-[#F0F7FF] to-[#FFFFFF] section-y min-h-screen relative">
+    <section className="section-y min-h-screen relative">
       {alertInfo && (
         <Alert 
           type={alertInfo.type}
@@ -239,30 +188,18 @@ export default function ContactSection() {
             </form>
           </div>
 
-          {/* Right Column: Contact Info */}
-          <div className="flex flex-col gap-(--heading-space)">
-            <h3 className="text-lg lg:text-[1.35rem] font-semibold text-zinc-900 uppercase">
-              THÔNG TIN LIÊN HỆ
-            </h3>
-            <p className="text-[14px] text-zinc-500 leading-relaxed mb-(--inner-space)">
-              Bạn cũng có thể liên hệ với chúng tôi qua các kênh dưới đây.
-            </p>
-
-            <div className="flex flex-col gap-(--inner-space)">
-              {contactInfo.map((info, idx) => (
-                <div key={idx} className="bg-white border border-slate-100 rounded-xl p-5 flex gap-(--inner-space) items-start shadow-[0_2px_20px_rgb(0,0,0,0.02)]">
-                  <div className="bg-[#f0f4f9] text-[#2c5282] p-2.5 rounded-full shrink-0 flex items-center justify-center">
-                    {info.icon}
-                  </div>
-                  <div className="flex flex-col gap-1">
-                    <h4 className="text-[12px] font-semibold text-zinc-900 uppercase tracking-wider">{info.title}</h4>
-                    <p className="text-[14px] text-zinc-600 leading-relaxed whitespace-pre-line">
-                      {info.content}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
+          {/* Right Column: Map */}
+          <div className="flex flex-col h-full min-h-100 w-full">
+            <iframe 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3725.4580862917574!2d105.74528907587147!3d20.97426688964681!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3134532cc803c8e5%3A0x91a5747dcb3419e6!2sAn%20Ph%C3%BA%20Building!5e0!3m2!1svi!2s!4v1788494095357!5m2!1svi!2s" 
+              width="100%" 
+              height="100%" 
+              style={{ border: 0 }} 
+              allowFullScreen 
+              loading="lazy" 
+              referrerPolicy="no-referrer-when-downgrade" 
+              className="rounded-2xl shadow-sm border border-slate-200 flex-1"
+            ></iframe>
           </div>
 
         </div>

@@ -26,8 +26,9 @@ const IMAGES = {
 
 export default function AboutHighlight() {
   return (
-    <section className="section-y md:pt-0! mx-auto max-w-360 px-4 sm:px-6 lg:px-8 bg-[#EFF6FF] md:bg-white">
-      <div className="grid grid-cols-1 items-center gap-x-12 lg:grid-cols-2">
+    <section className="section-y bg-white  ">
+      <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 items-center gap-x-12 lg:grid-cols-2">
         <div className="order-1 lg:order-0 lg:col-start-2 lg:row-start-1">
           <span className="inline-flex items-center rounded-full bg-[#D8E2FF] px-3 py-1 text-sm font-semibold text-[#002A64]">
             {CONTENT.badge}
@@ -74,6 +75,7 @@ export default function AboutHighlight() {
             {CONTENT.ctaLabel}
             <ArrowRightIcon className="h-3.5 w-3.5" />
           </Link>
+        </div>
         </div>
       </div>
     </section>

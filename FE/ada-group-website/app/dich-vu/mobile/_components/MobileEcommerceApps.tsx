@@ -60,7 +60,7 @@ export default function MobileEcommerceApps() {
   ];
 
   return (
-    <section className="bg-white section-y max-md:py-5! md:pt-(--heading-space)!">
+    <section className="section-y max-md:py-5! md:pt-(--heading-space)!">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col lg:grid lg:grid-cols-2 gap-(--section-padding) lg:items-start bg-white lg:bg-transparent rounded-4xl lg:rounded-none border border-slate-100 lg:border-none shadow-[0_2px_15px_rgb(0,0,0,0.03)] lg:shadow-none overflow-hidden lg:overflow-visible">
           

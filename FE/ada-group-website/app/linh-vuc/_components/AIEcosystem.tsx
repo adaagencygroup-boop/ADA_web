@@ -36,14 +36,14 @@ const CONTENT = {
 
 export default function AIEcosystem() {
   return (
-    <section className="section-y bg-white">
+    <section className="section-y bg-[#f2f2f7]">
       <div className="mx-auto flex max-w-360 flex-col items-start gap-8 px-4 sm:px-6 lg:grid lg:grid-cols-2 lg:items-center lg:gap-20 lg:px-8">
         <div className="flex flex-col items-start gap-4 lg:gap-6">
           <span className="inline-flex items-center rounded-full bg-[#D5E3FD] px-4 py-1.5 text-[11px] font-semibold tracking-widest text-[#57657B] uppercase lg:text-sm lg:font-normal lg:tracking-[1.6px]">
             {CONTENT.badge}
           </span>
 
-          <h2 className="text-[28px] leading-[1.21] font-semibold text-[#002A64] lg:text-5xl lg:leading-[1.25] lg:font-semibold lg:tracking-[-0.96px]">
+          <h2 className="text-[28px] leading-[1.21] font-semibold text-[#002A64] lg:text-5xl lg:leading-tight lg:font-semibold lg:tracking-[-0.96px]">
             {CONTENT.heading}
           </h2>
 

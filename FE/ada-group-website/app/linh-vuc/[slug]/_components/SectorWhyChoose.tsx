@@ -6,7 +6,7 @@ function StatCard({ stat }: { stat: SectorStat }) {
   return (
     <div className="flex flex-1 flex-col items-center gap-1 rounded-lg bg-white p-4 text-center lg:items-start lg:gap-4 lg:rounded-2xl lg:border lg:border-slate-100 lg:p-8 lg:text-left lg:shadow-[0_1px_2px_rgba(0,0,0,0.05)]">
       <Icon className="hidden h-10 w-10 text-[#2563EB] lg:block" />
-      <span className="text-2xl leading-[35px] font-semibold text-[#002A64] lg:leading-10 lg:text-[#1E3A8A]">
+      <span className="text-2xl leading-8.75 font-semibold text-[#002A64] lg:leading-10 lg:text-[#1E3A8A]">
         {stat.value}
       </span>
       <p className="text-[11px] leading-4 text-slate-400 lg:text-sm lg:leading-5 lg:text-[#64748B]">
@@ -21,9 +21,9 @@ export default function SectorWhyChoose({ sector }: { sector: Sector }) {
   if (!whyChoose) return null;
 
   return (
-    <section className="section-y pt-0! bg-[#EFF6FF] lg:bg-white">
+    <section className="section-y pt-0!">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
-        <h2 className="text-xl leading-[29px] font-semibold text-[#0F172A] lg:text-center lg:text-3xl lg:leading-9 lg:font-bold">
+        <h2 className="text-xl leading-7.25 font-semibold text-[#0F172A] lg:text-center lg:text-3xl lg:leading-9 lg:font-bold">
           Tại sao <span className="hidden lg:inline">ADA Group </span>chọn{" "}
           {sector.title}?
         </h2>
@@ -49,7 +49,7 @@ export default function SectorWhyChoose({ sector }: { sector: Sector }) {
                 ”
               </span>
             </p>
-            <p className="mt-(--heading-space) hidden max-w-144 text-base leading-[26px] text-[#475569] lg:block">
+            <p className="mt-(--heading-space) hidden max-w-xl text-base leading-6.5 text-[#475569] lg:block">
               {whyChoose.paragraph}
             </p>
           </div>

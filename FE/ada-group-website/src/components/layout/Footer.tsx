@@ -86,17 +86,17 @@ const CONTACT_ROWS = [
     icon: MapPinIcon,
     content: (
       <span>
-        Tầng 15, Tòa nhà Viettel Complex,
+        Tầng 7 toà An Phú Building,
         <br />
-        285 Cách Mạng Tháng 8, Phường 12, Quận 10,
+        LK19A-19B, khu tái định cư Dương Nội, đường Lê Trọng Tấn, Phường Dương Nội,
         <br />
-        TP. Hồ Chí Minh, Việt Nam
+        TP Hà Nội, Việt Nam
       </span>
     ),
   },
   {
     icon: PhoneIcon,
-    content: <span>(+84) 28 7300 6464</span>,
+    content: <span>(+84) 924 574 444</span>,
   },
   {
     icon: MailIcon,
@@ -146,7 +146,7 @@ function FooterLinkList({
 
 export default function Footer() {
   return (
-    <footer className="border-t border-zinc-200 bg-[#f9fafc] section-y">
+    <footer className="border-t border-zinc-200 bg-white section-y">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-(--section-padding) lg:grid-cols-[minmax(0,1.4fr)_repeat(3,minmax(0,1fr))]">
           <div>
