@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
-import PasswordField from "@/app/(auth)/dang-nhap/_components/PasswordField";
+import PasswordField from "@/src/components/shared/PasswordField";
 
 export default function ResetPasswordForm() {
   const router = useRouter();

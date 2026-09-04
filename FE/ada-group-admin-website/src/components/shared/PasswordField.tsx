@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Eye, EyeOff, Lock } from "lucide-react";
 import { Input } from "@/src/components/ui/input";
+import { cn } from "@/src/lib/utils";
 
 type PasswordFieldProps = {
   id: string;
@@ -10,6 +11,9 @@ type PasswordFieldProps = {
   label: string;
   placeholder?: string;
   autoComplete?: string;
+  showIcon?: boolean;
+  labelClassName?: string;
+  inputClassName?: string;
 };
 
 export default function PasswordField({
@@ -18,23 +22,32 @@ export default function PasswordField({
   label,
   placeholder = "Nhập mật khẩu",
   autoComplete = "current-password",
+  showIcon = true,
+  labelClassName = "text-sm font-medium text-[#1E293B]",
+  inputClassName = "h-11.5",
 }: PasswordFieldProps) {
   const [visible, setVisible] = useState(false);
 
   return (
     <div className="flex flex-col gap-1.5">
-      <label htmlFor={id} className="text-sm font-medium text-[#1E293B]">
+      <label htmlFor={id} className={labelClassName}>
         {label}
       </label>
       <div className="relative">
-        <Lock className="pointer-events-none absolute top-1/2 left-3.5 size-5 -translate-y-1/2 text-[#9CA3AF]" />
+        {showIcon && (
+          <Lock className="pointer-events-none absolute top-1/2 left-3.5 size-5 -translate-y-1/2 text-[#9CA3AF]" />
+        )}
         <Input
           id={id}
           name={name}
           type={visible ? "text" : "password"}
           placeholder={placeholder}
           autoComplete={autoComplete}
-          className="h-11.5 border-[#E2E8F0] pr-11 pl-11 text-sm text-[#1E293B] placeholder:text-[#9CA3AF] focus-visible:border-[#1A56DB]"
+          className={cn(
+            "border-[#E2E8F0] text-sm text-[#1E293B] placeholder:text-[#9CA3AF] focus-visible:border-[#1A56DB]",
+            showIcon ? "pr-11 pl-11" : "pr-10",
+            inputClassName
+          )}
         />
         <button
           type="button"
@@ -42,7 +55,11 @@ export default function PasswordField({
           onClick={() => setVisible((prev) => !prev)}
           className="absolute top-1/2 right-3.5 -translate-y-1/2 text-[#9CA3AF] hover:text-[#64748B]"
         >
-          {visible ? <EyeOff className="size-5" /> : <Eye className="size-5" />}
+          {visible ? (
+            <Eye className="size-5" />
+          ) : (
+            <EyeOff className="size-5" />
+          )}
         </button>
       </div>
     </div>

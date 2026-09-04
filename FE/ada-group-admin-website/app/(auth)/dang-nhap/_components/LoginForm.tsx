@@ -4,8 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Unlock, User } from "lucide-react";
-import PasswordField from "@/app/(auth)/dang-nhap/_components/PasswordField";
 import { Input } from "@/src/components/ui/input";
+import PasswordField from "@/src/components/shared/PasswordField";
 
 export default function LoginForm() {
   const router = useRouter();
