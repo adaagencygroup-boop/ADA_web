@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import {
   Check,
   ChevronRight,
@@ -83,8 +84,8 @@ export default function AccountSecurityCard() {
 
         <div className="border-t border-[#E2E8F0]" />
 
-        <button
-          type="button"
+        <Link
+          href="/tai-khoan-admin/lich-su-dang-nhap"
           className="flex items-center justify-between gap-4 px-6 py-5 text-left hover:bg-[#F8FAFC]"
         >
           <div className="flex items-start gap-3">
@@ -99,7 +100,7 @@ export default function AccountSecurityCard() {
             </div>
           </div>
           <ChevronRight className="size-5 shrink-0 text-[#94A3B8]" />
-        </button>
+        </Link>
 
         <div className="border-t border-[#E2E8F0] p-6">
           <button
@@ -136,7 +137,7 @@ export default function AccountSecurityCard() {
                   <Check className="size-7 text-white" />
                 </div>
               </div>
-              <DialogTitle className="text-2xl font-bold text-[#0F172A]">
+              <DialogTitle className="text-2xl font-semibold text-[#0F172A]">
                 {successCopy.title}
               </DialogTitle>
               <p className="text-[#64748B]">{successCopy.description}</p>

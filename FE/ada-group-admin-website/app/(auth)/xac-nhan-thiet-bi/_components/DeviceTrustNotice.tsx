@@ -21,7 +21,7 @@ export default function DeviceTrustNotice() {
       <button
         type="button"
         onClick={() => router.push("/")}
-        className="w-full rounded-lg bg-red-600 py-3 text-sm font-bold text-white hover:bg-red-600/90"
+        className="w-full rounded-lg bg-red-600 py-3 text-sm font-semibold text-white hover:bg-red-600/90"
       >
         Đã hiểu
       </button>
