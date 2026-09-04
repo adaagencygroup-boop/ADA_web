@@ -1,0 +1,208 @@
+export type JobStatus = "active" | "closed" | "hidden";
+
+export type JobPosting = {
+  id: string;
+  title: string;
+  department: string;
+  location: string;
+  type: string;
+  candidates: number;
+  deadline: string;
+  status: JobStatus;
+  closingSoon: boolean;
+};
+
+const BASE_JOBS: Omit<JobPosting, "id">[] = [
+  {
+    title: "AI Engineer",
+    department: "Phòng AI",
+    location: "Hà Nội",
+    type: "Full-time",
+    candidates: 1,
+    deadline: "28/07/2025",
+    status: "active",
+    closingSoon: true,
+  },
+  {
+    title: "Backend Developer",
+    department: "Phòng IT",
+    location: "Hà Nội",
+    type: "Full-time",
+    candidates: 2,
+    deadline: "30/07/2025",
+    status: "active",
+    closingSoon: false,
+  },
+  {
+    title: "UI/UX Designer",
+    department: "Phòng Thiết kế",
+    location: "Hà Nội",
+    type: "Full-time",
+    candidates: 1,
+    deadline: "25/07/2025",
+    status: "active",
+    closingSoon: true,
+  },
+  {
+    title: "Mobile App Developer",
+    department: "Phòng Công nghệ",
+    location: "Hà Nội",
+    type: "Full-time",
+    candidates: 2,
+    deadline: "20/07/2025",
+    status: "active",
+    closingSoon: true,
+  },
+  {
+    title: "QA/QC Engineer",
+    department: "Phòng Kiểm thử",
+    location: "Hà Nội",
+    type: "Full-time",
+    candidates: 1,
+    deadline: "15/07/2025",
+    status: "active",
+    closingSoon: true,
+  },
+  {
+    title: "Business Analyst",
+    department: "Phòng Dự án",
+    location: "Hà Nội",
+    type: "Full-time",
+    candidates: 1,
+    deadline: "30/07/2025",
+    status: "active",
+    closingSoon: false,
+  },
+  {
+    title: "Frontend Developer",
+    department: "Phòng IT",
+    location: "Hà Nội",
+    type: "Full-time",
+    candidates: 3,
+    deadline: "05/08/2025",
+    status: "active",
+    closingSoon: false,
+  },
+  {
+    title: "DevOps Engineer",
+    department: "Phòng Hạ tầng",
+    location: "Hà Nội",
+    type: "Full-time",
+    candidates: 2,
+    deadline: "10/08/2025",
+    status: "active",
+    closingSoon: false,
+  },
+  {
+    title: "Data Analyst",
+    department: "Phòng Dữ liệu",
+    location: "Hà Nội",
+    type: "Full-time",
+    candidates: 1,
+    deadline: "12/08/2025",
+    status: "active",
+    closingSoon: false,
+  },
+  {
+    title: "HR Executive",
+    department: "Phòng Nhân sự",
+    location: "Hà Nội",
+    type: "Full-time",
+    candidates: 2,
+    deadline: "15/08/2025",
+    status: "active",
+    closingSoon: false,
+  },
+  {
+    title: "Product Owner",
+    department: "Phòng Dự án",
+    location: "Hà Nội",
+    type: "Full-time",
+    candidates: 1,
+    deadline: "18/08/2025",
+    status: "active",
+    closingSoon: false,
+  },
+  {
+    title: "Content Marketing",
+    department: "Phòng Marketing",
+    location: "Hà Nội",
+    type: "Full-time",
+    candidates: 2,
+    deadline: "20/08/2025",
+    status: "active",
+    closingSoon: false,
+  },
+  {
+    title: "Java Developer",
+    department: "Phòng IT",
+    location: "Hà Nội",
+    type: "Full-time",
+    candidates: 5,
+    deadline: "01/06/2025",
+    status: "closed",
+    closingSoon: false,
+  },
+  {
+    title: "Kế toán tổng hợp",
+    department: "Phòng Tài chính",
+    location: "Hà Nội",
+    type: "Full-time",
+    candidates: 4,
+    deadline: "28/05/2025",
+    status: "closed",
+    closingSoon: false,
+  },
+  {
+    title: "Chuyên viên tuyển dụng",
+    department: "Phòng Nhân sự",
+    location: "Hà Nội",
+    type: "Full-time",
+    candidates: 6,
+    deadline: "20/05/2025",
+    status: "closed",
+    closingSoon: false,
+  },
+  {
+    title: "System Admin",
+    department: "Phòng Hạ tầng",
+    location: "Hà Nội",
+    type: "Full-time",
+    candidates: 3,
+    deadline: "15/05/2025",
+    status: "closed",
+    closingSoon: false,
+  },
+  {
+    title: "Graphic Designer",
+    department: "Phòng Thiết kế",
+    location: "Hà Nội",
+    type: "Full-time",
+    candidates: 4,
+    deadline: "10/05/2025",
+    status: "closed",
+    closingSoon: false,
+  },
+  {
+    title: "Sales Executive",
+    department: "Phòng Kinh doanh",
+    location: "Hà Nội",
+    type: "Full-time",
+    candidates: 7,
+    deadline: "05/05/2025",
+    status: "closed",
+    closingSoon: false,
+  },
+];
+
+export const JOB_POSTINGS: JobPosting[] = BASE_JOBS.map((job, i) => ({
+  id: String(i + 1),
+  ...job,
+}));
+
+export const DASHBOARD_STATS = {
+  activeCount: 12,
+  totalCandidates: 1,
+  closingSoonCount: 4,
+  closedCount: 6,
+};
