@@ -169,7 +169,7 @@ export default function Header() {
           </div>
 
           <div
-            className={`flex flex-1 flex-col transition-all duration-300 ease-out ${
+            className={`flex flex-1 flex-col overflow-y-auto transition-all duration-300 ease-out ${
               isMobileMenuOpen ? "translate-y-0 opacity-100" : "-translate-y-2 opacity-0"
             }`}
           >
@@ -177,7 +177,7 @@ export default function Header() {
               pathname={pathname}
               orientation="vertical"
               onNavigate={() => setIsMobileMenuOpen(false)}
-              className="flex flex-1 flex-col gap-6 px-4 py-6"
+              className="flex flex-col gap-6 px-4 py-6"
             />
 
             <div className="border-t border-zinc-200 px-4 py-4">
