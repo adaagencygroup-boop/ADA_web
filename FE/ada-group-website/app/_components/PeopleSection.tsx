@@ -18,7 +18,7 @@ export default function PeopleSection() {
     <section className="section-y">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 items-start gap-x-12 lg:grid-cols-2">
-          <h2 className="text-2xl font-medium tracking-tight text-zinc-900 sm:text-4xl lg:hidden">
+          <h2 className="text-[28px] leading-[1.2] font-semibold tracking-tight text-zinc-900 lg:hidden">
             {CONTENT.title}
           </h2>
 
@@ -32,13 +32,13 @@ export default function PeopleSection() {
           />
 
           <div className="mt-(--inner-space) lg:col-start-2 lg:row-start-1 lg:mt-0">
-            <h2 className="hidden text-2xl font-medium tracking-tight text-zinc-900 sm:text-4xl lg:block">
+            <h2 className="hidden text-[36px] leading-[1.2] font-semibold tracking-tight text-zinc-900 lg:block">
               {CONTENT.title}
             </h2>
             {CONTENT.paragraphs.map((paragraph) => (
               <p
                 key={paragraph}
-                className="text-base leading-relaxed mt-(--inner-space) text-zinc-600 text-justify [&+&]:mt-4 lg:first-of-type:mt-8"
+                className="text-[14px] lg:text-[16px] leading-relaxed mt-(--inner-space) text-zinc-600 text-justify [&+&]:mt-4 lg:first-of-type:mt-8"
               >
                 {paragraph}
               </p>

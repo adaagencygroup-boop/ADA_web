@@ -44,10 +44,10 @@ export default function ServicesGrid() {
     <section className="section-y">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-5xl text-center">
-          <h2 className="text-2xl text-start sm:text-center font-semibold tracking-tight text-zinc-900 sm:text-4xl">
+          <h2 className="text-[28px] leading-[1.2] text-start sm:text-center font-semibold tracking-tight text-zinc-900 lg:text-[44px] lg:leading-[1.1]">
             {CONTENT.title}
           </h2>
-          <p className="mt-(--heading-space) md:mx-0 text-base leading-relaxed whitespace-pre-line text-zinc-600 text-justify md:text-center lg:text-lg">
+          <p className="mt-(--heading-space) md:mx-0 text-[14px] lg:text-[16px] leading-relaxed whitespace-pre-line text-zinc-600 text-justify md:text-center">
             {CONTENT.description}
           </p>
         </div>
@@ -62,16 +62,16 @@ export default function ServicesGrid() {
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#D8E2FF80]">
                   <service.Icon className="h-6 w-6" />
                 </div>
-                <h3 className="text-base font-semibold text-[#001E4B]">
+                <h3 className="text-[16px] lg:text-[18px] font-semibold text-[#001E4B]">
                   {service.title}
                 </h3>
               </div>
-              <p className="mt-2 text-base leading-relaxed text-zinc-600">
+              <p className="mt-2 text-[14px] lg:text-[16px] leading-relaxed text-zinc-600">
                 {service.description}
               </p>
               <Link
                 href={service.href}
-                className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-blue-700 hover:text-blue-800"
+                className="mt-4 inline-flex items-center gap-1 text-[14px] font-semibold text-blue-700 hover:text-blue-800"
               >
                 {CONTENT.detailLabel}
                 <ArrowRightIcon className="h-3.5 w-3.5" />

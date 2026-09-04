@@ -88,7 +88,7 @@ export default function ArticleDetail({ article }: { article: NewsArticle }) {
         {article.category}
       </span>
 
-      <h1 className="text-2xl leading-tight font-semibold text-black sm:text-4xl sm:leading-10">
+      <h1 className="text-[28px] lg:text-[36px] leading-[1.2] lg:leading-[1.2] font-semibold text-black">
         {article.title}
       </h1>
 
@@ -145,16 +145,16 @@ export default function ArticleDetail({ article }: { article: NewsArticle }) {
       <div className="flex w-full flex-col items-start gap-4">
         {body.map((block, index) =>
           block.type === "heading" ? (
-            <h3
+              <h3
               key={index}
-              className="mt-2 text-lg leading-6.75 font-semibold text-black"
+              className="mt-2 text-[16px] lg:text-[18px] leading-6.75 font-semibold text-black"
             >
               {block.text}
             </h3>
           ) : (
             <p
               key={index}
-              className={`text-base leading-6.75 text-[#334155] ${
+              className={`text-[14px] lg:text-[16px] leading-6.75 text-[#334155] ${
                 block.emphasis ? "font-semibold" : ""
               }`}
             >

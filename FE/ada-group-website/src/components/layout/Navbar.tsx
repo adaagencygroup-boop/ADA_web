@@ -75,8 +75,6 @@ export default function Navbar({
                     <polyline points="6 9 12 15 18 9" />
                   </svg>
                 )}
-                {/* Gạch chân trượt vào khi hover (desktop) — item active luôn ở w-full,
-                    item thường mở rộng từ w-0 -> w-full khi hover, giữ nguyên màu blue-700 sẵn có */}
                 {!isVertical && (
                   <span
                     className={`pointer-events-none absolute -bottom-0.5 left-0 h-0.5 bg-blue-700 transition-all duration-300 ease-out ${
@@ -99,12 +97,11 @@ export default function Navbar({
               )}
             </div>
 
-            {/* Desktop Dropdown — fade + slide-down thay vì hidden/block đột ngột */}
             {link.subLinks && !isVertical && (
               <div
                 className="pointer-events-none absolute left-0 top-full z-50 min-w-64 origin-top pt-0.4 opacity-0 translate-y-2 scale-[0.98] transition-all duration-300 ease-out group-hover:pointer-events-auto group-hover:opacity-100 group-hover:translate-y-0 group-hover:scale-100"
               >
-                <div className="relative flex flex-col gap-1 rounded-2xl border border-zinc-100 bg-[#f9fafc] p-2.5 shadow-xl before:absolute before:-top-2 before:left-6 before:h-4 before:w-4 before:rotate-45 before:border-l before:border-t before:border-zinc-100 before:bg-[#f9fafc] before:content-['']">
+                <div className="relative flex flex-col gap-1 rounded-2xl border border-zinc-100 bg-white p-2.5 shadow-xl before:absolute before:-top-2 before:left-6 before:h-4 before:w-4 before:rotate-45 before:border-l before:border-t before:border-zinc-100 before:bg-white before:content-['']">
                   {link.subLinks.map((sub) => (
                     <Link
                       key={sub.href}
@@ -120,8 +117,6 @@ export default function Navbar({
               </div>
             )}
 
-            {/* Mobile Sublinks — luôn render, đóng/mở bằng grid-rows để có transition
-                mượt (không dùng conditional mount/unmount đột ngột như trước) */}
             {link.subLinks && isVertical && (
               <div
                 className={`grid transition-all duration-300 ease-out ${

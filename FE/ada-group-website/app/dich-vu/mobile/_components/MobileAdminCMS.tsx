@@ -26,27 +26,27 @@ export default function MobileAdminCMS() {
           {headerContent.map((item, index) => (
             <div key={index} className="flex flex-col p-6 sm:p-8 lg:p-0 order-2">
               <div className="flex items-center gap-(--inner-space) mb-(--inner-space)">
-                <span className="text-slate-500 lg:text-blue-700 font-semibold text-[11px] lg:text-[13px] tracking-widest uppercase">
+                <span className="text-slate-500 lg:text-blue-700 font-semibold text-[12px] tracking-widest uppercase">
                   {item.tag}
                 </span>
               </div>
               
-              <h2 className="text-[1.35rem] font-bold lg:font-semibold leading-snug tracking-tight text-zinc-900 lg:text-[#0a1a2f] sm:text-4xl lg:text-[2.75rem] mb-(--inner-space)">
+              <h2 className="text-[24px] lg:text-[36px] font-semibold leading-[1.2] tracking-tight text-zinc-900 lg:text-[#0a1a2f] mb-(--inner-space)">
                 {item.title}
               </h2>
-              <p className="text-[15px] lg:text-[17px] font-medium text-blue-600 mb-(--inner-space)">
+              <p className="text-[14px] lg:text-[16px] font-medium text-blue-600 mb-(--inner-space)">
                 {item.subtitle}
               </p>
-              <p className="text-[14px] lg:text-[15px] leading-relaxed text-zinc-500 lg:text-zinc-600 mb-(--inner-space) text-justify">
+              <p className="text-[14px] lg:text-[16px] leading-relaxed text-zinc-500 lg:text-zinc-600 mb-(--inner-space) text-justify">
                 {item.description1}
               </p>
               {item.description2 && (
-                <p className="hidden lg:block text-[15px] leading-relaxed text-zinc-600 text-justify">
+                <p className="hidden lg:block text-[14px] lg:text-[16px] leading-relaxed text-zinc-600 text-justify">
                   {item.description2}
                 </p>
               )}
 
-              <Link href="/lien-he" className="mt-(--inner-space) inline-flex items-center gap-(--inner-space) text-blue-600 font-semibold text-[14px] lg:text-[14.5px] hover:text-blue-800 transition-colors w-fit">
+              <Link href="/lien-he" className="mt-(--inner-space) inline-flex items-center gap-(--inner-space) text-blue-600 font-semibold text-[14px] hover:text-blue-800 transition-colors w-fit">
                 Trao đổi chi tiết &rarr;
               </Link>
             </div>
@@ -67,9 +67,9 @@ export default function MobileAdminCMS() {
                   <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                 </svg>
               </div>
-              <h4 className="font-semibold text-[16px] text-zinc-900 leading-snug">Quản lý hoạt động</h4>
+              <h4 className="font-semibold text-[13px] text-zinc-900 leading-snug">Quản lý hoạt động</h4>
             </div>
-            <p className="text-[13px] text-zinc-500 leading-relaxed mb-(--inner-space) max-w-62.5">
+            <p className="text-[12px] text-zinc-500 leading-relaxed mb-(--inner-space) max-w-62.5">
               Tập trung các hoạt động quản trị quan trọng của ứng dụng trên một nền tảng duy nhất.
             </p>
             {/* Mockup 1: Table */}
@@ -115,9 +115,9 @@ export default function MobileAdminCMS() {
                   <polyline points="10 9 9 9 8 9" />
                 </svg>
               </div>
-              <h4 className="font-semibold text-[16px] text-zinc-900 leading-snug">Quản lý nội dung & dữ liệu</h4>
+              <h4 className="font-semibold text-[13px] text-zinc-900 leading-snug">Quản lý nội dung & dữ liệu</h4>
             </div>
-            <p className="text-[13px] text-zinc-500 leading-relaxed mb-(--inner-space) max-w-62.5">
+            <p className="text-[12px] text-zinc-500 leading-relaxed mb-(--inner-space) max-w-62.5">
               Hỗ trợ doanh nghiệp chủ động cập nhật và tổ chức thông tin, dữ liệu trong quá trình vận hành.
             </p>
             {/* Mockup 2: List */}
@@ -166,9 +166,9 @@ export default function MobileAdminCMS() {
                   <path d="M8 17v-3" />
                 </svg>
               </div>
-              <h4 className="font-semibold text-[16px] text-zinc-900 leading-snug">Theo dõi & đánh giá</h4>
+              <h4 className="font-semibold text-[13px] text-zinc-900 leading-snug">Theo dõi & đánh giá</h4>
             </div>
-            <p className="text-[13px] text-zinc-500 leading-relaxed mb-(--inner-space) max-w-62.5">
+            <p className="text-[12px] text-zinc-500 leading-relaxed mb-(--inner-space) max-w-62.5">
               Cung cấp góc nhìn tổng quan giúp doanh nghiệp nắm bắt tình trạng hoạt động của sản phẩm.
             </p>
             {/* Mockup 3: Chart */}

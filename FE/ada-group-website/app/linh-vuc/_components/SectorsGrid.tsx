@@ -29,16 +29,16 @@ export default function SectorsGrid() {
                 <span className="text-xs tracking-[1.2px] text-[#002A64] uppercase">
                   {sector.eyebrow}
                 </span>
-                <h3 className="mt-3 text-xl font-semibold text-[#191C1E] lg:text-2xl">
+                <h3 className="mt-3 text-[24px] font-semibold text-[#191C1E]">
                   {sector.title}
                 </h3>
-                <p className="mt-4 flex-1 text-base leading-6 text-[#434750] lg:text-base">
+                <p className="mt-4 flex-1 text-[14px] lg:text-[16px] leading-relaxed text-[#434750]">
                   <span className="font-semibold text-[#002A64]">
                     {sector.code}
                   </span>{" "}
                   — {sector.description}
                 </p>
-                <span className="mt-auto inline-flex items-center gap-2 pt-6 text-base font-semibold text-[#002A64] lg:text-base">
+                <span className="mt-auto inline-flex items-center gap-2 pt-6 text-[14px] font-semibold text-[#002A64]">
                   Khám phá thêm
                   <ArrowRightIcon className="h-3.5 w-3.5" />
                 </span>

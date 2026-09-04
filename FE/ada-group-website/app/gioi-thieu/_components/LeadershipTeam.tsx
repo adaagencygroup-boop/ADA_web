@@ -68,10 +68,10 @@ export default function LeadershipTeam() {
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="flex items-end justify-between gap-4 border-b border-zinc-300/40 pb-4 lg:border-none lg:pb-0">
           <div>
-            <h2 className="text-2xl font-semibold text-zinc-900">
+            <h2 className="text-[28px] font-semibold leading-[1.2] text-zinc-900 lg:text-[44px] lg:leading-[1.1]">
               {CONTENT.title}
             </h2>
-            <p className="mt-1 text-base text-gray-600">
+            <p className="mt-1 text-[14px] lg:text-[16px] text-gray-600">
               {CONTENT.description}
             </p>
           </div>
@@ -98,7 +98,7 @@ export default function LeadershipTeam() {
 
         <div
           ref={scrollRef}
-          className="mt-(--inner-space) flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-2 [-ms-overflow-style:none] [scrollbar-width:none] lg:gap-6 [&::-webkit-scrollbar]:hidden"
+          className="mt-(--inner-space) flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-2 [-ms-overflow-style:none] scrollbar-none lg:gap-6 [&::-webkit-scrollbar]:hidden"
         >
           {LEADERS.map((leader) => (
             <div

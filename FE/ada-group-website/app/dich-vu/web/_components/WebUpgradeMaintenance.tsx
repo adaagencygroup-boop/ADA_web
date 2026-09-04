@@ -31,16 +31,16 @@ export default function WebUpgradeMaintenance() {
                   <path d="M21 3v5h-5" />
                 </svg>
               </div>
-              <h3 className="text-[1.35rem] lg:text-[1.65rem] font-semibold text-zinc-900 leading-tight">
+              <h3 className="text-[28px] lg:text-[28px] font-semibold text-zinc-900 leading-[1.2]">
                 Nâng cấp hệ thống hiện có
               </h3>
             </div>
-            <p className="text-[14.5px] lg:text-[15.5px] text-zinc-600 mb-(--inner-space) leading-relaxed text-justify">
+            <p className="text-[14px] lg:text-[16px] text-zinc-600 mb-(--inner-space) leading-relaxed text-justify">
               Bạn đã có một hệ thống nhưng nó quá cũ, chậm chạp hoặc không còn đáp ứng được nhu cầu kinh doanh? Chúng tôi cung cấp dịch vụ tái cấu trúc (Refactoring) và nâng cấp toàn diện.
             </p>
             <ul className="flex flex-col gap-(--inner-space) mt-auto">
               {upgradeFeatures.map((feature, idx) => (
-                <li key={idx} className="flex items-start gap-(--inner-space) text-[14.5px] lg:text-[15px] text-zinc-800 font-medium leading-snug">
+                <li key={idx} className="flex items-start gap-(--inner-space) text-[14px] lg:text-[16px] text-zinc-800 font-medium leading-snug">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5 text-zinc-400 mt-(--heading-space).5 shrink-0">
                     <path d="M9 18l6-6-6-6" />
                   </svg>
@@ -58,16 +58,16 @@ export default function WebUpgradeMaintenance() {
                   <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
                 </svg>
               </div>
-              <h3 className="text-[1.35rem] lg:text-[1.65rem] font-semibold text-zinc-900 leading-tight">
+              <h3 className="text-[28px] lg:text-[28px] font-semibold text-zinc-900 leading-[1.2]">
                 Duy trì & Hỗ trợ kỹ thuật
               </h3>
             </div>
-            <p className="text-[14.5px] lg:text-[15.5px] text-zinc-600 mb-(--inner-space) leading-relaxed text-justify">
+            <p className="text-[14px] lg:text-[16px] text-zinc-600 mb-(--inner-space) leading-relaxed text-justify">
               Đảm bảo hệ thống của bạn luôn online, an toàn và hoạt động trơn tru để bạn tập trung vào kinh doanh cốt lõi.
             </p>
             <ul className="flex flex-col gap-(--inner-space) mt-auto">
               {maintenanceFeatures.map((feature, idx) => (
-                <li key={idx} className="flex items-start gap-(--inner-space) text-[14.5px] lg:text-[15px] text-zinc-800 font-medium leading-snug">
+                <li key={idx} className="flex items-start gap-(--inner-space) text-[14px] lg:text-[16px] text-zinc-800 font-medium leading-snug">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5 text-zinc-400 mt-(--heading-space).5 shrink-0">
                     <path d="M9 18l6-6-6-6" />
                   </svg>

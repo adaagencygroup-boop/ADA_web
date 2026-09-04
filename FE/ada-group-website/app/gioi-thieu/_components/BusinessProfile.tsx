@@ -34,7 +34,7 @@ export default function BusinessProfile() {
     <section className="section-y">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="lg:rounded-xl lg:border lg:border-[#C4C6D2] lg:bg-[#EFF6FF] lg:px-6 lg:py-7.5 lg:shadow-sm">
-          <h2 className="border-b border-zinc-300/50 pb-2 text-2xl font-semibold text-[#003384] lg:border-none lg:pb-0 lg:text-center">
+          <h2 className="border-b border-zinc-300/50 pb-2 text-[28px] font-semibold leading-[1.2] text-[#003384] lg:border-none lg:pb-0 lg:text-[44px] lg:leading-[1.1] lg:text-center">
             {CONTENT.title}
           </h2>
 

@@ -29,7 +29,7 @@ export default function RelatedArticles({
 
   return (
     <section className="flex flex-col items-start gap-4">
-      <h2 className="text-xl font-semibold text-[#003274]">Bài viết liên quan</h2>
+      <h2 className="text-[18px] font-semibold text-[#003274]">Bài viết liên quan</h2>
 
       <div className="grid w-full grid-cols-1 gap-4 sm:gap-6 sm:grid-cols-3">
         {articles.map((article) => (

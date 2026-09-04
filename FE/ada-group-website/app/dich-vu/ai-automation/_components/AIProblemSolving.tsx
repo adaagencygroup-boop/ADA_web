@@ -20,25 +20,25 @@ export default function AIProblemSolving() {
           <div className="flex flex-col">
             {contentData.map((item, index) => (
               <div key={index}>
-                <span className="text-[11px] font-semibold uppercase tracking-wider text-blue-800 mb-(--heading-space) block">
+                <span className="text-[12px] font-semibold uppercase tracking-wider text-blue-800 mb-(--heading-space) block">
                   {item.tag}
                 </span>
-                <h2 className="text-[2rem] font-semibold leading-[1.1] tracking-tight text-[#0a1a2f] sm:text-4xl lg:text-[2.5rem] mb-(--inner-space) uppercase">
+                <h2 className="text-[28px] lg:text-[44px] font-semibold leading-[1.2] tracking-tight text-[#000000] mb-(--inner-space) uppercase max-w-full">
                   {item.title}
                 </h2>
-                <p className="text-[17px] font-medium text-blue-600 mb-(--inner-space) leading-snug">
+                <p className="text-[18px] lg:text-[20px] font-medium text-blue-600 mb-(--inner-space) leading-snug">
                   {item.subtitle}
                 </p>
-                <p className="text-[15px] leading-relaxed text-zinc-600 mb-(--inner-space) max-w-xl text-justify">
+                <p className="text-[14px] lg:text-[16px] leading-relaxed text-zinc-600 mb-(--inner-space) text-justify">
                   {item.description1}
                 </p>
-                <p className="text-[15px] leading-relaxed text-zinc-600 mb-(--inner-space) max-w-xl text-justify">
+                <p className="text-[14px] lg:text-[16px] leading-relaxed text-zinc-600 mb-(--inner-space) text-justify">
                   {item.description2}
                 </p>
               </div>
             ))}
             
-            <Link href="/lien-he" className="inline-flex items-center gap-(--inner-space) text-blue-600 font-semibold text-[14.5px] hover:text-blue-800 transition-colors w-fit">
+            <Link href="/lien-he" className="inline-flex items-center gap-(--inner-space) text-blue-600 font-semibold text-[14px] hover:text-blue-800 transition-colors w-fit">
               Trao đổi thông tin chi tiết &rarr;
             </Link>
           </div>

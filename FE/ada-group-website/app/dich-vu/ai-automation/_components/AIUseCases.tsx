@@ -134,11 +134,11 @@ export default function AIUseCases() {
             </svg>
             AI & Automation
           </div>
-          <h2 className="text-[2rem] font-semibold leading-tight tracking-tight text-[#0a1a2f] sm:text-4xl lg:text-[2.75rem] mb-(--inner-space)">
+          <h2 className="text-[28px] lg:text-[44px] font-semibold leading-[1.2] tracking-tight text-[#0a1a2f] mb-(--inner-space) max-w-full">
             Ứng dụng AI vào những hoạt động tạo ra giá trị
           </h2>
           <div className="w-16 h-1 bg-blue-600 mx-auto mb-(--inner-space)"></div>
-          <p className="text-[15px] leading-relaxed text-zinc-600">
+          <p className="text-[14px] lg:text-[16px] leading-relaxed text-zinc-600">
             Mỗi giải pháp được xây dựng dựa trên nhu cầu thực tế, dữ liệu hiện có và cách người dùng làm việc, để công nghệ không chỉ tạo ra khả năng mới mà còn mang lại giá trị có thể sử dụng trong thực tế.
           </p>
         </div>
@@ -158,15 +158,15 @@ export default function AIUseCases() {
                 
                 {/* Content Block */}
                 <div className={`flex flex-col order-2 ${layout === 'right-text' ? 'lg:order-2' : 'lg:order-1'}`}>
-                  <span className="text-[11px] font-semibold uppercase tracking-wider text-blue-600 mb-(--heading-space) block">
+                  <span className="text-[12px] font-semibold uppercase tracking-wider text-blue-600 mb-(--heading-space) block">
                     {item.badge}
                   </span>
-                  <h3 className={`text-[1.5rem] font-semibold leading-tight tracking-tight text-[#0a1a2f] sm:text-3xl lg:text-[2rem] mb-(--inner-space) ${layout === 'custom' ? 'pr-4' : ''} text-justify`}>
+                  <h3 className={`text-[24px] font-semibold leading-tight tracking-tight text-[#0a1a2f] mb-(--inner-space) ${layout === 'custom' ? 'pr-4' : ''} text-justify`}>
                     {item.title}
                   </h3>
                   
                   {item.descriptions.map((desc, idx) => (
-                    <p key={idx} className={`text-[15px] leading-relaxed text-zinc-600 ${idx === item.descriptions.length - 1 && !item.note ? 'mb-(--inner-space)' : 'mb-(--inner-space)'} ${idx > 0 ? 'hidden md:block' : ''} text-justify`}>
+                    <p key={idx} className={`text-[14px] lg:text-[16px] leading-relaxed text-zinc-600 ${idx === item.descriptions.length - 1 && !item.note ? 'mb-(--inner-space)' : 'mb-(--inner-space)'} ${idx > 0 ? 'hidden md:block' : ''} text-justify`}>
                       {desc}
                     </p>
                   ))}
@@ -180,7 +180,7 @@ export default function AIUseCases() {
                     </div>
                   )}
 
-                  <Link href="/lien-he" className="inline-flex items-center gap-(--inner-space) text-blue-600 font-semibold text-[14.5px] hover:text-blue-800 transition-colors w-fit">
+                  <Link href="/lien-he" className="inline-flex items-center gap-(--inner-space) text-blue-600 font-semibold text-[14px] hover:text-blue-800 transition-colors w-fit">
                     Trao đổi chi tiết &rarr;
                   </Link>
                 </div>
@@ -234,20 +234,20 @@ export default function AIUseCases() {
                 )}
 
                 <div className="order-2 flex flex-col flex-1">
-                  <span className="text-[11px] font-semibold uppercase tracking-wider text-blue-600 mb-(--heading-space) block">
+                  <span className="text-[12px] font-semibold uppercase tracking-wider text-blue-600 mb-(--heading-space) block">
                     {item.badge}
                   </span>
-                  <h3 className="text-[1.5rem] font-semibold leading-tight tracking-tight text-[#0a1a2f] sm:text-2xl mb-(--inner-space) text-justify">
+                  <h3 className="text-[24px] font-semibold leading-tight tracking-tight text-[#0a1a2f] mb-(--inner-space) text-justify">
                     {item.title}
                   </h3>
                   
                   {item.descriptions.map((desc, idx) => (
-                    <p key={idx} className={`text-[14.5px] leading-relaxed text-zinc-600 ${idx === item.descriptions.length - 1 ? 'mb-(--inner-space)' : 'mb-(--inner-space)'} ${idx > 0 ? 'hidden md:block' : ''} text-justify`}>
+                    <p key={idx} className={`text-[14px] lg:text-[16px] leading-relaxed text-zinc-600 ${idx === item.descriptions.length - 1 ? 'mb-(--inner-space)' : 'mb-(--inner-space)'} ${idx > 0 ? 'hidden md:block' : ''} text-justify`}>
                       {desc}
                     </p>
                   ))}
                   
-                  <Link href="/lien-he" className={`inline-flex items-center gap-(--inner-space) text-blue-600 font-semibold text-[14.5px] hover:text-blue-800 transition-colors w-fit ${item.id === '05' ? 'lg:mb-(--inner-space)' : ''}`}>
+                  <Link href="/lien-he" className={`inline-flex items-center gap-(--inner-space) text-blue-600 font-semibold text-[14px] hover:text-blue-800 transition-colors w-fit ${item.id === '05' ? 'lg:mb-(--inner-space)' : ''}`}>
                     Trao đổi chi tiết &rarr;
                   </Link>
                 </div>

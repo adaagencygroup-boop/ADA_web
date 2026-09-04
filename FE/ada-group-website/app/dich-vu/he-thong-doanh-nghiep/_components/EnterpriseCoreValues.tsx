@@ -41,16 +41,16 @@ export default function EnterpriseCoreValues() {
   return (
     <section className="bg-blue-50 section-y">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-4xl lg:max-w-5xl text-center mb-(--section-padding) md:mb-(--section-padding)">
-          <h2 className="text-[1.75rem] font-semibold leading-tight text-zinc-900 sm:text-3xl lg:text-[2.5rem] mb-(--inner-space) md:mb-(--inner-space)">
+        <div className="mx-auto max-w-4xl lg:max-w-full text-center mb-(--section-padding) md:mb-(--section-padding)">
+          <h2 className="text-[28px] lg:text-[44px] font-semibold leading-[1.2] lg:leading-[1.1] text-zinc-900 mb-(--inner-space) md:mb-(--inner-space)">
             Công nghệ bắt đầu từ cách doanh nghiệp vận hành
           </h2>
           {/* Subtitle Desktop */}
-          <p className="hidden md:block text-[15px] text-zinc-600 leading-relaxed max-w-4xl mx-auto whitespace-pre-line">
+          <p className="hidden md:block text-[16px] text-zinc-600 leading-relaxed max-w-4xl mx-auto whitespace-pre-line">
             Không có một hệ thống duy nhất phù hợp với mọi doanh nghiệp. Quy mô, cách tổ chức, quy trình và nhu cầu quản lý của mỗi đơn vị đều khác nhau.{"\n"}Vì vậy, ADA Group không bắt đầu bằng việc đưa thật nhiều chức năng vào sản phẩm. Chúng tôi tìm hiểu doanh nghiệp đang vận hành như thế nào, thông tin đang được quản lý ở đâu và đâu là những điểm công nghệ có thể tạo ra thay đổi rõ ràng.
           </p>
           {/* Subtitle Mobile */}
-          <p className="md:hidden text-[14.5px] text-zinc-600 leading-relaxed px-2">
+          <p className="md:hidden text-[14px] text-zinc-600 leading-relaxed px-2">
             Không có một hệ thống duy nhất phù hợp với mọi doanh nghiệp. Vì vậy, ADA Group bắt đầu từ việc tìm hiểu cách doanh nghiệp vận hành để tạo ra những thay đổi rõ ràng bằng công nghệ.
           </p>
         </div>
@@ -69,18 +69,18 @@ export default function EnterpriseCoreValues() {
                 
                 {/* Mobile Title & Desc container, Desktop just Title */}
                 <div className="flex flex-col gap-(--inner-space).5">
-                  <h3 className="text-[15px] md:text-[17px] font-semibold text-zinc-900 leading-snug">
+                  <h3 className="text-[16px] lg:text-[18px] font-semibold text-zinc-900 leading-snug">
                     {item.title}
                   </h3>
                   {/* Mobile only desc */}
-                  <p className="md:hidden text-sm text-zinc-600 leading-relaxed text-justify">
+                  <p className="md:hidden text-[14px] text-zinc-600 leading-relaxed text-justify">
                     {item.description}
                   </p>
                 </div>
               </div>
               
               {/* Desktop only desc */}
-              <p className="hidden md:block text-[14px] text-zinc-600 leading-[1.6] text-justify">
+              <p className="hidden md:block text-[16px] text-zinc-600 leading-[1.6] text-justify">
                 {item.description}
               </p>
             </div>

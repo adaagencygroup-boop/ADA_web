@@ -73,17 +73,17 @@ export default function MobileEcommerceApps() {
             {/* Text (Bottom on mobile, Top on desktop) */}
             {headerContent.map((item, index) => (
               <div key={index} className="flex flex-col p-6 sm:p-8 lg:p-0 order-2 lg:order-1">
-                <span className="text-[11px] font-semibold uppercase tracking-widest text-slate-500 lg:text-blue-800 mb-(--heading-space) block">
+                <span className="text-[12px] font-semibold uppercase tracking-widest text-slate-500 lg:text-blue-800 mb-(--heading-space) block">
                   {item.tag}
                 </span>
-                <h2 className="text-[1.35rem] font-bold lg:font-semibold leading-snug lg:leading-tight tracking-tight text-zinc-900 lg:text-[#0a1a2f] sm:text-4xl lg:text-[2.5rem] mb-(--inner-space)">
+                <h2 className="text-[24px] lg:text-[36px] font-semibold leading-[1.2] tracking-tight text-zinc-900 lg:text-[#0a1a2f] mb-(--inner-space)">
                   {item.title}
                 </h2>
-                <p className="text-[14px] lg:text-[15px] leading-relaxed text-zinc-500 lg:text-zinc-600 mb-(--heading-space) text-justify">
+                <p className="text-[14px] lg:text-[16px] leading-relaxed text-zinc-500 lg:text-zinc-600 mb-(--heading-space) text-justify">
                   {item.description}
                 </p>
                 
-                <Link href="/lien-he" className="mt-(--inner-space) inline-flex items-center gap-(--inner-space) text-blue-600 font-semibold text-[14px] lg:text-[14.5px] hover:text-blue-800 transition-colors w-fit">
+                <Link href="/lien-he" className="mt-(--inner-space) inline-flex items-center gap-(--inner-space) text-blue-600 font-semibold text-[14px] hover:text-blue-800 transition-colors w-fit">
                   Trao đổi chi tiết &rarr;
                 </Link>
               </div>
@@ -94,12 +94,12 @@ export default function MobileEcommerceApps() {
           {/* Right Column (Categories - Hidden on Mobile) */}
           <div className="hidden lg:grid grid-cols-1 sm:grid-cols-2 gap-(--inner-space) lg:pt-(--inner-space) lg:col-span-1">
             {categories.map((cat, idx) => (
-              <div key={idx} className="bg-white rounded-3xl p-6 lg:p-8 border border-slate-100 shadow-[0_2px_15px_rgb(0,0,0,0.03)] flex flex-col">
+              <div key={idx} className="bg-white rounded-3xl p-6 lg:p-8 border border-slate-100 shadow-[0_2px_15px_rgb(0,0,0,0.03)] flex flex-col items-center text-center">
                 <div className="bg-blue-50 w-12 h-12 rounded-2xl mb-(--inner-space) flex items-center justify-center">
                   {cat.icon}
                 </div>
-                <h4 className="font-semibold text-[17px] text-zinc-900 mb-(--heading-space)">{cat.title}</h4>
-                <p className="text-[14px] text-zinc-500 leading-relaxed">{cat.desc}</p>
+                <h4 className="font-semibold text-[13px] text-zinc-900 mb-(--heading-space) leading-snug">{cat.title}</h4>
+                <p className="text-[12px] text-zinc-500 leading-relaxed">{cat.desc}</p>
               </div>
             ))}
           </div>

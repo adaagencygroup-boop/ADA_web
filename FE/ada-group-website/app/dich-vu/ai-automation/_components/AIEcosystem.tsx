@@ -19,19 +19,19 @@ export default function AIEcosystem() {
           <div className="flex flex-col flex-1">
             {contentData.map((item, index) => (
               <div key={index}>
-                <span className="text-[11px] font-semibold uppercase tracking-widest text-blue-300 mb-(--inner-space) block">
+                <span className="text-[12px] font-semibold uppercase tracking-widest text-blue-300 mb-(--inner-space) block">
                   {item.tag}
                 </span>
-                <h2 className="text-[2rem] font-semibold leading-tight tracking-tight text-white sm:text-4xl lg:text-[2.25rem] mb-(--inner-space) text-justify">
+                <h2 className="text-[28px] lg:text-[36px] font-semibold leading-[1.2] tracking-tight text-white mb-(--inner-space) text-justify">
                   {item.title}
                 </h2>
-                <p className="text-[14px] lg:text-[15px] leading-relaxed text-blue-100/80 mb-(--inner-space) text-justify">
+                <p className="text-[14px] lg:text-[16px] leading-relaxed text-blue-100/80 mb-(--inner-space) text-justify">
                   {item.description}
                 </p>
               </div>
             ))}
             
-            <Link href="/lien-he" className="inline-flex items-center gap-(--inner-space) text-white font-semibold text-[14.5px] hover:text-blue-200 transition-colors w-fit">
+            <Link href="/lien-he" className="inline-flex items-center gap-(--inner-space) text-white font-semibold text-[14px] hover:text-blue-200 transition-colors w-fit">
               Tìm hiểu thêm <span className="text-lg leading-none">&rarr;</span>
             </Link>
           </div>

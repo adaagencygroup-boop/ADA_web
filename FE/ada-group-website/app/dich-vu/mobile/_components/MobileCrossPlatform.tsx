@@ -73,24 +73,24 @@ export default function MobileCrossPlatform() {
             <div key={index} className="flex flex-col p-6 sm:p-8 lg:p-0 lg:items-center">
               <div className="flex items-center gap-(--inner-space) mb-(--inner-space)">
                 <div className="hidden lg:block h-px w-8 bg-blue-500/30"></div>
-                <span className="text-slate-500 lg:text-blue-500 text-[11px] font-semibold tracking-widest uppercase">
+                <span className="text-slate-500 lg:text-blue-500 text-[12px] font-semibold tracking-widest uppercase">
                   {item.tag}
                 </span>
                 <div className="hidden lg:block h-px w-8 bg-blue-500/30"></div>
               </div>
               
-              <h2 className="text-[1.35rem] font-bold lg:font-semibold leading-snug lg:leading-tight tracking-tight text-zinc-900 lg:text-white sm:text-4xl lg:text-[2.75rem] mb-(--inner-space)">
+              <h2 className="text-[24px] lg:text-[36px] font-semibold leading-[1.2] tracking-tight text-zinc-900 lg:text-white mb-(--inner-space)">
                 {item.title}
               </h2>
-              <p className="text-[15px] lg:text-[17px] font-medium text-blue-600 lg:text-slate-300 mb-(--inner-space)">
+              <p className="text-[14px] lg:text-[16px] font-medium text-blue-600 lg:text-slate-300 mb-(--inner-space)">
                 {item.subtitle}
               </p>
-              <p className="w-full max-w-5xl lg:px-12 text-[14px] lg:text-[15px] leading-relaxed text-zinc-500 lg:text-slate-400 text-justify lg:text-center">
+              <p className="w-full max-w-5xl lg:px-12 text-[14px] lg:text-[16px] leading-relaxed text-zinc-500 lg:text-slate-400 text-justify lg:text-center">
                 {item.description}
               </p>
 
               {/*"Xem chi tiết" Link */}
-              <Link href="/lien-he" className="mt-(--inner-space) lg:mb-(--section-padding) inline-flex items-center gap-(--inner-space) text-blue-600 font-semibold text-[14px] lg:text-[14.5px] hover:text-blue-800 transition-colors w-fit">
+              <Link href="/lien-he" className="mt-(--inner-space) lg:mb-(--section-padding) inline-flex items-center gap-(--inner-space) text-blue-600 font-semibold text-[14px] hover:text-blue-800 transition-colors w-fit">
                 Trao đổi chi tiết &rarr;
               </Link>
             </div>
@@ -104,8 +104,8 @@ export default function MobileCrossPlatform() {
                   <div className="mb-(--inner-space)">
                     {feature.icon}
                   </div>
-                  <h4 className="text-zinc-900 lg:text-white font-semibold text-[15px] mb-(--heading-space)">{feature.title}</h4>
-                  <p className="text-zinc-500 lg:text-slate-400 text-[13px] leading-relaxed">{feature.desc}</p>
+                  <h4 className="text-zinc-900 lg:text-white font-semibold text-[13px] mb-(--heading-space) leading-snug">{feature.title}</h4>
+                  <p className="text-zinc-500 lg:text-slate-400 text-[12px] leading-relaxed">{feature.desc}</p>
                 </div>
               ))}
             </div>

@@ -71,22 +71,22 @@ export default function MobileBackend() {
           {headerContent.map((item, index) => (
             <div key={index} className="flex flex-col p-6 sm:p-8 lg:p-0 order-2 lg:order-1">
               <div className="flex items-center gap-(--inner-space) mb-(--inner-space)">
-                <span className="text-slate-500 lg:text-blue-600 font-semibold text-[11px] lg:text-[13px] tracking-widest uppercase">
+                <span className="text-slate-500 lg:text-blue-600 font-semibold text-[12px] tracking-widest uppercase">
                   {item.tag}
                 </span>
               </div>
               
-              <h2 className="text-[1.35rem] font-bold lg:font-semibold leading-snug tracking-tight text-zinc-900 lg:text-[#0a1a2f] sm:text-4xl lg:text-[2.75rem] mb-(--inner-space)">
+              <h2 className="text-[24px] lg:text-[36px] font-semibold leading-[1.2] tracking-tight text-zinc-900 lg:text-[#0a1a2f] mb-(--inner-space)">
                 {item.title}
               </h2>
-              <p className="text-[15px] lg:text-[17px] font-medium text-blue-600 mb-(--inner-space)">
+              <p className="text-[14px] lg:text-[16px] font-medium text-blue-600 mb-(--inner-space)">
                 {item.subtitle}
               </p>
-              <p className="text-[14px] lg:text-[15px] leading-relaxed text-zinc-500 lg:text-zinc-600 mb-(--heading-space) text-justify">
+              <p className="text-[14px] lg:text-[16px] leading-relaxed text-zinc-500 lg:text-zinc-600 mb-(--heading-space) text-justify">
                 {item.description1}
               </p>
 
-              <Link href="/lien-he" className="mt-(--inner-space) inline-flex items-center gap-(--inner-space) text-blue-600 font-semibold text-[14px] lg:text-[14.5px] hover:text-blue-800 transition-colors w-fit">
+              <Link href="/lien-he" className="mt-(--inner-space) inline-flex items-center gap-(--inner-space) text-blue-600 font-semibold text-[14px] hover:text-blue-800 transition-colors w-fit">
                 Trao đổi chi tiết &rarr;
               </Link>
             </div>
@@ -102,9 +102,9 @@ export default function MobileBackend() {
                 <div className="bg-blue-50 w-10 h-10 rounded-full flex items-center justify-center shrink-0">
                   {feature.icon}
                 </div>
-                <h4 className="font-semibold text-[15px] text-zinc-900 leading-snug">{feature.title}</h4>
+                <h4 className="font-semibold text-[13px] text-zinc-900 leading-snug">{feature.title}</h4>
               </div>
-              <p className="text-[13px] text-zinc-500 leading-relaxed">
+              <p className="text-[12px] text-zinc-500 leading-relaxed">
                 {feature.desc}
               </p>
             </div>

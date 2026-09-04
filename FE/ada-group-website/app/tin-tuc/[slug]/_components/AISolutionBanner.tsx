@@ -53,10 +53,10 @@ export default function AISolutionBanner() {
   return (
     <div className="flex flex-col items-start gap-6 rounded-xl bg-[#002A64] p-6">
       <div className="flex flex-col items-start gap-2">
-        <h2 className="text-3xl leading-9 font-semibold tracking-[0.75px] text-white">
+        <h2 className="text-[18px] leading-9 font-semibold tracking-[0.75px] text-white">
           {CONTENT.eyebrow}
         </h2>
-        <p className="text-lg leading-7 font-medium text-white/90">
+        <p className="text-[16px] leading-7 font-medium text-white/90">
           {CONTENT.title}
         </p>
       </div>
@@ -77,7 +77,7 @@ export default function AISolutionBanner() {
 
       <Link
         href={CONTENT.ctaHref}
-        className="flex w-full items-center justify-center gap-2 rounded-md bg-white py-2.5 text-base font-semibold text-[#003274] transition-colors hover:bg-slate-100"
+        className="flex w-full items-center justify-center gap-2 rounded-md bg-white py-2.5 text-[14px] font-semibold text-[#003274] transition-colors hover:bg-slate-100"
       >
         {CONTENT.ctaLabel}
         <ArrowRightIcon className="h-3.5 w-3.5" />

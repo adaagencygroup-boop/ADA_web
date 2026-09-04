@@ -5,7 +5,7 @@ import Marquee from "@/app/_components/Marquee";
 
 const CONTENT = {
   badge: "ĐỐI TÁC",
-  title: "Đồng hành cùng các đối tác đáng tin cậy",
+  title: "Đồng hành với các đối tác uy tín",
   description:
     "Chúng tôi tự hào được hợp tác và đồng hành cùng các doanh nghiệp Việt.",
   ctaLabel: "Xem tất cả đối tác",
@@ -48,13 +48,13 @@ export default function PartnersSection() {
     <section className="section-y bg-[#EFF6FF] xs:bg-white">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl sm:text-center">
-          <span className="inline-flex items-center rounded-full bg-[#D8E2FF] px-3 py-1 text-sm font-semibold text-[#002A64]">
+          <span className="inline-flex items-center rounded-full bg-[#D8E2FF] px-3 py-1 text-[12px] font-semibold text-[#002A64] lg:text-[12px]">
               {CONTENT.badge}
             </span>
-          <h2 className="mt-(--heading-space) text-2xl font-semibold tracking-tight text-zinc-900 sm:text-4xl">
+          <h2 className="mt-(--heading-space) text-[28px] leading-[1.2] font-semibold tracking-tight text-zinc-900 lg:text-[44px] lg:leading-[1.1]">
             {CONTENT.title}
           </h2>
-          <p className="mt-2 text-base leading-relaxed text-zinc-600 md:text-lg">
+          <p className="mt-2 text-[14px] lg:text-[16px] leading-relaxed text-zinc-600">
             {CONTENT.description}
           </p>
         </div>

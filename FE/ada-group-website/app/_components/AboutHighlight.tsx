@@ -30,10 +30,10 @@ export default function AboutHighlight() {
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 items-center gap-x-12 lg:grid-cols-2">
         <div className="order-1 lg:order-0 lg:col-start-2 lg:row-start-1">
-          <span className="inline-flex items-center rounded-full bg-[#D8E2FF] px-3 py-1 text-sm font-semibold text-[#002A64]">
+          <span className="inline-flex items-center rounded-full bg-[#D8E2FF] px-3 py-1 text-[12px] font-semibold text-[#002A64] lg:text-[12px]">
             {CONTENT.badge}
           </span>
-          <h2 className="mt-(--heading-space) text-2xl font-semibold tracking-tight text-zinc-900 sm:text-4xl">
+          <h2 className="mt-(--heading-space) text-[28px] leading-[1.2] font-semibold tracking-tight text-zinc-900 lg:text-[36px] lg:leading-[1.3]">
             {CONTENT.title}
           </h2>
         </div>
@@ -63,7 +63,7 @@ export default function AboutHighlight() {
           {CONTENT.paragraphs.map((paragraph) => (
             <p
               key={paragraph}
-              className="text-base leading-relaxed text-zinc-600 text-justify [&+&]:mt-4 md:text-lg"
+              className="text-[14px] lg:text-[16px] leading-relaxed text-zinc-600 text-justify [&+&]:mt-4"
             >
               {paragraph}
             </p>

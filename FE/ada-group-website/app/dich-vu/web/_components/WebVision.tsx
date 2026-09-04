@@ -9,7 +9,7 @@ export default function WebVision() {
           
           {/* Left: Content */}
           <div className="w-full lg:w-[55%] flex flex-col justify-center">
-            <h2 className="text-[1.85rem] font-semibold leading-[1.3] tracking-tight text-zinc-900 sm:text-4xl lg:text-[2.8rem] lg:leading-[1.15] mb-(--inner-space)">
+            <h2 className="text-[28px] lg:text-[36px] font-semibold leading-[1.2] tracking-tight text-zinc-900 mb-(--inner-space) max-w-full">
               Website không chỉ để hiện diện.<br className="hidden lg:block" />
               <span className="lg:hidden"> </span>
               Hãy biến nó thành <span className="text-[#004bb4]">công cụ kinh doanh.</span>
@@ -18,14 +18,14 @@ export default function WebVision() {
             {/* Blue Divider Line */}
             <div className="hidden lg:block w-16 h-1.5 bg-blue-600 rounded-full mb-(--inner-space)"></div>
             
-            <p className="text-[15px] lg:text-[16px] leading-relaxed text-zinc-600 max-w-115 mb-(--inner-space) pr-4 lg:pr-0">
+            <p className="text-[14px] lg:text-[16px] leading-relaxed text-zinc-600 mb-(--inner-space) pr-4 lg:pr-0">
               Từ website doanh nghiệp đến ứng dụng web và hệ thống quản trị, chúng tôi xây dựng giải pháp phù hợp với cách doanh nghiệp vận hành.
             </p>
             
             <div>
               <Link
                 href="/lien-he"
-                className="inline-flex w-full lg:w-fit items-center justify-center gap-(--inner-space) rounded-lg bg-[#004bb4] px-7 py-3.5 text-[15px] font-semibold text-white transition-colors hover:bg-blue-700 shadow-sm"
+                className="inline-flex w-full lg:w-fit items-center justify-center gap-(--inner-space) rounded-lg bg-[#004bb4] px-7 py-3.5 text-[14px] font-semibold text-white transition-colors hover:bg-blue-700 shadow-sm"
               >
                 Khám phá giải pháp
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden="true">
@@ -36,7 +36,7 @@ export default function WebVision() {
           </div>
 
           {/* Right: Image Mockup */}
-          <div className="hidden lg:flex relative mt-(--inner-space) w-full lg:w-[45%] justify-end shrink-0">
+          <div className="hidden lg:flex relative w-full lg:w-[45%] justify-end shrink-0">
             {/* Optional decorative background glow */}
             <div className="absolute inset-0 bg-blue-50 blur-3xl opacity-50 rounded-full scale-110"></div>
             

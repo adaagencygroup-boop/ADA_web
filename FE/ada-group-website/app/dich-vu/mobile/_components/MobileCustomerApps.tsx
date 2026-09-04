@@ -82,16 +82,16 @@ export default function MobileCustomerApps() {
           <div className="flex flex-col p-6 sm:p-8 lg:p-0 order-2 lg:order-1">
             {headerContent.map((item, index) => (
               <div key={index}>
-                <span className="text-[11px] font-semibold uppercase tracking-widest text-slate-500 lg:text-blue-800 mb-(--heading-space) block">
+                <span className="text-[12px] font-semibold uppercase tracking-widest text-slate-500 lg:text-blue-800 mb-(--heading-space) block">
                   {item.tag}
                 </span>
-                <h2 className="text-[1.35rem] font-bold lg:font-semibold leading-snug lg:leading-tight tracking-tight text-zinc-900 lg:text-[#0a1a2f] sm:text-4xl lg:text-[2.5rem] mb-(--heading-space)">
+                <h2 className="text-[24px] lg:text-[36px] font-semibold leading-[1.2] tracking-tight text-zinc-900 lg:text-[#0a1a2f] mb-(--heading-space)">
                   {item.title}
                 </h2>
-                <p className="text-[15px] lg:text-[17px] font-medium text-blue-600 mb-(--inner-space)">
+                <p className="text-[14px] lg:text-[16px] font-medium text-blue-600 mb-(--inner-space)">
                   {item.subtitle}
                 </p>
-                <p className="text-[14px] lg:text-[15px] leading-relaxed text-zinc-500 lg:text-zinc-600 mb-(--inner-space) text-justify">
+                <p className="text-[14px] lg:text-[16px] leading-relaxed text-zinc-500 lg:text-zinc-600 mb-(--inner-space) text-justify">
                   {item.description}
                 </p>
               </div>
@@ -110,7 +110,7 @@ export default function MobileCustomerApps() {
               ))}
             </div>
             
-            <Link href="/lien-he" className="inline-flex items-center gap-(--inner-space) text-blue-600 font-semibold text-[14px] lg:text-[14.5px] hover:text-blue-800 transition-colors w-fit">
+            <Link href="/lien-he" className="inline-flex items-center gap-(--inner-space) text-blue-600 font-semibold text-[14px] hover:text-blue-800 transition-colors w-fit">
               Trao đổi chi tiết &rarr;
             </Link>
           </div>

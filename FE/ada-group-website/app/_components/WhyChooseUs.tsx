@@ -40,10 +40,10 @@ export default function WhyChooseUs() {
   return (
     <section className="section-y ">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
-        <h2 className="text-2xl font-semibold tracking-tight text-zinc-900 sm:text-4xl">
+        <h2 className="text-[28px] leading-[1.2] font-semibold tracking-tight text-zinc-900 lg:text-[44px] lg:leading-[1.1]">
           {CONTENT.title}
         </h2>
-        <p className="mt-(--heading-space) text-base leading-relaxed text-zinc-600">
+        <p className="mt-(--heading-space) text-[14px] lg:text-[16px] leading-relaxed text-zinc-600">
           {CONTENT.description}
         </p>
 
@@ -63,10 +63,10 @@ export default function WhyChooseUs() {
                 <span className="flex h-10 w-10 items-center justify-center rounded-full bg-[#D8E2FF] [grid-area:icon]">
                   <reason.Icon className="h-5 w-5" />
                 </span>
-                <h3 className="text-xl font-semibold text-[#001E4B] [grid-area:title]">
+                <h3 className="text-[16px] lg:text-[18px] font-semibold text-[#001E4B] [grid-area:title]">
                   {reason.title}
                 </h3>
-                <p className="text-base leading-relaxed text-zinc-600 [grid-area:desc]">
+                <p className="text-[14px] lg:text-[16px] leading-relaxed text-zinc-600 [grid-area:desc]">
                   {reason.description}
                 </p>
               </div>
@@ -77,7 +77,7 @@ export default function WhyChooseUs() {
         <div className="mt-(--inner-space) pt-5 flex justify-center">
           <Link
             href={CONTENT.ctaHref}
-            className="inline-flex items-center gap-2 rounded-full bg-blue-950 px-6 py-3.5 text-sm font-medium text-white transition-colors hover:bg-blue-900 sm:text-base"
+            className="inline-flex items-center gap-2 rounded-full bg-blue-950 px-6 py-3.5 text-[14px] font-medium text-white transition-colors hover:bg-blue-900"
           >
             {CONTENT.ctaLabel}
             <ArrowRightIcon className="h-4 w-4" />

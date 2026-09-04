@@ -41,16 +41,16 @@ export default function MobileCoreValues() {
   return (
     <section className="bg-blue-50 section-y">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-4xl lg:max-w-5xl text-center mb-(--section-padding) md:mb-(--section-padding)">
-          <h2 className="text-[1.75rem] font-semibold leading-tight text-zinc-900 sm:text-3xl lg:text-[2.5rem] mb-(--inner-space) md:mb-(--inner-space)">
+        <div className="mx-auto max-w-4xl lg:max-w-full text-center mb-(--section-padding) md:mb-(--section-padding)">
+          <h2 className="text-[28px] lg:text-[44px] font-semibold leading-[1.01] lg:leading-[1.01] text-zinc-900 mb-(--inner-space) md:mb-(--inner-space)">
             Một trải nghiệm luôn đồng hành cùng người dùng
           </h2>
           {/* Subtitle Desktop */}
-          <p className="hidden md:block text-zinc-500 leading-relaxed max-w-3xl mx-auto">
+          <p className="hidden md:block text-[16px] text-zinc-500 leading-relaxed max-w-3xl mx-auto">
             ADA Group đồng hành từ việc xác định nhu cầu, thiết kế trải nghiệm, phát triển ứng dụng đến kết nối backend, triển khai và tiếp tục cải tiến sau khi sản phẩm đi vào sử dụng.
           </p>
           {/* Subtitle Mobile */}
-          <p className="md:hidden text-[15px] text-zinc-600 leading-relaxed px-2">
+          <p className="md:hidden text-[14px] text-zinc-600 leading-relaxed px-2">
             ADA Group đồng hành từ việc xác định nhu cầu, thiết kế trải nghiệm, phát triển ứng dụng đến kết nối backend, triển khai và tiếp tục cải tiến sau khi sản phẩm đi vào sử dụng.
           </p>
         </div>
@@ -69,18 +69,18 @@ export default function MobileCoreValues() {
                 
                 {/* Mobile Title & Desc container, Desktop just Title */}
                 <div className="flex flex-col gap-(--inner-space).5">
-                  <h3 className="text-[15px] md:text-[17px] font-semibold text-zinc-900 leading-snug">
+                  <h3 className="text-[16px] lg:text-[18px] font-semibold text-zinc-900 leading-snug">
                     {item.title}
                   </h3>
                   {/* Mobile only desc */}
-                  <p className="md:hidden text-sm text-zinc-600 leading-relaxed text-justify">
+                  <p className="md:hidden text-[14px] text-zinc-600 leading-relaxed text-justify">
                     {item.description}
                   </p>
                 </div>
               </div>
               
               {/* Desktop only desc */}
-              <p className="hidden md:block text-[14px] text-zinc-600 leading-[1.6] text-justify">
+              <p className="hidden md:block text-[16px] text-zinc-600 leading-[1.6] text-justify">
                 {item.description}
               </p>
             </div>

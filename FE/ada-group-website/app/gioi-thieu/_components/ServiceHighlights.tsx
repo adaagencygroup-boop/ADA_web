@@ -75,7 +75,7 @@ export default function ServiceHighlights() {
   return (
     <section className="section-y bg-white lg:bg-white">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
-        <h2 className="text-center text-2xl font-semibold text-zinc-900 lg:font-semibold">
+        <h2 className="text-center text-[28px] font-semibold leading-[1.2] text-zinc-900 lg:text-[44px] lg:leading-[1.1]">
           {CONTENT.title}
         </h2>
 

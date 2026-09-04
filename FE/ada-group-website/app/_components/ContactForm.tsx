@@ -57,11 +57,11 @@ export default function ContactForm() {
   return (
     <section className="section-y bg-blue-50">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-2xl font-semibold tracking-tight text-zinc-900 sm:text-4xl">
+        <div className="mx-auto max-w-4xl text-center">
+          <h2 className="text-[28px] leading-[1.2] font-semibold tracking-tight text-zinc-900 lg:text-[44px] lg:leading-[1.1]">
             {CONTENT.title}
           </h2>
-          <p className="mt-(--heading-space) text-base leading-relaxed text-zinc-600">
+          <p className="mt-(--heading-space) text-[14px] lg:text-[16px] leading-relaxed text-zinc-600">
             {CONTENT.description}
           </p>
         </div>

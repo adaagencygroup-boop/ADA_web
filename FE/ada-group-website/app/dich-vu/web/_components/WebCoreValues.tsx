@@ -43,16 +43,11 @@ export default function WebCoreValues() {
     <section className="bg-blue-50 section-y">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-4xl lg:max-w-5xl text-center mb-(--section-padding) md:mb-(--section-padding)">
-          <h2 className="text-[1.75rem] font-semibold leading-tight text-zinc-900 sm:text-3xl lg:text-[2.5rem] mb-(--inner-space) md:mb-(--inner-space)">
+          <h2 className="text-[28px] lg:text-[44px] font-semibold leading-[1.2] lg:leading-[1.1] text-zinc-900 mb-(--inner-space) md:mb-(--inner-space)">
             Một nền tảng tốt cần tạo ra<br className="md:hidden" /> giá trị lâu dài
           </h2>
-          {/* Subtitle Desktop */}
-          <p className="hidden md:block text-zinc-500 leading-relaxed max-w-3xl mx-auto">
+          <p className="text-[14px] lg:text-[16px] text-zinc-500 leading-relaxed max-w-3xl mx-auto px-2 lg:px-0">
             Một sản phẩm web tốt không chỉ dừng lại ở giao diện đẹp. Hệ thống cần giải quyết đúng nhu cầu của người dùng, vận hành ổn định, dễ quản lý và có khả năng thích ứng khi doanh nghiệp phát triển.
-          </p>
-          {/* Subtitle Mobile */}
-          <p className="md:hidden text-[15px] text-zinc-600 leading-relaxed px-2">
-            Một sản phẩm web tốt không chỉ dừng lại ở giao diện đẹp. Nó cần giải quyết đúng nhu cầu, mang lại trải nghiệm tốt cho người dùng và có khả năng mở rộng trong tương lai.
           </p>
         </div>
 
@@ -70,18 +65,18 @@ export default function WebCoreValues() {
                 
                 {/* Mobile Title & Desc container, Desktop just Title */}
                 <div className="flex flex-col gap-(--inner-space).5">
-                  <h3 className="text-[15px] md:text-[17px] font-semibold text-zinc-900 leading-snug">
+                  <h3 className="text-[16px] lg:text-[18px] font-semibold text-zinc-900 leading-snug">
                     {item.title}
                   </h3>
                   {/* Mobile only desc */}
-                  <p className="md:hidden text-sm text-zinc-600 leading-relaxed text-justify">
+                  <p className="md:hidden text-[14px] text-zinc-600 leading-relaxed text-justify">
                     {item.description}
                   </p>
                 </div>
               </div>
               
               {/* Desktop only desc */}
-              <p className="hidden md:block text-[14px] text-zinc-600 leading-[1.6] text-justify">
+              <p className="hidden md:block text-[16px] text-zinc-600 leading-[1.6] text-justify">
                 {item.description}
               </p>
             </div>

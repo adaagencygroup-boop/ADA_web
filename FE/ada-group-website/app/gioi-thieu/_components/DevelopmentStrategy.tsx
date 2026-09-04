@@ -108,10 +108,10 @@ export default function DevelopmentStrategy() {
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 items-start gap-x-16 lg:grid-cols-2">
           <div>
-            <span className="text-sm font-semibold uppercase leading-5 tracking-wider text-blue-900">
+            <span className="text-[12px] lg:text-[12px] font-semibold uppercase leading-5 tracking-wider text-blue-900">
               {CONTENT.eyebrow}
             </span>
-            <h2 className="mt-(--heading-space) text-[28px] font-semibold leading-8.5 text-zinc-900 lg:text-4xl lg:leading-10">
+            <h2 className="mt-(--heading-space) text-[28px] font-semibold leading-[1.2] text-zinc-900 lg:text-[36px] lg:leading-[1.2]">
               {CONTENT.title}
             </h2>
 
@@ -119,7 +119,7 @@ export default function DevelopmentStrategy() {
               {CONTENT.paragraphs.map((paragraph) => (
                 <p
                   key={paragraph}
-                  className="text-base text-justify sm:text-start leading-5.75 text-gray-600 [&+&]:mt-4"
+                  className="text-[14px] lg:text-[16px] text-justify sm:text-start leading-relaxed text-gray-600 [&+&]:mt-4"
                 >
                   {paragraph}
                 </p>
@@ -133,10 +133,10 @@ export default function DevelopmentStrategy() {
                     <principle.icon />
                   </span>
                   <div>
-                    <h3 className="text-lg font-semibold leading-6 text-slate-900">
+                    <h3 className="text-[16px] lg:text-[18px] font-semibold leading-snug text-slate-900">
                       {principle.title}
                     </h3>
-                    <p className="mt-1 text-base leading-5 text-gray-500">
+                    <p className="mt-1 text-[14px] lg:text-[16px] leading-relaxed text-gray-500">
                       {principle.description}
                     </p>
                   </div>

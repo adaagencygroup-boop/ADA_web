@@ -34,16 +34,16 @@ export default function MissionDetails() {
             className="grid grid-cols-1 items-center gap-2 sm:gap-10 lg:grid-cols-2"
           >
             <div className={block.imageOnLeft ? "lg:order-2" : "lg:order-1"}>
-              <h3 className="text-2xl font-semibold leading-7.75 text-zinc-900">
+              <h3 className="text-[28px] lg:text-[36px] font-semibold leading-[1.2] text-zinc-900">
                 {block.title}
               </h3>
-              <p className="mt-(--heading-space) text-justify text-base leading-6.25 text-gray-600">
+              <p className="mt-(--heading-space) text-justify text-[14px] lg:text-[16px] leading-relaxed text-gray-600">
                 {block.paragraph}
               </p>
             </div>
 
             <div
-              className={`aspect-[630/256] w-full rounded-xl bg-[#E6E8EA] ${block.imageOnLeft ? "lg:order-1" : "lg:order-2"}`}
+              className={`aspect-630/256 w-full rounded-xl bg-[#E6E8EA] ${block.imageOnLeft ? "lg:order-1" : "lg:order-2"}`}
             />
           </div>
         ))}

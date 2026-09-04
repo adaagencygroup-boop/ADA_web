@@ -92,7 +92,7 @@ export default function CoreValues() {
     <section className="section-y bg-blue-50">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center text-center">
-          <h2 className="text-[22px] font-extrabold leading-8 text-slate-900 lg:text-3xl lg:font-semibold lg:leading-9 lg:text-black">
+          <h2 className="text-[28px] font-extrabold leading-[1.2] text-slate-900 lg:text-[44px] lg:font-semibold lg:leading-[1.1] lg:text-black">
             {CONTENT.title}
           </h2>
           <span className="mt-4 h-1 w-12 shrink-0 rounded-full bg-[#002A64] lg:bg-blue-900" />
@@ -112,18 +112,18 @@ export default function CoreValues() {
                 
                 {/* Mobile Title & Desc container, Desktop just Title */}
                 <div className="flex flex-col gap-(--inner-space).5">
-                  <h3 className="text-[15px] md:text-[17px] font-semibold text-zinc-900 leading-snug">
+                  <h3 className="text-[16px] lg:text-[18px] font-semibold text-zinc-900 leading-snug">
                     {value.title}
                   </h3>
                   {/* Mobile only desc */}
-                  <p className="md:hidden text-sm text-zinc-600 leading-relaxed text-justify">
+                  <p className="md:hidden text-[14px] text-zinc-600 leading-relaxed text-justify">
                     {value.description}
                   </p>
                 </div>
               </div>
               
               {/* Desktop only desc */}
-              <p className="hidden md:block text-[14px] text-zinc-600 leading-[1.6] text-justify">
+              <p className="hidden md:block text-[16px] text-zinc-600 leading-[1.6] text-justify">
                 {value.description}
               </p>
             </div>
