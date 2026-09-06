@@ -391,12 +391,12 @@ export default function NewsListCard() {
 export function NewsToolbarActions() {
   return (
     <div className="flex items-center gap-3">
-      <button
-        type="button"
+      <Link
+        href="/tin-tuc/danh-muc"
         className="flex h-10 shrink-0 items-center gap-2 rounded-lg bg-[#316EE9] px-4 text-sm font-semibold text-white hover:bg-[#316EE9]/90"
       >
         + Thêm danh mục mới
-      </button>
+      </Link>
       <Link
         href="/tin-tuc/tao-moi"
         className="flex h-10 shrink-0 items-center gap-2 rounded-lg bg-[#316EE9] px-4 text-sm font-semibold text-white hover:bg-[#316EE9]/90"
