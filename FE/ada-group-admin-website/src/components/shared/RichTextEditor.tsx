@@ -35,8 +35,7 @@ import {
 } from "@/src/components/ui/popover";
 import { Button } from "@/src/components/ui/button";
 
-const CONTENT_CLASS =
-  "min-h-33 px-4 py-4 text-sm text-[#1C1B1B] outline-none " +
+export const RICH_TEXT_TYPOGRAPHY_CLASS =
   "[&_h1]:mt-2 [&_h1]:mb-1 [&_h1]:text-2xl [&_h1]:font-semibold " +
   "[&_h2]:mt-2 [&_h2]:mb-1 [&_h2]:text-xl [&_h2]:font-semibold " +
   "[&_h3]:mt-2 [&_h3]:mb-1 [&_h3]:text-lg [&_h3]:font-semibold " +
@@ -46,6 +45,8 @@ const CONTENT_CLASS =
   "[&_li]:mb-1 " +
   "[&_a]:text-[#316EE9] [&_a]:underline " +
   "[&_img]:my-2 [&_img]:max-w-full [&_img]:rounded-lg";
+
+const CONTENT_CLASS = `min-h-33 px-4 py-4 text-sm text-[#1C1B1B] outline-none ${RICH_TEXT_TYPOGRAPHY_CLASS}`;
 
 function ToolbarButton({
   active,

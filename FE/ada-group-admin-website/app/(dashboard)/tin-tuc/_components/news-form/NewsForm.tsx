@@ -17,6 +17,7 @@ import {
   CATEGORIES,
   getNewsArticle,
 } from "@/app/(dashboard)/tin-tuc/_components/data";
+import ArticlePreviewDialog from "@/app/(dashboard)/tin-tuc/_components/news-form/ArticlePreviewDialog";
 
 export type NewsFormMode = "create" | "edit";
 
@@ -37,6 +38,7 @@ export default function NewsForm({
 
   const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [dragActive, setDragActive] = useState(false);
+  const [previewOpen, setPreviewOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   function applyAvatarFile(file: File | undefined) {
@@ -56,8 +58,6 @@ export default function NewsForm({
     setDragActive(false);
     applyAvatarFile(event.dataTransfer.files?.[0]);
   }
-
-  const cancelHref = isEdit && newsId ? `/tin-tuc/${newsId}` : "/tin-tuc";
 
   return (
     <div className="flex flex-1 flex-col gap-6">
@@ -82,13 +82,14 @@ export default function NewsForm({
         </div>
 
         <div className="flex items-center gap-3">
-          <Link
-            href={cancelHref}
+          <button
+            type="button"
+            onClick={() => setPreviewOpen(true)}
             className="flex h-10.5 items-center gap-2 rounded-lg border border-[#CBD5E1] bg-white px-4 text-sm font-medium text-[#334155] hover:bg-[#F8FAFC]"
           >
             <Eye className="size-4" />
             Xem trước
-          </Link>
+          </button>
           <button
             type="button"
             className="flex h-10.5 items-center gap-2 rounded-lg border border-[#BFDBFE] bg-[#EFF6FF] px-4 text-sm font-medium text-[#2563EB] hover:bg-[#DBEAFE]"
@@ -226,6 +227,16 @@ export default function NewsForm({
           </div>
         </div>
       </div>
+
+      <ArticlePreviewDialog
+        open={previewOpen}
+        onOpenChange={setPreviewOpen}
+        title={title}
+        category={category}
+        content={content}
+        thumbnail={avatarPreview}
+        featured={featured}
+      />
     </div>
   );
 }

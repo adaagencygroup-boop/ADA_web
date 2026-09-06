@@ -281,13 +281,13 @@ export default function NewsListCard() {
                   </td>
                   <td className="px-3 py-5">
                     <div className="flex items-center justify-center gap-1">
-                      <button
-                        type="button"
+                      <Link
+                        href={`/tin-tuc/${article.id}`}
                         aria-label="Xem chi tiết"
                         className="inline-flex size-8 items-center justify-center rounded-lg text-[#316EE9] hover:bg-[#EFF6FF]"
                       >
                         <Eye className="size-4" />
-                      </button>
+                      </Link>
                       <Link
                         href={`/tin-tuc/${article.id}/sua`}
                         aria-label="Chỉnh sửa"
