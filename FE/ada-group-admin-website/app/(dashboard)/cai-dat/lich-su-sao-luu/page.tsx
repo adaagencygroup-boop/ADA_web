@@ -6,7 +6,7 @@ export default function LichSuSaoLuuPage() {
   return (
     <div className="flex flex-1 flex-col gap-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-2">
           <nav className="flex items-center gap-2 text-sm text-[#434750]">
             <Link href="/" className="hover:text-[#1C1B1B]">
               Dashboard
@@ -20,12 +20,14 @@ export default function LichSuSaoLuuPage() {
               Lịch sử sao lưu
             </span>
           </nav>
-          <h1 className="text-3xl font-semibold text-[#1C1B1B]">
-            Lịch sử sao lưu
-          </h1>
-          <p className="text-sm text-[#6B7280]">
-            Quản lý và theo dõi tất cả các bản sao lưu dữ liệu của hệ thống.
-          </p>
+          <div className="flex flex-col gap-1">
+            <h1 className="text-3xl font-semibold text-[#1C1B1B]">
+              Lịch sử sao lưu
+            </h1>
+            <p className="text-sm text-[#6B7280]">
+              Quản lý và theo dõi tất cả các bản sao lưu dữ liệu của hệ thống.
+            </p>
+          </div>
         </div>
 
         <Link

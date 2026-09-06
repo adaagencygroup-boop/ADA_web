@@ -69,12 +69,8 @@ export default function JobForm({
   const isEdit = mode === "edit";
 
   const [title, setTitle] = useState(isEdit ? "IT BA" : "");
-  const [department, setDepartment] = useState<string | undefined>(
-    isEdit ? "BA" : undefined
-  );
-  const [workType, setWorkType] = useState<string | undefined>(
-    isEdit ? "Offline" : undefined
-  );
+  const [department, setDepartment] = useState(isEdit ? "BA" : "");
+  const [workType, setWorkType] = useState(isEdit ? "Offline" : "");
   const [location, setLocation] = useState(isEdit ? "Hà Nội" : "");
   const [workSchedule, setWorkSchedule] = useState<WorkSchedule>(EMPTY_SCHEDULE);
   const [postedDate, setPostedDate] = useState(() =>
@@ -119,7 +115,7 @@ export default function JobForm({
   return (
     <div className="flex flex-1 flex-col gap-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-2">
           <nav className="flex items-center gap-2 text-sm text-[#434750]">
             <Link href="/" className="hover:text-[#1C1B1B]">
               Dashboard

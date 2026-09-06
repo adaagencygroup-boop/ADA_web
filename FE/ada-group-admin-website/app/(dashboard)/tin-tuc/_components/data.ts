@@ -153,3 +153,7 @@ export const NEWS_ARTICLES: NewsArticle[] = BASE_ARTICLES.map((article, i) => ({
   id: i + 1,
   ...article,
 }));
+
+export function getNewsArticle(id: number): NewsArticle | null {
+  return NEWS_ARTICLES.find((article) => article.id === id) ?? null;
+}

@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import {
   ChevronLeft,
   ChevronRight,
@@ -287,13 +288,13 @@ export default function NewsListCard() {
                       >
                         <Eye className="size-4" />
                       </button>
-                      <button
-                        type="button"
+                      <Link
+                        href={`/tin-tuc/${article.id}/sua`}
                         aria-label="Chỉnh sửa"
                         className="inline-flex size-8 items-center justify-center rounded-lg text-[#1C1B1B] hover:bg-[#F3F4F6]"
                       >
                         <Pencil className="size-4" />
-                      </button>
+                      </Link>
                       <button
                         type="button"
                         aria-label="Xóa"
@@ -396,12 +397,12 @@ export function NewsToolbarActions() {
       >
         + Thêm danh mục mới
       </button>
-      <button
-        type="button"
+      <Link
+        href="/tin-tuc/tao-moi"
         className="flex h-10 shrink-0 items-center gap-2 rounded-lg bg-[#316EE9] px-4 text-sm font-semibold text-white hover:bg-[#316EE9]/90"
       >
         + Thêm tin tức mới
-      </button>
+      </Link>
     </div>
   );
 }

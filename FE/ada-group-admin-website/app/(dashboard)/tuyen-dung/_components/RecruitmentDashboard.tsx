@@ -19,7 +19,7 @@ export default function RecruitmentDashboard() {
   return (
     <div className="flex flex-1 flex-col gap-7.5">
       <div className="flex flex-wrap items-start justify-between gap-4">
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-2">
           <nav className="flex items-center gap-2 text-sm text-[#434750]">
             <Link href="/" className="hover:text-[#1C1B1B]">
               Dashboard
@@ -27,12 +27,14 @@ export default function RecruitmentDashboard() {
             <ChevronRight className="size-3" />
             <span className="font-medium text-[#1C1B1B]">Tuyển dụng</span>
           </nav>
-          <h1 className="text-3xl font-semibold text-[#1C1B1B]">
-            Dashboard tuyển dụng
-          </h1>
-          <p className="text-sm text-[#434750]">
-            Tổng quan hoạt động tuyển dụng
-          </p>
+          <div className="flex flex-col gap-1">
+            <h1 className="text-3xl font-semibold text-[#1C1B1B]">
+              Dashboard tuyển dụng
+            </h1>
+            <p className="text-sm text-[#434750]">
+              Tổng quan hoạt động tuyển dụng
+            </p>
+          </div>
         </div>
 
         <div className="flex items-center gap-4">
