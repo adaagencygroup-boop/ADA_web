@@ -1,8 +1,8 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { toast } from "sonner";
 import {
-  Check,
   FileText,
   Mail,
   Paperclip,
@@ -11,66 +11,110 @@ import {
   Trash2,
   User,
 } from "lucide-react";
-import type { Contact } from "@/app/(dashboard)/lien-he/_components/data";
+import { useUploadMedia } from "@/src/hooks/useNews";
+import {
+  useDeleteContact,
+  useRespondContact,
+  useUpdateContactNote,
+} from "@/src/hooks/useContacts";
+import type { Contact } from "@/src/lib/api/contact";
 
 const STATUS_STYLES = {
   pending: {
     label: "Chưa phản hồi",
     className: "bg-[#FDEEE0] text-[#C2410C]",
   },
-  answered: {
+  responded: {
     label: "Đã phản hồi",
     className: "bg-[#E1FCEF] text-[#15803D]",
   },
 };
 
-function formatFileSize(bytes: number) {
-  const mb = bytes / (1024 * 1024);
-  return `${mb.toFixed(2)} MB`;
+const ALLOWED_ATTACHMENT_EXTENSIONS = ["pdf", "doc", "docx", "jpg", "jpeg", "png"];
+const MAX_ATTACHMENT_SIZE_BYTES = 10 * 1024 * 1024;
+
+function formatDateTime(iso: string) {
+  return new Date(iso).toLocaleString("vi-VN", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 }
 
 export default function ContactDetailPanel({
   contact,
-  onSendReply,
-  onMarkAnswered,
-  onDelete,
+  onDeleted,
 }: {
   contact: Contact;
-  onSendReply: (
-    id: string,
-    content: string,
-    attachment?: { name: string; size: string }
-  ) => void;
-  onMarkAnswered: (id: string) => void;
-  onDelete: (id: string) => void;
+  onDeleted: () => void;
 }) {
   const [replyContent, setReplyContent] = useState("");
   const [note, setNote] = useState(contact.note ?? "");
   const [attachment, setAttachment] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const uploadMutation = useUploadMedia();
+  const respondMutation = useRespondContact();
+  const noteMutation = useUpdateContactNote();
+  const deleteMutation = useDeleteContact();
+
   function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
-    setAttachment(file ?? null);
+    event.target.value = "";
+    if (!file) return;
+
+    const extension = file.name.split(".").pop()?.toLowerCase() ?? "";
+    if (!ALLOWED_ATTACHMENT_EXTENSIONS.includes(extension)) {
+      toast.error(
+        "Định dạng tệp không hợp lệ. Chỉ chấp nhận PDF, DOC, DOCX, JPG, PNG."
+      );
+      return;
+    }
+    if (file.size > MAX_ATTACHMENT_SIZE_BYTES) {
+      toast.error("Dung lượng tệp không được vượt quá 10MB.");
+      return;
+    }
+
+    setAttachment(file);
   }
 
   function handleSendReply() {
     if (!replyContent.trim()) return;
-    onSendReply(
-      contact.id,
-      replyContent,
-      attachment
-        ? { name: attachment.name, size: formatFileSize(attachment.size) }
-        : undefined
-    );
+
+    if (attachment) {
+      uploadMutation.mutate(attachment, {
+        onSuccess: (result) => {
+          respondMutation.mutate({
+            id: contact.id,
+            payload: {
+              feedbackContent: replyContent,
+              feedbackAttachmentURL: result.fileURL,
+            },
+          });
+        },
+      });
+      return;
+    }
+
+    respondMutation.mutate({
+      id: contact.id,
+      payload: { feedbackContent: replyContent },
+    });
+  }
+
+  function handleSaveNote() {
+    noteMutation.mutate({ id: contact.id, note });
   }
 
   function handleDelete() {
-    if (!window.confirm(`Xoá liên hệ của "${contact.name}"?`)) return;
-    onDelete(contact.id);
+    if (!window.confirm(`Xoá liên hệ của "${contact.customerFullname}"?`)) return;
+    deleteMutation.mutate(contact.id, { onSuccess: onDeleted });
   }
 
   const statusStyle = STATUS_STYLES[contact.status];
+  const isSendingReply = uploadMutation.isPending || respondMutation.isPending;
 
   return (
     <div className="flex flex-col gap-6">
@@ -92,16 +136,20 @@ export default function ContactDetailPanel({
           </div>
           <div className="flex flex-col gap-1">
             <span className="text-lg font-semibold text-[#111827]">
-              {contact.name}
+              {contact.customerFullname}
             </span>
-            <span className="flex items-center gap-1.5 text-sm text-[#4B5563]">
-              <Mail className="size-3.5" />
-              {contact.email}
-            </span>
-            <span className="flex items-center gap-1.5 text-sm text-[#4B5563]">
-              <Phone className="size-3.5" />
-              {contact.phone}
-            </span>
+            {contact.customerEmail && (
+              <span className="flex items-center gap-1.5 text-sm text-[#4B5563]">
+                <Mail className="size-3.5" />
+                {contact.customerEmail}
+              </span>
+            )}
+            {contact.customerPhone && (
+              <span className="flex items-center gap-1.5 text-sm text-[#4B5563]">
+                <Phone className="size-3.5" />
+                {contact.customerPhone}
+              </span>
+            )}
           </div>
         </div>
 
@@ -109,7 +157,7 @@ export default function ContactDetailPanel({
           <div className="flex items-center justify-between text-sm">
             <span className="text-[#6B7280]">Ngày gửi:</span>
             <span className="font-medium text-[#111827]">
-              {contact.sentAt.replace(" ", " - ")}
+              {formatDateTime(contact.createdAt)}
             </span>
           </div>
           <div className="flex flex-col gap-1">
@@ -123,7 +171,7 @@ export default function ContactDetailPanel({
         </div>
       </div>
 
-      {contact.status === "answered" && contact.reply ? (
+      {contact.status === "responded" && contact.feedbackContent ? (
         <div className="rounded-xl border border-[#E5E7EB] bg-white p-6">
           <div className="flex items-center justify-between gap-4">
             <h2 className="text-xl font-semibold text-[#111827]">
@@ -139,40 +187,39 @@ export default function ContactDetailPanel({
               Nội dung phản hồi:
             </span>
             <p className="rounded-lg border border-[#E5E7EB] bg-[#F9FAFB] p-3 text-sm whitespace-pre-line text-[#374151]">
-              {contact.reply.content}
+              {contact.feedbackContent}
             </p>
           </div>
 
-          {contact.reply.attachmentName && (
+          {contact.feedbackAttachmentURL && (
             <div className="mt-4 flex flex-col gap-2">
               <span className="text-sm font-semibold text-[#111827]">
                 Đính kèm tệp:
               </span>
-              <div className="flex items-center justify-between rounded-lg border border-[#E5E7EB] bg-[#F9FAFB] p-3">
-                <div className="flex items-center gap-2">
-                  <FileText className="size-4 text-[#6B7280]" />
-                  <div className="flex flex-col">
-                    <span className="text-sm font-medium text-[#111827]">
-                      {contact.reply.attachmentName}
-                    </span>
-                    <span className="text-xs text-[#6B7280]">
-                      {contact.reply.attachmentSize}
-                    </span>
-                  </div>
+              <div className="flex items-center justify-between gap-3 rounded-lg border border-[#E5E7EB] bg-[#F9FAFB] p-3">
+                <div className="flex min-w-0 items-center gap-2">
+                  <FileText className="size-4 shrink-0 text-[#6B7280]" />
+                  <span className="truncate text-sm font-medium text-[#111827]">
+                    {contact.feedbackAttachmentURL.split("/").pop()}
+                  </span>
                 </div>
-                <button
-                  type="button"
-                  className="text-sm font-medium text-[#1A56DB] hover:underline"
+                <a
+                  href={contact.feedbackAttachmentURL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="shrink-0 text-sm font-medium text-[#1A56DB] hover:underline"
                 >
                   Xem file
-                </button>
+                </a>
               </div>
             </div>
           )}
 
-          <p className="mt-4 text-xs text-[#6B7280]">
-            Đã gửi lúc: {contact.reply.sentAt.replace(" ", " - ")}
-          </p>
+          {contact.feedbackSentAt && (
+            <p className="mt-4 text-xs text-[#6B7280]">
+              Đã gửi lúc: {formatDateTime(contact.feedbackSentAt)}
+            </p>
+          )}
         </div>
       ) : (
         <div className="rounded-xl border border-[#E5E7EB] bg-white p-6">
@@ -196,14 +243,20 @@ export default function ContactDetailPanel({
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="mt-3 flex items-center gap-2 text-sm text-[#4B5563] hover:text-[#1A56DB]"
+            className="mt-3 flex w-full min-w-0 items-center gap-2 text-sm text-[#4B5563] hover:text-[#1A56DB]"
           >
-            <Paperclip className="size-4" />
-            {attachment ? attachment.name : "Đính kèm tệp (nếu có)"}
+            <Paperclip className="size-4 shrink-0" />
+            <span className="truncate">
+              {attachment ? attachment.name : "Đính kèm tệp (nếu có)"}
+            </span>
           </button>
+          <p className="mt-1 text-xs text-[#9CA3AF]">
+            Định dạng: PDF, DOC, DOCX, JPG, PNG (Tối đa 10MB)
+          </p>
           <input
             ref={fileInputRef}
             type="file"
+            accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document,image/jpeg,image/png"
             className="hidden"
             onChange={handleFileChange}
           />
@@ -211,11 +264,11 @@ export default function ContactDetailPanel({
           <button
             type="button"
             onClick={handleSendReply}
-            disabled={!replyContent.trim()}
+            disabled={!replyContent.trim() || isSendingReply}
             className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-[#1A56DB] py-3 text-sm font-semibold text-white hover:bg-[#1A56DB]/90 disabled:cursor-not-allowed disabled:opacity-50"
           >
             <Send className="size-4" />
-            Gửi phản hồi qua Gmail
+            {isSendingReply ? "Đang gửi..." : "Gửi phản hồi"}
           </button>
         </div>
       )}
@@ -233,20 +286,24 @@ export default function ContactDetailPanel({
         <div className="mt-4 flex flex-col gap-3 sm:flex-row">
           <button
             type="button"
-            onClick={() => onMarkAnswered(contact.id)}
-            disabled={contact.status === "answered"}
-            className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-[#BBF7D0] bg-white px-3 py-2.5 text-sm font-semibold text-[#15803D] hover:bg-[#E1FCEF] disabled:cursor-not-allowed disabled:opacity-50"
+            onClick={handleSaveNote}
+            disabled={noteMutation.isPending || note === (contact.note ?? "")}
+            className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-[#BFDBFE] bg-white px-3 py-2.5 text-sm font-semibold text-[#1A56DB] hover:bg-[#EFF6FF] disabled:cursor-not-allowed disabled:opacity-50"
           >
-            <Check className="size-4 shrink-0" />
-            <span className="text-center">Đánh dấu đã phản hồi</span>
+            <span className="text-center">
+              {noteMutation.isPending ? "Đang lưu..." : "Lưu ghi chú"}
+            </span>
           </button>
           <button
             type="button"
             onClick={handleDelete}
-            className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-red-200 bg-white px-3 py-2.5 text-sm font-semibold text-red-600 hover:bg-red-50"
+            disabled={deleteMutation.isPending}
+            className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-red-200 bg-white px-3 py-2.5 text-sm font-semibold text-red-600 hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
           >
             <Trash2 className="size-4 shrink-0" />
-            <span className="text-center">Xóa liên hệ</span>
+            <span className="text-center">
+              {deleteMutation.isPending ? "Đang xóa..." : "Xóa liên hệ"}
+            </span>
           </button>
         </div>
       </div>
