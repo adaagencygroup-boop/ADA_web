@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Toaster } from "sonner";
 import QueryProvider from "@/src/providers/QueryProvider";
 import "./globals.css";
 
@@ -26,6 +27,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full">
         <QueryProvider>{children}</QueryProvider>
+        <Toaster richColors closeButton position="top-right" />
       </body>
     </html>
   );

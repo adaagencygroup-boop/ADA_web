@@ -380,6 +380,13 @@ export default function RichTextEditor({
     };
   }, [editor]);
 
+  useEffect(() => {
+    if (!editor) return;
+    if (value !== editor.getHTML()) {
+      editor.commands.setContent(value, { emitUpdate: false });
+    }
+  }, [value, editor]);
+
   if (!editor) return null;
 
   const wordCount = editor.getText().trim()

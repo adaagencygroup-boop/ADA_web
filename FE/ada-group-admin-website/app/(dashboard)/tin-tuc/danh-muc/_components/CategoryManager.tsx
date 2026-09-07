@@ -4,13 +4,13 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Bookmark, Check, List, Pencil, Plus, Search, Trash2, X } from "lucide-react";
-import { useAdminNewsCategories } from "@/src/hooks/useAdminNews";
 import { useDebouncedValue } from "@/src/hooks/useDebouncedValue";
 import {
   useCreateNewsCategory,
   useDeleteNewsCategory,
+  useNewsCategories,
   useUpdateNewsCategory,
-} from "@/src/hooks/useNewsCategoryMutations";
+} from "@/src/hooks/useNewsCategories";
 import type { NewsCategory } from "@/src/lib/api/news";
 import {
   newsCategorySchema,
@@ -34,7 +34,7 @@ export default function CategoryManager() {
     setPage(1);
   }
 
-  const { data: categories, isLoading, isError, error } = useAdminNewsCategories(search);
+  const { data: categories, isLoading, isError, error } = useNewsCategories(search);
   const createMutation = useCreateNewsCategory();
   const updateMutation = useUpdateNewsCategory();
   const deleteMutation = useDeleteNewsCategory();
@@ -135,7 +135,7 @@ export default function CategoryManager() {
             Danh sách lĩnh vực
           </h2>
 
-          <div className="relative w-full max-w-112 flex-1">
+          <div className="relative w-full max-w-md flex-1">
             <Search className="pointer-events-none absolute top-1/2 left-3 size-3.5 -translate-y-1/2 text-[#64748B]" />
             <input
               type="text"

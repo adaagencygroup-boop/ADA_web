@@ -1,17 +1,14 @@
-import { notFound } from "next/navigation";
-import { getNewsArticle } from "@/app/(dashboard)/tin-tuc/_components/data";
+"use client";
+
+import { use } from "react";
 import NewsForm from "@/app/(dashboard)/tin-tuc/_components/news-form/NewsForm";
 
-export default async function EditNewsPage({
+export default function EditNewsPage({
   params,
 }: {
   params: Promise<{ newsId: string }>;
 }) {
-  const { newsId } = await params;
-  const id = Number(newsId);
-  const article = Number.isFinite(id) ? getNewsArticle(id) : null;
+  const { newsId } = use(params);
 
-  if (!article) notFound();
-
-  return <NewsForm mode="edit" newsId={id} />;
+  return <NewsForm mode="edit" newsId={newsId} />;
 }

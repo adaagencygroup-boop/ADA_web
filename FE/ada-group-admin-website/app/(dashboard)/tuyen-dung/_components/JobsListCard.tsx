@@ -103,13 +103,13 @@ export default function JobsListCard() {
           Danh sách tin tuyển dụng
         </h2>
 
-        <div className="flex items-center gap-6 border-b border-[#C4C6D2]">
+        <div className="-mb-px flex items-center gap-6 overflow-x-auto border-b border-[#C4C6D2]">
           {TABS.map((item) => (
             <button
               key={item.value}
               type="button"
               onClick={() => handleTabChange(item.value)}
-              className={`border-b-2 pb-2 text-sm font-medium ${
+              className={`shrink-0 border-b-2 pb-2 text-sm font-medium whitespace-nowrap ${
                 tab === item.value
                   ? "border-[#001E4B] text-[#001E4B]"
                   : "border-transparent text-[#434750] hover:text-[#1C1B1B]"
@@ -278,7 +278,7 @@ export default function JobsListCard() {
           {filtered.length} tin tuyển dụng
         </span>
 
-        <div className="flex items-center gap-1.5">
+        <div className="flex flex-wrap items-center gap-1.5">
           <button
             type="button"
             aria-label="Trang đầu"
