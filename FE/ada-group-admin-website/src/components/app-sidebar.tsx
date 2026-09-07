@@ -3,7 +3,7 @@
 import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import {
   Briefcase,
   Contact,
@@ -23,6 +23,8 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/src/components/ui/sidebar"
+import { logout as logoutRequest } from "@/src/lib/api/auth"
+import { clearAuthTokens } from "@/src/lib/storage"
 
 const NAV_ITEMS = [
   { title: "Dashboard", url: "/", icon: LayoutDashboard },
@@ -35,6 +37,18 @@ const NAV_ITEMS = [
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname()
+  const router = useRouter()
+
+  async function handleLogout() {
+    try {
+      await logoutRequest()
+    } catch {
+      // Best-effort: proceed to clear local session even if the request fails.
+    } finally {
+      clearAuthTokens()
+      router.replace("/dang-nhap")
+    }
+  }
 
   return (
     <Sidebar {...props}>
@@ -86,6 +100,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenuItem>
             <SidebarMenuButton
               type="button"
+              onClick={handleLogout}
               className="h-11 gap-3 rounded-lg px-3 text-[15px] font-medium text-foreground/80 hover:bg-muted"
             >
               <LogOut className="size-5" />

@@ -6,10 +6,34 @@ import { useRouter } from "next/navigation";
 import { Unlock, User } from "lucide-react";
 import { Input } from "@/src/components/ui/input";
 import PasswordField from "@/src/components/shared/PasswordField";
+import { useLogin } from "@/src/hooks/useLogin";
+import { getDeviceFingerprint } from "@/src/lib/device-fingerprint";
 
 export default function LoginForm() {
   const router = useRouter();
-  const [email, setEmail] = useState("");
+  const { mutateAsync: login, isPending, error } = useLogin();
+  const [isFingerprinting, setIsFingerprinting] = useState(false);
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const identifier = String(formData.get("identifier") ?? "");
+    const password = String(formData.get("password") ?? "");
+    const rememberMe = formData.get("remember") === "on";
+
+    setIsFingerprinting(true);
+    const deviceFingerprint = await getDeviceFingerprint();
+    setIsFingerprinting(false);
+
+    try {
+      await login({ identifier, password, deviceFingerprint, rememberMe });
+      router.push("/");
+    } catch {
+      // Error is already surfaced via the mutation's `error` state below.
+    }
+  }
+
+  const isBusy = isFingerprinting || isPending;
 
   return (
     <div className="flex w-full max-w-md flex-col gap-8">
@@ -20,18 +44,7 @@ export default function LoginForm() {
         </p>
       </div>
 
-      <form
-        onSubmit={(event) => {
-          event.preventDefault();
-          const params = new URLSearchParams({
-            email,
-            next: "/xac-nhan-thiet-bi",
-            back: "/dang-nhap",
-          });
-          router.push(`/xac-thuc-email?${params.toString()}`);
-        }}
-        className="flex flex-col gap-5"
-      >
+      <form onSubmit={handleSubmit} className="flex flex-col gap-5">
         <div className="flex flex-col gap-1.5">
           <label
             htmlFor="identifier"
@@ -47,8 +60,6 @@ export default function LoginForm() {
               type="text"
               placeholder="Nhập email"
               autoComplete="username"
-              value={email}
-              onChange={(event) => setEmail(event.target.value)}
               className="h-11.5 border-[#E2E8F0] pr-3 pl-11 text-sm text-[#1E293B] placeholder:text-[#9CA3AF] focus-visible:border-[#1A56DB]"
             />
           </div>
@@ -79,12 +90,17 @@ export default function LoginForm() {
           </Link>
         </div>
 
+        {error && (
+          <p className="-mt-2 text-sm text-red-600">{error.message}</p>
+        )}
+
         <button
           type="submit"
-          className="flex items-center justify-center gap-2 rounded-lg bg-[#1A56DB] px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-[#1A56DB]/90"
+          disabled={isBusy}
+          className="flex items-center justify-center gap-2 rounded-lg bg-[#1A56DB] px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-[#1A56DB]/90 disabled:cursor-not-allowed disabled:opacity-60"
         >
           <Unlock className="size-5" />
-          Đăng nhập
+          {isBusy ? "Đang đăng nhập..." : "Đăng nhập"}
         </button>
       </form>
     </div>
