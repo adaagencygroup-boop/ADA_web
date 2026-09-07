@@ -9,7 +9,7 @@ const CONTENT = {
 };
 
 const IMAGE = {
-  src: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/cong-nghe-vi-nguoi-viet.jpg",
+  src: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/trang-chu/PeopleSection.png",
   alt: "Đội ngũ ADA Group làm việc cùng nhau",
 };
 
