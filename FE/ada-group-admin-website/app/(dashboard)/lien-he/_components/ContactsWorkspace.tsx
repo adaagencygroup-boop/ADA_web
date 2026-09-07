@@ -14,7 +14,12 @@ import {
   SheetContent,
   SheetTitle,
 } from "@/src/components/ui/sheet";
-import { useContactById, useContactCount, useContacts } from "@/src/hooks/useContacts";
+import {
+  useContactById,
+  useContactCount,
+  useContacts,
+  useExportContactsExcel,
+} from "@/src/hooks/useContacts";
 import type { ContactStatus } from "@/src/lib/api/contact";
 import ContactDetailPanel from "@/app/(dashboard)/lien-he/_components/ContactDetailPanel";
 
@@ -351,14 +356,18 @@ export default function ContactsWorkspace() {
 }
 
 export function ContactsToolbar() {
+  const exportMutation = useExportContactsExcel();
+
   return (
     <div className="flex items-center gap-3">
       <button
         type="button"
-        className="flex items-center gap-2 rounded-lg border border-[#D1D5DB] bg-white px-4 py-2 text-sm font-medium text-[#374151] hover:bg-[#F8FAFC]"
+        onClick={() => exportMutation.mutate({})}
+        disabled={exportMutation.isPending}
+        className="flex items-center gap-2 rounded-lg border border-[#D1D5DB] bg-white px-4 py-2 text-sm font-medium text-[#374151] hover:bg-[#F8FAFC] disabled:cursor-not-allowed disabled:opacity-50"
       >
         <Download className="size-4" />
-        Xuất Excel
+        {exportMutation.isPending ? "Đang xuất..." : "Xuất Excel"}
       </button>
     </div>
   );

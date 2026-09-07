@@ -2,13 +2,16 @@ import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tansta
 import { toast } from "sonner";
 import {
   deleteContact,
+  exportContactsExcel,
   getContactById,
   getContacts,
   respondContact,
   updateContactNote,
+  type ExportContactsParams,
   type GetContactsParams,
   type RespondContactPayload,
 } from "@/src/lib/api/contact";
+import { downloadBlob } from "@/src/lib/download";
 
 const CONTACTS_QUERY_KEY = ["contacts"];
 
@@ -34,6 +37,18 @@ export function useContactCount(status?: "pending" | "responded") {
     queryFn: ({ signal }) =>
       getContacts({ page: 1, size: 1, status }, signal),
     select: (data) => data.pagination.totalElements,
+  });
+}
+
+export function useExportContactsExcel() {
+  return useMutation({
+    mutationFn: (params: ExportContactsParams) => exportContactsExcel(params),
+    onSuccess: (blob) => {
+      const timestamp = new Date().toISOString().slice(0, 10);
+      downloadBlob(blob, `lien-he-${timestamp}.xlsx`);
+      toast.success("Đã xuất file Excel thành công");
+    },
+    onError: (error: Error) => toast.error(error.message),
   });
 }
 

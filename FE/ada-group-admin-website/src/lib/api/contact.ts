@@ -27,6 +27,13 @@ export type GetContactsParams = {
   toDate?: string;
 };
 
+export type ExportContactsParams = {
+  status?: ContactStatus;
+  search?: string;
+  fromDate?: string;
+  toDate?: string;
+};
+
 export type RespondContactPayload = {
   feedbackContent: string;
   feedbackAttachmentURL?: string | null;
@@ -36,6 +43,18 @@ export function getContacts(params: GetContactsParams, signal?: AbortSignal) {
   return unwrap<PageResponse<Contact>>(
     apiClient.get("/admin/contacts", { params, signal })
   );
+}
+
+export async function exportContactsExcel(
+  params: ExportContactsParams,
+  signal?: AbortSignal
+) {
+  const response = await apiClient.get("/admin/contacts/exportExcel", {
+    params,
+    signal,
+    responseType: "blob",
+  });
+  return response.data as Blob;
 }
 
 export function getContactById(id: string, signal?: AbortSignal) {
