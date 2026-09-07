@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import Image from "next/image";
 
 type IconProps = { className?: string };
 
@@ -43,13 +44,15 @@ const CONTENT = {
   description: "Những chuyên gia tâm huyết dẫn dắt ADA Group.",
 };
 
+const AVATAR = "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/gioi-thieu/BusinessProfile.png";
+
 const LEADERS = [
-  { name: "Ông Andrew", role: "Chủ tịch Hội đồng quản trị" },
-  { name: "Bà Louisa", role: "Giám đốc Điều hành" },
-  { name: "Ông Thomas", role: "Giám đốc Công nghệ" },
-  { name: "Ông Andre", role: "Chủ tịch Hội đồng quản trị" },
-  { name: "Bà Louis", role: "Giám đốc Điều hành" },
-  { name: "Ông Thoma", role: "Giám đốc Công nghệ" },
+  { name: "Đô Minh Quân", role: "Chủ tịch Hội đồng quản trị", image: AVATAR },
+  { name: "Đinh Đức Kiên", role: "Giám đốc Điều hành", image: AVATAR },
+  { name: "Nguyễn Văn Thuân", role: "Giám đốc Công nghệ", image: AVATAR },
+  { name: "Trương Tấn Nghĩa", role: "Giám đốc Vận hành", image: AVATAR },
+  { name: "Nguyễn Văn Đạt", role: "Trưởng phòng Phát triển", image: AVATAR },
+  { name: "Mai Văn Đạt", role: "Trưởng phòng Kinh doanh", image: AVATAR },
 ];
 
 export default function LeadershipTeam() {
@@ -105,7 +108,15 @@ export default function LeadershipTeam() {
               key={leader.name}
               className="w-70 shrink-0 snap-start rounded-lg border border-zinc-200/60 bg-[#FCF8FB] shadow-sm lg:w-[calc((100%-48px)/3)] lg:border-0 lg:bg-transparent lg:shadow-none"
             >
-              <div className="relative aspect-417/368 w-full overflow-hidden rounded-t-lg bg-zinc-200 lg:rounded-lg lg:shadow-sm" />
+              <div className="relative aspect-417/368 w-full overflow-hidden rounded-t-lg bg-zinc-200 lg:rounded-lg lg:shadow-sm">
+                <Image
+                  src={leader.image}
+                  alt={leader.name}
+                  fill
+                  sizes="(min-width: 1024px) calc((100% - 48px) / 3), 280px"
+                  className="object-cover"
+                />
+              </div>
 
               <div className="border-t border-[#003384]/20 p-4 text-center lg:border-none lg:px-0 lg:pt-4">
                 <h3 className="text-sm font-semibold text-zinc-900">

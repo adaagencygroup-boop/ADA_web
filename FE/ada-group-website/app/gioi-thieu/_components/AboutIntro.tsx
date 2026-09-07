@@ -9,8 +9,8 @@ const CONTENT = {
 };
 
 const IMAGE = {
-  src: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/about-banner.jpg",
-  alt: "Sơ đồ hạ tầng mạng lưới công nghệ toàn cầu",
+  src: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/gioi-thieu/AboutIntro.png",
+  alt: "Giới thiệu về công ty ADA Group",
 };
 
 export default function AboutIntro() {

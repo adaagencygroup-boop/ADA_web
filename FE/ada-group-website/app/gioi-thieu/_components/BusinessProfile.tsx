@@ -5,8 +5,8 @@ const CONTENT = {
 };
 
 const IMAGE = {
-  src: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/thong-tin-doanh-nghiep.jpg",
-  alt: "Văn phòng ADA Group",
+  src: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/gioi-thieu/BusinessProfile.png",
+  alt: "Thông tin doanh nghiệp ADA Group",
 };
 
 const FIELDS = [
