@@ -1,6 +1,6 @@
 import Image from "next/image";
-import Link from "next/link";
-import { ArrowRightIcon } from "@/app/_components/icons";
+// import Link from "next/link";
+// import { ArrowRightIcon } from "@/app/_components/icons";
 import Marquee from "@/app/_components/Marquee";
 
 const CONTENT = {
@@ -108,7 +108,7 @@ export default function PartnersSection() {
           ))}
         </div>
 
-        <div className="mt-(--inner-space) text-center">
+        {/* <div className="mt-(--inner-space) text-center">
           <Link
             href={CONTENT.ctaHref}
             className="inline-flex items-center gap-1.5 text-sm font-semibold text-blue-700 hover:text-blue-800"
@@ -116,7 +116,7 @@ export default function PartnersSection() {
             {CONTENT.ctaLabel}
             <ArrowRightIcon className="h-3.5 w-3.5" />
           </Link>
-        </div>
+        </div> */}
       </div>
     </section>
   );

@@ -8,7 +8,6 @@ import {
 import Breadcrumb from "@/app/tin-tuc/_components/Breadcrumb";
 import CallToAction from "@/app/tin-tuc/_components/CallToAction";
 import FeaturedPosts from "@/app/tin-tuc/_components/FeaturedPosts";
-import SearchBar from "@/app/tin-tuc/_components/SearchBar";
 import AISolutionBanner from "@/app/tin-tuc/[slug]/_components/AISolutionBanner";
 import ArticleDetail from "@/app/tin-tuc/[slug]/_components/ArticleDetail";
 import RelatedArticles from "@/app/tin-tuc/[slug]/_components/RelatedArticles";
@@ -44,12 +43,9 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
   return (
     <>
-      <div className="hidden sm:block">
-        <SearchBar />
-      </div>
       <Breadcrumb current={article.title} />
 
-      <section className="section-y pt-2!">
+      <section className="section-y pt-0!">
         <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-8">
             <div className="flex min-w-0 flex-1 flex-col items-start gap-8">
