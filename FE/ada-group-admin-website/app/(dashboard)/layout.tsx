@@ -1,6 +1,7 @@
 import { AppSidebar } from "@/src/components/app-sidebar";
 import Topbar from "@/src/components/layout/Topbar";
 import { SidebarInset, SidebarProvider } from "@/src/components/ui/sidebar";
+import RequireAuth from "@/src/components/auth/RequireAuth";
 
 export default function DashboardLayout({
   children,
@@ -8,14 +9,16 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <SidebarProvider>
-      <AppSidebar />
-      <SidebarInset>
-        <Topbar />
-        <main className="flex flex-1 flex-col p-6">
-          <div className="mx-auto w-full max-w-360">{children}</div>
-        </main>
-      </SidebarInset>
-    </SidebarProvider>
+    <RequireAuth>
+      <SidebarProvider>
+        <AppSidebar />
+        <SidebarInset>
+          <Topbar />
+          <main className="flex flex-1 flex-col p-6">
+            <div className="mx-auto w-full max-w-360">{children}</div>
+          </main>
+        </SidebarInset>
+      </SidebarProvider>
+    </RequireAuth>
   );
 }

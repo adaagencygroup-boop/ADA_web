@@ -1,7 +1,6 @@
 import axios, { type AxiosResponse } from "axios";
 import type { APIResponse } from "@/src/lib/api/types";
-
-export const ACCESS_TOKEN_KEY = "accessToken";
+import { getAccessToken } from "@/src/lib/storage";
 
 export const apiClient = axios.create({
   baseURL:
@@ -10,10 +9,8 @@ export const apiClient = axios.create({
 });
 
 apiClient.interceptors.request.use((config) => {
-  if (typeof window !== "undefined") {
-    const token = localStorage.getItem(ACCESS_TOKEN_KEY);
-    if (token) config.headers.Authorization = `Bearer ${token}`;
-  }
+  const token = getAccessToken();
+  if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
 
