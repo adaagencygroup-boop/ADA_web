@@ -7,24 +7,22 @@ import { cn } from "@/src/lib/utils";
 
 type PasswordFieldProps = {
   id: string;
-  name: string;
   label: string;
   placeholder?: string;
-  autoComplete?: string;
   showIcon?: boolean;
   labelClassName?: string;
   inputClassName?: string;
-};
+} & Omit<React.ComponentProps<"input">, "id" | "type" | "placeholder" | "className">;
 
 export default function PasswordField({
   id,
-  name,
   label,
   placeholder = "Nhập mật khẩu",
   autoComplete = "current-password",
   showIcon = true,
   labelClassName = "text-sm font-medium text-[#1E293B]",
   inputClassName = "h-11.5",
+  ...inputProps
 }: PasswordFieldProps) {
   const [visible, setVisible] = useState(false);
 
@@ -39,7 +37,6 @@ export default function PasswordField({
         )}
         <Input
           id={id}
-          name={name}
           type={visible ? "text" : "password"}
           placeholder={placeholder}
           autoComplete={autoComplete}
@@ -48,6 +45,7 @@ export default function PasswordField({
             showIcon ? "pr-11 pl-11" : "pr-10",
             inputClassName
           )}
+          {...inputProps}
         />
         <button
           type="button"
