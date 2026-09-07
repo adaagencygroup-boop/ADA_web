@@ -38,7 +38,7 @@ export default function Hero({ badge, title, desc, imagePlaceholder }: HeroProps
               <Link
                 href="/lien-he"
                 className="inline-flex w-full md:w-auto items-center justify-center gap-2 font-semibold text-white transition-colors 
-                rounded-lg bg-[#1A4182] px-6 py-3 text-[15px] hover:bg-[#153468] 
+                rounded-lg bg-[#1A4182] px-6 py-3 text-[14px] hover:bg-[#153468] 
                 md:rounded-md md:text-sm"
               >
                 Trao đổi về dự án &rarr;

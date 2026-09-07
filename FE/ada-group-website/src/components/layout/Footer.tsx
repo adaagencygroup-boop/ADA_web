@@ -96,15 +96,15 @@ const CONTACT_ROWS = [
   },
   {
     icon: PhoneIcon,
-    content: <span>(+84) 924 574 444</span>,
+    content: <a href="tel:+84924574444" className="hover:text-blue-600 transition-colors">(+84) 924 574 444</a>,
   },
   {
     icon: MailIcon,
-    content: <span>contact@adagroup.vn</span>,
+    content: <a href="mailto:contact@adagroup.vn" className="hover:text-blue-600 transition-colors">contact@adagroup.vn</a>,
   },
   {
     icon: GlobeIcon,
-    content: <span>www.adagroup.vn</span>,
+    content: <a href="https://www.adagroup.vn" target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 transition-colors">www.adagroup.vn</a>,
   },
   {
     icon: ClockIcon,

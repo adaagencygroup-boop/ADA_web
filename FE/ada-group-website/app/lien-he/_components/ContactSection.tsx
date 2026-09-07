@@ -172,7 +172,7 @@ export default function ContactSection() {
                 <button 
                   type="submit" 
                   disabled={isSubmitting}
-                  className="bg-[#002A64] hover:bg-[#002A64]/90 text-white font-semibold text-[13px] px-8 py-3.5 rounded-lg flex items-center gap-2 transition-colors uppercase tracking-wide w-fit disabled:opacity-70 disabled:cursor-not-allowed"
+                  className="bg-[#002A64] hover:bg-[#002A64]/90 text-white font-semibold text-[14px] px-8 py-3.5 rounded-lg flex items-center gap-2 transition-colors uppercase tracking-wide w-fit disabled:opacity-70 disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? "ĐANG GỬI..." : <>GỬI LIÊN HỆ &rarr;</>}
                 </button>
