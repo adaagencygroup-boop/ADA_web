@@ -24,7 +24,7 @@ export type WorkSchedule = {
   endTime: string;
 };
 
-function formatSchedule(schedule: WorkSchedule, placeholder: string) {
+export function formatWorkSchedule(schedule: WorkSchedule, placeholder: string) {
   if (schedule.days.length === 0) return placeholder;
 
   const selectedIndexes = DAYS.map((d, i) => (schedule.days.includes(d.value) ? i : -1)).filter(
@@ -85,7 +85,7 @@ export default function WorkScheduleField({
         <span
           className={`truncate ${value.days.length ? "text-[#1C1B1B]" : "text-[#6B7280]"}`}
         >
-          {formatSchedule(value, placeholder)}
+          {formatWorkSchedule(value, placeholder)}
         </span>
         <ChevronDown className="size-4 shrink-0 text-[#434750]" />
       </PopoverTrigger>

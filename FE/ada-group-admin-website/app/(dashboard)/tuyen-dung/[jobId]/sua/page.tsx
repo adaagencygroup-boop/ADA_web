@@ -1,16 +1,14 @@
-import { notFound } from "next/navigation";
-import { getJobDetail } from "@/app/(dashboard)/tuyen-dung/[jobId]/_components/data";
+"use client";
+
+import { use } from "react";
 import JobForm from "@/app/(dashboard)/tuyen-dung/_components/job-form/JobForm";
 
-export default async function EditJobPage({
+export default function EditJobPage({
   params,
 }: {
   params: Promise<{ jobId: string }>;
 }) {
-  const { jobId } = await params;
-  const job = getJobDetail(jobId);
-
-  if (!job) notFound();
+  const { jobId } = use(params);
 
   return <JobForm mode="edit" jobId={jobId} />;
 }

@@ -1,73 +1,75 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import {
   ChevronLeft,
   ChevronRight,
-  ChevronsLeft,
-  ChevronsRight,
   Eye,
   Pencil,
   Plus,
   Search,
-  SlidersHorizontal,
   Trash2,
 } from "lucide-react";
-import { JOB_POSTINGS, type JobStatus } from "@/app/(dashboard)/tuyen-dung/_components/data";
+import { useDebouncedValue } from "@/src/hooks/useDebouncedValue";
+import { useDeleteRecruitment, useRecruitments } from "@/src/hooks/useRecruitments";
+import type { EmploymentType, Recruitment, RecruitmentStatus } from "@/src/lib/api/recruitment";
+import DeleteRecruitmentDialog from "@/app/(dashboard)/tuyen-dung/_components/DeleteRecruitmentDialog";
 
-type Tab = "all" | "active" | "closingSoon" | "closed" | "hidden";
+type Tab = "all" | RecruitmentStatus;
 
 const TABS: { value: Tab; label: string }[] = [
   { value: "all", label: "Tất cả" },
-  { value: "active", label: "Đang tuyển" },
-  { value: "closingSoon", label: "Sắp hết hạn" },
+  { value: "draft", label: "Nháp" },
+  { value: "hiring", label: "Đang tuyển" },
   { value: "closed", label: "Đã đóng" },
-  { value: "hidden", label: "Tạm ẩn" },
 ];
 
-const PAGE_SIZE = 6;
+const EMPLOYMENT_TYPE_LABELS: Record<EmploymentType, string> = {
+  fulltime: "Toàn thời gian",
+  parttime: "Bán thời gian",
+  remote: "Từ xa",
+  hybrid: "Hybrid",
+};
 
-function matchesTab(status: JobStatus, closingSoon: boolean, tab: Tab) {
-  switch (tab) {
-    case "all":
-      return true;
-    case "active":
-      return status === "active";
-    case "closingSoon":
-      return status === "active" && closingSoon;
-    case "closed":
-      return status === "closed";
-    case "hidden":
-      return status === "hidden";
-  }
+const PAGE_SIZE = 10;
+
+function formatDeadline(iso: string | null) {
+  if (!iso) return "—";
+  return new Date(iso).toLocaleDateString("vi-VN");
 }
 
 export default function JobsListCard() {
   const [tab, setTab] = useState<Tab>("all");
-  const [search, setSearch] = useState("");
+  const [searchInput, setSearchInput] = useState("");
   const [page, setPage] = useState(1);
   const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set());
+  const [deleteTarget, setDeleteTarget] = useState<Recruitment | null>(null);
 
-  const filtered = useMemo(
-    () =>
-      JOB_POSTINGS.filter(
-        (job) =>
-          matchesTab(job.status, job.closingSoon, tab) &&
-          job.title.toLowerCase().includes(search.trim().toLowerCase())
-      ),
-    [tab, search]
-  );
+  const search = useDebouncedValue(searchInput, 400);
 
-  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
-  const currentPage = Math.min(page, totalPages);
-  const paged = filtered.slice(
-    (currentPage - 1) * PAGE_SIZE,
-    currentPage * PAGE_SIZE
-  );
+  const [prevSearch, setPrevSearch] = useState(search);
+  if (search !== prevSearch) {
+    setPrevSearch(search);
+    setPage(1);
+  }
+
+  const { data, isLoading, isError, error } = useRecruitments({
+    page,
+    size: PAGE_SIZE,
+    search: search || undefined,
+    status: tab === "all" ? undefined : tab,
+  });
+  const deleteMutation = useDeleteRecruitment();
+
+  const items = data?.items ?? [];
+  const pagination = data?.pagination;
+  const totalPages = pagination?.totalPages ?? 1;
+  const currentPage = pagination?.page ?? 1;
+  const totalElements = pagination?.totalElements ?? 0;
 
   const allPagedSelected =
-    paged.length > 0 && paged.every((job) => selectedRows.has(job.id));
+    items.length > 0 && items.every((job) => selectedRows.has(job.id));
 
   function handleTabChange(next: Tab) {
     setTab(next);
@@ -87,12 +89,19 @@ export default function JobsListCard() {
     setSelectedRows((prev) => {
       if (allPagedSelected) {
         const next = new Set(prev);
-        paged.forEach((job) => next.delete(job.id));
+        items.forEach((job) => next.delete(job.id));
         return next;
       }
       const next = new Set(prev);
-      paged.forEach((job) => next.add(job.id));
+      items.forEach((job) => next.add(job.id));
       return next;
+    });
+  }
+
+  function handleConfirmDelete() {
+    if (!deleteTarget) return;
+    deleteMutation.mutate(deleteTarget.id, {
+      onSuccess: () => setDeleteTarget(null),
     });
   }
 
@@ -125,32 +134,21 @@ export default function JobsListCard() {
         <div className="relative min-w-50 flex-1">
           <input
             type="text"
-            value={search}
-            onChange={(event) => {
-              setSearch(event.target.value);
-              setPage(1);
-            }}
+            value={searchInput}
+            onChange={(event) => setSearchInput(event.target.value)}
             placeholder="Tìm kiếm tin tuyển dụng..."
             className="h-10 w-full rounded-lg border border-[#C4C6D2] pr-4 pl-4 text-sm text-[#1C1B1B] outline-none placeholder:text-[#6B7280] focus-visible:border-[#316EE9]"
           />
           <Search className="pointer-events-none absolute top-1/2 right-4 size-4 -translate-y-1/2 text-[#434750]" />
         </div>
 
-        <button
-          type="button"
-          className="flex h-9.5 shrink-0 items-center gap-2 rounded-lg border border-[#C4C6D2] px-4 text-sm font-medium text-[#1C1B1B] hover:bg-[#F8FAFC]"
-        >
-          <SlidersHorizontal className="size-3.5" />
-          Bộ lọc
-        </button>
-
-        <button
-          type="button"
+        <Link
+          href="/tuyen-dung/phong-ban"
           className="flex h-9 shrink-0 items-center gap-2 rounded-lg bg-[#316EE9] px-4 text-sm font-medium text-white hover:bg-[#316EE9]/90"
         >
           <Plus className="size-3.5" />
-          Thêm phòng ban
-        </button>
+          Quản lý phòng ban
+        </Link>
 
         <Link
           href="/tuyen-dung/tao-moi"
@@ -197,67 +195,83 @@ export default function JobsListCard() {
             </tr>
           </thead>
           <tbody>
-            {paged.map((job) => (
-              <tr
-                key={job.id}
-                className="border-b border-[#C4C6D2]/50 last:border-b-0"
-              >
-                <td className="px-6 py-4">
-                  <input
-                    type="checkbox"
-                    checked={selectedRows.has(job.id)}
-                    onChange={() => toggleRow(job.id)}
-                    className="size-4 rounded border-[#C4C6D2]"
-                  />
-                </td>
-                <td className="px-3 py-4 text-sm font-medium text-[#316EE9]">
-                  <button type="button" className="hover:underline">
-                    {job.title}
-                  </button>
-                </td>
-                <td className="px-3 py-4 text-sm text-[#434750]">
-                  {job.department}
-                </td>
-                <td className="px-3 py-4 text-sm text-[#434750]">
-                  {job.location}
-                </td>
-                <td className="px-3 py-4 text-sm text-[#434750]">
-                  {job.type}
-                </td>
-                <td className="px-3 py-4 text-center text-sm font-medium text-[#1C1B1B]">
-                  {job.candidates}
-                </td>
-                <td className="px-3 py-4 text-sm text-[#434750]">
-                  {job.deadline}
-                </td>
-                <td className="px-3 py-4">
-                  <div className="flex items-center justify-end gap-2">
-                    <Link
-                      href={`/tuyen-dung/${job.id}`}
-                      aria-label="Xem chi tiết"
-                      className="inline-flex size-8 items-center justify-center rounded text-[#434750] hover:bg-[#F3F4F6]"
-                    >
-                      <Eye className="size-4" />
-                    </Link>
-                    <button
-                      type="button"
-                      aria-label="Chỉnh sửa"
-                      className="inline-flex size-8 items-center justify-center rounded text-[#434750] hover:bg-[#F3F4F6]"
-                    >
-                      <Pencil className="size-4" />
-                    </button>
-                    <button
-                      type="button"
-                      aria-label="Xóa"
-                      className="inline-flex size-8 items-center justify-center rounded text-[#434750] hover:bg-red-50 hover:text-red-600"
-                    >
-                      <Trash2 className="size-4" />
-                    </button>
-                  </div>
+            {isLoading && (
+              <tr>
+                <td colSpan={8} className="px-6 py-10 text-center text-sm text-[#6B7280]">
+                  Đang tải...
                 </td>
               </tr>
-            ))}
-            {paged.length === 0 && (
+            )}
+            {isError && (
+              <tr>
+                <td colSpan={8} className="px-6 py-10 text-center text-sm text-red-600">
+                  {error?.message ?? "Đã có lỗi xảy ra khi tải danh sách tin tuyển dụng."}
+                </td>
+              </tr>
+            )}
+            {!isLoading && !isError &&
+              items.map((job) => (
+                <tr
+                  key={job.id}
+                  className="border-b border-[#C4C6D2]/50 last:border-b-0"
+                >
+                  <td className="px-6 py-4" onClick={(e) => e.stopPropagation()}>
+                    <input
+                      type="checkbox"
+                      checked={selectedRows.has(job.id)}
+                      onChange={() => toggleRow(job.id)}
+                      className="size-4 rounded border-[#C4C6D2]"
+                    />
+                  </td>
+                  <td className="px-3 py-4 text-sm font-medium text-[#316EE9]">
+                    <Link href={`/tuyen-dung/${job.id}`} className="hover:underline">
+                      {job.jobTitle}
+                    </Link>
+                  </td>
+                  <td className="px-3 py-4 text-sm text-[#434750]">
+                    {job.departmentName ?? "—"}
+                  </td>
+                  <td className="px-3 py-4 text-sm text-[#434750]">
+                    {job.location ?? "—"}
+                  </td>
+                  <td className="px-3 py-4 text-sm text-[#434750]">
+                    {EMPLOYMENT_TYPE_LABELS[job.employmentType]}
+                  </td>
+                  <td className="px-3 py-4 text-center text-sm font-medium text-[#1C1B1B]">
+                    {job.applicantCount ?? 0}
+                  </td>
+                  <td className="px-3 py-4 text-sm text-[#434750]">
+                    {formatDeadline(job.expiresAt)}
+                  </td>
+                  <td className="px-3 py-4">
+                    <div className="flex items-center justify-end gap-2">
+                      <Link
+                        href={`/tuyen-dung/${job.id}`}
+                        aria-label="Xem chi tiết"
+                        className="inline-flex size-8 items-center justify-center rounded text-[#434750] hover:bg-[#F3F4F6]"
+                      >
+                        <Eye className="size-4" />
+                      </Link>
+                      <Link
+                        href={`/tuyen-dung/${job.id}/sua`}
+                        aria-label="Chỉnh sửa"
+                        className="inline-flex size-8 items-center justify-center rounded text-[#434750] hover:bg-[#F3F4F6]"
+                      >
+                        <Pencil className="size-4" />
+                      </Link>
+                      <button
+                        type="button"
+                        aria-label="Xóa"
+                        onClick={() => setDeleteTarget(job)}
+                        className="inline-flex size-8 items-center justify-center rounded text-[#434750] hover:bg-red-50 hover:text-red-600"
+                      >
+                        <Trash2 className="size-4" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            {!isLoading && !isError && items.length === 0 && (
               <tr>
                 <td
                   colSpan={8}
@@ -273,21 +287,12 @@ export default function JobsListCard() {
 
       <div className="flex flex-wrap items-center justify-between gap-4 px-6 py-4">
         <span className="text-sm text-[#434750]">
-          Hiển thị {filtered.length === 0 ? 0 : (currentPage - 1) * PAGE_SIZE + 1} -{" "}
-          {Math.min(currentPage * PAGE_SIZE, filtered.length)} của{" "}
-          {filtered.length} tin tuyển dụng
+          Hiển thị {totalElements === 0 ? 0 : (currentPage - 1) * PAGE_SIZE + 1} -{" "}
+          {Math.min(currentPage * PAGE_SIZE, totalElements)} của{" "}
+          {totalElements} tin tuyển dụng
         </span>
 
         <div className="flex flex-wrap items-center gap-1.5">
-          <button
-            type="button"
-            aria-label="Trang đầu"
-            disabled={currentPage === 1}
-            onClick={() => setPage(1)}
-            className="flex size-8.5 items-center justify-center rounded-lg border border-[#C4C6D2] text-[#434750] hover:bg-[#F8FAFC] disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            <ChevronsLeft className="size-4" />
-          </button>
           <button
             type="button"
             aria-label="Trang trước"
@@ -322,17 +327,18 @@ export default function JobsListCard() {
           >
             <ChevronRight className="size-4" />
           </button>
-          <button
-            type="button"
-            aria-label="Trang cuối"
-            disabled={currentPage === totalPages}
-            onClick={() => setPage(totalPages)}
-            className="flex size-8.5 items-center justify-center rounded-lg border border-[#C4C6D2] text-[#434750] hover:bg-[#F8FAFC] disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            <ChevronsRight className="size-4" />
-          </button>
         </div>
       </div>
+
+      <DeleteRecruitmentDialog
+        open={!!deleteTarget}
+        onOpenChange={(open) => {
+          if (!open) setDeleteTarget(null);
+        }}
+        jobTitle={deleteTarget?.jobTitle ?? ""}
+        onConfirm={handleConfirmDelete}
+        isDeleting={deleteMutation.isPending}
+      />
     </div>
   );
 }

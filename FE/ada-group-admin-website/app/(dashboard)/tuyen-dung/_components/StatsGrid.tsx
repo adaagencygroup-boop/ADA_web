@@ -1,38 +1,42 @@
-import { Briefcase, Calendar, Users, XCircle } from "lucide-react";
-import { DASHBOARD_STATS } from "@/app/(dashboard)/tuyen-dung/_components/data";
+"use client";
 
-const STATS = [
-  {
-    label: "Tin đang tuyển",
-    value: DASHBOARD_STATS.activeCount,
-    icon: Briefcase,
-    iconBg: "bg-[#D8E2FF]",
-    iconColor: "text-[#001E4B]",
-  },
-  {
-    label: "Tổng ứng viên",
-    value: DASHBOARD_STATS.totalCandidates,
-    icon: Users,
-    iconBg: "bg-[#D1FAE5]",
-    iconColor: "text-[#047857]",
-  },
-  {
-    label: "Tin sắp hết hạn",
-    value: DASHBOARD_STATS.closingSoonCount,
-    icon: Calendar,
-    iconBg: "bg-[#FFEDD5]",
-    iconColor: "text-[#EA580C]",
-  },
-  {
-    label: "Tin đã đóng",
-    value: DASHBOARD_STATS.closedCount,
-    icon: XCircle,
-    iconBg: "bg-[#FFDAD6]",
-    iconColor: "text-[#BA1A1A]",
-  },
-];
+import { Briefcase, Calendar, Users, XCircle } from "lucide-react";
+import { useRecruitmentDashboardMetrics } from "@/src/hooks/useRecruitments";
 
 export default function StatsGrid() {
+  const { data, isLoading } = useRecruitmentDashboardMetrics();
+
+  const STATS = [
+    {
+      label: "Tin đang tuyển",
+      value: data?.activeCount ?? 0,
+      icon: Briefcase,
+      iconBg: "bg-[#D8E2FF]",
+      iconColor: "text-[#001E4B]",
+    },
+    {
+      label: "Tổng ứng viên",
+      value: data?.totalCandidatesCount ?? 0,
+      icon: Users,
+      iconBg: "bg-[#D1FAE5]",
+      iconColor: "text-[#047857]",
+    },
+    {
+      label: "Tin sắp hết hạn",
+      value: data?.expiringSoonCount ?? 0,
+      icon: Calendar,
+      iconBg: "bg-[#FFEDD5]",
+      iconColor: "text-[#EA580C]",
+    },
+    {
+      label: "Tin đã đóng",
+      value: data?.closedCount ?? 0,
+      icon: XCircle,
+      iconBg: "bg-[#FFDAD6]",
+      iconColor: "text-[#BA1A1A]",
+    },
+  ];
+
   return (
     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
       {STATS.map((stat) => (
@@ -50,7 +54,7 @@ export default function StatsGrid() {
               {stat.label}
             </span>
             <span className="text-4xl font-bold tracking-tight text-[#1C1B1B]">
-              {stat.value}
+              {isLoading ? "—" : stat.value}
             </span>
           </div>
         </div>

@@ -1,5 +1,9 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   ArrowLeft,
   Briefcase,
@@ -8,41 +12,72 @@ import {
   CheckCircle2,
   ChevronRight,
   ClipboardList,
+  Clock,
   Eye,
   Folder,
   Gift,
   Hash,
   Info,
-  Maximize2,
   MapPin,
   Pencil,
   Trash2,
   UserPlus,
   Users,
-  Zap,
 } from "lucide-react";
-import type { JobDetail } from "@/app/(dashboard)/tuyen-dung/[jobId]/_components/data";
+import { RICH_TEXT_TYPOGRAPHY_CLASS } from "@/src/components/shared/RichTextEditor";
+import { useDeleteRecruitment } from "@/src/hooks/useRecruitments";
+import type {
+  EmploymentType,
+  RecruitmentDetail,
+  RecruitmentStatus,
+} from "@/src/lib/api/recruitment";
+import DeleteRecruitmentDialog from "@/app/(dashboard)/tuyen-dung/_components/DeleteRecruitmentDialog";
 
-const STATUS_STYLES: Record<JobDetail["status"], string> = {
-  active: "bg-[#E1FCEF] text-[#15803D]",
+const STATUS_STYLES: Record<RecruitmentStatus, string> = {
+  hiring: "bg-[#E1FCEF] text-[#15803D]",
   closed: "bg-[#FFDAD6] text-[#BA1A1A]",
-  hidden: "bg-[#F3F4F6] text-[#434750]",
+  draft: "bg-[#F3F4F6] text-[#434750]",
 };
 
-function BulletList({ items }: { items: string[] }) {
-  return (
-    <ul className="flex flex-col gap-3">
-      {items.map((item) => (
-        <li key={item} className="flex items-start gap-2">
-          <span className="mt-2.5 size-1.5 shrink-0 rounded-full bg-[#001E4B]" />
-          <span className="text-base leading-6.5 text-[#1C1B1B]">{item}</span>
-        </li>
-      ))}
-    </ul>
-  );
+const STATUS_LABELS: Record<RecruitmentStatus, string> = {
+  hiring: "Đang tuyển",
+  closed: "Đã đóng",
+  draft: "Nháp",
+};
+
+const EMPLOYMENT_TYPE_LABELS: Record<EmploymentType, string> = {
+  fulltime: "Toàn thời gian",
+  parttime: "Bán thời gian",
+  remote: "Từ xa",
+  hybrid: "Hybrid",
+};
+
+function formatDate(iso: string | null) {
+  if (!iso) return "—";
+  return new Date(iso).toLocaleDateString("vi-VN");
 }
 
-export default function JobDetailView({ job }: { job: JobDetail }) {
+function formatSalary(job: RecruitmentDetail) {
+  if (job.isNegotiable) return "Thỏa thuận";
+  if (job.minSalary == null && job.maxSalary == null) return "—";
+  const format = (value: number) => value.toLocaleString("vi-VN") + " VND";
+  if (job.minSalary != null && job.maxSalary != null) {
+    return `${format(job.minSalary)} - ${format(job.maxSalary)}`;
+  }
+  return format(job.minSalary ?? job.maxSalary ?? 0);
+}
+
+export default function JobDetailView({ job }: { job: RecruitmentDetail }) {
+  const router = useRouter();
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const deleteMutation = useDeleteRecruitment();
+
+  function handleConfirmDelete() {
+    deleteMutation.mutate(job.id, {
+      onSuccess: () => router.push("/tuyen-dung"),
+    });
+  }
+
   return (
     <div className="flex flex-1 flex-col gap-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
@@ -56,7 +91,7 @@ export default function JobDetailView({ job }: { job: JobDetail }) {
               Tuyển dụng
             </Link>
             <ChevronRight className="size-3" />
-            <span className="font-medium text-[#1C1B1B]">{job.title}</span>
+            <span className="font-medium text-[#1C1B1B]">{job.jobTitle}</span>
           </nav>
           <h1 className="text-3xl font-semibold text-[#1C1B1B]">
             Xem bài tuyển dụng
@@ -80,6 +115,7 @@ export default function JobDetailView({ job }: { job: JobDetail }) {
           </Link>
           <button
             type="button"
+            onClick={() => setDeleteOpen(true)}
             className="flex h-9 items-center gap-2 rounded-lg bg-[#BA1A1A] px-4 text-sm font-medium text-white hover:bg-[#BA1A1A]/90"
           >
             <Trash2 className="size-3.5" />
@@ -90,53 +126,48 @@ export default function JobDetailView({ job }: { job: JobDetail }) {
 
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
         <div className="flex flex-col gap-6 xl:col-span-2">
-          <div className="relative flex h-80 flex-col justify-end overflow-hidden rounded-xl border border-[#C4C6D2] p-8 shadow-xs">
-            <Image
-              src={job.heroImage}
-              alt={job.title}
-              fill
-              className="object-cover"
-            />
+          <div className="relative flex h-80 flex-col justify-end overflow-hidden rounded-xl border border-[#C4C6D2] bg-[#001E4B] p-8 shadow-xs">
+            {job.coverImageURL && (
+              <Image
+                src={job.coverImageURL}
+                alt={job.jobTitle}
+                fill
+                className="object-cover"
+              />
+            )}
             <div className="absolute inset-0 bg-linear-to-t from-[#001E4B]/90 to-[#001E4B]/0" />
 
             <div className="relative z-10 flex items-end justify-between gap-8">
               <div className="flex flex-col gap-3">
                 <span className="w-fit rounded-full bg-white/20 px-3 py-1 text-xs font-medium text-white backdrop-blur-xs">
-                  {job.type === "Full-time" ? "Toàn thời gian" : job.type}
+                  {EMPLOYMENT_TYPE_LABELS[job.employmentType]}
                 </span>
                 <h2 className="text-4xl font-bold tracking-tight text-white">
-                  {job.title}
+                  {job.jobTitle}
                 </h2>
                 <div className="flex items-center gap-4 text-sm text-white/90">
                   <span className="flex items-center gap-1.5">
                     <MapPin className="size-3.5" />
-                    {job.location}
+                    {job.location ?? "—"}
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <Clock className="size-3.5" />
+                    {EMPLOYMENT_TYPE_LABELS[job.employmentType]}
                   </span>
                   <span className="flex items-center gap-1.5">
                     <Briefcase className="size-3.5" />
-                    {job.type}
-                  </span>
-                  <span className="flex items-center gap-1.5">
-                    <Folder className="size-3.5" />
-                    {job.category}
+                    {job.departmentName ?? "—"}
                   </span>
                 </div>
               </div>
 
               <div className="flex shrink-0 flex-col items-end gap-3">
-                <button
-                  type="button"
-                  className="flex items-center gap-2 rounded-lg bg-white px-6 py-2.5 text-sm font-bold text-[#001E4B] hover:bg-white/90"
-                >
-                  Ứng tuyển ngay
-                  <span aria-hidden>↗</span>
-                </button>
                 <div className="flex flex-col items-end gap-0.5 rounded-lg bg-white/20 px-3 py-1.5 backdrop-blur-xs">
                   <span className="text-xs text-white/80">
                     Hạn nộp hồ sơ
                   </span>
                   <span className="text-xs font-bold text-white">
-                    {job.deadline}
+                    {formatDate(job.expiresAt)}
                   </span>
                 </div>
               </div>
@@ -148,7 +179,10 @@ export default function JobDetailView({ job }: { job: JobDetail }) {
               <ClipboardList className="size-4 text-[#0054CD]" />
               MÔ TẢ CÔNG VIỆC
             </h3>
-            <BulletList items={job.description} />
+            <div
+              className={`text-base text-[#1C1B1B] ${RICH_TEXT_TYPOGRAPHY_CLASS}`}
+              dangerouslySetInnerHTML={{ __html: job.description }}
+            />
           </div>
 
           <div className="flex flex-col gap-4 rounded-xl border border-[#C4C6D2] bg-white p-6 shadow-xs">
@@ -156,7 +190,10 @@ export default function JobDetailView({ job }: { job: JobDetail }) {
               <CheckCircle2 className="size-5 text-[#0054CD]" />
               YÊU CẦU
             </h3>
-            <BulletList items={job.requirements} />
+            <div
+              className={`text-base text-[#1C1B1B] ${RICH_TEXT_TYPOGRAPHY_CLASS}`}
+              dangerouslySetInnerHTML={{ __html: job.requirements }}
+            />
           </div>
 
           <div className="flex flex-col gap-4 rounded-xl border border-[#C4C6D2] bg-white p-6 shadow-xs">
@@ -164,7 +201,10 @@ export default function JobDetailView({ job }: { job: JobDetail }) {
               <Gift className="size-5 text-[#0054CD]" />
               QUYỀN LỢI
             </h3>
-            <BulletList items={job.benefits} />
+            <div
+              className={`text-base text-[#1C1B1B] ${RICH_TEXT_TYPOGRAPHY_CLASS}`}
+              dangerouslySetInnerHTML={{ __html: job.benefits }}
+            />
           </div>
 
           <div className="flex flex-col gap-4 rounded-xl border border-[#C4C6D2] bg-white p-6 shadow-xs">
@@ -173,13 +213,14 @@ export default function JobDetailView({ job }: { job: JobDetail }) {
               THÔNG TIN KHÁC
             </h3>
             <div className="overflow-hidden rounded-lg border border-[#E5E2E1]">
-              {job.otherInfo.map((row, index) => (
+              {[
+                { label: "Thời gian làm việc", value: job.workingHours ?? "—" },
+                { label: "Mức lương", value: formatSalary(job) },
+              ].map((row, index, arr) => (
                 <div
                   key={row.label}
                   className={`flex ${
-                    index !== job.otherInfo.length - 1
-                      ? "border-b border-[#E5E2E1]"
-                      : ""
+                    index !== arr.length - 1 ? "border-b border-[#E5E2E1]" : ""
                   }`}
                 >
                   <div className="w-56 shrink-0 bg-[#F6F3F2] px-4 py-3 text-base font-medium text-[#434750]">
@@ -195,7 +236,7 @@ export default function JobDetailView({ job }: { job: JobDetail }) {
         </div>
 
         <div className="flex flex-col gap-6">
-          <div className="flex flex-col gap-5 rounded-xl border border-[#C4C6D2] bg-white p-5 shadow-xs">
+          <div className="flex flex-col gap-5 self-start rounded-xl border border-[#C4C6D2] bg-white p-5 shadow-xs">
             <h3 className="text-xl font-semibold tracking-wide text-[#001E4B] uppercase">
               Thông tin tuyển dụng
             </h3>
@@ -206,20 +247,20 @@ export default function JobDetailView({ job }: { job: JobDetail }) {
                 <span className="text-sm text-[#434750]">
                   ID tin tuyển dụng
                 </span>
-                <span className="text-base font-semibold text-[#1C1B1B]">
-                  {job.code}
+                <span className="font-mono text-sm font-medium break-all text-[#1C1B1B]">
+                  {job.id}
                 </span>
               </div>
             </div>
 
             <div className="flex items-start gap-3">
-              <Zap className="mt-0.5 size-4 shrink-0 text-[#434750]" />
+              <Info className="mt-0.5 size-4 shrink-0 text-[#434750]" />
               <div className="flex flex-col gap-1">
                 <span className="text-sm text-[#434750]">Trạng thái</span>
                 <span
                   className={`w-fit rounded-full px-2.5 py-0.5 text-xs font-medium ${STATUS_STYLES[job.status]}`}
                 >
-                  {job.statusLabel}
+                  {STATUS_LABELS[job.status]}
                 </span>
               </div>
             </div>
@@ -229,7 +270,7 @@ export default function JobDetailView({ job }: { job: JobDetail }) {
               <div className="flex flex-col gap-0.5">
                 <span className="text-sm text-[#434750]">Ngày đăng</span>
                 <span className="text-base font-semibold text-[#1C1B1B]">
-                  {job.postedAt}
+                  {formatDate(job.createdAt)}
                 </span>
               </div>
             </div>
@@ -241,7 +282,7 @@ export default function JobDetailView({ job }: { job: JobDetail }) {
                   Hạn nộp hồ sơ
                 </span>
                 <span className="text-base font-semibold text-[#BA1A1A]">
-                  {job.deadline}
+                  {formatDate(job.expiresAt)}
                 </span>
               </div>
             </div>
@@ -253,7 +294,7 @@ export default function JobDetailView({ job }: { job: JobDetail }) {
                   Số lượng tuyển
                 </span>
                 <span className="text-base font-semibold text-[#1C1B1B]">
-                  {job.totalSlots}
+                  {job.requiredCandidateNum ?? "—"}
                 </span>
               </div>
             </div>
@@ -265,7 +306,7 @@ export default function JobDetailView({ job }: { job: JobDetail }) {
                   Đã ứng tuyển
                 </span>
                 <span className="text-base font-semibold text-[#0054CD]">
-                  {job.appliedCount}
+                  {job.applicantCount ?? 0}
                 </span>
               </div>
             </div>
@@ -275,34 +316,37 @@ export default function JobDetailView({ job }: { job: JobDetail }) {
               <div className="flex flex-col gap-0.5">
                 <span className="text-sm text-[#434750]">Lượt xem</span>
                 <span className="text-base font-semibold text-[#1C1B1B]">
-                  {job.viewCount}
+                  {job.viewCount ?? 0}
                 </span>
               </div>
             </div>
           </div>
 
-          <div className="flex flex-col gap-4 rounded-xl border border-[#C4C6D2] bg-white p-5 shadow-xs">
-            <h3 className="text-xl font-semibold text-[#001E4B]">
-              Hình ảnh đại diện
-            </h3>
-            <div className="relative h-40 w-full overflow-hidden rounded-lg">
-              <Image
-                src={job.heroImage}
-                alt={job.title}
-                fill
-                className="object-cover"
-              />
+          {job.coverImageURL && (
+            <div className="flex flex-col gap-4 rounded-xl border border-[#C4C6D2] bg-white p-5 shadow-xs">
+              <h3 className="text-xl font-semibold text-[#001E4B]">
+                Hình ảnh đại diện
+              </h3>
+              <div className="relative aspect-video w-full overflow-hidden rounded-lg">
+                <Image
+                  src={job.coverImageURL}
+                  alt={job.jobTitle}
+                  fill
+                  className="object-cover"
+                />
+              </div>
             </div>
-            <button
-              type="button"
-              className="flex items-center justify-center gap-2 rounded-lg border border-[#C4C6D2] py-2.5 text-sm font-medium text-[#1C1B1B] hover:bg-[#F8FAFC]"
-            >
-              <Maximize2 className="size-3.5" />
-              Xem ảnh đầy đủ
-            </button>
-          </div>
+          )}
         </div>
       </div>
+
+      <DeleteRecruitmentDialog
+        open={deleteOpen}
+        onOpenChange={setDeleteOpen}
+        jobTitle={job.jobTitle}
+        onConfirm={handleConfirmDelete}
+        isDeleting={deleteMutation.isPending}
+      />
     </div>
   );
 }
