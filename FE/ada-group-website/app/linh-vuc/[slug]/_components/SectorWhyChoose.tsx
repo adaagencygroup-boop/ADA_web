@@ -23,7 +23,7 @@ export default function SectorWhyChoose({ sector }: { sector: Sector }) {
   return (
     <section className="section-y pt-0!">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
-        <h2 className="text-xl leading-7.25 font-semibold text-[#0F172A] lg:text-center lg:text-3xl lg:leading-9 lg:font-bold">
+        <h2 className="text-xl leading-7.25 font-semibold text-[#0F172A] lg:text-center lg:text-[36px] lg:leading-9 lg:font-bold">
           Tại sao <span className="hidden lg:inline">ADA Group </span>chọn{" "}
           {sector.title}?
         </h2>
