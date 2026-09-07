@@ -60,7 +60,7 @@ export default function WhyChooseUs() {
     <section className="bg-white section-y">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8 flex flex-col gap-(--inner-space)">
         <div className="text-center lg:text-left">
-          <h2 className="text-2xl lg:text-[1.75rem] font-semibold text-[#002A64] uppercase tracking-tight">
+          <h2 className="text-[20px] lg:text-[28px] font-semibold text-black uppercase tracking-tight">
             VÌ SAO CHỌN ADA GROUP?
           </h2>
         </div>
@@ -84,11 +84,11 @@ export default function WhyChooseUs() {
                   {item.icon}
                 </div>
                 
-                <h3 className="text-[17px] font-semibold text-zinc-900 mb-3 leading-snug text-justify">
+                <h3 className="text-[16px] lg:text-[18px] font-semibold text-zinc-900 mb-3 leading-snug text-justify">
                   {item.title}
                 </h3>
                 
-                <p className="text-[14px] text-zinc-500 leading-relaxed flex-1 text-justify">
+                <p className="text-[14px] lg:text-[16px] text-zinc-500 leading-relaxed flex-1 text-justify">
                   {item.desc}
                 </p>
               </div>

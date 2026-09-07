@@ -24,13 +24,13 @@ export default function RecruitmentCTA() {
 
             {/* Text Group */}
             <div className="flex flex-col gap-3 text-center lg:text-left">
-              <h2 className="font-semibold text-[30px] leading-9 text-white">
+              <h2 className="font-semibold text-[28px] lg:text-[36px] leading-9 text-white">
                 Chưa tìm thấy vị trí phù hợp?
               </h2>
-              <h3 className="font-semibold text-[24px] leading-8 text-blue-200">
+              <h3 className="font-semibold text-[20px] lg:text-[24px] leading-8 text-blue-200">
                 Hãy gửi CV cho chúng tôi!
               </h3>
-              <p className="font-normal text-base leading-6 text-blue-100 pt-1 lg:max-w-md">
+              <p className="font-semibold text-[14px] lg:text-[16px] leading-6 text-blue-100 pt-1 lg:max-w-md">
                 Chúng tôi luôn tìm kiếm những tài năng phù hợp cho các cơ hội hiện tại và tương lai tại ADA Group.
               </p>
             </div>
