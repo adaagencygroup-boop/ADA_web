@@ -1,57 +1,101 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { Bookmark, List, Plus, Search, Trash2 } from "lucide-react";
-import { CATEGORIES } from "@/app/(dashboard)/tin-tuc/_components/data";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Bookmark, Check, List, Pencil, Plus, Search, Trash2, X } from "lucide-react";
+import { useAdminNewsCategories } from "@/src/hooks/useAdminNews";
+import { useDebouncedValue } from "@/src/hooks/useDebouncedValue";
+import {
+  useCreateNewsCategory,
+  useDeleteNewsCategory,
+  useUpdateNewsCategory,
+} from "@/src/hooks/useNewsCategoryMutations";
+import type { NewsCategory } from "@/src/lib/api/news";
+import {
+  newsCategorySchema,
+  type NewsCategoryFormValues,
+} from "@/src/lib/validations/news-category";
 import DeleteCategoryDialog from "@/app/(dashboard)/tin-tuc/danh-muc/_components/DeleteCategoryDialog";
-
-type Category = { id: number; name: string };
 
 const PAGE_SIZE = 10;
 
 export default function CategoryManager() {
-  const [categories, setCategories] = useState<Category[]>(() =>
-    CATEGORIES.map((name, i) => ({ id: i + 1, name }))
-  );
-  const [newName, setNewName] = useState("");
-  const [search, setSearch] = useState("");
+  const [searchInput, setSearchInput] = useState("");
   const [page, setPage] = useState(1);
-  const [deleteTarget, setDeleteTarget] = useState<Category | null>(null);
+  const [deleteTarget, setDeleteTarget] = useState<NewsCategory | null>(null);
+  const [editingId, setEditingId] = useState<string | null>(null);
 
-  const filtered = useMemo(
-    () =>
-      categories.filter((c) =>
-        c.name.toLowerCase().includes(search.trim().toLowerCase())
-      ),
-    [categories, search]
-  );
+  const search = useDebouncedValue(searchInput, 400);
 
-  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+  const [prevSearch, setPrevSearch] = useState(search);
+  if (search !== prevSearch) {
+    setPrevSearch(search);
+    setPage(1);
+  }
+
+  const { data: categories, isLoading, isError, error } = useAdminNewsCategories(search);
+  const createMutation = useCreateNewsCategory();
+  const updateMutation = useUpdateNewsCategory();
+  const deleteMutation = useDeleteNewsCategory();
+
+  const addForm = useForm<NewsCategoryFormValues>({
+    resolver: zodResolver(newsCategorySchema),
+    defaultValues: { name: "" },
+  });
+  const editForm = useForm<NewsCategoryFormValues>({
+    resolver: zodResolver(newsCategorySchema),
+    defaultValues: { name: "" },
+  });
+
+  const items = categories ?? [];
+  const totalPages = Math.max(1, Math.ceil(items.length / PAGE_SIZE));
   const currentPage = Math.min(page, totalPages);
-  const paged = filtered.slice(
+  const paged = items.slice(
     (currentPage - 1) * PAGE_SIZE,
     currentPage * PAGE_SIZE
   );
 
-  function handleAdd() {
-    const trimmed = newName.trim();
-    if (!trimmed) return;
-    setCategories((prev) => [
-      ...prev,
-      { id: (prev.at(-1)?.id ?? 0) + 1, name: trimmed },
-    ]);
-    setNewName("");
-  }
+  const onAdd = addForm.handleSubmit((values) => {
+    createMutation.mutate(
+      { name: values.name },
+      { onSuccess: () => addForm.reset({ name: "" }) }
+    );
+  });
 
   function handleConfirmDelete() {
     if (!deleteTarget) return;
-    setCategories((prev) => prev.filter((c) => c.id !== deleteTarget.id));
-    setDeleteTarget(null);
+    deleteMutation.mutate(deleteTarget.id, {
+      onSuccess: () => setDeleteTarget(null),
+    });
+  }
+
+  function handleStartEdit(category: NewsCategory) {
+    setEditingId(category.id);
+    editForm.reset({ name: category.name });
+  }
+
+  function handleCancelEdit() {
+    setEditingId(null);
+    editForm.reset({ name: "" });
+  }
+
+  function saveEdit(category: NewsCategory) {
+    return editForm.handleSubmit((values) => {
+      updateMutation.mutate(
+        { id: category.id, payload: { name: values.name, isActive: category.isActive } },
+        { onSuccess: () => handleCancelEdit() }
+      );
+    })();
   }
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex flex-col gap-6 rounded-xl border border-[#E2E8F0] bg-white p-6 shadow-xs">
+      <form
+        onSubmit={onAdd}
+        noValidate
+        className="flex flex-col gap-6 rounded-xl border border-[#E2E8F0] bg-white p-6 shadow-xs"
+      >
         <h2 className="flex items-center gap-3 border-b border-[#E2E8F0] pb-4 text-lg font-semibold text-[#1E293B]">
           <Bookmark className="size-4 text-[#1A56DB]" />
           Thêm lĩnh vực mới
@@ -63,29 +107,26 @@ export default function CategoryManager() {
           </label>
           <input
             type="text"
-            value={newName}
-            onChange={(event) => setNewName(event.target.value)}
-            onKeyDown={(event) => {
-              if (event.key === "Enter") {
-                event.preventDefault();
-                handleAdd();
-              }
-            }}
             placeholder="Nhập tên lĩnh vực"
             className="h-10.5 rounded-lg border border-[#E2E8F0] px-4 text-sm text-[#1E293B] shadow-xs outline-none placeholder:text-[#94A3B8] focus-visible:border-[#1A56DB]"
+            {...addForm.register("name")}
           />
+          {addForm.formState.errors.name && (
+            <p className="text-sm text-red-600">
+              {addForm.formState.errors.name.message}
+            </p>
+          )}
         </div>
 
         <button
-          type="button"
-          onClick={handleAdd}
-          disabled={!newName.trim()}
+          type="submit"
+          disabled={createMutation.isPending}
           className="flex h-10 w-fit items-center gap-2 self-end rounded-lg bg-[#1A56DB] px-6 text-sm font-medium text-white shadow-xs hover:bg-[#1A56DB]/90 disabled:cursor-not-allowed disabled:opacity-50"
         >
           <Plus className="size-3.5" />
-          Thêm lĩnh vực
+          {createMutation.isPending ? "Đang thêm..." : "Thêm lĩnh vực"}
         </button>
-      </div>
+      </form>
 
       <div className="overflow-hidden rounded-xl border border-[#E2E8F0] bg-white shadow-xs">
         <div className="flex flex-wrap items-center gap-4 border-b border-[#E2E8F0] p-6">
@@ -98,11 +139,8 @@ export default function CategoryManager() {
             <Search className="pointer-events-none absolute top-1/2 left-3 size-3.5 -translate-y-1/2 text-[#64748B]" />
             <input
               type="text"
-              value={search}
-              onChange={(event) => {
-                setSearch(event.target.value);
-                setPage(1);
-              }}
+              value={searchInput}
+              onChange={(event) => setSearchInput(event.target.value)}
               placeholder="Tìm kiếm lĩnh vực..."
               className="h-9.5 w-full rounded-lg border border-[#E2E8F0] pr-4 pl-10 text-sm text-[#1E293B] outline-none placeholder:text-[#64748B] focus-visible:border-[#1A56DB]"
             />
@@ -125,27 +163,100 @@ export default function CategoryManager() {
               </tr>
             </thead>
             <tbody>
-              {paged.map((category, index) => (
-                <tr key={category.id} className="border-t border-[#E2E8F0]">
-                  <td className="px-6 py-5 text-sm font-medium text-[#1E293B]">
-                    {(currentPage - 1) * PAGE_SIZE + index + 1}
-                  </td>
-                  <td className="px-6 py-5 text-sm font-medium text-[#1E293B]">
-                    {category.name}
-                  </td>
-                  <td className="px-6 py-5 text-right">
-                    <button
-                      type="button"
-                      aria-label="Xóa"
-                      onClick={() => setDeleteTarget(category)}
-                      className="inline-flex size-9.5 items-center justify-center rounded-lg border border-[#FEE2E2] text-red-500 hover:bg-red-50"
-                    >
-                      <Trash2 className="size-3.5" />
-                    </button>
+              {isLoading && (
+                <tr>
+                  <td colSpan={3} className="px-6 py-10 text-center text-sm text-[#64748B]">
+                    Đang tải...
                   </td>
                 </tr>
-              ))}
-              {paged.length === 0 && (
+              )}
+              {isError && (
+                <tr>
+                  <td colSpan={3} className="px-6 py-10 text-center text-sm text-red-600">
+                    {error?.message ?? "Đã có lỗi xảy ra khi tải danh sách lĩnh vực."}
+                  </td>
+                </tr>
+              )}
+              {!isLoading && !isError &&
+                paged.map((category, index) => {
+                  const isEditing = editingId === category.id;
+                  return (
+                    <tr key={category.id} className="border-t border-[#E2E8F0]">
+                      <td className="px-6 py-5 text-sm font-medium text-[#1E293B]">
+                        {(currentPage - 1) * PAGE_SIZE + index + 1}
+                      </td>
+                      <td className="px-6 py-5 text-sm font-medium text-[#1E293B]">
+                        {isEditing ? (
+                          <div className="flex flex-col gap-1">
+                            <input
+                              type="text"
+                              autoFocus
+                              onKeyDown={(event) => {
+                                if (event.key === "Enter") {
+                                  event.preventDefault();
+                                  saveEdit(category);
+                                }
+                                if (event.key === "Escape") handleCancelEdit();
+                              }}
+                              className="h-9 w-full max-w-80 rounded-lg border border-[#1A56DB] px-3 text-sm text-[#1E293B] outline-none"
+                              {...editForm.register("name")}
+                            />
+                            {editForm.formState.errors.name && (
+                              <p className="text-xs text-red-600">
+                                {editForm.formState.errors.name.message}
+                              </p>
+                            )}
+                          </div>
+                        ) : (
+                          category.name
+                        )}
+                      </td>
+                      <td className="px-6 py-5 text-right">
+                        {isEditing ? (
+                          <div className="flex justify-end gap-2">
+                            <button
+                              type="button"
+                              aria-label="Lưu"
+                              onClick={() => saveEdit(category)}
+                              disabled={updateMutation.isPending}
+                              className="inline-flex size-9.5 items-center justify-center rounded-lg border border-[#BBF7D0] text-green-600 hover:bg-green-50 disabled:cursor-not-allowed disabled:opacity-50"
+                            >
+                              <Check className="size-3.5" />
+                            </button>
+                            <button
+                              type="button"
+                              aria-label="Hủy"
+                              onClick={handleCancelEdit}
+                              className="inline-flex size-9.5 items-center justify-center rounded-lg border border-[#E2E8F0] text-[#64748B] hover:bg-[#F8FAFC]"
+                            >
+                              <X className="size-3.5" />
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="flex justify-end gap-2">
+                            <button
+                              type="button"
+                              aria-label="Sửa"
+                              onClick={() => handleStartEdit(category)}
+                              className="inline-flex size-9.5 items-center justify-center rounded-lg border border-[#E2E8F0] text-[#1E293B] hover:bg-[#F8FAFC]"
+                            >
+                              <Pencil className="size-3.5" />
+                            </button>
+                            <button
+                              type="button"
+                              aria-label="Xóa"
+                              onClick={() => setDeleteTarget(category)}
+                              className="inline-flex size-9.5 items-center justify-center rounded-lg border border-[#FEE2E2] text-red-500 hover:bg-red-50"
+                            >
+                              <Trash2 className="size-3.5" />
+                            </button>
+                          </div>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
+              {!isLoading && !isError && paged.length === 0 && (
                 <tr>
                   <td
                     colSpan={3}
@@ -161,9 +272,9 @@ export default function CategoryManager() {
 
         <div className="flex flex-wrap items-center justify-between gap-4 border-t border-[#E2E8F0] px-6 py-4">
           <span className="text-sm text-[#64748B]">
-            Hiển thị {filtered.length === 0 ? 0 : (currentPage - 1) * PAGE_SIZE + 1} -{" "}
-            {Math.min(currentPage * PAGE_SIZE, filtered.length)} của{" "}
-            {filtered.length} lĩnh vực
+            Hiển thị {items.length === 0 ? 0 : (currentPage - 1) * PAGE_SIZE + 1} -{" "}
+            {Math.min(currentPage * PAGE_SIZE, items.length)} của{" "}
+            {items.length} lĩnh vực
           </span>
 
           <div className="flex items-center gap-1">
