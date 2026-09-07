@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { Check, Download, RefreshCw, Search, X } from "lucide-react";
 import type { DateRange } from "react-day-picker";
 import {
@@ -10,95 +10,61 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/src/components/ui/select";
+import { useDebouncedValue } from "@/src/hooks/useDebouncedValue";
+import {
+  useBackups,
+  useDownloadBackupFile,
+  useExportBackupsExcel,
+} from "@/src/hooks/useSettings";
+import type { BackupStatus } from "@/src/lib/api/settings";
 import DateRangeFilter from "@/app/(dashboard)/cai-dat/lich-su-sao-luu/_components/DateRangeFilter";
-
-type BackupStatus = "success" | "failed";
-
-type BackupRecord = {
-  id: string;
-  backupId: string;
-  sizeMb: number | null;
-  startedAt: string;
-  finishedAt: string;
-  status: BackupStatus;
-};
-
-const RECORDS: BackupRecord[] = [
-  {
-    id: "1",
-    backupId: "3f2a1b7e-9c11-4a6b-b7d2-8c9e3d1a2f10",
-    sizeMb: 125.6,
-    startedAt: "20/06/2025 14:45:00",
-    finishedAt: "20/06/2025 14:45:35",
-    status: "success",
-  },
-  {
-    id: "2",
-    backupId: "3f2a1b7e-9c11-4a6b-b7d2-8c9e3d1a2f10",
-    sizeMb: 124.8,
-    startedAt: "19/06/2025 14:45:00",
-    finishedAt: "19/06/2025 14:45:28",
-    status: "success",
-  },
-  {
-    id: "3",
-    backupId: "3f2a1b7e-9c11-4a6b-b7d2-8c9e3d1a2f10",
-    sizeMb: 123.9,
-    startedAt: "18/06/2025 14:45:00",
-    finishedAt: "18/06/2025 14:45:22",
-    status: "success",
-  },
-  {
-    id: "4",
-    backupId: "3f2a1b7e-9c11-4a6b-b7d2-8c9e3d1a2f10",
-    sizeMb: null,
-    startedAt: "17/06/2025 14:45:00",
-    finishedAt: "17/06/2025 14:45:05",
-    status: "failed",
-  },
-  {
-    id: "5",
-    backupId: "a9c4d8b2-0f21-4e7a-b2c4-1d2e3f4a5b6c",
-    sizeMb: 512.3,
-    startedAt: "15/06/2025 02:00:00",
-    finishedAt: "15/06/2025 02:00:45",
-    status: "success",
-  },
-  {
-    id: "6",
-    backupId: "3f2a1b7e-9c11-4a6b-b7d2-8c9e3d1a2f10",
-    sizeMb: null,
-    startedAt: "14/06/2025 14:45:00",
-    finishedAt: "14/06/2025 14:45:07",
-    status: "failed",
-  },
-  {
-    id: "7",
-    backupId: "3f2a1b7e-9c11-4a6b-b7d2-8c9e3d1a2f10",
-    sizeMb: 121.9,
-    startedAt: "13/06/2025 14:45:00",
-    finishedAt: "13/06/2025 14:45:31",
-    status: "success",
-  },
-];
 
 const STATUS_OPTIONS: { value: "all" | BackupStatus; label: string }[] = [
   { value: "all", label: "Tất cả trạng thái" },
   { value: "success", label: "Thành công" },
   { value: "failed", label: "Thất bại" },
+  { value: "running", label: "Đang chạy" },
+  { value: "pending", label: "Đang chờ" },
 ];
 
 const PAGE_SIZE_OPTIONS = ["10", "20", "50"];
 
-function parseRecordDate(value: string) {
-  const [datePart, timePart] = value.split(" ");
-  const [day, month, year] = datePart.split("/").map(Number);
-  const [hour, minute, second] = timePart.split(":").map(Number);
-  return new Date(year, month - 1, day, hour, minute, second);
+function formatDateParts(iso: string | null) {
+  if (!iso) return { date: "—", time: "" };
+  const date = new Date(iso);
+  return {
+    date: date.toLocaleDateString("vi-VN"),
+    time: date.toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" }),
+  };
+}
+
+function formatSize(bytes: number | null) {
+  if (bytes == null) return "—";
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
+function startOfDayISO(date: Date) {
+  return new Date(
+    Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0)
+  ).toISOString();
+}
+
+function endOfDayISO(date: Date) {
+  return new Date(
+    Date.UTC(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+      23,
+      59,
+      59,
+      999
+    )
+  ).toISOString();
 }
 
 export default function BackupHistoryTable() {
-  const [search, setSearch] = useState("");
+  const [searchInput, setSearchInput] = useState("");
   const [statusFilter, setStatusFilter] = useState<"all" | BackupStatus>(
     "all"
   );
@@ -106,46 +72,40 @@ export default function BackupHistoryTable() {
   const [pageSize, setPageSize] = useState("10");
   const [page, setPage] = useState(1);
 
-  const filtered = useMemo(() => {
-    return RECORDS.filter((record) => {
-      const matchesSearch = record.backupId
-        .toLowerCase()
-        .includes(search.trim().toLowerCase());
-      const matchesStatus =
-        statusFilter === "all" || record.status === statusFilter;
+  const search = useDebouncedValue(searchInput, 400);
 
-      let matchesDate = true;
-      if (dateRange?.from) {
-        const recordDate = parseRecordDate(record.startedAt);
+  const [prevSearch, setPrevSearch] = useState(search);
+  if (search !== prevSearch) {
+    setPrevSearch(search);
+    setPage(1);
+  }
 
-        const from = new Date(dateRange.from);
-        from.setHours(0, 0, 0, 0);
+  const { data, isLoading, isError, error, refetch } = useBackups({
+    page,
+    size: Number(pageSize),
+    status: statusFilter === "all" ? undefined : statusFilter,
+    search: search || undefined,
+    fromDate: dateRange?.from ? startOfDayISO(dateRange.from) : undefined,
+    toDate: dateRange?.to
+      ? endOfDayISO(dateRange.to)
+      : dateRange?.from
+        ? endOfDayISO(dateRange.from)
+        : undefined,
+  });
+  const exportMutation = useExportBackupsExcel();
+  const downloadMutation = useDownloadBackupFile();
 
-        const to = new Date(dateRange.to ?? dateRange.from);
-        to.setHours(23, 59, 59, 999);
-
-        matchesDate = recordDate >= from && recordDate <= to;
-      }
-
-      return matchesSearch && matchesStatus && matchesDate;
-    });
-  }, [search, statusFilter, dateRange]);
-
-  const totalPages = Math.max(
-    1,
-    Math.ceil(filtered.length / Number(pageSize))
-  );
-  const currentPage = Math.min(page, totalPages);
-  const paged = filtered.slice(
-    (currentPage - 1) * Number(pageSize),
-    currentPage * Number(pageSize)
-  );
+  const items = data?.items ?? [];
+  const pagination = data?.pagination;
+  const totalPages = pagination?.totalPages ?? 1;
+  const currentPage = pagination?.page ?? 1;
 
   function handleRefresh() {
-    setSearch("");
+    setSearchInput("");
     setStatusFilter("all");
     setDateRange(null);
     setPage(1);
+    refetch();
   }
 
   return (
@@ -155,11 +115,8 @@ export default function BackupHistoryTable() {
           <Search className="pointer-events-none absolute top-1/2 left-3 size-5 -translate-y-1/2 text-[#9CA3AF]" />
           <input
             type="text"
-            value={search}
-            onChange={(event) => {
-              setSearch(event.target.value);
-              setPage(1);
-            }}
+            value={searchInput}
+            onChange={(event) => setSearchInput(event.target.value)}
             placeholder="Tìm theo tên bản sao lưu..."
             className="h-9.5 w-full rounded-lg border border-[#D1D5DB] pr-4 pl-10 text-sm text-[#111827] outline-none placeholder:text-[#6B7280] focus-visible:border-[#1A56DB]"
           />
@@ -175,9 +132,11 @@ export default function BackupHistoryTable() {
 
         <Select
           value={statusFilter}
-          onValueChange={(next) =>
-            next && (setStatusFilter(next as "all" | BackupStatus), setPage(1))
-          }
+          onValueChange={(next) => {
+            if (!next) return;
+            setStatusFilter(next as "all" | BackupStatus);
+            setPage(1);
+          }}
         >
           <SelectTrigger className="w-48 rounded-lg border-[#D1D5DB] text-sm text-[#1F2937] data-[size=default]:h-9.5">
             <SelectValue>
@@ -195,6 +154,16 @@ export default function BackupHistoryTable() {
             ))}
           </SelectContent>
         </Select>
+
+        <button
+          type="button"
+          onClick={() => exportMutation.mutate({})}
+          disabled={exportMutation.isPending}
+          className="flex shrink-0 items-center gap-2 rounded-lg border border-[#D1D5DB] px-4 py-2 text-sm font-medium text-[#374151] hover:bg-[#F8FAFC] disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          <Download className="size-4" />
+          {exportMutation.isPending ? "Đang xuất..." : "Xuất Excel"}
+        </button>
 
         <button
           type="button"
@@ -234,58 +203,83 @@ export default function BackupHistoryTable() {
             </tr>
           </thead>
           <tbody>
-            {paged.map((record, index) => (
-              <tr key={record.id} className="border-t border-[#E5E7EB]">
-                <td className="px-6 py-5 text-center text-sm text-[#4B5563]">
-                  {(currentPage - 1) * Number(pageSize) + index + 1}
-                </td>
-                <td className="px-6 py-5">
-                  <span className="text-xs text-[#6B7280]">
-                    (ID: {record.backupId})
-                  </span>
-                </td>
-                <td className="px-6 py-5 text-sm font-medium text-[#111827]">
-                  {record.sizeMb !== null ? `${record.sizeMb} MB` : "—"}
-                </td>
-                <td className="px-6 py-5 text-sm text-[#4B5563]">
-                  {record.startedAt.split(" ")[0]}
-                  <br />
-                  {record.startedAt.split(" ")[1]}
-                </td>
-                <td className="px-6 py-5 text-sm text-[#4B5563]">
-                  {record.finishedAt.split(" ")[0]}
-                  <br />
-                  {record.finishedAt.split(" ")[1]}
-                </td>
-                <td className="px-6 py-5">
-                  {record.status === "success" ? (
-                    <span className="inline-flex w-fit items-center gap-1.5 rounded-full border border-[#BBF7D0] bg-[#E1FCEF] px-2.5 py-1 text-xs font-medium text-[#14804A]">
-                      <Check className="size-3.5" />
-                      Thành công
-                    </span>
-                  ) : (
-                    <span className="inline-flex w-fit items-center gap-1.5 rounded-full border border-[#FECACA] bg-[#FFEDEC] px-2.5 py-1 text-xs font-medium text-[#D1293D]">
-                      <X className="size-3.5" />
-                      Thất bại
-                    </span>
-                  )}
-                </td>
-                <td className="px-6 py-5 text-center">
-                  {record.status === "success" ? (
-                    <button
-                      type="button"
-                      aria-label="Tải xuống"
-                      className="inline-flex size-8.5 items-center justify-center rounded-lg border border-[#E5E7EB] text-[#6B7280] hover:bg-[#F8FAFC]"
-                    >
-                      <Download className="size-4" />
-                    </button>
-                  ) : (
-                    <span className="text-[#9CA3AF]">—</span>
-                  )}
+            {isLoading && (
+              <tr>
+                <td colSpan={7} className="px-6 py-10 text-center text-sm text-[#6B7280]">
+                  Đang tải...
                 </td>
               </tr>
-            ))}
-            {paged.length === 0 && (
+            )}
+            {isError && (
+              <tr>
+                <td colSpan={7} className="px-6 py-10 text-center text-sm text-red-600">
+                  {error?.message ?? "Đã có lỗi xảy ra khi tải lịch sử sao lưu."}
+                </td>
+              </tr>
+            )}
+            {!isLoading && !isError &&
+              items.map((record, index) => {
+                const started = formatDateParts(record.startedAt);
+                const finished = formatDateParts(record.finishedAt);
+                return (
+                  <tr key={record.id} className="border-t border-[#E5E7EB]">
+                    <td className="px-6 py-5 text-center text-sm text-[#4B5563]">
+                      {(currentPage - 1) * Number(pageSize) + index + 1}
+                    </td>
+                    <td className="px-6 py-5">
+                      <span className="text-xs text-[#6B7280]">
+                        (ID: {record.id})
+                      </span>
+                    </td>
+                    <td className="px-6 py-5 text-sm font-medium text-[#111827]">
+                      {formatSize(record.fileSizeBytes)}
+                    </td>
+                    <td className="px-6 py-5 text-sm text-[#4B5563]">
+                      {started.date}
+                      <br />
+                      {started.time}
+                    </td>
+                    <td className="px-6 py-5 text-sm text-[#4B5563]">
+                      {finished.date}
+                      <br />
+                      {finished.time}
+                    </td>
+                    <td className="px-6 py-5">
+                      {record.status === "success" ? (
+                        <span className="inline-flex w-fit items-center gap-1.5 rounded-full border border-[#BBF7D0] bg-[#E1FCEF] px-2.5 py-1 text-xs font-medium text-[#14804A]">
+                          <Check className="size-3.5" />
+                          Thành công
+                        </span>
+                      ) : record.status === "failed" ? (
+                        <span className="inline-flex w-fit items-center gap-1.5 rounded-full border border-[#FECACA] bg-[#FFEDEC] px-2.5 py-1 text-xs font-medium text-[#D1293D]">
+                          <X className="size-3.5" />
+                          Thất bại
+                        </span>
+                      ) : (
+                        <span className="inline-flex w-fit items-center gap-1.5 rounded-full border border-[#FDE68A] bg-[#FEF3C7] px-2.5 py-1 text-xs font-medium text-[#92400E]">
+                          {record.status === "running" ? "Đang chạy" : "Đang chờ"}
+                        </span>
+                      )}
+                    </td>
+                    <td className="px-6 py-5 text-center">
+                      {record.status === "success" ? (
+                        <button
+                          type="button"
+                          aria-label="Tải xuống"
+                          onClick={() => downloadMutation.mutate(record.id)}
+                          disabled={downloadMutation.isPending}
+                          className="inline-flex size-8.5 items-center justify-center rounded-lg border border-[#E5E7EB] text-[#6B7280] hover:bg-[#F8FAFC] disabled:cursor-not-allowed disabled:opacity-50"
+                        >
+                          <Download className="size-4" />
+                        </button>
+                      ) : (
+                        <span className="text-[#9CA3AF]">—</span>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
+            {!isLoading && !isError && items.length === 0 && (
               <tr>
                 <td
                   colSpan={7}
@@ -324,7 +318,7 @@ export default function BackupHistoryTable() {
           kết quả trên mỗi trang
         </div>
 
-        <div className="flex items-center gap-1.5">
+        <div className="flex flex-wrap items-center gap-1.5">
           {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
             <button
               key={num}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import {
   Calendar,
@@ -9,6 +9,7 @@ import {
   Download,
   Info,
   List,
+  Save,
 } from "lucide-react";
 import {
   Select,
@@ -18,8 +19,12 @@ import {
   SelectValue,
 } from "@/src/components/ui/select";
 import { Switch } from "@/src/components/ui/switch";
-
-type Frequency = "daily" | "weekly" | "monthly";
+import {
+  useBackupSchedule,
+  useTriggerBackup,
+  useUpdateBackupSchedule,
+} from "@/src/hooks/useSettings";
+import type { BackupFrequency } from "@/src/lib/api/settings";
 
 const WEEKDAYS = [
   "Thứ 2",
@@ -31,12 +36,26 @@ const WEEKDAYS = [
   "Chủ nhật",
 ];
 
-const DAYS_OF_MONTH = Array.from({ length: 31 }, (_, i) => `Ngày ${i + 1}`);
-
 const HOURS = Array.from(
   { length: 24 },
   (_, i) => `${String(i).padStart(2, "0")}:00`
 );
+
+const FREQUENCY_LABELS: Record<BackupFrequency, string> = {
+  daily: "Hàng ngày",
+  weekly: "Hàng tuần",
+  monthly: "Hàng tháng",
+};
+
+const FREQUENCY_OPTIONS = Object.values(FREQUENCY_LABELS);
+
+function labelToFrequency(label: string): BackupFrequency {
+  return (
+    (Object.entries(FREQUENCY_LABELS).find(([, v]) => v === label)?.[0] as
+      | BackupFrequency
+      | undefined) ?? "daily"
+  );
+}
 
 function SelectField({
   label,
@@ -86,18 +105,47 @@ function InfoBanner({ text, className = "" }: { text: string; className?: string
 }
 
 export default function BackupSettingsCard() {
+  const { data: schedule, isLoading } = useBackupSchedule();
+  const updateMutation = useUpdateBackupSchedule();
+  const triggerMutation = useTriggerBackup();
+
   const [autoBackupEnabled, setAutoBackupEnabled] = useState(true);
-  const [frequency, setFrequency] = useState<Frequency>("daily");
-  const [weekday, setWeekday] = useState(WEEKDAYS[0]);
-  const [dayOfMonth, setDayOfMonth] = useState(DAYS_OF_MONTH[0]);
+  const [frequency, setFrequency] = useState<BackupFrequency>("daily");
+  const [weekdayIndex, setWeekdayIndex] = useState(0);
+  const [dayOfMonth, setDayOfMonth] = useState(1);
   const [hour, setHour] = useState("02:00");
+  const initializedRef = useRef(false);
+
+  useEffect(() => {
+    if (!schedule || initializedRef.current) return;
+    initializedRef.current = true;
+    setAutoBackupEnabled(schedule.isEnabled ?? true);
+    setFrequency(schedule.frequency);
+    setWeekdayIndex(Math.min(6, Math.max(0, (schedule.dayOfWeek ?? 1) - 1)));
+    setDayOfMonth(schedule.dayOfMonth ?? 1);
+    setHour(schedule.timeOfDay.slice(0, 5) || "02:00");
+  }, [schedule]);
+
+  const weekday = WEEKDAYS[weekdayIndex];
+  const dayOfMonthLabel = `Ngày ${dayOfMonth}`;
+  const DAYS_OF_MONTH = Array.from({ length: 31 }, (_, i) => `Ngày ${i + 1}`);
 
   const bannerText =
     frequency === "daily"
       ? `Hệ thống sẽ tự động sao lưu vào mỗi ngày lúc ${hour}.`
       : frequency === "weekly"
         ? `Hệ thống sẽ tự động sao lưu vào mỗi ${weekday.toLowerCase()} lúc ${hour}.`
-        : `Hệ thống sẽ tự động sao lưu vào ${dayOfMonth.toLowerCase()} hàng tháng lúc ${hour}.`;
+        : `Hệ thống sẽ tự động sao lưu vào ${dayOfMonthLabel.toLowerCase()} hàng tháng lúc ${hour}.`;
+
+  function handleSave() {
+    updateMutation.mutate({
+      isEnabled: autoBackupEnabled,
+      frequency,
+      timeOfDay: `${hour}:00`,
+      dayOfWeek: frequency === "weekly" ? weekdayIndex + 1 : null,
+      dayOfMonth: frequency === "monthly" ? dayOfMonth : null,
+    });
+  }
 
   return (
     <div className="rounded-xl border border-[#C4C6D2] bg-[#FCF9F8] p-4 sm:p-8 shadow-sm">
@@ -127,10 +175,12 @@ export default function BackupSettingsCard() {
           </div>
           <button
             type="button"
-            className="flex shrink-0 items-center gap-2 rounded-lg bg-[#003274] px-5 py-2.5 text-sm font-medium text-white hover:bg-[#003274]/90"
+            onClick={() => triggerMutation.mutate()}
+            disabled={triggerMutation.isPending}
+            className="flex shrink-0 items-center gap-2 rounded-lg bg-[#003274] px-5 py-2.5 text-sm font-medium text-white hover:bg-[#003274]/90 disabled:cursor-not-allowed disabled:opacity-50"
           >
             <Download className="size-3.5" />
-            Sao lưu ngay
+            {triggerMutation.isPending ? "Đang sao lưu..." : "Sao lưu ngay"}
           </button>
         </div>
 
@@ -166,6 +216,7 @@ export default function BackupSettingsCard() {
               <Switch
                 checked={autoBackupEnabled}
                 onCheckedChange={setAutoBackupEnabled}
+                disabled={isLoading}
               />
               <span className="text-sm font-medium text-[#1C1B1B]">
                 Bật tự động sao lưu
@@ -180,17 +231,9 @@ export default function BackupSettingsCard() {
                   <SelectField
                     label="Tần suất sao lưu"
                     icon={Calendar}
-                    value="Hàng ngày"
-                    onChange={(value) =>
-                      setFrequency(
-                        value === "Hàng ngày"
-                          ? "daily"
-                          : value === "Hàng tuần"
-                            ? "weekly"
-                            : "monthly"
-                      )
-                    }
-                    options={["Hàng ngày", "Hàng tuần", "Hàng tháng"]}
+                    value={FREQUENCY_LABELS[frequency]}
+                    onChange={(value) => setFrequency(labelToFrequency(value))}
+                    options={FREQUENCY_OPTIONS}
                   />
                   <SelectField
                     label="Giờ sao lưu"
@@ -212,32 +255,28 @@ export default function BackupSettingsCard() {
                   <SelectField
                     label="Tần suất sao lưu"
                     icon={Calendar}
-                    value={frequency === "weekly" ? "Hàng tuần" : "Hàng tháng"}
-                    onChange={(value) =>
-                      setFrequency(
-                        value === "Hàng ngày"
-                          ? "daily"
-                          : value === "Hàng tuần"
-                            ? "weekly"
-                            : "monthly"
-                      )
-                    }
-                    options={["Hàng ngày", "Hàng tuần", "Hàng tháng"]}
+                    value={FREQUENCY_LABELS[frequency]}
+                    onChange={(value) => setFrequency(labelToFrequency(value))}
+                    options={FREQUENCY_OPTIONS}
                   />
                   {frequency === "weekly" ? (
                     <SelectField
                       label="Thứ trong tuần"
                       icon={Calendar}
                       value={weekday}
-                      onChange={setWeekday}
+                      onChange={(value) =>
+                        setWeekdayIndex(Math.max(0, WEEKDAYS.indexOf(value)))
+                      }
                       options={WEEKDAYS}
                     />
                   ) : (
                     <SelectField
                       label="Ngày trong tháng"
                       icon={Calendar}
-                      value={dayOfMonth}
-                      onChange={setDayOfMonth}
+                      value={dayOfMonthLabel}
+                      onChange={(value) =>
+                        setDayOfMonth(Number(value.replace(/\D/g, "")) || 1)
+                      }
                       options={DAYS_OF_MONTH}
                     />
                   )}
@@ -256,6 +295,16 @@ export default function BackupSettingsCard() {
                 <InfoBanner text={bannerText} />
               </>
             ))}
+
+          <button
+            type="button"
+            onClick={handleSave}
+            disabled={updateMutation.isPending || isLoading}
+            className="flex w-fit items-center gap-2 self-end rounded-lg bg-[#316EE9] px-5 py-2.5 text-sm font-medium text-white hover:bg-[#316EE9]/90 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            <Save className="size-3.5" />
+            {updateMutation.isPending ? "Đang lưu..." : "Lưu cài đặt"}
+          </button>
         </div>
       </div>
     </div>
