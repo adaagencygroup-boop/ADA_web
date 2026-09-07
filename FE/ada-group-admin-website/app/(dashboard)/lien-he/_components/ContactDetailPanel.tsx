@@ -18,6 +18,7 @@ import {
   useUpdateContactNote,
 } from "@/src/hooks/useContacts";
 import type { Contact } from "@/src/lib/api/contact";
+import DeleteContactDialog from "@/app/(dashboard)/lien-he/_components/DeleteContactDialog";
 
 const STATUS_STYLES = {
   pending: {
@@ -53,6 +54,7 @@ export default function ContactDetailPanel({
   const [replyContent, setReplyContent] = useState("");
   const [note, setNote] = useState(contact.note ?? "");
   const [attachment, setAttachment] = useState<File | null>(null);
+  const [deleteOpen, setDeleteOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const uploadMutation = useUploadMedia();
@@ -108,8 +110,7 @@ export default function ContactDetailPanel({
     noteMutation.mutate({ id: contact.id, note });
   }
 
-  function handleDelete() {
-    if (!window.confirm(`Xoá liên hệ của "${contact.customerFullname}"?`)) return;
+  function handleConfirmDelete() {
     deleteMutation.mutate(contact.id, { onSuccess: onDeleted });
   }
 
@@ -296,7 +297,7 @@ export default function ContactDetailPanel({
           </button>
           <button
             type="button"
-            onClick={handleDelete}
+            onClick={() => setDeleteOpen(true)}
             disabled={deleteMutation.isPending}
             className="flex flex-1 items-center justify-center gap-2 rounded-lg border border-red-200 bg-white px-3 py-2.5 text-sm font-semibold text-red-600 hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
           >
@@ -307,6 +308,14 @@ export default function ContactDetailPanel({
           </button>
         </div>
       </div>
+
+      <DeleteContactDialog
+        open={deleteOpen}
+        onOpenChange={setDeleteOpen}
+        contactName={contact.customerFullname}
+        onConfirm={handleConfirmDelete}
+        isDeleting={deleteMutation.isPending}
+      />
     </div>
   );
 }
