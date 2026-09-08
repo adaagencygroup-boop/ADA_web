@@ -8,13 +8,14 @@ import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.xssf.streaming.SXSSFSheet;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.springframework.stereotype.Service;
 @Service
 public class ExcelExportService {
   public byte[] exportToExcel(String sheetName, List<String> headers, List<List<Object>> dataRows) {
-    try (Workbook workbook = new XSSFWorkbook(); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
-      Sheet sheet = workbook.createSheet(sheetName);
+    try (SXSSFWorkbook workbook = new SXSSFWorkbook(); ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+      SXSSFSheet sheet = workbook.createSheet(sheetName);
       Font headerFont = workbook.createFont();
       headerFont.setBold(true);
       CellStyle headerCellStyle = workbook.createCellStyle();
@@ -38,9 +39,7 @@ public class ExcelExportService {
           }
         }
       }
-      for (int i = 0; i < headers.size(); i++) {
-        sheet.autoSizeColumn(i);
-      }
+
       workbook.write(out);
       return out.toByteArray();
     } catch (IOException e) {
