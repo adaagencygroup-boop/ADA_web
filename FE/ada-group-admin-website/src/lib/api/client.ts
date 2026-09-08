@@ -8,10 +8,6 @@ import { clearAuthTokens, getAccessToken, setAccessToken } from "@/src/lib/stora
 const BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8080/api/v1";
 
-// `withCredentials` is required on both instances: the refresh token is issued
-// as an httpOnly cookie (scoped to /api/v1/auth) rather than in the response
-// body, so the browser only stores/sends it on cross-origin requests that opt
-// in via withCredentials.
 export const apiClient = axios.create({
   baseURL: BASE_URL,
   headers: { "Content-Type": "application/json" },
@@ -30,12 +26,6 @@ type RetryableRequestConfig = InternalAxiosRequestConfig & {
 
 let refreshPromise: Promise<string> | null = null;
 
-// Exchanges the httpOnly refresh-token cookie for a fresh access token. Shared
-// (via the in-flight `refreshPromise`) between the 401-retry interceptor below
-// and the RequireAuth/GuestOnly bootstrap check, since the access token now
-// lives only in memory and is lost on every full page reload — there is no
-// client-readable refresh token to check first, so callers just attempt this
-// and treat a rejection as "not logged in".
 export function refreshSession(): Promise<string> {
   if (!refreshPromise) {
     refreshPromise = refreshClient

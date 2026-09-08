@@ -11,11 +11,6 @@ export default function GuestOnly({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  // Always starts false so the first client render (hydration) matches the
-  // server's. The access token lives in memory only, so it never survives a
-  // page reload — every mount has to re-check (and possibly silently
-  // refresh, via the httpOnly refresh-token cookie) before it knows whether
-  // the user is actually a guest.
   const [isGuest, setIsGuest] = useState(false);
 
   useEffect(() => {
