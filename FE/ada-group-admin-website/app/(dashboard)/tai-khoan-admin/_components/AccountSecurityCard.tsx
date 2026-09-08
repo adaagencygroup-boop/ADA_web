@@ -1,15 +1,20 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ChevronRight, History, LogOut, MonitorSmartphone, Shield } from "lucide-react";
+import LogoutConfirmDialog from "@/src/components/shared/LogoutConfirmDialog";
 import { logout as logoutRequest } from "@/src/lib/api/auth";
 import { clearAuthTokens } from "@/src/lib/storage";
 
 export default function AccountSecurityCard() {
   const router = useRouter();
+  const [logoutOpen, setLogoutOpen] = useState(false);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   async function handleLogout() {
+    setIsLoggingOut(true);
     try {
       await logoutRequest();
     } catch {
@@ -71,7 +76,7 @@ export default function AccountSecurityCard() {
         <div className="border-t border-[#E2E8F0] p-6">
           <button
             type="button"
-            onClick={handleLogout}
+            onClick={() => setLogoutOpen(true)}
             className="flex w-full items-center justify-center gap-2 rounded-lg border border-red-200 py-3 text-sm font-semibold text-red-600 hover:bg-red-50"
           >
             <LogOut className="size-4" />
@@ -79,6 +84,13 @@ export default function AccountSecurityCard() {
           </button>
         </div>
       </div>
+
+      <LogoutConfirmDialog
+        open={logoutOpen}
+        onOpenChange={setLogoutOpen}
+        onConfirm={handleLogout}
+        isLoggingOut={isLoggingOut}
+      />
     </div>
   );
 }
