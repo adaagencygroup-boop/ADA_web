@@ -63,8 +63,11 @@ apiClient.interceptors.response.use(
     const originalRequest = error.config as RetryableRequestConfig | undefined;
     const isAuthEndpoint = originalRequest?.url?.includes("/auth/");
 
+    // The backend has no explicit AuthenticationEntryPoint configured, so an
+    // expired/invalid token surfaces as either 401 or 403 depending on the
+    // route — treat both as "needs a refresh" rather than just 401.
     if (
-      error.response?.status === 401 &&
+      (error.response?.status === 401 || error.response?.status === 403) &&
       originalRequest &&
       !originalRequest._retry &&
       !isAuthEndpoint

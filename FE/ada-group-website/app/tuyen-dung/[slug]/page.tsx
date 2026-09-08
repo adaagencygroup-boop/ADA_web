@@ -2,7 +2,9 @@ import React from "react";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { MOCK_RECRUITMENTS, formatEmploymentType } from "@/src/lib/api/recruitments";
+import { formatEmploymentType, getRecruitmentBySlug } from "@/src/lib/api/recruitments";
+
+export const revalidate = 60;
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -12,7 +14,7 @@ export default async function JobDetailsPage({ params }: PageProps) {
   const resolvedParams = await params;
   const { slug } = resolvedParams;
 
-  const job = MOCK_RECRUITMENTS.find((j) => j.slug === slug);
+  const job = await getRecruitmentBySlug(slug);
 
   if (!job) {
     notFound();
@@ -26,10 +28,6 @@ export default async function JobDetailsPage({ params }: PageProps) {
 
   const postDate = new Date(job.createdAt).toLocaleDateString("vi-VN");
   const expireDate = job.expiresAt ? new Date(job.expiresAt).toLocaleDateString("vi-VN") : "Đang mở";
-
-  const fallbackDesc = job.description || "Chưa có mô tả chi tiết.";
-  const fallbackReqs = job.requirements || "Tốt nghiệp đại học chuyên ngành CNTT hoặc liên quan.\nCó kiến thức vững về công nghệ áp dụng.\nKinh nghiệm với các dự án thực tế.\nCó khả năng làm việc độc lập và nhóm tốt.";
-  const fallbackBens = job.benefits || "Thu nhập cạnh tranh theo năng lực.\nXét tăng lương và thưởng hiệu quả công việc.\nĐược tham gia các dự án lớn, làm việc cùng chuyên gia.\nMôi trường trẻ trung, năng động, khuyến khích sáng tạo.\nHưởng đầy đủ các chế độ theo quy định của pháp luật.";
 
   return (
     <div className="bg-slate-50 w-full flex-1 flex flex-col">
@@ -76,7 +74,7 @@ export default async function JobDetailsPage({ params }: PageProps) {
               <div className="flex flex-wrap items-center gap-4 lg:gap-8 text-[14px] md:text-[15px] font-medium text-blue-100">
                 <div className="flex items-center gap-2">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z" /></svg>
-                  {job.department?.name || "Khác"}
+                  {job.departmentName || "Khác"}
                 </div>
                 <div className="flex items-center gap-2">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-5 h-5"><path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" /></svg>
@@ -126,11 +124,10 @@ export default async function JobDetailsPage({ params }: PageProps) {
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-5 h-5 text-blue-600"><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>
                 Mô tả công việc
               </h2>
-              <div className="text-[14px] lg:text-[16px] text-zinc-600 leading-relaxed whitespace-pre-line space-y-4">
-                {fallbackDesc.split('\n').map((line, i) => (
-                  <p key={i}>{line}</p>
-                ))}
-              </div>
+              <div
+                className="prose prose-slate max-w-none text-[14px] lg:text-[16px] text-zinc-600 leading-relaxed"
+                dangerouslySetInnerHTML={{ __html: job.description ?? "" }}
+              />
             </div>
 
             <div className="bg-white rounded-2xl border border-slate-100 p-6 md:p-8 shadow-sm">
@@ -138,14 +135,10 @@ export default async function JobDetailsPage({ params }: PageProps) {
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-5 h-5 text-blue-600"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
                 Yêu cầu
               </h2>
-              <ul className="text-[14px] lg:text-[16px] text-zinc-600 leading-relaxed space-y-3 list-none">
-                {fallbackReqs.split('\n').map((line, i) => (
-                  <li key={i} className="flex items-start gap-3">
-                    <span className="text-blue-600 mt-1">&bull;</span>
-                    <span>{line}</span>
-                  </li>
-                ))}
-              </ul>
+              <div
+                className="prose prose-slate max-w-none text-[14px] lg:text-[16px] text-zinc-600 leading-relaxed"
+                dangerouslySetInnerHTML={{ __html: job.requirements ?? "" }}
+              />
             </div>
 
             <div className="bg-white rounded-2xl border border-slate-100 p-6 md:p-8 shadow-sm">
@@ -153,14 +146,10 @@ export default async function JobDetailsPage({ params }: PageProps) {
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-5 h-5 text-blue-600"><path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" /></svg>
                 Quyền lợi
               </h2>
-              <ul className="text-[14px] lg:text-[16px] text-zinc-600 leading-relaxed space-y-3 list-none">
-                {fallbackBens.split('\n').map((line, i) => (
-                  <li key={i} className="flex items-start gap-3">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-4 h-4 text-blue-500 mt-0.5 shrink-0"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                    <span>{line}</span>
-                  </li>
-                ))}
-              </ul>
+              <div
+                className="prose prose-slate max-w-none text-[14px] lg:text-[16px] text-zinc-600 leading-relaxed"
+                dangerouslySetInnerHTML={{ __html: job.benefits ?? "" }}
+              />
             </div>
 
             <div className="bg-white rounded-2xl border border-slate-100 p-6 md:p-8 shadow-sm">
@@ -185,7 +174,7 @@ export default async function JobDetailsPage({ params }: PageProps) {
                     </tr>
                     <tr className="border-b border-slate-100">
                       <td className="py-4 font-medium text-zinc-800">Phòng ban</td>
-                      <td className="py-4">{job.department?.name || "Khác"}</td>
+                      <td className="py-4">{job.departmentName || "Khác"}</td>
                     </tr>
                     <tr>
                       <td className="py-4 font-medium text-zinc-800">Mức lương</td>
@@ -210,7 +199,7 @@ export default async function JobDetailsPage({ params }: PageProps) {
               <div className="flex flex-col gap-3 text-[14px] text-zinc-600 mb-6">
                 <div className="flex items-center gap-3">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-4 h-4 text-zinc-400"><path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z" /></svg>
-                  {job.department?.name || "Phòng ban Khác"}
+                  {job.departmentName || "Phòng ban Khác"}
                 </div>
                 <div className="flex items-center gap-3">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-4 h-4 text-zinc-400"><path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" /></svg>

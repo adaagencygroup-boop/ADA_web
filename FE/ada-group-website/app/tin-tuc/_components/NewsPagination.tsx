@@ -22,10 +22,12 @@ export default function NewsPagination({
   activeCategory,
   currentPage,
   totalPages,
+  search,
 }: {
   activeCategory: string;
   currentPage: number;
   totalPages: number;
+  search?: string;
 }) {
   if (totalPages <= 1) return null;
 
@@ -47,7 +49,7 @@ export default function NewsPagination({
         ) : (
           <Link
             key={item}
-            href={buildNewsHref(activeCategory, item)}
+            href={buildNewsHref(activeCategory, item, search)}
             aria-current={item === currentPage ? "page" : undefined}
             className={`-ml-px flex h-9.5 min-w-9.5 items-center justify-center border px-3 text-sm font-medium first:ml-0 ${
               item === currentPage
@@ -69,7 +71,7 @@ export default function NewsPagination({
         </span>
       ) : (
         <Link
-          href={buildNewsHref(activeCategory, currentPage + 1)}
+          href={buildNewsHref(activeCategory, currentPage + 1, search)}
           aria-label="Trang tiếp theo"
           className="-ml-px flex h-9.5 w-9.5 items-center justify-center rounded-r-md border border-gray-300 bg-white text-gray-500 hover:bg-gray-50"
         >

@@ -1,8 +1,5 @@
-export type NewsContentBlock =
-  | { type: "paragraph"; text: string; emphasis?: boolean }
-  | { type: "heading"; text: string };
-
 export type NewsArticle = {
+  id: string;
   slug: string;
   category: string;
   title: string;
@@ -12,12 +9,11 @@ export type NewsArticle = {
   imageUrl: string;
   featured: boolean;
   views?: number;
-  body?: NewsContentBlock[];
 };
 
-export type NewsCategoryCount = {
-  label: string;
-  count: number;
+export type NewsCategory = {
+  id: string;
+  name: string;
 };
 
 export type NewsPaginationItem = number | "ellipsis";

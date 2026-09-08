@@ -5,6 +5,8 @@ import HeroCarousel from "@/app/tin-tuc/_components/HeroCarousel";
 import NewsListing from "@/app/tin-tuc/_components/NewsListing";
 import SearchBar from "@/app/tin-tuc/_components/SearchBar";
 
+export const revalidate = 60;
+
 export const metadata: Metadata = {
   title: "Tin tức | ADA Group",
   description:
@@ -12,18 +14,18 @@ export const metadata: Metadata = {
 };
 
 type TinTucPageProps = {
-  searchParams: Promise<{ category?: string; page?: string }>;
+  searchParams: Promise<{ category?: string; page?: string; search?: string }>;
 };
 
 export default async function TinTucPage({ searchParams }: TinTucPageProps) {
-  const { category, page } = await searchParams;
+  const { category, page, search } = await searchParams;
 
   return (
     <>
       <HeroCarousel />
-      <SearchBar />
+      <SearchBar category={category} search={search} />
       <Breadcrumb />
-      <NewsListing category={category} page={page} />
+      <NewsListing category={category} page={page} search={search} />
       <CallToAction />
     </>
   );

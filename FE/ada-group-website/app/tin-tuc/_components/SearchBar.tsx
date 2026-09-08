@@ -1,3 +1,9 @@
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { ALL_CATEGORY, buildNewsHref } from "@/src/lib/api/news";
+
 type IconProps = { className?: string };
 
 function SearchIcon({ className = "h-4 w-4" }: IconProps) {
@@ -53,19 +59,35 @@ function ChevronDownIcon({ className = "h-3 w-3" }: IconProps) {
   );
 }
 
-export default function SearchBar() {
+export default function SearchBar({
+  category,
+  search,
+}: {
+  category?: string;
+  search?: string;
+}) {
+  const router = useRouter();
+  const [keyword, setKeyword] = useState(search ?? "");
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    router.push(buildNewsHref(category ?? ALL_CATEGORY, 1, keyword.trim() || undefined));
+  }
+
   return (
     <section className="pt-8 pb-2">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-stretch">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4 sm:flex-row sm:items-stretch">
           <div className="flex flex-1 items-stretch overflow-hidden rounded-md bg-white shadow-[0_1px_2px_rgba(0,0,0,0.1)]">
             <input
               type="text"
+              value={keyword}
+              onChange={(e) => setKeyword(e.target.value)}
               placeholder="Tìm kiếm tin tức..."
               className="flex-1 px-4 py-3 text-base text-zinc-900 placeholder:text-gray-500 focus:outline-none"
             />
             <button
-              type="button"
+              type="submit"
               aria-label="Tìm kiếm"
               className="flex w-16 items-center justify-center bg-[#1961E6] text-white transition-colors hover:bg-blue-700"
             >
@@ -85,7 +107,7 @@ export default function SearchBar() {
             </select>
             <ChevronDownIcon className="pointer-events-none absolute top-1/2 right-4 h-3 w-3 -translate-y-1/2 text-gray-400" />
           </div>
-        </div>
+        </form>
       </div>
     </section>
   );

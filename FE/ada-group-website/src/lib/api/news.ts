@@ -1,280 +1,121 @@
-import type {
-  NewsArticle,
-  NewsCategoryCount,
-  NewsPaginationItem,
-} from "@/src/types/news";
+import { apiGet, ApiError, type PageResponse } from "@/src/lib/api/http";
+import type { NewsArticle, NewsCategory, NewsPaginationItem } from "@/src/types/news";
 
 export const ALL_CATEGORY = "Tất cả";
 export const PAGE_SIZE = 4;
 export const NEWS_BASE_PATH = "/tin-tuc";
 export const NEWS_LISTING_ANCHOR = "tin-tuc-listing";
 
-function slugify(title: string) {
-  return title
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .replace(/đ/gi, "d")
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
+const FALLBACK_IMAGE = "https://picsum.photos/seed/ada-news-fallback/700/500";
+const REVALIDATE_SECONDS = 60;
+
+type NewsResponseDTO = {
+  id: string;
+  title: string;
+  slug: string;
+  content: string | null;
+  coverImageURL: string | null;
+  status: string | null;
+  viewCount: number | null;
+  isFeatured: boolean | null;
+  categoryId: string | null;
+  categoryName: string | null;
+  authorName: string | null;
+  updatedAt: string;
+  createdAt: string;
+};
+
+function stripHtml(html: string): string {
+  return html.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
 }
 
-const RAW_ARTICLES: Omit<NewsArticle, "slug">[] = [
-  {
-    category: "Tin tức công ty",
-    title:
-      "ADA Group mở đợt tuyển dụng quy mô lớn, tìm kiếm nhân tài AI trên toàn quốc",
-    excerpt:
-      "Đồng hành cùng chiến lược phát triển hệ sinh thái AI giai đoạn 2026-2030, ADA Group mở rộng...",
-    content:
-      "Đồng hành cùng chiến lược phát triển hệ sinh thái AI giai đoạn 2026-2030, ADA Group mở rộng quy mô tuyển dụng trên toàn quốc, tìm kiếm những nhân tài xuất sắc trong lĩnh vực trí tuệ nhân tạo để cùng xây dựng các sản phẩm công nghệ Make in Vietnam.",
-    date: "03/07/2026",
-    imageUrl: "https://picsum.photos/seed/ada-news-recruit/700/500",
-    featured: true,
-    views: 1248,
-    body: [
-      {
-        type: "paragraph",
-        text: "Đồng hành cùng chiến lược phát triển hệ sinh thái AI giai đoạn 2026-2030, ADA Group mở rộng tuyển dụng nhiều vị trí tiềm năng trên toàn quốc.",
-      },
-      {
-        type: "paragraph",
-        text: "Trong bối cảnh AI đang thay đổi mọi lĩnh vực, ADA Group xác định con người là yếu tố cốt lõi tạo nên lợi thế cạnh tranh. Do đó, chúng tôi không ngừng tìm kiếm những nhân tài xuất sắc để cùng chúng tôi xây dựng các giải pháp công nghệ tiên tiến, mang tính đột phá, mang lại giá trị thực tiễn cho cộng đồng và doanh nghiệp.",
-      },
-      { type: "heading", text: "Chiến lược phát triển AI của ADA Group" },
-      {
-        type: "paragraph",
-        text: "ADA Group tập trung xây dựng hệ sinh thái AI toàn diện, từ nghiên cứu, phát triển công nghệ lõi đến ứng dụng thực tiễn - trong các lĩnh vực trọng điểm. Chúng tôi đầu tư mạnh mẽ vào hạ tầng dữ liệu, mô hình AI và các nền tảng Automation nhằm kiến tạo những giải pháp thông minh, giúp doanh nghiệp tối ưu vận hành và nâng cao năng lực cạnh tranh.",
-      },
-      {
-        type: "paragraph",
-        text: "Mục tiêu dài hạn đến 2030, ADA Group trở thành đơn vị dẫn đầu tại Việt Nam trong việc cung cấp các giải pháp AI và chuyển đổi số, đóng góp nền tảng hợp tác quốc tế để đưa trí tuệ Việt vươn tầm khu vực.",
-      },
-      { type: "heading", text: "Cơ hội phát triển cùng ADA Group" },
-      {
-        type: "paragraph",
-        text: "Chúng tôi tin rằng mỗi thành viên đều có thể tạo nên sự khác biệt. Tại ADA Group, bạn sẽ được trao quyền để chủ động sáng tạo, thỏa sức thể hiện năng lực, cùng với lộ trình thăng tiến rõ ràng, cơ hội chuyên môn trong công nghệ hiện đại, linh hoạt.",
-      },
-      {
-        type: "paragraph",
-        text: "Bên cạnh mức thu nhập cạnh tranh, chúng tôi còn mang đến lộ trình phát triển rõ ràng, các chương trình đào tạo chuyên sâu, cơ hội tham gia dự án lớn và làm việc cùng đội ngũ chuyên gia giàu kinh nghiệm trong và ngoài nước.",
-      },
-      { type: "heading", text: "Các dự án nổi bật" },
-      {
-        type: "paragraph",
-        text: "Ứng viên gia nhập ADA Group sẽ có cơ hội tham gia vào các dự án AI, Big Data, Cloud và Automation quy mô lớn như: nền tảng phân tích dữ liệu thông minh, giải pháp AI Agent hỗ trợ vận hành doanh nghiệp, hệ thống nhận diện hình ảnh và xử lý ngôn ngữ tự nhiên, cùng nhiều sản phẩm phục vụ chuyển đổi số cho khách hàng trong ngành tài chính - ngân hàng, sản xuất, logistics, giáo dục...",
-      },
-      {
-        type: "paragraph",
-        text: "Chúng tôi luôn khuyến khích tinh thần đổi mới, tư duy phản biện và văn hóa làm việc cởi mở để mỗi cá nhân có thể phát huy tối đa năng lực và đóng góp giá trị bền vững cho xã hội.",
-      },
-      { type: "heading", text: "Gia nhập ADA Group ngay hôm nay!" },
-      {
-        type: "paragraph",
-        text: "Nếu bạn đam mê công nghệ, yêu thích những thách thức và mong muốn phát triển sự nghiệp trong lĩnh vực AI, hãy gia nhập ADA Group để cùng chúng tôi kiến tạo tương lai thông minh hơn.",
-      },
-      {
-        type: "paragraph",
-        emphasis: true,
-        text: "Ứng viên quan tâm vui lòng gửi CV về email: tuyendung@adagroup.vn hoặc ứng tuyển trực tiếp qua website.",
-      },
-      {
-        type: "paragraph",
-        emphasis: true,
-        text: "Hạn nộp hồ sơ: 31/07/2026.",
-      },
-    ],
-  },
-  {
-    category: "Tin tức công ty",
-    title:
-      "ADA Group khai trương văn phòng mới tại Hà Nội, mở rộng quy mô hoạt động",
-    excerpt:
-      "Sáng ngày 03/07/2026, trong không khí hân hoan, ADA Group chính thức khai trương văn phòng mới...",
-    content:
-      "Sáng ngày 03/07/2026, trong không khí hân hoan, ADA Group chính thức khai trương văn phòng mới tại Hà Nội, đánh dấu bước mở rộng quan trọng trong chiến lược phát triển của công ty tại khu vực miền Bắc.",
-    date: "03/07/2026",
-    imageUrl: "https://picsum.photos/seed/ada-news-office/700/500",
-    featured: true,
-  },
-  {
-    category: "Tin tức công ty",
-    title: "ADA Group đón tiếp đối tác công nghệ đến thăm quan và làm việc",
-    excerpt:
-      "Sáng ngày 02/07/2026, đoàn chuyên gia quốc tế đến từ Solutions Inc về giải pháp và việc chuyển giao...",
-    content:
-      "Sáng ngày 02/07/2026, đoàn chuyên gia quốc tế đến từ Solutions Inc đã có buổi làm việc với ADA Group để trao đổi về giải pháp công nghệ và kế hoạch chuyển giao trong thời gian tới.",
-    date: "02/07/2026",
-    imageUrl: "https://picsum.photos/seed/ada-news-partner/700/500",
-    featured: false,
-  },
-  {
-    category: "Công nghệ",
-    title: "AI Agent – Xu hướng công nghệ đột phá trong năm 2026",
-    excerpt:
-      "AI Agent đang trở thành một trong những xu hướng công nghệ nổi bật nhất, giúp doanh nghiệp...",
-    content:
-      "AI Agent đang trở thành một trong những xu hướng công nghệ nổi bật nhất, giúp doanh nghiệp tự động hóa quy trình vận hành và ra quyết định nhanh chóng hơn dựa trên dữ liệu thời gian thực.",
-    date: "28/06/2026",
-    imageUrl: "https://picsum.photos/seed/ada-news-aiagent/700/500",
-    featured: true,
-  },
-  {
-    category: "Sự kiện",
-    title:
-      "ADA Group Innovation Day 2026: Kết nối cộng đồng công nghệ AI Việt Nam",
-    excerpt:
-      "Sự kiện quy tụ hơn 500 chuyên gia, doanh nghiệp và nhà đầu tư cùng thảo luận về xu hướng AI...",
-    content:
-      "Sự kiện quy tụ hơn 500 chuyên gia, doanh nghiệp và nhà đầu tư cùng thảo luận về xu hướng AI, mở ra nhiều cơ hội hợp tác và kết nối trong cộng đồng công nghệ Việt Nam.",
-    date: "25/06/2026",
-    imageUrl: "https://picsum.photos/seed/ada-news-innovationday/700/500",
-    featured: false,
-  },
-  {
-    category: "Dự án",
-    title:
-      "ADA Group hoàn thành triển khai hệ thống AI cho chuỗi bán lẻ toàn quốc",
-    excerpt:
-      "Dự án chuyển đổi số quy mô lớn giúp khách hàng tối ưu vận hành và nâng cao trải nghiệm mua sắm...",
-    content:
-      "Dự án chuyển đổi số quy mô lớn giúp khách hàng tối ưu vận hành và nâng cao trải nghiệm mua sắm thông qua các giải pháp AI được ADA Group triển khai trên toàn bộ hệ thống chuỗi bán lẻ.",
-    date: "20/06/2026",
-    imageUrl: "https://picsum.photos/seed/ada-news-retailproject/700/500",
-    featured: false,
-  },
-  {
-    category: "Tuyển dụng",
-    title: "ADA Group tuyển dụng vị trí AI Engineer và Data Scientist cấp cao",
-    excerpt:
-      "Cơ hội gia nhập đội ngũ kỹ sư AI hàng đầu, trực tiếp xây dựng các sản phẩm ứng dụng thực tế...",
-    content:
-      "Cơ hội gia nhập đội ngũ kỹ sư AI hàng đầu, trực tiếp xây dựng các sản phẩm ứng dụng thực tế phục vụ hàng triệu người dùng, với môi trường làm việc chuyên nghiệp và lộ trình phát triển rõ ràng.",
-    date: "18/06/2026",
-    imageUrl: "https://picsum.photos/seed/ada-news-hiring/700/500",
-    featured: false,
-  },
-  {
-    category: "Tin tức công ty",
-    title:
-      "ADA Group ký kết hợp tác chiến lược với tập đoàn công nghệ quốc tế",
-    excerpt:
-      "Thỏa thuận hợp tác mở ra cơ hội chuyển giao công nghệ và mở rộng thị trường quốc tế...",
-    content:
-      "Thỏa thuận hợp tác mở ra cơ hội chuyển giao công nghệ và mở rộng thị trường quốc tế, đánh dấu bước tiến quan trọng trong chiến lược toàn cầu hóa của ADA Group.",
-    date: "15/06/2026",
-    imageUrl: "https://picsum.photos/seed/ada-news-partnership/700/500",
-    featured: false,
-  },
-  {
-    category: "Công nghệ",
-    title: "Ứng dụng Computer Vision trong giám sát chất lượng sản xuất",
-    excerpt:
-      "Giải pháp giúp doanh nghiệp phát hiện lỗi sản phẩm theo thời gian thực, giảm chi phí kiểm định...",
-    content:
-      "Giải pháp giúp doanh nghiệp phát hiện lỗi sản phẩm theo thời gian thực, giảm chi phí kiểm định thủ công và nâng cao độ chính xác trong quy trình kiểm soát chất lượng sản xuất.",
-    date: "12/06/2026",
-    imageUrl: "https://picsum.photos/seed/ada-news-computervision/700/500",
-    featured: false,
-  },
-  {
-    category: "Sự kiện",
-    title: "ADA Group tham dự hội nghị công nghệ quốc tế Tech Summit Asia",
-    excerpt:
-      "Đại diện ADA Group chia sẻ về hành trình xây dựng hệ sinh thái AI thuần Việt trước cộng đồng...",
-    content:
-      "Đại diện ADA Group chia sẻ về hành trình xây dựng hệ sinh thái AI thuần Việt trước cộng đồng công nghệ quốc tế tại sự kiện Tech Summit Asia năm nay.",
-    date: "08/06/2026",
-    imageUrl: "https://picsum.photos/seed/ada-news-techsummit/700/500",
-    featured: false,
-  },
-  {
-    category: "Dự án",
-    title:
-      "Khởi động dự án AI hỗ trợ nông dân canh tác thông minh tại Đồng bằng sông Cửu Long",
-    excerpt:
-      "Dự án hợp tác cùng địa phương ứng dụng AI và IoT vào canh tác, hướng tới nông nghiệp bền vững...",
-    content:
-      "Dự án hợp tác cùng địa phương ứng dụng AI và IoT vào canh tác, hướng tới nông nghiệp bền vững và nâng cao thu nhập cho người nông dân tại khu vực Đồng bằng sông Cửu Long.",
-    date: "05/06/2026",
-    imageUrl: "https://picsum.photos/seed/ada-news-agriproject/700/500",
-    featured: false,
-  },
-];
-
-const ARTICLES: NewsArticle[] = RAW_ARTICLES.map((article) => ({
-  ...article,
-  slug: slugify(article.title),
-}));
-
-export function getCategoryLabels(): string[] {
-  return Array.from(new Set(ARTICLES.map((article) => article.category)));
+function excerptFrom(content: string | null, maxLength = 160): string {
+  if (!content) return "";
+  const text = stripHtml(content);
+  return text.length > maxLength ? `${text.slice(0, maxLength).trim()}…` : text;
 }
 
-export function getCategoryCounts(): NewsCategoryCount[] {
-  return [
-    { label: ALL_CATEGORY, count: ARTICLES.length },
-    ...getCategoryLabels().map((label) => ({
-      label,
-      count: ARTICLES.filter((article) => article.category === label).length,
-    })),
-  ];
+function mapNews(n: NewsResponseDTO): NewsArticle {
+  return {
+    id: n.id,
+    slug: n.slug,
+    category: n.categoryName ?? "Khác",
+    title: n.title,
+    excerpt: excerptFrom(n.content),
+    content: n.content ?? "",
+    date: new Date(n.createdAt).toLocaleDateString("vi-VN"),
+    imageUrl: n.coverImageURL ?? FALLBACK_IMAGE,
+    featured: n.isFeatured ?? false,
+    views: n.viewCount ?? undefined,
+  };
 }
 
-export async function getArticles(options: {
-  category?: string;
-  page?: number;
-}) {
-  const activeCategory = getCategoryLabels().includes(options.category ?? "")
-    ? (options.category as string)
-    : ALL_CATEGORY;
+export async function getCategories(): Promise<NewsCategory[]> {
+  return apiGet<NewsCategory[]>("/public/newsCategories", undefined, REVALIDATE_SECONDS * 5);
+}
 
-  const filtered =
+export async function getArticles(options: { category?: string; page?: number; search?: string }) {
+  const categories = await getCategories();
+  const activeCategory =
+    options.category && categories.some((c) => c.name === options.category)
+      ? options.category
+      : ALL_CATEGORY;
+  const categoryId =
     activeCategory === ALL_CATEGORY
-      ? ARTICLES
-      : ARTICLES.filter((article) => article.category === activeCategory);
+      ? undefined
+      : categories.find((c) => c.name === activeCategory)?.id;
 
-  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
-  const requestedPage = options.page ?? 1;
-  const currentPage = Math.min(Math.max(requestedPage, 1), totalPages);
-
-  const articles = filtered.slice(
-    (currentPage - 1) * PAGE_SIZE,
-    currentPage * PAGE_SIZE,
+  const page = Math.max(1, options.page ?? 1);
+  const result = await apiGet<PageResponse<NewsResponseDTO>>(
+    "/public/news",
+    { page, size: PAGE_SIZE, categoryId, search: options.search || undefined },
+    REVALIDATE_SECONDS
   );
 
-  return { articles, activeCategory, currentPage, totalPages };
+  return {
+    articles: result.items.map(mapNews),
+    activeCategory,
+    currentPage: result.pagination.page,
+    totalPages: result.pagination.totalPages,
+  };
 }
 
-export async function getFeaturedArticles(): Promise<NewsArticle[]> {
-  return ARTICLES.filter((article) => article.featured);
+export async function getFeaturedArticles(limit = 3): Promise<NewsArticle[]> {
+  const items = await apiGet<NewsResponseDTO[]>(
+    "/public/news/featured",
+    { limit },
+    REVALIDATE_SECONDS * 5
+  );
+  return items.map(mapNews);
 }
 
-export async function getArticleBySlug(
-  slug: string,
-): Promise<NewsArticle | undefined> {
-  return ARTICLES.find((article) => article.slug === slug);
+export async function getArticleBySlug(slug: string): Promise<NewsArticle | undefined> {
+  try {
+    const item = await apiGet<NewsResponseDTO>(`/public/news/${slug}`, undefined, REVALIDATE_SECONDS);
+    return mapNews(item);
+  } catch (error) {
+    if (error instanceof ApiError && error.status === 404) return undefined;
+    throw error;
+  }
 }
 
 export async function getRelatedArticles(
   current: NewsArticle,
   limit = 3,
 ): Promise<NewsArticle[]> {
-  const sameCategory = ARTICLES.filter(
-    (article) =>
-      article.slug !== current.slug && article.category === current.category,
+  const items = await apiGet<NewsResponseDTO[]>(
+    "/public/news/relevant",
+    { limit: limit + 1 },
+    REVALIDATE_SECONDS
   );
-  const others = ARTICLES.filter(
-    (article) =>
-      article.slug !== current.slug && article.category !== current.category,
-  );
-  return [...sameCategory, ...others].slice(0, limit);
+  return items.map(mapNews).filter((article) => article.slug !== current.slug).slice(0, limit);
 }
 
-export function buildNewsHref(category: string, page: number) {
+export function buildNewsHref(category: string, page: number, search?: string) {
   const params = new URLSearchParams();
   if (category !== ALL_CATEGORY) params.set("category", category);
   if (page > 1) params.set("page", String(page));
+  if (search) params.set("search", search);
   const query = params.toString();
   return `${NEWS_BASE_PATH}${query ? `?${query}` : ""}#${NEWS_LISTING_ANCHOR}`;
 }

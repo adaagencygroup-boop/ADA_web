@@ -1,5 +1,5 @@
-export type RecruitmentStatus = 'draft' | 'hiring' | 'closed';
-export type EmploymentType = 'fulltime' | 'parttime' | 'remote' | 'hybrid';
+export type RecruitmentStatus = "draft" | "hiring" | "closed";
+export type EmploymentType = "fulltime" | "parttime" | "remote" | "hybrid";
 
 export interface Department {
   id: string;
@@ -8,11 +8,12 @@ export interface Department {
 
 export interface Recruitment {
   id: string;
-  recruiterId: string | null;
   jobTitle: string;
   slug: string;
   departmentId: string | null;
-  department?: Department | null;
+  departmentName: string | null;
+  recruiterId: string | null;
+  recruiterName: string | null;
   location: string | null;
   employmentType: EmploymentType;
   workingHours: string | null;
@@ -23,15 +24,11 @@ export interface Recruitment {
   status: RecruitmentStatus;
   minSalary: number | null;
   maxSalary: number | null;
-  isNegotiable: boolean;
-  requiredCandidateNum: number;
-  viewCount: number;
+  isNegotiable: boolean | null;
+  requiredCandidateNum: number | null;
+  applicantCount: number | null;
+  viewCount: number | null;
   expiresAt: string | null;
-  createdAt: string;
   updatedAt: string;
-}
-
-export interface RecruitmentApplicantCount {
-  recruitmentId: string;
-  applicantCount: number;
+  createdAt: string;
 }

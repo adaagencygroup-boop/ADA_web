@@ -78,10 +78,6 @@ function formatViews(views: number) {
 }
 
 export default function ArticleDetail({ article }: { article: NewsArticle }) {
-  const body = article.body ?? [
-    { type: "paragraph" as const, text: article.content },
-  ];
-
   return (
     <article className="flex flex-col items-start gap-4 rounded-xl border border-slate-200 bg-white p-6 shadow-[0_1px_2px_rgba(0,0,0,0.05)] sm:p-8">
       <span className="text-xs font-semibold tracking-[0.6px] text-[#2563EB] uppercase">
@@ -142,27 +138,10 @@ export default function ArticleDetail({ article }: { article: NewsArticle }) {
         />
       </div>
 
-      <div className="flex w-full flex-col items-start gap-4">
-        {body.map((block, index) =>
-          block.type === "heading" ? (
-              <h3
-              key={index}
-              className="mt-2 text-[16px] lg:text-[18px] leading-6.75 font-semibold text-black"
-            >
-              {block.text}
-            </h3>
-          ) : (
-            <p
-              key={index}
-              className={`text-[14px] lg:text-[16px] leading-6.75 text-[#334155] ${
-                block.emphasis ? "font-semibold" : ""
-              }`}
-            >
-              {block.text}
-            </p>
-          ),
-        )}
-      </div>
+      <div
+        className="prose prose-slate w-full max-w-none text-[14px] lg:text-[16px] leading-6.75 text-[#334155] [&_h1]:text-black [&_h2]:text-black [&_h3]:text-black [&_strong]:text-black"
+        dangerouslySetInnerHTML={{ __html: article.content }}
+      />
     </article>
   );
 }
