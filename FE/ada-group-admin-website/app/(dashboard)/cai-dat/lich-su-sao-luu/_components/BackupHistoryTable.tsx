@@ -17,7 +17,7 @@ import {
   useExportBackupsExcel,
 } from "@/src/hooks/useSettings";
 import type { BackupStatus } from "@/src/lib/api/settings";
-import DateRangeFilter from "@/app/(dashboard)/cai-dat/lich-su-sao-luu/_components/DateRangeFilter";
+import DateRangeFilter from "@/src/components/shared/DateRangeFilter";
 
 const STATUS_OPTIONS: { value: "all" | BackupStatus; label: string }[] = [
   { value: "all", label: "Tất cả trạng thái" },
