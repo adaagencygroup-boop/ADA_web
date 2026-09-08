@@ -7,7 +7,7 @@ export const newsSchema = z.object({
     .max(255, "Tiêu đề không được vượt quá 255 ký tự"),
   categoryId: z.string().min(1, "Vui lòng chọn danh mục"),
   content: z.string().min(1, "Vui lòng nhập nội dung bài viết"),
-  coverImageURL: z.string().optional(),
+  coverImageURL: z.string().min(1, "Vui lòng chọn ảnh đại diện"),
   isFeatured: z.boolean().optional(),
 });
 

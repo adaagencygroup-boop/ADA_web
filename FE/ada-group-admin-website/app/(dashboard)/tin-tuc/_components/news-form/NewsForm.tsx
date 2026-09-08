@@ -320,7 +320,9 @@ export default function NewsForm({
 
         <div className="flex w-full flex-col gap-6 lg:w-95 lg:shrink-0">
           <div className="flex flex-col gap-3 rounded-lg border border-[#E2E8F0] bg-white p-6 shadow-xs">
-            <h2 className="text-lg font-semibold text-[#1E293B]">Ảnh đại diện</h2>
+            <h2 className="text-lg font-semibold text-[#1E293B]">
+              Ảnh đại diện <span className="text-red-500">*</span>
+            </h2>
             <div
               onDragOver={(event) => {
                 event.preventDefault();
@@ -377,6 +379,11 @@ export default function NewsForm({
             {uploadMutation.isError && (
               <p className="text-xs text-red-600">
                 Tải ảnh lên thất bại. Vui lòng thử lại.
+              </p>
+            )}
+            {errors.coverImageURL && (
+              <p className="text-xs text-red-600">
+                {errors.coverImageURL.message}
               </p>
             )}
             <p className="text-xs text-[#64748B]">
