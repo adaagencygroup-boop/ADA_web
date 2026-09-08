@@ -26,6 +26,8 @@ services:
         NEXT_PUBLIC_API_BASE_URL: ${nextPublicApiBaseUrl:-https://adagroup.com.vn/api/v1}
     container_name: admin-web
     restart: always
+    environment:
+      API_BASE_URL: http://app:8080/api/v1
     depends_on:
       - app
     deploy:

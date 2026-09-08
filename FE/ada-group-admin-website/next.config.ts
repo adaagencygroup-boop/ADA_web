@@ -18,6 +18,16 @@ const nextConfig: NextConfig = {
         hostname: "adagroup.com.vn",
         pathname: "/files/**",
       },
+      {
+        protocol: "https",
+        hostname: "localhost",
+        pathname: "/files/**",
+      },
+      {
+        protocol: "http",
+        hostname: "localhost",
+        pathname: "/files/**",
+      },
     ],
   },
 };
