@@ -1,38 +1,20 @@
-const ACCESS_TOKEN_KEY = "accessToken";
-const REFRESH_TOKEN_KEY = "refreshToken";
-
-function getItem(key: string): string | null {
-  if (typeof window === "undefined") return null;
-  return localStorage.getItem(key);
-}
-
-function setItem(key: string, value: string): void {
-  if (typeof window === "undefined") return;
-  localStorage.setItem(key, value);
-}
-
-function removeItem(key: string): void {
-  if (typeof window === "undefined") return;
-  localStorage.removeItem(key);
-}
+// The access token is kept in memory only (never localStorage/sessionStorage):
+// it never survives a full page reload, which limits how long a token stolen
+// via XSS stays usable. The refresh token isn't stored on the client at all —
+// the backend issues it as an httpOnly, Secure, SameSite=Strict cookie scoped
+// to /api/v1/auth, so it's inaccessible to JavaScript entirely. A reload
+// re-authenticates by calling refreshSession() (see api/client.ts), which
+// relies on the browser sending that cookie automatically.
+let accessToken: string | null = null;
 
 export function getAccessToken(): string | null {
-  return getItem(ACCESS_TOKEN_KEY);
+  return accessToken;
 }
 
 export function setAccessToken(token: string): void {
-  setItem(ACCESS_TOKEN_KEY, token);
-}
-
-export function getRefreshToken(): string | null {
-  return getItem(REFRESH_TOKEN_KEY);
-}
-
-export function setRefreshToken(token: string): void {
-  setItem(REFRESH_TOKEN_KEY, token);
+  accessToken = token;
 }
 
 export function clearAuthTokens(): void {
-  removeItem(ACCESS_TOKEN_KEY);
-  removeItem(REFRESH_TOKEN_KEY);
+  accessToken = null;
 }

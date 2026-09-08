@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { refreshSession } from "@/src/lib/api/client";
 import { getAccessToken } from "@/src/lib/storage";
 
 export default function GuestOnly({
@@ -11,17 +12,32 @@ export default function GuestOnly({
 }) {
   const router = useRouter();
   // Always starts false so the first client render (hydration) matches the
-  // server's — localStorage isn't readable during SSR, so this can only be
-  // checked after mount, inside the effect below.
+  // server's. The access token lives in memory only, so it never survives a
+  // page reload — every mount has to re-check (and possibly silently
+  // refresh, via the httpOnly refresh-token cookie) before it knows whether
+  // the user is actually a guest.
   const [isGuest, setIsGuest] = useState(false);
 
   useEffect(() => {
-    if (getAccessToken()) {
-      router.replace("/");
-      return;
+    let cancelled = false;
+
+    async function check() {
+      if (getAccessToken()) {
+        router.replace("/");
+        return;
+      }
+      try {
+        await refreshSession();
+        router.replace("/");
+      } catch {
+        if (!cancelled) setIsGuest(true);
+      }
     }
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- see comment above: this is the earliest point localStorage can be read, not an avoidable synchronous update.
-    setIsGuest(true);
+
+    check();
+    return () => {
+      cancelled = true;
+    };
   }, [router]);
 
   if (!isGuest) return null;

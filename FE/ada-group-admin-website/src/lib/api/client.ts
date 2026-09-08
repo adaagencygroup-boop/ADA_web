@@ -3,47 +3,49 @@ import axios, {
   type InternalAxiosRequestConfig,
 } from "axios";
 import type { APIResponse } from "@/src/lib/api/types";
-import {
-  clearAuthTokens,
-  getAccessToken,
-  getRefreshToken,
-  setAccessToken,
-  setRefreshToken,
-} from "@/src/lib/storage";
+import { clearAuthTokens, getAccessToken, setAccessToken } from "@/src/lib/storage";
 
 const BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8080/api/v1";
 
+// `withCredentials` is required on both instances: the refresh token is issued
+// as an httpOnly cookie (scoped to /api/v1/auth) rather than in the response
+// body, so the browser only stores/sends it on cross-origin requests that opt
+// in via withCredentials.
 export const apiClient = axios.create({
   baseURL: BASE_URL,
   headers: { "Content-Type": "application/json" },
+  withCredentials: true,
 });
 
 const refreshClient = axios.create({
   baseURL: BASE_URL,
   headers: { "Content-Type": "application/json" },
+  withCredentials: true,
 });
 
 type RetryableRequestConfig = InternalAxiosRequestConfig & {
   _retry?: boolean;
 };
 
-type TokenPair = { accessToken: string; refreshToken: string };
+let refreshPromise: Promise<string> | null = null;
 
-let refreshPromise: Promise<TokenPair> | null = null;
-
-function refreshAccessToken(): Promise<TokenPair> {
+// Exchanges the httpOnly refresh-token cookie for a fresh access token. Shared
+// (via the in-flight `refreshPromise`) between the 401-retry interceptor below
+// and the RequireAuth/GuestOnly bootstrap check, since the access token now
+// lives only in memory and is lost on every full page reload — there is no
+// client-readable refresh token to check first, so callers just attempt this
+// and treat a rejection as "not logged in".
+export function refreshSession(): Promise<string> {
   if (!refreshPromise) {
     refreshPromise = refreshClient
-      .post<APIResponse<TokenPair & { tokenType: string }>>(
-        "/auth/refreshToken",
-        { refreshToken: getRefreshToken() }
+      .post<APIResponse<{ accessToken: string; tokenType: string }>>(
+        "/auth/refreshToken"
       )
       .then((res) => {
-        const { accessToken, refreshToken } = res.data.data;
+        const { accessToken } = res.data.data;
         setAccessToken(accessToken);
-        setRefreshToken(refreshToken);
-        return { accessToken, refreshToken };
+        return accessToken;
       })
       .finally(() => {
         refreshPromise = null;
@@ -77,14 +79,9 @@ apiClient.interceptors.response.use(
       !originalRequest._retry &&
       !isAuthEndpoint
     ) {
-      if (!getRefreshToken()) {
-        redirectToLogin();
-        return Promise.reject(new Error("Phiên đăng nhập đã hết hạn"));
-      }
-
       originalRequest._retry = true;
       try {
-        const { accessToken } = await refreshAccessToken();
+        const accessToken = await refreshSession();
         originalRequest.headers.Authorization = `Bearer ${accessToken}`;
         return apiClient(originalRequest);
       } catch {
