@@ -17,6 +17,7 @@ import {
   useExportBackupsExcel,
 } from "@/src/hooks/useSettings";
 import type { BackupStatus } from "@/src/lib/api/settings";
+import { endOfDayISO, startOfDayISO } from "@/src/lib/date-range";
 import DateRangeFilter from "@/src/components/shared/DateRangeFilter";
 
 const STATUS_OPTIONS: { value: "all" | BackupStatus; label: string }[] = [
@@ -41,26 +42,6 @@ function formatDateParts(iso: string | null) {
 function formatSize(bytes: number | null) {
   if (bytes == null) return "—";
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
-}
-
-function startOfDayISO(date: Date) {
-  return new Date(
-    Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0)
-  ).toISOString();
-}
-
-function endOfDayISO(date: Date) {
-  return new Date(
-    Date.UTC(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate(),
-      23,
-      59,
-      59,
-      999
-    )
-  ).toISOString();
 }
 
 export default function BackupHistoryTable() {

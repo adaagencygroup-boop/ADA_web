@@ -26,9 +26,9 @@ const TABS: { value: Tab; label: string }[] = [
 ];
 
 const EMPLOYMENT_TYPE_LABELS: Record<EmploymentType, string> = {
-  fulltime: "Toàn thời gian",
-  parttime: "Bán thời gian",
-  remote: "Từ xa",
+  fulltime: "Full-time",
+  parttime: "Part-time",
+  remote: "Remote",
   hybrid: "Hybrid",
 };
 
@@ -39,18 +39,27 @@ function formatDeadline(iso: string | null) {
   return new Date(iso).toLocaleDateString("vi-VN");
 }
 
-export default function JobsListCard() {
+export default function JobsListCard({
+  fromDate,
+  toDate,
+}: {
+  fromDate?: string;
+  toDate?: string;
+}) {
   const [tab, setTab] = useState<Tab>("all");
   const [searchInput, setSearchInput] = useState("");
   const [page, setPage] = useState(1);
-  const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set());
   const [deleteTarget, setDeleteTarget] = useState<Recruitment | null>(null);
 
   const search = useDebouncedValue(searchInput, 400);
 
-  const [prevSearch, setPrevSearch] = useState(search);
-  if (search !== prevSearch) {
-    setPrevSearch(search);
+  const [prevFilters, setPrevFilters] = useState({ search, fromDate, toDate });
+  if (
+    search !== prevFilters.search ||
+    fromDate !== prevFilters.fromDate ||
+    toDate !== prevFilters.toDate
+  ) {
+    setPrevFilters({ search, fromDate, toDate });
     setPage(1);
   }
 
@@ -59,6 +68,8 @@ export default function JobsListCard() {
     size: PAGE_SIZE,
     search: search || undefined,
     status: tab === "all" ? undefined : tab,
+    fromDate,
+    toDate,
   });
   const deleteMutation = useDeleteRecruitment();
 
@@ -68,34 +79,9 @@ export default function JobsListCard() {
   const currentPage = pagination?.page ?? 1;
   const totalElements = pagination?.totalElements ?? 0;
 
-  const allPagedSelected =
-    items.length > 0 && items.every((job) => selectedRows.has(job.id));
-
   function handleTabChange(next: Tab) {
     setTab(next);
     setPage(1);
-  }
-
-  function toggleRow(id: string) {
-    setSelectedRows((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-  }
-
-  function toggleAllRows() {
-    setSelectedRows((prev) => {
-      if (allPagedSelected) {
-        const next = new Set(prev);
-        items.forEach((job) => next.delete(job.id));
-        return next;
-      }
-      const next = new Set(prev);
-      items.forEach((job) => next.add(job.id));
-      return next;
-    });
   }
 
   function handleConfirmDelete() {
@@ -163,15 +149,7 @@ export default function JobsListCard() {
         <table className="w-full min-w-225 border-collapse">
           <thead>
             <tr className="border-b border-[#C4C6D2] bg-[#FCF9F8] text-left">
-              <th className="w-16 px-6 py-3">
-                <input
-                  type="checkbox"
-                  checked={allPagedSelected}
-                  onChange={toggleAllRows}
-                  className="size-4 rounded border-[#C4C6D2]"
-                />
-              </th>
-              <th className="px-3 py-3 text-sm font-medium text-[#434750]">
+              <th className="px-6 py-3 text-sm font-medium text-[#434750]">
                 Vị trí tuyển dụng
               </th>
               <th className="px-3 py-3 text-sm font-medium text-[#434750]">
@@ -197,14 +175,14 @@ export default function JobsListCard() {
           <tbody>
             {isLoading && (
               <tr>
-                <td colSpan={8} className="px-6 py-10 text-center text-sm text-[#6B7280]">
+                <td colSpan={7} className="px-6 py-10 text-center text-sm text-[#6B7280]">
                   Đang tải...
                 </td>
               </tr>
             )}
             {isError && (
               <tr>
-                <td colSpan={8} className="px-6 py-10 text-center text-sm text-red-600">
+                <td colSpan={7} className="px-6 py-10 text-center text-sm text-red-600">
                   {error?.message ?? "Đã có lỗi xảy ra khi tải danh sách tin tuyển dụng."}
                 </td>
               </tr>
@@ -215,15 +193,7 @@ export default function JobsListCard() {
                   key={job.id}
                   className="border-b border-[#C4C6D2]/50 last:border-b-0"
                 >
-                  <td className="px-6 py-4" onClick={(e) => e.stopPropagation()}>
-                    <input
-                      type="checkbox"
-                      checked={selectedRows.has(job.id)}
-                      onChange={() => toggleRow(job.id)}
-                      className="size-4 rounded border-[#C4C6D2]"
-                    />
-                  </td>
-                  <td className="px-3 py-4 text-sm font-medium text-[#316EE9]">
+                  <td className="px-6 py-4 text-sm font-medium text-[#316EE9]">
                     <Link href={`/tuyen-dung/${job.id}`} className="hover:underline">
                       {job.jobTitle}
                     </Link>
@@ -274,7 +244,7 @@ export default function JobsListCard() {
             {!isLoading && !isError && items.length === 0 && (
               <tr>
                 <td
-                  colSpan={8}
+                  colSpan={7}
                   className="px-6 py-10 text-center text-sm text-[#6B7280]"
                 >
                   Không có tin tuyển dụng nào.

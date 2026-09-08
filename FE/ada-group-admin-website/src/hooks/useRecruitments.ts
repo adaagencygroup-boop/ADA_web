@@ -8,13 +8,16 @@ import { toast } from "sonner";
 import {
   createRecruitment,
   deleteRecruitment,
+  exportRecruitmentsExcel,
   getRecruitmentById,
   getRecruitmentDashboardMetrics,
   getRecruitments,
   updateRecruitment,
+  type ExportRecruitmentsParams,
   type GetRecruitmentsParams,
   type RecruitmentPayload,
 } from "@/src/lib/api/recruitment";
+import { downloadBlob } from "@/src/lib/download";
 
 const RECRUITMENTS_QUERY_KEY = ["recruitments"];
 
@@ -30,6 +33,19 @@ export function useRecruitments(params: GetRecruitmentsParams) {
     queryKey: ["recruitments", params],
     queryFn: ({ signal }) => getRecruitments(params, signal),
     placeholderData: keepPreviousData,
+  });
+}
+
+export function useExportRecruitmentsExcel() {
+  return useMutation({
+    mutationFn: (params: ExportRecruitmentsParams) =>
+      exportRecruitmentsExcel(params),
+    onSuccess: (blob) => {
+      const timestamp = new Date().toISOString().slice(0, 10);
+      downloadBlob(blob, `tin-tuyen-dung-${timestamp}.xlsx`);
+      toast.success("Đã xuất file Excel thành công");
+    },
+    onError: (error: Error) => toast.error(error.message),
   });
 }
 

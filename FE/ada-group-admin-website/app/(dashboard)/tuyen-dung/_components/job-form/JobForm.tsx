@@ -50,9 +50,9 @@ import {
 } from "@/src/lib/validations/recruitment";
 
 const EMPLOYMENT_TYPE_OPTIONS: { value: EmploymentType; label: string }[] = [
-  { value: "fulltime", label: "Toàn thời gian" },
-  { value: "parttime", label: "Bán thời gian" },
-  { value: "remote", label: "Từ xa" },
+  { value: "fulltime", label: "Full-time" },
+  { value: "parttime", label: "Part-time" },
+  { value: "remote", label: "Remote" },
   { value: "hybrid", label: "Hybrid" },
 ];
 

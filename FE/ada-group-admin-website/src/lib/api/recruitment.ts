@@ -42,6 +42,17 @@ export type GetRecruitmentsParams = {
   departmentId?: string;
   employmentType?: EmploymentType;
   search?: string;
+  fromDate?: string;
+  toDate?: string;
+};
+
+export type ExportRecruitmentsParams = {
+  status?: RecruitmentStatus;
+  departmentId?: string;
+  employmentType?: EmploymentType;
+  search?: string;
+  fromDate?: string;
+  toDate?: string;
 };
 
 export type RecruitmentPayload = {
@@ -82,6 +93,18 @@ export function getRecruitments(
   return unwrap<PageResponse<Recruitment>>(
     apiClient.get("/admin/recruitments", { params, signal })
   );
+}
+
+export async function exportRecruitmentsExcel(
+  params: ExportRecruitmentsParams,
+  signal?: AbortSignal
+) {
+  const response = await apiClient.get("/admin/recruitments/exportExcel", {
+    params,
+    signal,
+    responseType: "blob",
+  });
+  return response.data as Blob;
 }
 
 export function getRecruitmentById(id: string, signal?: AbortSignal) {

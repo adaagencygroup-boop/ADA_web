@@ -16,6 +16,7 @@ import {
   useLoginHistories,
 } from "@/src/hooks/useAccount";
 import type { LoginStatus } from "@/src/lib/api/account";
+import { endOfDayISO, startOfDayISO } from "@/src/lib/date-range";
 
 const STATUS_OPTIONS: { value: "all" | LoginStatus; label: string }[] = [
   { value: "all", label: "Tất cả trạng thái" },
@@ -35,26 +36,6 @@ function getDeviceIcon(userAgent: string | null) {
 function formatDateTime(iso: string) {
   const date = new Date(iso);
   return `${date.toLocaleDateString("vi-VN")}, ${date.toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" })}`;
-}
-
-function startOfDayISO(date: Date) {
-  return new Date(
-    Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0)
-  ).toISOString();
-}
-
-function endOfDayISO(date: Date) {
-  return new Date(
-    Date.UTC(
-      date.getFullYear(),
-      date.getMonth(),
-      date.getDate(),
-      23,
-      59,
-      59,
-      999
-    )
-  ).toISOString();
 }
 
 export default function LoginHistoryTable() {

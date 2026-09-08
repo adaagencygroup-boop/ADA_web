@@ -7,14 +7,28 @@ import type { DateRange } from "react-day-picker";
 import DateRangeButton from "@/app/(dashboard)/tuyen-dung/_components/DateRangeButton";
 import StatsGrid from "@/app/(dashboard)/tuyen-dung/_components/StatsGrid";
 import JobsListCard from "@/app/(dashboard)/tuyen-dung/_components/JobsListCard";
+import { useExportRecruitmentsExcel } from "@/src/hooks/useRecruitments";
+import { endOfDayISO, startOfDayISO } from "@/src/lib/date-range";
 
 const DEFAULT_RANGE: DateRange = {
-  from: new Date(2025, 3, 18),
-  to: new Date(2025, 4, 18),
+  from: undefined,
+  to: undefined,
 };
 
 export default function RecruitmentDashboard() {
   const [dateRange, setDateRange] = useState<DateRange>(DEFAULT_RANGE);
+  const exportMutation = useExportRecruitmentsExcel();
+
+  const fromDate = dateRange.from ? startOfDayISO(dateRange.from) : undefined;
+  const toDate = dateRange.to
+    ? endOfDayISO(dateRange.to)
+    : dateRange.from
+      ? endOfDayISO(dateRange.from)
+      : undefined;
+
+  function handleExport() {
+    exportMutation.mutate({ fromDate, toDate });
+  }
 
   return (
     <div className="flex flex-1 flex-col gap-7.5">
@@ -41,10 +55,12 @@ export default function RecruitmentDashboard() {
           <DateRangeButton value={dateRange} onChange={setDateRange} />
           <button
             type="button"
-            className="flex h-9.5 shrink-0 items-center gap-2 rounded-lg border border-[#C4C6D2] bg-white px-4 text-sm font-medium text-[#1C1B1B] shadow-xs hover:bg-[#F8FAFC]"
+            onClick={handleExport}
+            disabled={exportMutation.isPending}
+            className="flex h-9.5 shrink-0 items-center gap-2 rounded-lg border border-[#C4C6D2] bg-white px-4 text-sm font-medium text-[#1C1B1B] shadow-xs hover:bg-[#F8FAFC] disabled:cursor-not-allowed disabled:opacity-50"
           >
             <Download className="size-4" />
-            Xuất báo cáo
+            {exportMutation.isPending ? "Đang xuất..." : "Xuất báo cáo"}
           </button>
         </div>
       </div>
@@ -53,7 +69,7 @@ export default function RecruitmentDashboard() {
 
       <div className="w-full border-t border-[#C4C6D2]" />
 
-      <JobsListCard />
+      <JobsListCard fromDate={fromDate} toDate={toDate} />
     </div>
   );
 }

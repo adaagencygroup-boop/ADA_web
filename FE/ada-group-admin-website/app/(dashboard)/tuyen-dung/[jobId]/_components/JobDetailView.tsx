@@ -46,9 +46,9 @@ const STATUS_LABELS: Record<RecruitmentStatus, string> = {
 };
 
 const EMPLOYMENT_TYPE_LABELS: Record<EmploymentType, string> = {
-  fulltime: "Toàn thời gian",
-  parttime: "Bán thời gian",
-  remote: "Từ xa",
+  fulltime: "Full-time",
+  parttime: "Part-time",
+  remote: "Remote",
   hybrid: "Hybrid",
 };
 

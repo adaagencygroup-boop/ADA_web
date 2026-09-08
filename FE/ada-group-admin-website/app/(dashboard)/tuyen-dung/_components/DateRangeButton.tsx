@@ -59,7 +59,7 @@ export default function DateRangeButton({
           onClick={handleRefresh}
           className="rounded p-0.5 text-[#1C1B1B] hover:bg-[#F3F4F6]"
         >
-          <RefreshCw className="size-3.5" />
+          <CalendarIcon className="size-3.5" />
         </button>
       </div>
 
