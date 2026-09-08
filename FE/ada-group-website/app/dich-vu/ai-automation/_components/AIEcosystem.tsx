@@ -40,9 +40,9 @@ export default function AIEcosystem() {
           <div className="flex-1 w-full lg:w-1/2">
             <div className="relative w-full aspect-video lg:aspect-16/10 bg-[#020e1f] rounded-xl lg:rounded-2xl overflow-hidden shadow-2xl border border-slate-700/50">
               <Image 
-                src="https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/dong-hanh-cung-doanh-nghiep-tren-hanh-trinh-chuyen-doi-so-02.jpg" 
+                src="https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/dich-vu/ai/AIEcosystem.png" 
                 alt="System Ecosystem Diagram" 
-                fill 
+                fill sizes="(max-width: 768px) 100vw, 50vw" 
                 className="object-cover opacity-90" 
               />
             </div>
