@@ -1,0 +1,19 @@
+package com.ada.app.modules.user.dto;
+import com.ada.app.modules.user.enums.LoginStatus;
+import java.time.Instant;
+import java.util.UUID;
+public record LoginHistoryDTO(
+  UUID id,
+  UUID userId,
+  UUID sessionId,
+  UUID deviceId,
+  String deviceName,
+  String IPAddress,
+  String geoCountry,
+  String geoCity,
+  Boolean isNewIP,
+  String userAgent,
+  LoginStatus status,
+  String failureReason,
+  Instant createdAt
+) {}

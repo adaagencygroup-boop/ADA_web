@@ -1,0 +1,7 @@
+FE
+target
+.git
+.mvn
+*.md
+nginx/ssl
+.env

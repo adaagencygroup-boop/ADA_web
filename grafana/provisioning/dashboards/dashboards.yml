@@ -1,0 +1,11 @@
+apiVersion: 1
+providers:
+  - name: 'ada'
+    orgId: 1
+    folder: 'ada'
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 1
+    allowUiUpdates: true
+    options:
+      path: /etc/grafana/provisioning/dashboards

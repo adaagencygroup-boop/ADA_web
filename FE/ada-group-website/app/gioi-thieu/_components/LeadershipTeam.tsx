@@ -1,0 +1,133 @@
+"use client";
+
+import { useRef } from "react";
+import Image from "next/image";
+
+type IconProps = { className?: string };
+
+function ChevronLeftIcon({ className = "h-3 w-3" }: IconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2.5}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="m15 18-6-6 6-6" />
+    </svg>
+  );
+}
+
+function ChevronRightIcon({ className = "h-3 w-3" }: IconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2.5}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="m9 18 6-6-6-6" />
+    </svg>
+  );
+}
+
+const CONTENT = {
+  title: "Đội ngũ lãnh đạo",
+  description: "Những chuyên gia tâm huyết dẫn dắt ADA Group.",
+};
+
+const AVATAR = "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/gioi-thieu/BusinessProfile.png";
+
+const LEADERS = [
+  { name: "Đô Minh Quân", role: "Chủ tịch Hội đồng quản trị", image: AVATAR },
+  { name: "Đinh Đức Kiên", role: "Giám đốc Điều hành", image: AVATAR },
+  { name: "Nguyễn Văn Thuân", role: "Giám đốc Công nghệ", image: AVATAR },
+  { name: "Trương Tấn Nghĩa", role: "Giám đốc Vận hành", image: AVATAR },
+  { name: "Nguyễn Văn Đạt", role: "Trưởng phòng Phát triển", image: AVATAR },
+  { name: "Mai Văn Đạt", role: "Trưởng phòng Kinh doanh", image: AVATAR },
+];
+
+export default function LeadershipTeam() {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const scrollByCard = (direction: 1 | -1) => {
+    const track = scrollRef.current;
+    if (!track) return;
+    const card = track.firstElementChild as HTMLElement | null;
+    const amount = card ? card.offsetWidth + 24 : track.clientWidth;
+    track.scrollBy({ left: amount * direction, behavior: "smooth" });
+  };
+
+  return (
+    <section className="section-y bg-white">
+      <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
+        <div className="flex items-end justify-between gap-4 border-b border-zinc-300/40 pb-4 lg:border-none lg:pb-0">
+          <div>
+            <h2 className="text-[28px] font-semibold leading-[1.2] text-zinc-900 lg:text-[44px] lg:leading-[1.1]">
+              {CONTENT.title}
+            </h2>
+            <p className="mt-1 text-[14px] lg:text-[16px] text-gray-600">
+              {CONTENT.description}
+            </p>
+          </div>
+
+          <div className="hidden shrink-0 items-center gap-2 lg:flex">
+            <button
+              type="button"
+              onClick={() => scrollByCard(-1)}
+              aria-label="Xem lãnh đạo trước"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-zinc-300 text-zinc-900 transition-colors hover:bg-zinc-50"
+            >
+              <ChevronLeftIcon />
+            </button>
+            <button
+              type="button"
+              onClick={() => scrollByCard(1)}
+              aria-label="Xem lãnh đạo tiếp theo"
+              className="flex h-10 w-10 items-center justify-center rounded-full border border-zinc-300 text-zinc-900 transition-colors hover:bg-zinc-50"
+            >
+              <ChevronRightIcon />
+            </button>
+          </div>
+        </div>
+
+        <div
+          ref={scrollRef}
+          className="mt-(--inner-space) flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-2 [-ms-overflow-style:none] scrollbar-none lg:gap-6 [&::-webkit-scrollbar]:hidden"
+        >
+          {LEADERS.map((leader) => (
+            <div
+              key={leader.name}
+              className="w-70 shrink-0 snap-start rounded-lg border border-zinc-200/60 bg-[#FCF8FB] shadow-sm lg:w-[calc((100%-48px)/3)] lg:border-0 lg:bg-transparent lg:shadow-none"
+            >
+              <div className="relative aspect-417/368 w-full overflow-hidden rounded-t-lg bg-zinc-200 lg:rounded-lg lg:shadow-sm">
+                <Image
+                  src={leader.image}
+                  alt={leader.name}
+                  fill
+                  sizes="(min-width: 1024px) calc((100% - 48px) / 3), 280px"
+                  className="object-cover"
+                />
+              </div>
+
+              <div className="border-t border-[#003384]/20 p-4 text-center lg:border-none lg:px-0 lg:pt-4">
+                <h3 className="text-sm font-semibold text-zinc-900">
+                  {leader.name}
+                </h3>
+                <p className="mt-1 text-xs text-[#002A64]">{leader.role}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
