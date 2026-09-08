@@ -314,7 +314,7 @@ export default function JobForm({
         <div className="flex flex-col gap-6 xl:col-span-2">
           <div className="flex flex-col gap-6 rounded-xl border border-[#C4C6D2] bg-[#FCF9F8] p-6 shadow-xs">
             <h2 className="flex items-center gap-2 text-[22px] font-semibold text-[#0054CD]">
-              <span className="flex size-6 items-center justify-center rounded-full bg-[#0054CD] text-sm font-bold text-white">
+              <span className="flex size-6 items-center justify-center rounded-full bg-[#0054CD] text-sm font-semibold text-white">
                 1
               </span>
               THÔNG TIN CƠ BẢN
@@ -507,7 +507,7 @@ export default function JobForm({
 
           <div className="flex flex-col gap-6 rounded-xl border border-[#C4C6D2] bg-[#FCF9F8] p-6 shadow-xs">
             <h2 className="flex items-center gap-2 text-[22px] font-semibold text-[#0054CD]">
-              <span className="flex size-6 items-center justify-center rounded-full bg-[#0054CD] text-sm font-bold text-white">
+              <span className="flex size-6 items-center justify-center rounded-full bg-[#0054CD] text-sm font-semibold text-white">
                 2
               </span>
               NỘI DUNG TUYỂN DỤNG

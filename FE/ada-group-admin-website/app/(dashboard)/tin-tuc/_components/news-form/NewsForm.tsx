@@ -241,7 +241,7 @@ export default function NewsForm({
       <div className="flex flex-col gap-6 lg:flex-row lg:items-start">
         <div className="flex flex-1 flex-col gap-6">
           <div className="flex flex-col gap-4 rounded-lg border border-[#E2E8F0] bg-white p-6 shadow-xs">
-            <h2 className="border-b border-[#F1F5F9] pb-2 text-lg font-bold text-[#1E293B]">
+            <h2 className="border-b border-[#F1F5F9] pb-2 text-lg font-semibold text-[#1E293B]">
               Thông tin cơ bản
             </h2>
 
@@ -298,7 +298,7 @@ export default function NewsForm({
           </div>
 
           <div className="flex flex-col gap-3 rounded-lg border border-[#E2E8F0] bg-white p-6 shadow-xs">
-            <h2 className="border-b border-[#F1F5F9] pb-2 text-lg font-bold text-[#1E293B]">
+            <h2 className="border-b border-[#F1F5F9] pb-2 text-lg font-semibold text-[#1E293B]">
               Nội dung bài viết <span className="text-red-500">*</span>
             </h2>
             <Controller
@@ -320,7 +320,7 @@ export default function NewsForm({
 
         <div className="flex w-full flex-col gap-6 lg:w-95 lg:shrink-0">
           <div className="flex flex-col gap-3 rounded-lg border border-[#E2E8F0] bg-white p-6 shadow-xs">
-            <h2 className="text-lg font-bold text-[#1E293B]">Ảnh đại diện</h2>
+            <h2 className="text-lg font-semibold text-[#1E293B]">Ảnh đại diện</h2>
             <div
               onDragOver={(event) => {
                 event.preventDefault();
@@ -387,7 +387,7 @@ export default function NewsForm({
           </div>
 
           <div className="flex flex-col gap-4 rounded-lg border border-[#E2E8F0] bg-white p-6 shadow-xs">
-            <h2 className="border-b border-[#F1F5F9] pb-2 text-lg font-bold text-[#1E293B]">
+            <h2 className="border-b border-[#F1F5F9] pb-2 text-lg font-semibold text-[#1E293B]">
               Cài đặt khác
             </h2>
             <div className="flex items-center justify-between gap-4">

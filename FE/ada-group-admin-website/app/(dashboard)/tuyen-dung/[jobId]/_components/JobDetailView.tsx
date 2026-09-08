@@ -142,7 +142,7 @@ export default function JobDetailView({ job }: { job: RecruitmentDetail }) {
                 <span className="w-fit rounded-full bg-white/20 px-3 py-1 text-xs font-medium text-white backdrop-blur-xs">
                   {EMPLOYMENT_TYPE_LABELS[job.employmentType]}
                 </span>
-                <h2 className="text-4xl font-bold tracking-tight text-white">
+                <h2 className="text-4xl font-semibold tracking-tight text-white">
                   {job.jobTitle}
                 </h2>
                 <div className="flex items-center gap-4 text-sm text-white/90">
@@ -166,7 +166,7 @@ export default function JobDetailView({ job }: { job: RecruitmentDetail }) {
                   <span className="text-xs text-white/80">
                     Hạn nộp hồ sơ
                   </span>
-                  <span className="text-xs font-bold text-white">
+                  <span className="text-xs font-semibold text-white">
                     {formatDate(job.expiresAt)}
                   </span>
                 </div>

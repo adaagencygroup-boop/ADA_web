@@ -1,6 +1,7 @@
 "use client";
 
-import { Briefcase, Calendar, Users, XCircle } from "lucide-react";
+import Link from "next/link";
+import { Briefcase, Calendar, Eye, Users, XCircle } from "lucide-react";
 import { useRecruitmentDashboardMetrics } from "@/src/hooks/useRecruitments";
 
 export default function StatsGrid() {
@@ -20,6 +21,7 @@ export default function StatsGrid() {
       icon: Users,
       iconBg: "bg-[#D1FAE5]",
       iconColor: "text-[#047857]",
+      href: "/tuyen-dung/ung-vien",
     },
     {
       label: "Tin sắp hết hạn",
@@ -42,7 +44,7 @@ export default function StatsGrid() {
       {STATS.map((stat) => (
         <div
           key={stat.label}
-          className="flex items-center gap-4 rounded-xl border border-[#C4C6D2] bg-white px-6 py-6 shadow-xs"
+          className="relative flex items-center gap-4 rounded-xl border border-[#C4C6D2] bg-white px-6 py-6 shadow-xs"
         >
           <div
             className={`flex size-12 shrink-0 items-center justify-center rounded-lg ${stat.iconBg}`}
@@ -53,10 +55,19 @@ export default function StatsGrid() {
             <span className="text-sm font-medium text-[#434750]">
               {stat.label}
             </span>
-            <span className="text-4xl font-bold tracking-tight text-[#1C1B1B]">
+            <span className="text-4xl font-semibold tracking-tight text-[#1C1B1B]">
               {isLoading ? "—" : stat.value}
             </span>
           </div>
+          {stat.href && (
+            <Link
+              href={stat.href}
+              aria-label={`Xem ${stat.label.toLowerCase()}`}
+              className="absolute top-4 right-4 flex size-8 items-center justify-center rounded-lg text-[#64748B] hover:bg-[#F1F5F9] hover:text-[#1C1B1B]"
+            >
+              <Eye className="size-4" />
+            </Link>
+          )}
         </div>
       ))}
     </div>

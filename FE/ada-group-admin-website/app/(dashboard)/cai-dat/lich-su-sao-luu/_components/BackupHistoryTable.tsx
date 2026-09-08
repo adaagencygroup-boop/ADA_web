@@ -160,25 +160,25 @@ export default function BackupHistoryTable() {
         <table className="w-full min-w-225 border-collapse">
           <thead>
             <tr className="border-b border-[#E5E7EB] bg-[#F9FAFB] text-left">
-              <th className="px-6 py-4 text-center text-sm font-bold text-[#374151]">
+              <th className="px-6 py-4 text-center text-sm font-semibold text-[#374151]">
                 STT
               </th>
-              <th className="px-6 py-4 text-sm font-bold text-[#374151]">
+              <th className="px-6 py-4 text-sm font-semibold text-[#374151]">
                 Tên bản sao lưu
               </th>
-              <th className="px-6 py-4 text-sm font-bold text-[#374151]">
+              <th className="px-6 py-4 text-sm font-semibold text-[#374151]">
                 Dung lượng
               </th>
-              <th className="px-6 py-4 text-sm font-bold text-[#374151]">
+              <th className="px-6 py-4 text-sm font-semibold text-[#374151]">
                 Thời gian bắt đầu
               </th>
-              <th className="px-6 py-4 text-sm font-bold text-[#374151]">
+              <th className="px-6 py-4 text-sm font-semibold text-[#374151]">
                 Thời gian hoàn thành
               </th>
-              <th className="px-6 py-4 text-sm font-bold text-[#374151]">
+              <th className="px-6 py-4 text-sm font-semibold text-[#374151]">
                 Trạng thái
               </th>
-              <th className="px-6 py-4 text-center text-sm font-bold text-[#374151]">
+              <th className="px-6 py-4 text-center text-sm font-semibold text-[#374151]">
                 Thao tác
               </th>
             </tr>
