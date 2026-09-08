@@ -65,7 +65,7 @@ export default function MobileCrossPlatform() {
           
           {/* Mobile Image (Hidden on Desktop) */}
           <div className="lg:hidden relative w-full min-h-64 bg-slate-100 border-b border-slate-100">
-            <Image src="https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/dich-vu/mobile/AIUseCases4.png" alt="Ứng dụng đa nền tảng" fill className="object-cover" />
+            <Image src="https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/dich-vu/mobile/AIUseCases4.png" alt="Ứng dụng đa nền tảng" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
           </div>
 
           {/* Text Content */}

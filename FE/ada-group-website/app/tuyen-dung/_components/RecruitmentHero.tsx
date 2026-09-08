@@ -46,7 +46,7 @@ export default function RecruitmentHero() {
           <Image 
             src="https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/tuyen-dung/RecruitmentHero1.png" 
             alt="ADA Group Office" 
-            fill 
+            fill sizes="(max-width: 768px) 100vw, 90vw"
             className="object-cover" 
           />
           {/* Overlay to ensure text readability */}
@@ -60,7 +60,7 @@ export default function RecruitmentHero() {
             <Image 
               src="https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/tuyen-dung/RecruitmentHero1.png" 
               alt="ADA Group Office" 
-              fill 
+              fill sizes="(max-width: 768px) 100vw, 90vw"
               className="object-cover" 
             />
           </div>

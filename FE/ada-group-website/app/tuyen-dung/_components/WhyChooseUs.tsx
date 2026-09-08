@@ -73,20 +73,21 @@ export default function WhyChooseUs() {
                 <Image 
                   src={item.image} 
                   alt={item.title} 
-                  fill 
+                  fill sizes="(max-width: 768px) 100vw, 25vw"
                   className="object-cover" 
                 />
               </div>
 
               {/* Content */}
               <div className="p-6 lg:p-8 flex flex-col flex-1">
-                <div className="hidden md:flex w-12 h-12 rounded-xl bg-blue-50 text-blue-600 items-center justify-center mb-6">
-                  {item.icon}
+                <div className="flex md:items-center gap-3 lg:gap-4 mb-3 lg:mb-4">
+                  <div className="hidden md:flex shrink-0 w-12 h-12 rounded-xl bg-blue-50 text-blue-600 items-center justify-center">
+                    {item.icon}
+                  </div>
+                  <h3 className="text-[16px] lg:text-[18px] font-semibold text-zinc-900 leading-snug text-left">
+                    {item.title}
+                  </h3>
                 </div>
-                
-                <h3 className="text-[16px] lg:text-[18px] font-semibold text-zinc-900 mb-3 leading-snug text-justify">
-                  {item.title}
-                </h3>
                 
                 <p className="text-[14px] lg:text-[16px] text-zinc-500 leading-relaxed flex-1 text-justify">
                   {item.desc}

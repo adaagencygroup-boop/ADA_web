@@ -145,7 +145,7 @@ export default function EnterpriseSolutions() {
                     </Link>
                   </div>
                   <div className="w-full lg:flex-1 bg-[#111827] min-h-75 relative flex items-center justify-center p-8">
-                    <Image src={item.imagePlaceholder} alt={item.title} fill className="object-cover rounded-xl opacity-80" />
+                    <Image src={item.imagePlaceholder} alt={item.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover rounded-xl opacity-80" />
                   </div>
                 </div>
               );
@@ -179,7 +179,7 @@ export default function EnterpriseSolutions() {
                     </Link>
                   </div>
                   <div className="w-full lg:flex-1 bg-slate-200 min-h-60 md:min-h-75 relative flex items-center justify-center order-1 lg:order-2">
-                    <Image src={item.imagePlaceholder} alt={item.title} fill className="object-cover" />
+                    <Image src={item.imagePlaceholder} alt={item.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
                   </div>
                 </div>
               );
@@ -212,7 +212,7 @@ export default function EnterpriseSolutions() {
                   </Link>
                 </div>
                 <div className="w-full xl:w-[45%] bg-slate-100 min-h-64 xl:min-h-full relative flex items-center justify-center order-1 xl:order-2 border-b xl:border-b-0 xl:border-l border-slate-100">
-                  <Image src={item.imagePlaceholder} alt={item.title} fill className="object-cover" />
+                  <Image src={item.imagePlaceholder} alt={item.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
                 </div>
               </div>
             );

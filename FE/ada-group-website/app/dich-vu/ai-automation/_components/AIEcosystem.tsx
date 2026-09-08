@@ -42,7 +42,7 @@ export default function AIEcosystem() {
               <Image 
                 src="https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/dich-vu/ai/AIEcosystem.png" 
                 alt="System Ecosystem Diagram" 
-                fill 
+                fill sizes="(max-width: 768px) 100vw, 50vw" 
                 className="object-cover opacity-90" 
               />
             </div>

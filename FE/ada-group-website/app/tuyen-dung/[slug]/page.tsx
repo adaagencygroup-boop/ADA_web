@@ -272,7 +272,7 @@ export default async function JobDetailsPage({ params }: PageProps) {
                 <Image 
                   src="https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/gioi-thieu/AboutIntro.png" 
                   alt="ADA Group Office" 
-                  fill 
+                  fill sizes="(max-width: 768px) 100vw, 30vw"
                   className="object-cover"
                 />
               </div>

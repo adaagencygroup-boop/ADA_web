@@ -18,7 +18,7 @@ export default function WebIntro() {
 
         {/* Large Image */}
         <div className="hidden md:flex w-full aspect-4/3 md:aspect-video lg:aspect-21/9 bg-slate-100 rounded-3xl lg:rounded-4xl border border-slate-200 items-center justify-center relative overflow-hidden shadow-sm">
-          <Image src="https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/dich-vu/web/WebIntro.png" alt="ADA Group Workspace" fill className="object-cover" />
+          <Image src="https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/dich-vu/web/WebIntro.png" alt="ADA Group Workspace" fill sizes="(max-width: 768px) 100vw, 80vw" className="object-cover" />
         </div>
 
       </div>

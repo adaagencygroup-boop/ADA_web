@@ -156,7 +156,7 @@ export default function WebSolutions() {
                     </Link>
                   </div>
                   <div className="w-full lg:flex-1 bg-slate-100 lg:bg-[#111827] min-h-64 lg:min-h-75 relative flex items-center justify-center lg:p-8">
-                    <Image src={item.imagePlaceholder} alt={item.title} fill className="object-cover " />
+                    <Image src={item.imagePlaceholder} alt={item.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover " />
                   </div>
                 </div>
               );
@@ -192,7 +192,7 @@ export default function WebSolutions() {
                     </Link>
                   </div>
                   <div className="w-full lg:flex-1 bg-slate-200 min-h-75 relative flex items-center justify-center">
-                    <Image src={item.imagePlaceholder} alt={item.title} fill className="object-cover" />
+                    <Image src={item.imagePlaceholder} alt={item.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
                   </div>
                 </div>
               );
@@ -227,7 +227,7 @@ export default function WebSolutions() {
                   </Link>
                 </div>
                 <div className="w-full xl:w-[45%] bg-slate-100 min-h-64 xl:min-h-full relative flex items-center justify-center">
-                  <Image src={item.imagePlaceholder} alt={item.title} fill className="object-cover" />
+                  <Image src={item.imagePlaceholder} alt={item.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
                 </div>
               </div>
             );

@@ -193,14 +193,14 @@ export default function AIUseCases() {
                     </div>
                     {item.image && (
                       <div className="relative w-full aspect-16/10 rounded-2xl overflow-hidden bg-slate-100 order-1 lg:hidden">
-                        <Image src={item.image} alt={item.title} fill className="object-cover" />
+                        <Image src={item.image} alt={item.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
                       </div>
                     )}
                   </>
                 ) : (
                   <div className={`relative w-full min-h-64 lg:min-h-0 ${item.id === '01' ? 'lg:aspect-4/3' : 'lg:aspect-16/10'} rounded-2xl overflow-hidden ${item.id === '01' ? 'shadow-lg border border-slate-200/50' : 'bg-slate-100'} order-1 ${layout === 'right-text' ? 'lg:order-1' : 'lg:order-2'}`}>
                     {item.image && (
-                      <Image src={item.image} alt={item.title} fill className="object-cover" />
+                      <Image src={item.image} alt={item.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
                     )}
                     {imageBadge && (
                       <div className="absolute top-4 right-4 bg-white/95 backdrop-blur px-4 py-2.5 rounded-xl shadow-lg border border-slate-100 flex items-center gap-(--inner-space)">
@@ -229,7 +229,7 @@ export default function AIUseCases() {
                 
                 {item.image && (
                   <div className={`relative w-full min-h-64 lg:min-h-0 lg:aspect-4/3 rounded-2xl overflow-hidden mb-(--inner-space) lg:mt-auto order-1 ${item.id === '06' ? 'lg:hidden' : 'lg:order-3'}`}>
-                    <Image src={item.image} alt={item.title} fill className="object-cover" />
+                    <Image src={item.image} alt={item.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
                   </div>
                 )}
 
