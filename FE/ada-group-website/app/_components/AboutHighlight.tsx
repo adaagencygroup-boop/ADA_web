@@ -15,11 +15,11 @@ const CONTENT = {
 
 const IMAGES = {
   primary: {
-    src: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/dong-hanh-cung-doanh-nghiep-tren-hanh-trinh-chuyen-doi-so-01.jpg",
+    src: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/trang-chu/AboutHighlight1.png",
     alt: "Không gian làm việc tại văn phòng ADA Group",
   },
   secondary: {
-    src: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/dong-hanh-cung-doanh-nghiep-tren-hanh-trinh-chuyen-doi-so-02.jpg",
+    src: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/trang-chu/AboutHighlight.webp",
     alt: "Hệ thống hạ tầng máy chủ của ADA Group",
   },
 };

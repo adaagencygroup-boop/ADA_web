@@ -26,7 +26,7 @@ export default function SectorApproach({ sector }: { sector: Sector }) {
     <section className="section-y pt-0!">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center gap-4">
-          <h2 className="text-center text-2xl leading-10 font-bold text-[#001D4A] lg:text-3xl">
+          <h2 className="text-center text-[28px] leading-10 font-bold text-[#000000] lg:text-[36px]">
             {approach.heading}
           </h2>
           <span className="h-1 w-16 bg-[#2563EB]" />
@@ -53,7 +53,7 @@ export default function SectorApproach({ sector }: { sector: Sector }) {
               </div>
 
               <div className="flex min-w-0 flex-col items-start gap-6">
-                <p className="text-base leading-6.5 text-[#4B5563]">
+                <p className="text-sm leading-6.5 text-[#4B5563] lg:text-base">
                   {block.paragraph}
                 </p>
                 <ul className="flex flex-col items-start gap-4">
@@ -62,7 +62,7 @@ export default function SectorApproach({ sector }: { sector: Sector }) {
                       <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#2563EB] text-white">
                         <CheckIcon className="h-3 w-3" />
                       </span>
-                      <span className="text-base font-medium text-[#374151]">
+                      <span className="text-sm font-medium text-[#374151] lg:text-base">
                         {item}
                       </span>
                     </li>

@@ -1,8 +1,12 @@
+import Image from "next/image";
+
 const BLOCKS = [
   {
     title: "Cách chúng tôi tạo ra mỗi sản phẩm?",
     paragraph:
       "Mỗi sản phẩm tại ADA Group bắt đầu từ việc tìm hiểu bài toán và nhu cầu thực tế. Chúng tôi cùng khách hàng xác định mục tiêu, người dùng và những vấn đề cần giải quyết trước khi lựa chọn công nghệ. Từ đó, đội ngũ thiết kế và phát triển giải pháp phù hợp với từng dự án — từ website, ứng dụng web, ứng dụng di động đến các hệ thống quản lý và nền tảng chuyên biệt. Chúng tôi ưu tiên những sản phẩm dễ sử dụng, ổn định và có khả năng mở rộng theo sự phát triển của doanh nghiệp.",
+    imageSrc: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/gioi-thieu/MissionDetails1.png",
+    imageAlt: "Cách ADA Group tạo ra sản phẩm",
     imageOnLeft: false,
   },
   {
@@ -20,6 +24,8 @@ const BLOCKS = [
         </strong>
       </>
     ),
+    imageSrc: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/gioi-thieu/MissionDetails2.png",
+    imageAlt: "Công nghệ phù hợp cho từng bài toán",
     imageOnLeft: true,
   },
 ];
@@ -43,8 +49,16 @@ export default function MissionDetails() {
             </div>
 
             <div
-              className={`aspect-630/256 w-full rounded-xl bg-[#E6E8EA] ${block.imageOnLeft ? "lg:order-1" : "lg:order-2"}`}
-            />
+              className={`relative aspect-630/256 w-full overflow-hidden rounded-xl ${block.imageOnLeft ? "lg:order-1" : "lg:order-2"}`}
+            >
+              <Image
+                src={block.imageSrc}
+                alt={block.imageAlt}
+                fill
+                sizes="(min-width: 1024px) 50vw, 100vw"
+                className="object-cover"
+              />
+            </div>
           </div>
         ))}
       </div>

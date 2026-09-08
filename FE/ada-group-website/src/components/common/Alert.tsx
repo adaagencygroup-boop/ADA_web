@@ -43,7 +43,7 @@ const icons = {
   )
 };
 
-export default function Alert({ type, title, description, onClose, actionText = "Về trang chủ", actionLink = "/" }: AlertProps) {
+export default function Alert({ type, title, description, onClose, actionText = "Về trang chủ", actionLink }: AlertProps) {
   return (
     <div className="fixed inset-0 z-100 flex items-center justify-center p-4">
       <div 
