@@ -270,7 +270,7 @@ export default async function JobDetailsPage({ params }: PageProps) {
               </h3>
               <div className="relative w-full h-32 rounded-lg overflow-hidden mb-4">
                 <Image 
-                  src="https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/dong-hanh-cung-doanh-nghiep-tren-hanh-trinh-chuyen-doi-so-02.jpg" 
+                  src="https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/gioi-thieu/AboutIntro.png" 
                   alt="ADA Group Office" 
                   fill 
                   className="object-cover"
