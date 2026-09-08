@@ -1,0 +1,34 @@
+package com.ada.app.modules.recruitment.dto;
+import com.ada.app.modules.recruitment.enums.EmploymentType;
+import com.ada.app.modules.recruitment.enums.RecruitmentStatus;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.util.UUID;
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public record RecruitmentResponse(
+  UUID id,
+  String jobTitle,
+  String slug,
+  UUID departmentId,
+  String departmentName,
+  UUID recruiterId,
+  String recruiterName,
+  String location,
+  EmploymentType employmentType,
+  String workingHours,
+  String description,
+  String requirements,
+  String benefits,
+  String coverImageURL,
+  RecruitmentStatus status,
+  BigDecimal minSalary,
+  BigDecimal maxSalary,
+  Boolean isNegotiable,
+  Integer requiredCandidateNum,
+  Long applicantCount,
+  Integer viewCount,
+  Instant expiresAt,
+  Instant updatedAt,
+  Instant createdAt
+) {}

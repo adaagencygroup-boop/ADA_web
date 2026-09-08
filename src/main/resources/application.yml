@@ -1,0 +1,100 @@
+server:
+  port: ${serverPort}
+  tomcat:
+    accept-count: 2048
+    max-connections: 10000
+    keep-alive-timeout: 70000
+    max-keep-alive-requests: -1
+spring:
+  threads:
+    virtual:
+      enabled: true
+  datasource:
+    url: ${springDatasourceURL}
+    username: ${dbUsername}
+    password: ${dbPassword}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: ${hikariMaxPoolSize}
+      minimum-idle: ${hikariMinIdle}
+      idle-timeout: ${hikariIdleTimeout}
+      max-lifetime: ${hikariMaxLifetime}
+      connection-timeout: ${hikariConnectionTimeout}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl
+    properties:
+      hibernate:
+        format_sql: false
+        jdbc:
+          time_zone: UTC
+    open-in-view: false
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    locations: classpath:db/migration
+  data:
+    redis:
+      host: ${redisHost}
+      port: ${redisPort}
+      timeout: ${redisTimeout}
+  mail:
+    host: ${mailHost}
+    port: ${mailPort}
+    username: ${mailUsername}
+    password: ${mailPassword}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+  servlet:
+    multipart:
+      max-file-size: ${multipartMaxFileSize}
+      max-request-size: ${multipartMaxRequestSize}
+app:
+  jwt:
+    secret: ${jwtSecret}
+    accessExpirationSeconds: ${jwtAccessExpirationSeconds}
+    refreshExpirationSeconds: ${jwtRefreshExpirationSeconds}
+  storage:
+    path: ${storagePath}
+    publicUrl: ${storagePublicURL}
+info:
+  app:
+    name: "ada"
+    version: "1"
+    java:
+      version: "25"
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: when_authorized
+    prometheus:
+      enabled: true
+  metrics:
+    tags:
+      application: ada
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
+      percentiles:
+        http.server.requests: 0.5, 0.9, 0.95, 0.99
+  info:
+    env:
+      enabled: true
+    java:
+      enabled: true
+    os:
+      enabled: true
+  health:
+    mail:
+      enabled: false
