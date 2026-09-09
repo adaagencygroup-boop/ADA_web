@@ -25,6 +25,22 @@ export type SectorApproach = {
   blocks: SectorApproachBlock[];
 };
 
+export type SectorProductMockup = {
+  appName: string;
+  userName: string;
+  stats: { label: string; value: string }[];
+  suggestion?: { label: string; value: string };
+};
+
+export type SectorProduct = {
+  badge: string;
+  title: string;
+  description: string;
+  features: string[];
+  imageSrc?: string;
+  mockup?: SectorProductMockup;
+};
+
 export type Sector = {
   slug: string;
   eyebrow: string;
@@ -35,4 +51,5 @@ export type Sector = {
   imageUrl: string;
   whyChoose?: SectorWhyChoose;
   approach?: SectorApproach;
+  products?: SectorProduct[];
 };

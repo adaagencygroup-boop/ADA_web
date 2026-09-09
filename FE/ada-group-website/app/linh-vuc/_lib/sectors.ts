@@ -22,10 +22,8 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
     imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/y-te.jpg",
     whyChoose: {
       quoteBefore: "Mục tiêu là ",
-      quoteHighlight:
-        "rút ngắn thời gian chẩn đoán từ vài giờ xuống vài phút",
-      quoteAfter:
-        ", giúp bệnh viện tuyến tỉnh tiếp cận năng lực chuyên gia tuyến trung ương...",
+      quoteHighlight: "rút ngắn thời gian chẩn đoán từ vài giờ xuống vài phút",
+      quoteAfter: ", giúp bệnh viện tuyến tỉnh tiếp cận năng lực chuyên gia tuyến trung ương...",
       paragraph:
         "Chúng tôi tin rằng AI là chìa khóa để thu hẹp khoảng cách này, mang lại cơ hội chẩn đoán chính xác và kịp thời cho hàng triệu bệnh nhân Việt Nam.",
       stats: [
@@ -37,8 +35,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
         {
           icon: "clock",
           value: "2-3 giờ",
-          label:
-            "là thời gian trung bình để có kết quả chẩn đoán hình ảnh phức tạp.",
+          label: "là thời gian trung bình để có kết quả chẩn đoán hình ảnh phức tạp.",
         },
       ],
     },
@@ -57,6 +54,29 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
         },
       ],
     },
+    products: [
+      {
+        badge: "HEALTHCARE",
+        title: "ADAMEC",
+        description:
+          "AI hỗ trợ bác sĩ đọc và phân tích hình ảnh y khoa (X-quang, CT, MRI),\ncảnh báo bất thường và gợi ý chẩn đoán chính xác.",
+        features: [
+          "Phát hiện bất thường với độ chính xác cao",
+          "Tích hợp dễ dàng với hệ thống PACS/RIS",
+          "Báo cáo tự động, tiết kiệm thời gian cho bác sĩ",
+        ],
+        imageSrc: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/y-te.jpg",
+        mockup: {
+          appName: "ADAMEC",
+          userName: "BN. Nguyễn Văn A",
+          stats: [
+            { label: "XÁC SUẤT BẤT THƯỜNG", value: "92%" },
+            { label: "VỊ TRÍ PHÁT HIỆN", value: "Thùy chẩm trái" },
+          ],
+          suggestion: { label: "Gợi ý chẩn đoán", value: "U não / Khối choán chỗ" },
+        },
+      },
+    ],
   },
   {
     eyebrow: "AGRICULTURE",
@@ -99,6 +119,29 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
         },
       ],
     },
+    products: [
+      {
+        badge: "SMART FARM",
+        title: "ADAFARM",
+        description:
+          "Hệ thống giám sát nông nghiệp thông minh ứng dụng AI và IoT.\nCho phép điều khiển tưới tiêu tự động và theo dõi sức khỏe cây trồng.",
+        features: [
+          "Phân tích độ ẩm, nhiệt độ đất theo thời gian thực",
+          "Cảnh báo sâu bệnh sớm qua Camera AI",
+          "Truy xuất nguồn gốc bằng Blockchain",
+        ],
+        imageSrc: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/nong-nghiep.jpg",
+        mockup: {
+          appName: "ADAFARM",
+          userName: "Nông trại Xanh",
+          stats: [
+            { label: "ĐỘ ẨM ĐẤT", value: "65%" },
+            { label: "TÌNH TRẠNG", value: "Tốt" },
+          ],
+          suggestion: { label: "Hành động đề xuất", value: "Tưới nước lúc 16:00" },
+        },
+      },
+    ],
   },
   {
     eyebrow: "LEGAL & AI LAW",
@@ -141,6 +184,29 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
         },
       ],
     },
+    products: [
+      {
+        badge: "LEGAL TECH",
+        title: "ADALAW",
+        description:
+          "Nền tảng tra cứu pháp luật và tư vấn ảo 24/7, giúp doanh nghiệp và cá nhân soạn thảo hợp đồng nhanh chóng, chính xác.",
+        features: [
+          "Tóm tắt luật và án lệ tự động",
+          "Rà soát lỗ hổng pháp lý trong hợp đồng",
+          "Kết nối luật sư chuyên nghiệp",
+        ],
+        imageSrc: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/luat-phap-ly.jpg",
+        mockup: {
+          appName: "ADALAW",
+          userName: "Luật sư Trí tuệ",
+          stats: [
+            { label: "MỨC ĐỘ RỦI RO", value: "Thấp" },
+            { label: "VĂN BẢN KHỚP", value: "NĐ 13/2023" },
+          ],
+          suggestion: { label: "Hành động đề xuất", value: "Bổ sung điều khoản bảo mật" },
+        },
+      },
+    ],
   },
   {
     eyebrow: "E-COMMERCE",
@@ -183,6 +249,20 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
         },
       ],
     },
+    products: [
+      {
+        badge: "E-COMMERCE",
+        title: "ADATIK",
+        description:
+          "Công cụ AI Livestream tự động bán hàng trên các nền tảng TMĐT.\nNgười mẫu ảo tương tác thời gian thực với khách hàng.",
+        features: [
+          "MC ảo Livestream 24/7 không cần nghỉ ngơi",
+          "Tự động trả lời bình luận chốt đơn",
+          "Tăng 150% tỷ lệ chuyển đổi mua hàng",
+        ],
+        imageSrc: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/thuong-mai-dien-tu.jpg",
+      },
+    ],
   },
   {
     eyebrow: "LOGISTICS",
@@ -225,6 +305,20 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
         },
       ],
     },
+    products: [
+      {
+        badge: "TRANSPORT",
+        title: "ADACAR",
+        description:
+          "Nền tảng ghép chuyến xe tải thông minh giúp tiết kiệm 40% chi phí vận tải, giám sát hành trình bằng GPS thời gian thực.",
+        features: [
+          "Thuật toán tối ưu hóa lộ trình bằng AI",
+          "Giảm thiểu xe chạy rỗng",
+          "Thanh toán và hợp đồng vận tải điện tử",
+        ],
+        imageSrc: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/logistics-van-tai.jpg",
+      },
+    ],
   },
   {
     eyebrow: "SOCIAL",
@@ -267,6 +361,20 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
         },
       ],
     },
+    products: [
+      {
+        badge: "SOCIAL NETWORK",
+        title: "ADALOVE",
+        description:
+          "Mạng xã hội hẹn hò và kết nối tri thức đầu tiên áp dụng công nghệ eKYC xác thực danh tính 100%.",
+        features: [
+          "Phân tích MBTI để gợi ý đối tượng phù hợp",
+          "Xác thực eKYC ngăn chặn tài khoản ảo",
+          "Trợ lý AI tư vấn tình cảm",
+        ],
+        imageSrc: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/mang-xa-hoi.jpg",
+      },
+    ],
   },
   {
     eyebrow: "HEALTH & WELLNESS",
@@ -309,6 +417,20 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
         },
       ],
     },
+    products: [
+      {
+        badge: "WELLNESS",
+        title: "ADAHEALTH",
+        description:
+          "Trợ lý AI cá nhân hóa giúp thiết kế thực đơn và bài tập chuẩn y khoa dựa trên thể trạng của từng người.",
+        features: [
+          "Gợi ý calo và dinh dưỡng theo mục tiêu",
+          "Kết nối đồng hồ thông minh đo nhịp tim",
+          "Mua sắm thực phẩm hữu cơ với QR Code",
+        ],
+        imageSrc: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/suc-khoe-loi-song.png",
+      },
+    ],
   },
   {
     eyebrow: "SECURITY",
@@ -350,6 +472,20 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
         },
       ],
     },
+    products: [
+      {
+        badge: "SMART SECURITY",
+        title: "ADACAMRA",
+        description:
+          "Công nghệ cảm biến xuyên tường bằng sóng Wi-Fi đầu tiên tại Việt Nam, phát hiện đột nhập mà không xâm phạm quyền riêng tư.",
+        features: [
+          "Phát hiện nhịp tim và nhịp thở qua tường",
+          "Báo động khẩn cấp tới điện thoại chủ nhà",
+          "Đảm bảo riêng tư 100% (không thu hình ảnh)",
+        ],
+        imageSrc: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/an-ninh-cam-bien.png",
+      },
+    ],
   },
   {
     eyebrow: "FINANCE",
@@ -391,6 +527,29 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
         },
       ],
     },
+    products: [
+      {
+        badge: "FINTECH",
+        title: "ADASTOCK",
+        description:
+          "Trợ lý AI phân tích biểu đồ kỹ thuật và tin tức thị trường chứng khoán để đề xuất điểm mua/bán chuẩn xác.",
+        features: [
+          "Bot cảnh báo dòng tiền thông minh (Smart Money)",
+          "Quản lý danh mục đầu tư tự động",
+          "Báo cáo phân tích vĩ mô hàng ngày",
+        ],
+        imageSrc: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/tai-chinh-dau-tu.png",
+        mockup: {
+          appName: "ADASTOCK",
+          userName: "Nhà đầu tư F0",
+          stats: [
+            { label: "TÍN HIỆU VNINDEX", value: "Tích cực" },
+            { label: "DÒNG TIỀN VÀO", value: "+450 Tỷ" },
+          ],
+          suggestion: { label: "Hành động", value: "Gia tăng tỷ trọng Bank" },
+        },
+      },
+    ],
   },
   {
     eyebrow: "TRAVEL",
@@ -400,7 +559,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
       "AI tư vấn cá nhân hóa, vé máy bay tối ưu giá và dịch giọng nói thời gian thực.",
     content:
       "ADA Group ứng dụng AI vào du lịch và lữ hành với sản phẩm ADAGO - tư vấn hành trình cá nhân hóa, tìm vé máy bay tối ưu giá và dịch giọng nói thời gian thực.",
-    imageUrl: "https://picsum.photos/seed/travel/1200/800",
+    imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/du-lich-lu-hanh.jpg",
     whyChoose: {
       quoteBefore: "Mục tiêu là ",
       quoteHighlight: "trải nghiệm du lịch không giới hạn",
@@ -423,7 +582,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
       heading: "Cách tiếp cận của ADA Group",
       blocks: [
         {
-          imageUrl: "https://picsum.photos/seed/travel/1200/800",
+          imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/du-lich-lu-hanh.jpg",
           paragraph: "Tích hợp công nghệ AI sinh tạo và nhận diện giọng nói để trở thành người hướng dẫn viên ảo đáng tin cậy.",
           checklist: [
             "Lên lịch trình du lịch cá nhân hóa tự động",
@@ -433,6 +592,20 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
         },
       ],
     },
+    products: [
+      {
+        badge: "SMART TRAVEL",
+        title: "ADAGO",
+        description:
+          "Siêu ứng dụng du lịch tự động thiết kế lịch trình cá nhân hóa dựa trên ngân sách và sở thích của bạn.",
+        features: [
+          "Săn vé máy bay giá rẻ bằng AI Bots",
+          "Phiên dịch giọng nói theo thời gian thực",
+          "Tự động gợi ý nhà hàng, địa điểm gần đây",
+        ],
+        imageSrc: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/du-lich-lu-hanh.jpg",
+      },
+    ],
   },
   {
     eyebrow: "REAL ESTATE",
@@ -442,7 +615,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
       "Nền tảng kết nối môi giới và khách hàng, mở rộng sang dự án & công nghiệp.",
     content:
       "ADA Group phát triển lĩnh vực bất động sản với sản phẩm ADALAND - nền tảng kết nối môi giới và khách hàng, mở rộng sang dự án và bất động sản công nghiệp.",
-    imageUrl: "https://picsum.photos/seed/realestate/1200/800",
+    imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/bat-dong-san.jpg",
     whyChoose: {
       quoteBefore: "Mục tiêu là ",
       quoteHighlight: "minh bạch hóa thị trường bất động sản",
@@ -465,7 +638,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
       heading: "Cách tiếp cận của ADA Group",
       blocks: [
         {
-          imageUrl: "https://picsum.photos/seed/realestate/1200/800",
+          imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/bat-dong-san.jpg",
           paragraph: "Áp dụng định giá tự động và bản đồ nhiệt thông minh để giúp nhà đầu tư thấy rõ tiềm năng của từng khu vực.",
           checklist: [
             "Môi giới ảo AI hỗ trợ tìm nhà và tư vấn pháp lý 24/7",
@@ -475,6 +648,20 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
         },
       ],
     },
+    products: [
+      {
+        badge: "PROP-TECH",
+        title: "ADALAND",
+        description:
+          "Công cụ định giá bất động sản bằng Big Data và AI, loại bỏ tin đăng ảo và kết nối trực tiếp chủ nhà với khách mua.",
+        features: [
+          "Bản đồ nhiệt giá nhà theo khu vực",
+          "Xác minh tin đăng tự động chống spam",
+          "Trợ lý AI phân tích hợp đồng mua bán",
+        ],
+        imageSrc: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/bat-dong-san.jpg",
+      },
+    ],
   },
   {
     eyebrow: "ENTERPRISE",
@@ -483,7 +670,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
     description: "Bộ công cụ vận hành toàn diện cho SME Việt.",
     content:
       "ADA Group xây dựng hệ sinh thái doanh nghiệp với các sản phẩm ADAWORK, ADAWEB, ADASHOP - bộ công cụ vận hành toàn diện dành cho doanh nghiệp vừa và nhỏ tại Việt Nam.",
-    imageUrl: "https://picsum.photos/seed/enterprise/1200/800",
+    imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/he-sinh-thai-doanh-nghiep.jpg",
     whyChoose: {
       quoteBefore: "Mục tiêu là ",
       quoteHighlight: "chuyển đổi số toàn diện cho SME",
@@ -506,7 +693,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
       heading: "Cách tiếp cận của ADA Group",
       blocks: [
         {
-          imageUrl: "https://picsum.photos/seed/enterprise/1200/800",
+          imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/he-sinh-thai-doanh-nghiep.jpg",
           paragraph: "Tích hợp sâu các mô hình LLM vào các phần mềm quản trị ERP, CRM và HRM để biến chúng thành những trợ lý kinh doanh thực thụ.",
           checklist: [
             "Hệ thống quản lý công việc và tự động hóa quy trình",
@@ -516,6 +703,20 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
         },
       ],
     },
+    products: [
+      {
+        badge: "SAAS",
+        title: "ADAWORK",
+        description:
+          "Nền tảng quản trị công việc thông minh, tích hợp AI tự động phân bổ nguồn lực và đánh giá hiệu suất nhân viên KPI/OKR.",
+        features: [
+          "Chatbot tóm tắt tiến độ dự án",
+          "Chấm công bằng nhận diện khuôn mặt AI",
+          "Báo cáo tài chính tự động",
+        ],
+        imageSrc: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/he-sinh-thai-doanh-nghiep.jpg",
+      },
+    ],
   },
   {
     eyebrow: "FOUNDATION AI",
@@ -558,6 +759,20 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
         },
       ],
     },
+    products: [
+      {
+        badge: "CORE AI",
+        title: "ADA LLM",
+        description:
+          "Mô hình ngôn ngữ lớn tiếng Việt chuyên biệt dành cho doanh nghiệp nội địa, bảo mật dữ liệu tối đa (On-premise deployment).",
+        features: [
+          "Huấn luyện chuyên sâu dữ liệu Việt Nam",
+          "Tốc độ phản hồi cực nhanh, không phụ thuộc API ngoài",
+          "Cho phép triển khai cục bộ tại máy chủ doanh nghiệp",
+        ],
+        imageSrc: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/ai-nen-tang.jpg",
+      },
+    ],
   },
   {
     eyebrow: "EDUCATION",
@@ -566,7 +781,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
     description: "Robot đồ chơi tích hợp AI giáo dục cho trẻ em Việt.",
     content:
       "ADA Group ứng dụng AI vào giáo dục với sản phẩm ADAKID - robot đồ chơi tích hợp AI giáo dục, giúp trẻ em Việt Nam tiếp cận công nghệ từ sớm.",
-    imageUrl: "https://picsum.photos/seed/education/1200/800",
+    imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/giao-duc.jpg",
     whyChoose: {
       quoteBefore: "Mục tiêu là ",
       quoteHighlight: "cá nhân hóa hành trình học tập",
@@ -589,7 +804,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
       heading: "Cách tiếp cận của ADA Group",
       blocks: [
         {
-          imageUrl: "https://picsum.photos/seed/education/1200/800",
+          imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/giao-duc.jpg",
           paragraph: "Tích hợp công nghệ nhận diện giọng nói và NLP thân thiện với trẻ em để tạo ra môi trường giao tiếp tự nhiên và an toàn.",
           checklist: [
             "Robot AI hỗ trợ học ngoại ngữ và kỹ năng mềm",
@@ -599,6 +814,20 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
         },
       ],
     },
+    products: [
+      {
+        badge: "EDTECH",
+        title: "ADAKID",
+        description:
+          "Robot giáo dục thông minh trò chuyện cùng bé. Tích hợp giáo trình tiếng Anh và phát triển chỉ số EQ/IQ chuẩn quốc tế.",
+        features: [
+          "Nhận diện giọng nói chuẩn tiếng Việt và tiếng Anh",
+          "Kể chuyện tương tác và hát ru thông minh",
+          "Hỗ trợ phụ huynh giới hạn thời gian sử dụng",
+        ],
+        imageSrc: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/giao-duc.jpg",
+      },
+    ],
   },
 ];
 

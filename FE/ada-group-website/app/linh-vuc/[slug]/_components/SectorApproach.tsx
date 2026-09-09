@@ -23,7 +23,7 @@ export default function SectorApproach({ sector }: { sector: Sector }) {
   if (!approach) return null;
 
   return (
-    <section className="section-y pt-0!">
+    <section className="section-y">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center gap-4">
           <h2 className="text-center text-[28px] leading-10 font-bold text-[#000000] lg:text-[36px]">

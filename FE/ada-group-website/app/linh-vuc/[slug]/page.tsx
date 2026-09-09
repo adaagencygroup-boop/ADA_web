@@ -4,6 +4,8 @@ import { getSectorBySlug, getSectors } from "@/app/linh-vuc/_lib/sectors";
 import SectorApproach from "@/app/linh-vuc/[slug]/_components/SectorApproach";
 import SectorHero from "@/app/linh-vuc/[slug]/_components/SectorHero";
 import SectorWhyChoose from "@/app/linh-vuc/[slug]/_components/SectorWhyChoose";
+import SectorProducts from "@/app/linh-vuc/[slug]/_components/SectorProducts";
+import SectorCTA from "@/app/linh-vuc/[slug]/_components/SectorCTA";
 
 type SectorPageProps = {
   params: Promise<{ slug: string }>;
@@ -38,6 +40,10 @@ export default async function SectorDetailPage({ params }: SectorPageProps) {
       <SectorHero sector={sector} />
       <SectorWhyChoose sector={sector} />
       <SectorApproach sector={sector} />
+      {sector.products && sector.products.length > 0 && (
+        <SectorProducts products={sector.products} />
+      )}
+      <SectorCTA sectorName={sector.title} />
     </>
   );
 }

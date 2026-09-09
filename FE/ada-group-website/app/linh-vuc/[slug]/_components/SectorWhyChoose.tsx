@@ -21,7 +21,7 @@ export default function SectorWhyChoose({ sector }: { sector: Sector }) {
   if (!whyChoose) return null;
 
   return (
-    <section className="section-y pt-0!">
+    <section className="section-y bg-white">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <h2 className="text-xl leading-7.25 font-semibold text-[#0F172A] lg:text-center lg:text-[36px] lg:leading-9 lg:font-bold">
           Tại sao <span className="hidden lg:inline">ADA Group </span>chọn{" "}
