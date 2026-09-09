@@ -63,6 +63,9 @@ public class AuthService {
   private final RedisRateLimiter redisRateLimiter;
   private final StringRedisTemplate redisTemplate;
   private final JavaMailSender mailSender;
+
+  @org.springframework.beans.factory.annotation.Value("${spring.mail.username}")
+  private String senderEmail;
   @Transactional
   public AuthResult login(LoginRequest request, HttpServletRequest httpRequest) {
     String clientIP = IPUtils.getClientIP(httpRequest);
@@ -164,6 +167,7 @@ public class AuthService {
     userOTPRepository.save(userOTP);
     try {
       SimpleMailMessage message = new SimpleMailMessage();
+      message.setFrom(senderEmail);
       message.setTo(user.getEmail());
       message.setSubject("Mã OTP Đặt Lại Mật Khẩu");
       message.setText("Mã OTP Đặt Lại Mật Khẩu Của Bạn Là: " + otp + " - Mã Này Có Hiệu Lực Trong Vòng 5 Phút!");

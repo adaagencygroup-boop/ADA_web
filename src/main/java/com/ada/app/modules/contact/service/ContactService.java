@@ -34,6 +34,9 @@ public class ContactService {
   private final NotificationService notificationService;
   private final ExcelExportService excelExportService;
   private final JavaMailSender mailSender;
+
+  @org.springframework.beans.factory.annotation.Value("${spring.mail.username}")
+  private String senderEmail;
   @Transactional(readOnly = true)
   public PageResponse<ContactResponse> getContacts(int page, int size, ContactStatus status, String search, Instant fromDate, Instant toDate) {
     Pageable pageable = PageRequest.of(Math.max(0, page - 1), Math.max(1, size), Sort.by("createdAt").descending());
@@ -58,6 +61,7 @@ public class ContactService {
     if (contact.getCustomerEmail() != null && !contact.getCustomerEmail().isBlank()) {
       try {
         SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom(senderEmail);
         message.setTo(contact.getCustomerEmail());
         message.setSubject("Phản Hồi Yêu Cầu Liên Hệ Từ ADA Group");
         message.setText("Kính Gửi " + contact.getCustomerFullname() + ",\n\n" + request.feedbackContent() + "\n\nTrân Trọng,\nĐội Ngũ ADA Group");
