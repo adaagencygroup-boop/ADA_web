@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { ArrowRightIcon } from "@/app/_components/icons";
 
 interface HeroProps {
   badge: string;
@@ -37,11 +38,12 @@ export default function Hero({ badge, title, desc, imagePlaceholder }: HeroProps
             <div className="mt-(--inner-space)">
               <Link
                 href="/lien-he"
-                className="inline-flex w-full md:w-auto items-center justify-center gap-2 font-semibold text-white transition-colors 
-                rounded-lg bg-[#1A4182] px-6 py-3 text-[14px] hover:bg-[#153468] 
+                className="group inline-flex w-full md:w-auto items-center justify-center gap-1.5 font-semibold leading-none text-white transition-colors 
+                rounded-lg bg-[#1A4182] px-6 py-3.5 text-[14px] hover:bg-[#153468] 
                 md:rounded-md md:text-sm"
               >
-                Trao đổi về dự án &rarr;
+                <span>Trao đổi về dự án</span>
+                <ArrowRightIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
             </div>
           </div>

@@ -1,5 +1,6 @@
-import Link from"next/link";
-import Image from"next/image";
+import Link from "next/link";
+import Image from "next/image";
+import { ArrowRightIcon } from "@/app/_components/icons";
 
 export default function AIEcosystem() {
   const contentData = [
@@ -31,8 +32,9 @@ export default function AIEcosystem() {
               </div>
             ))}
             
-            <Link href="/lien-he" className="inline-flex items-center gap-(--inner-space) text-white font-semibold text-[14px] hover:text-blue-200 transition-colors w-fit">
-              Tìm hiểu thêm <span className="text-lg leading-none">&rarr;</span>
+            <Link href="/lien-he" className="group inline-flex items-center gap-1.5 leading-none text-white font-semibold text-[14px] hover:text-blue-200 transition-colors w-fit">
+              <span>Tìm hiểu thêm</span>
+              <ArrowRightIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
           </div>
 

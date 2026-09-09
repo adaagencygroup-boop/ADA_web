@@ -1,4 +1,5 @@
-import Link from"next/link";
+import Link from "next/link";
+import { ArrowRightIcon } from "@/app/_components/icons";
 
 export default function AICTASection() {
   return (
@@ -17,9 +18,10 @@ export default function AICTASection() {
           <div className="pt-(--heading-space) w-full px-4 sm:px-0 flex justify-center">
             <Link
               href="/lien-he"
-              className="inline-flex w-full sm:w-auto items-center justify-center gap-(--inner-space) font-semibold text-white transition-all rounded-full bg-[#0a2347] px-8 py-3 text-[14px] hover:bg-[#163a73] shadow-md hover:shadow-lg"
+              className="group inline-flex w-full sm:w-auto items-center justify-center gap-1.5 font-semibold text-white transition-all rounded-full bg-[#0a2347] px-8 py-3.5 text-[14px] leading-none hover:bg-[#163a73] shadow-md hover:shadow-lg"
             >
-              Trao đổi ngay với ADA Group <span className="text-lg leading-none">&rarr;</span>
+              <span>Trao đổi ngay với ADA Group</span>
+              <ArrowRightIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
           </div>
         </div>

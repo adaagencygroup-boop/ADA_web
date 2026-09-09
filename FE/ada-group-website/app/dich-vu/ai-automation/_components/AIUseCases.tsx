@@ -1,6 +1,7 @@
-import Link from"next/link";
-import Image from"next/image";
-import React from"react";
+import Link from "next/link";
+import Image from "next/image";
+import React from "react";
+import { ArrowRightIcon } from "@/app/_components/icons";
 
 const mainUseCases = [
   {
@@ -180,8 +181,9 @@ export default function AIUseCases() {
                     </div>
                   )}
 
-                  <Link href="/lien-he" className="inline-flex items-center gap-(--inner-space) text-blue-600 font-semibold text-[14px] hover:text-blue-800 transition-colors w-fit">
-                    Trao đổi chi tiết &rarr;
+                  <Link href="/lien-he" className="group inline-flex items-center gap-1.5 leading-none text-blue-600 font-semibold text-[14px] hover:text-blue-800 transition-colors w-fit">
+                    <span>Trao đổi chi tiết</span>
+                    <ArrowRightIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                   </Link>
                 </div>
 
@@ -247,8 +249,9 @@ export default function AIUseCases() {
                     </p>
                   ))}
                   
-                  <Link href="/lien-he" className={`inline-flex items-center gap-(--inner-space) text-blue-600 font-semibold text-[14px] hover:text-blue-800 transition-colors w-fit ${item.id === '05' ? 'lg:mb-(--inner-space)' : ''}`}>
-                    Trao đổi chi tiết &rarr;
+                  <Link href="/lien-he" className={`group inline-flex items-center gap-1.5 leading-none text-blue-600 font-semibold text-[14px] hover:text-blue-800 transition-colors w-fit ${item.id === '05' ? 'lg:mb-(--inner-space)' : ''}`}>
+                    <span>Trao đổi chi tiết</span>
+                    <ArrowRightIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                   </Link>
                 </div>
                 

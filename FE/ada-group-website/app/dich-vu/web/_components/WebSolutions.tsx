@@ -1,5 +1,6 @@
-import Link from"next/link";
-import Image from"next/image";
+import Link from "next/link";
+import Image from "next/image";
+import { ArrowRightIcon } from "@/app/_components/icons";
 
 export default function WebSolutions() {
   const solutions = [
@@ -151,8 +152,9 @@ export default function WebSolutions() {
                     <div className="text-[14px] lg:text-[16px] text-zinc-600 lg:text-slate-300 mb-(--section-padding) leading-relaxed whitespace-pre-line text-justify">
                       {item.description}
                     </div>
-                    <Link href="/lien-he" className="text-[14px] text-blue-600 lg:text-blue-400 font-medium hover:text-blue-700 lg:hover:text-blue-300 inline-flex items-center gap-(--inner-space).5 w-fit transition-colors">
-                      Trao đổi chi tiết &rarr;
+                    <Link href="/lien-he" className="group text-[14px] text-blue-600 lg:text-blue-400 font-medium hover:text-blue-700 lg:hover:text-blue-300 inline-flex items-center gap-1.5 leading-none w-fit transition-colors">
+                      <span>Trao đổi chi tiết</span>
+                      <ArrowRightIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                     </Link>
                   </div>
                   <div className="w-full lg:flex-1 bg-slate-100 lg:bg-[#111827] min-h-64 lg:min-h-75 relative flex items-center justify-center lg:p-8">
@@ -187,8 +189,9 @@ export default function WebSolutions() {
                     <div className="text-[14px] lg:text-[16px] text-zinc-600 mb-(--section-padding) leading-relaxed whitespace-pre-line text-justify">
                       {item.description}
                     </div>
-                    <Link href="/lien-he" className="text-[14px] text-blue-600 font-medium hover:underline inline-flex items-center gap-(--inner-space).5 w-fit">
-                      Trao đổi chi tiết &rarr;
+                    <Link href="/lien-he" className="group text-[14px] text-blue-600 font-medium hover:underline inline-flex items-center gap-1.5 leading-none w-fit">
+                      <span>Trao đổi chi tiết</span>
+                      <ArrowRightIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                     </Link>
                   </div>
                   <div className="w-full lg:flex-1 bg-slate-200 min-h-75 relative flex items-center justify-center">
@@ -222,8 +225,9 @@ export default function WebSolutions() {
                   <div className="text-[14px] lg:text-[16px] text-zinc-500 mb-(--inner-space) leading-[1.6] whitespace-pre-line flex-1 text-justify">
                     {item.description}
                   </div>
-                  <Link href="/lien-he" className="text-[14px] text-blue-600 font-medium hover:underline inline-flex items-center gap-(--inner-space).5 mt-auto w-fit">
-                    Trao đổi chi tiết &rarr;
+                  <Link href="/lien-he" className="group text-[14px] text-blue-600 font-medium hover:underline inline-flex items-center gap-1.5 leading-none mt-auto w-fit">
+                    <span>Trao đổi chi tiết</span>
+                    <ArrowRightIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                   </Link>
                 </div>
                 <div className="w-full xl:w-[45%] bg-slate-100 min-h-64 xl:min-h-full relative flex items-center justify-center">

@@ -38,7 +38,7 @@ const REASONS = [
 
 export default function WhyChooseUs() {
   return (
-    <section className="section-y ">
+    <section className="section-y">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <h2 className="text-[28px] leading-[1.2] font-semibold tracking-tight text-zinc-900 lg:text-[44px] lg:leading-[1.1]">
           {CONTENT.title}
@@ -51,7 +51,7 @@ export default function WhyChooseUs() {
           {REASONS.map((reason) => (
             <div
               key={reason.title}
-              className="rounded-2xl border border-zinc-200 p-6 sm:border-0 bg-white "
+              className="rounded-2xl border border-zinc-200 p-6 sm:border-0 bg-white"
             >
               <div
                 className={[
@@ -77,10 +77,10 @@ export default function WhyChooseUs() {
         <div className="mt-(--inner-space) pt-5 flex justify-center">
           <Link
             href={CONTENT.ctaHref}
-            className="inline-flex items-center gap-2 rounded-full bg-blue-950 px-6 py-3.5 text-[14px] font-medium text-white transition-colors hover:bg-blue-900"
+            className="group inline-flex items-center gap-2 rounded-full bg-blue-950 px-6 py-3.5 text-[14px] font-medium text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-blue-900 hover:shadow-lg hover:shadow-blue-950/20 active:translate-y-0 active:scale-95"
           >
             {CONTENT.ctaLabel}
-            <ArrowRightIcon className="h-4 w-4" />
+            <ArrowRightIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
         </div>
       </div>

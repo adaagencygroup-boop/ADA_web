@@ -71,10 +71,10 @@ export default function ServicesGrid() {
               </p>
               <Link
                 href={service.href}
-                className="mt-4 inline-flex items-center gap-1 text-[14px] font-semibold text-blue-700 hover:text-blue-800"
+                className="mt-4 inline-flex items-center gap-1.5 text-[14px] font-semibold leading-none text-blue-700 hover:text-blue-800 group"
               >
-                {CONTENT.detailLabel}
-                <ArrowRightIcon className="h-3.5 w-3.5" />
+                <span>{CONTENT.detailLabel}</span>
+                <ArrowRightIcon className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
               </Link>
             </div>
           ))}

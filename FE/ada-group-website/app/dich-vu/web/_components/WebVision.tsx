@@ -1,5 +1,6 @@
-import Link from"next/link";
-import Image from"next/image";
+import Link from "next/link";
+import Image from "next/image";
+import { ArrowRightIcon } from "@/app/_components/icons";
 
 export default function WebVision() {
   return (
@@ -25,12 +26,10 @@ export default function WebVision() {
             <div>
               <Link
                 href="/lien-he"
-                className="inline-flex w-full lg:w-fit items-center justify-center gap-(--inner-space) rounded-lg bg-[#004bb4] px-7 py-3.5 text-[14px] font-semibold text-white transition-colors hover:bg-blue-700 shadow-sm"
+                className="group inline-flex w-full lg:w-fit items-center justify-center gap-1.5 rounded-lg bg-[#004bb4] px-7 py-3.5 text-[14px] leading-none font-semibold text-white transition-colors hover:bg-blue-700 shadow-sm"
               >
-                Khám phá giải pháp
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden="true">
-                  <path d="M5 12h14" /><path d="m13 6 6 6-6 6" />
-                </svg>
+                <span>Khám phá giải pháp</span>
+                <ArrowRightIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
             </div>
           </div>

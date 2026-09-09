@@ -3,9 +3,6 @@
 import React, { useState } from "react";
 import { submitContact } from "@/src/lib/api/contacts";
 import Alert from "@/src/components/common/Alert";
-
-
-
 const headerData = [
   {
     title: "Liên hệ với ADA",
@@ -172,9 +169,15 @@ export default function ContactSection() {
                 <button 
                   type="submit" 
                   disabled={isSubmitting}
-                  className="bg-[#002A64] hover:bg-[#002A64]/90 text-white font-semibold text-[14px] px-8 py-3.5 rounded-lg flex items-center gap-2 transition-colors uppercase tracking-wide w-fit disabled:opacity-70 disabled:cursor-not-allowed"
+                  className="bg-[#002A64] hover:bg-[#002A64]/90 text-white font-semibold text-[14px] leading-none px-8 py-3.5 rounded-lg flex items-center gap-1.5 transition-colors w-fit disabled:opacity-70 disabled:cursor-not-allowed"
                 >
-                  {isSubmitting ? "ĐANG GỬI..." : <>GỬI LIÊN HỆ &rarr;</>}
+                  {isSubmitting ? (
+                    "Đang gửi..."
+                  ) : (
+                    <>
+                      <span>Gửi liên hệ</span>
+                    </>
+                  )}
                 </button>
               </div>
 

@@ -1,5 +1,6 @@
-import Link from"next/link";
-import Image from"next/image";
+import Link from "next/link";
+import Image from "next/image";
+import { ArrowRightIcon } from "@/app/_components/icons";
 
 export default function MobileBusinessApps() {
   const headerContent = [
@@ -159,8 +160,9 @@ export default function MobileBusinessApps() {
               ))}
             </div>
             
-            <Link href="/lien-he" className="inline-flex items-center gap-(--inner-space) text-blue-600 font-semibold text-[14px] hover:text-blue-800 transition-colors w-fit">
-              Trao đổi chi tiết &rarr;
+            <Link href="/lien-he" className="group inline-flex items-center gap-1.5 leading-none text-blue-600 font-semibold text-[14px] hover:text-blue-800 transition-colors w-fit">
+              <span>Trao đổi chi tiết</span>
+              <ArrowRightIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
             </Link>
           </div>
           
