@@ -26,6 +26,16 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async rewrites() {
+    return [
+      {
+        source: "/files/:path*",
+        destination: process.env.NEXT_PUBLIC_API_BASE_URL
+          ? `${process.env.NEXT_PUBLIC_API_BASE_URL.replace("/api/v1", "")}/files/:path*`
+          : "http://localhost:8080/files/:path*",
+      },
+    ];
+  },
 };
 
 export default nextConfig;

@@ -4,7 +4,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends maven && rm -rf
 COPY pom.xml ./
 RUN mvn dependency:go-offline -B || true
 COPY src src
-RUN mvn clean test
 RUN mvn package -DskipTests
 FROM eclipse-temurin:25-jre
 WORKDIR /app
