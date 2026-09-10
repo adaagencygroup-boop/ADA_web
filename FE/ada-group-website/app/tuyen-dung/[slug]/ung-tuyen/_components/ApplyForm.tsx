@@ -7,6 +7,76 @@ import { applyToJob, formatEmploymentType } from "@/src/lib/api/recruitments";
 import type { Recruitment } from "@/src/types/recruitments";
 import Alert from "@/src/components/common/Alert";
 
+// ── Validation ─────────────────────────────────────────────────────────────
+const PHONE_REGEX = /^\+?[0-9]{1,4}[\s\-.]?\(?[0-9]{1,4}\)?[\s\-.]?[0-9]{1,4}[\s\-.]?[0-9]{1,9}$/;
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+interface FieldErrors {
+  fullname?: string;
+  email?: string;
+  phone?: string;
+}
+
+function validateForm(data: { fullname: string; email: string; phone: string }): FieldErrors {
+  const errors: FieldErrors = {};
+
+  if (!data.fullname.trim()) {
+    errors.fullname = "Vui lòng nhập họ và tên.";
+  } else if (data.fullname.trim().length < 2) {
+    errors.fullname = "Họ và tên phải có ít nhất 2 ký tự.";
+  } else if (data.fullname.trim().length > 100) {
+    errors.fullname = "Họ và tên không được vượt quá 100 ký tự.";
+  }
+
+  if (!data.email.trim()) {
+    errors.email = "Vui lòng nhập địa chỉ email.";
+  } else if (!EMAIL_REGEX.test(data.email.trim())) {
+    errors.email = "Địa chỉ email không hợp lệ (ví dụ: example@domain.com).";
+  }
+
+  if (!data.phone.trim()) {
+    errors.phone = "Vui lòng nhập số điện thoại.";
+  } else {
+    const phoneDigits = data.phone.trim().replace(/[\s\-.()+]/g, "");
+    if (!PHONE_REGEX.test(data.phone.trim()) || phoneDigits.length < 7 || phoneDigits.length > 15) {
+      errors.phone = "Số điện thoại không hợp lệ. (ví dụ: 0912345678 hoặc +84912345678).";
+    }
+  }
+
+  return errors;
+}
+
+// ── Styles ─────────────────────────────────────────────────────────────────
+const normalInputClass =
+  "w-full border border-slate-200 rounded-lg px-4 py-3 pl-10 text-[14px] outline-none focus:border-blue-500 transition-colors";
+const errorInputClass =
+  "w-full border border-red-400 rounded-lg px-4 py-3 pl-10 text-[14px] outline-none focus:border-red-500 transition-colors bg-red-50/30";
+
+function FieldError({ message }: { message?: string }) {
+  if (!message) return null;
+  return (
+    <p className="flex items-start gap-1.5 text-[12px] text-red-600 mt-1.5" role="alert">
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="h-3.5 w-3.5 mt-0.5 shrink-0"
+        aria-hidden="true"
+      >
+        <circle cx="12" cy="12" r="10" />
+        <line x1="12" y1="8" x2="12" y2="12" />
+        <line x1="12" y1="16" x2="12.01" y2="16" />
+      </svg>
+      <span>{message}</span>
+    </p>
+  );
+}
+
+// ── Main Component ─────────────────────────────────────────────────────────
+
 export default function ApplyForm({ job, slug }: { job: Recruitment; slug: string }) {
   const [formData, setFormData] = useState({
     fullname: "",
@@ -15,6 +85,8 @@ export default function ApplyForm({ job, slug }: { job: Recruitment; slug: strin
     message: "",
     agreeTerm: false,
   });
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -29,7 +101,22 @@ export default function ApplyForm({ job, slug }: { job: Recruitment; slug: strin
       const checked = (e.target as HTMLInputElement).checked;
       setFormData(prev => ({ ...prev, [name]: checked }));
     } else {
-      setFormData(prev => ({ ...prev, [name]: value }));
+      const updated = { ...formData, [name]: value };
+      setFormData(updated);
+      // Re-validate on change once field has been touched
+      if (touched[name] && (name === "fullname" || name === "email" || name === "phone")) {
+        const errors = validateForm({ fullname: updated.fullname, email: updated.email, phone: updated.phone });
+        setFieldErrors(prev => ({ ...prev, [name]: errors[name as keyof FieldErrors] }));
+      }
+    }
+  };
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const { name } = e.target;
+    if (name === "fullname" || name === "email" || name === "phone") {
+      setTouched(prev => ({ ...prev, [name]: true }));
+      const errors = validateForm({ fullname: formData.fullname, email: formData.email, phone: formData.phone });
+      setFieldErrors(prev => ({ ...prev, [name]: errors[name as keyof FieldErrors] }));
     }
   };
 
@@ -77,6 +164,18 @@ export default function ApplyForm({ job, slug }: { job: Recruitment; slug: strin
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Mark all required fields as touched & run validation
+    setTouched({ fullname: true, email: true, phone: true });
+    const errors = validateForm({ fullname: formData.fullname, email: formData.email, phone: formData.phone });
+    setFieldErrors(errors);
+
+    if (Object.keys(errors).length > 0) {
+      const firstKey = Object.keys(errors)[0];
+      document.getElementById(`af-${firstKey}`)?.focus();
+      return;
+    }
+
     if (!file) {
       setAlertInfo({ type: 'warning', title: 'Thiếu thông tin', message: 'Vui lòng tải lên CV / Resume của bạn!' });
       return;
@@ -102,6 +201,8 @@ export default function ApplyForm({ job, slug }: { job: Recruitment; slug: strin
         message: 'Cảm ơn bạn đã gửi hồ sơ ứng tuyển. Chúng tôi sẽ liên hệ với bạn sớm nhất.'
       });
       setFormData({ fullname: "", email: "", phone: "", message: "", agreeTerm: false });
+      setFieldErrors({});
+      setTouched({});
       setFile(null);
     } catch (error) {
       console.error("Submit error:", error);
@@ -190,7 +291,7 @@ export default function ApplyForm({ job, slug }: { job: Recruitment; slug: strin
           {/* Left Column (Form) */}
           <div className="lg:col-span-8">
             <div className="bg-white rounded-2xl border border-slate-100 p-6 md:p-8 shadow-sm">
-              <form onSubmit={handleSubmit} className="flex flex-col gap-(--inner-space)">
+              <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-(--inner-space)">
 
                 {/* 1. THÔNG TIN ỨNG VIÊN */}
                 <div>
@@ -200,25 +301,75 @@ export default function ApplyForm({ job, slug }: { job: Recruitment; slug: strin
                   </h2>
                   <div className="flex flex-col gap-4">
                     <div>
-                      <label className="block text-[13px] font-semibold text-zinc-700 mb-1.5">Họ và tên <span className="text-red-500">*</span></label>
+                      <label htmlFor="af-fullname" className="block text-[13px] font-semibold text-zinc-700 mb-1.5">
+                        Họ và tên <span className="text-red-500" aria-hidden="true">*</span>
+                      </label>
                       <div className="relative">
-                        <input type="text" name="fullname" value={formData.fullname} onChange={handleInputChange} required placeholder="Nhập họ và tên của bạn" className="w-full border border-slate-200 rounded-lg px-4 py-3 pl-10 text-[14px] outline-none focus:border-blue-500 transition-colors" />
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
+                        <input
+                          id="af-fullname"
+                          type="text"
+                          name="fullname"
+                          value={formData.fullname}
+                          onChange={handleInputChange}
+                          onBlur={handleBlur}
+                          placeholder="Nhập họ và tên của bạn"
+                          aria-invalid={!!fieldErrors.fullname}
+                          aria-describedby={fieldErrors.fullname ? "af-fullname-error" : undefined}
+                          className={fieldErrors.fullname ? errorInputClass : normalInputClass}
+                        />
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
                       </div>
+                      <span id="af-fullname-error">
+                        <FieldError message={fieldErrors.fullname} />
+                      </span>
                     </div>
+
                     <div>
-                      <label className="block text-[13px] font-semibold text-zinc-700 mb-1.5">Email <span className="text-red-500">*</span></label>
+                      <label htmlFor="af-email" className="block text-[13px] font-semibold text-zinc-700 mb-1.5">
+                        Email <span className="text-red-500" aria-hidden="true">*</span>
+                      </label>
                       <div className="relative">
-                        <input type="email" name="email" value={formData.email} onChange={handleInputChange} required placeholder="Nhập email của bạn" className="w-full border border-slate-200 rounded-lg px-4 py-3 pl-10 text-[14px] outline-none focus:border-blue-500 transition-colors" />
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2"><path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" /></svg>
+                        <input
+                          id="af-email"
+                          type="text"
+                          name="email"
+                          value={formData.email}
+                          onChange={handleInputChange}
+                          onBlur={handleBlur}
+                          placeholder="Nhập email của bạn"
+                          aria-invalid={!!fieldErrors.email}
+                          aria-describedby={fieldErrors.email ? "af-email-error" : undefined}
+                          className={fieldErrors.email ? errorInputClass : normalInputClass}
+                        />
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none"><path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" /></svg>
                       </div>
+                      <span id="af-email-error">
+                        <FieldError message={fieldErrors.email} />
+                      </span>
                     </div>
+
                     <div>
-                      <label className="block text-[13px] font-semibold text-zinc-700 mb-1.5">Số điện thoại <span className="text-red-500">*</span></label>
+                      <label htmlFor="af-phone" className="block text-[13px] font-semibold text-zinc-700 mb-1.5">
+                        Số điện thoại <span className="text-red-500" aria-hidden="true">*</span>
+                      </label>
                       <div className="relative">
-                        <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} required placeholder="Nhập số điện thoại của bạn" className="w-full border border-slate-200 rounded-lg px-4 py-3 pl-10 text-[14px] outline-none focus:border-blue-500 transition-colors" />
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-2.896-1.596-5.25-3.95-6.847-6.847l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" /></svg>
+                        <input
+                          id="af-phone"
+                          type="tel"
+                          name="phone"
+                          value={formData.phone}
+                          onChange={handleInputChange}
+                          onBlur={handleBlur}
+                          placeholder="Nhập số điện thoại của bạn"
+                          aria-invalid={!!fieldErrors.phone}
+                          aria-describedby={fieldErrors.phone ? "af-phone-error" : undefined}
+                          className={fieldErrors.phone ? errorInputClass : normalInputClass}
+                        />
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-2.896-1.596-5.25-3.95-6.847-6.847l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" /></svg>
                       </div>
+                      <span id="af-phone-error">
+                        <FieldError message={fieldErrors.phone} />
+                      </span>
                     </div>
                   </div>
                 </div>
