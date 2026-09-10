@@ -1,7 +1,7 @@
 import { apiGet, apiPostForm, ApiError, type PageResponse } from "@/src/lib/api/http";
 import type { Department, EmploymentType, Recruitment } from "@/src/types/recruitments";
 
-const REVALIDATE_SECONDS = 60;
+const REVALIDATE_SECONDS = 0;
 
 export type GetRecruitmentsParams = {
   departmentId?: string;

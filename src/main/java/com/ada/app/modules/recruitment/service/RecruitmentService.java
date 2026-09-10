@@ -111,6 +111,9 @@ public class RecruitmentService {
   }
   @Transactional
   public RecruitmentResponse createRecruitment(CreateRecruitmentRequest request) {
+    if (request.minSalary() != null && request.maxSalary() != null && request.maxSalary().compareTo(request.minSalary()) < 0) {
+      throw AppException.badRequest("Lương tối đa phải lớn hơn hoặc bằng lương tối thiểu");
+    }
     UUID userId = SecurityUtils.getCurrentUserId();
     User recruiter = userRepository.findById(userId).orElseThrow(() -> AppException.notFound("Recruiter User Not Found"));
     Department dept = null;
@@ -142,6 +145,9 @@ public class RecruitmentService {
   }
   @Transactional
   public RecruitmentResponse updateRecruitment(UUID id, UpdateRecruitmentRequest request) {
+    if (request.minSalary() != null && request.maxSalary() != null && request.maxSalary().compareTo(request.minSalary()) < 0) {
+      throw AppException.badRequest("Lương tối đa phải lớn hơn hoặc bằng lương tối thiểu");
+    }
     Recruitment r = recruitmentRepository.findById(id).orElseThrow(() -> AppException.notFound("Recruitment Not Found"));
     if (request.departmentId() != null) {
       Department dept = departmentRepository.findById(request.departmentId()).orElseThrow(() -> AppException.notFound("Department Not Found"));

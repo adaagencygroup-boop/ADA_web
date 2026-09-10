@@ -1,6 +1,8 @@
 package com.ada.app.modules.recruitment.dto;
 import com.ada.app.modules.recruitment.enums.EmploymentType;
 import com.ada.app.modules.recruitment.enums.RecruitmentStatus;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -22,6 +24,8 @@ public record UpdateRecruitmentRequest(
   BigDecimal minSalary,
   BigDecimal maxSalary,
   Boolean isNegotiable,
+  @Positive(message = "Số lượng tuyển dụng phải lớn hơn 0")
   Integer requiredCandidateNum,
+  @FutureOrPresent(message = "Ngày hết hạn không được ở trong quá khứ")
   Instant expiresAt
 ) {}

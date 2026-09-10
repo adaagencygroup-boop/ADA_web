@@ -2,11 +2,59 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { ArrowLeft } from "lucide-react";
+import { toast } from "sonner";
 import PasswordField from "@/src/components/shared/PasswordField";
+import { resetPassword } from "@/src/lib/api/auth";
 
-export default function ResetPasswordForm() {
+type ResetPasswordFormProps = {
+  email: string;
+  otp: string;
+};
+
+export default function ResetPasswordForm({
+  email,
+  otp,
+}: ResetPasswordFormProps) {
   const router = useRouter();
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
+  const [isPending, setIsPending] = useState(false);
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setError(null);
+    if (!email || !otp) {
+      setError("Phiên xác thực không hợp lệ. Vui lòng yêu cầu mã OTP mới.");
+      return;
+    }
+    if (newPassword.length < 8) {
+      setError("Mật khẩu mới phải có ít nhất 8 ký tự.");
+      return;
+    }
+    if (!/[A-Z]/.test(newPassword) || !/[a-z]/.test(newPassword) || !/[0-9]/.test(newPassword)) {
+      setError("Mật khẩu phải gồm chữ hoa, chữ thường và số.");
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      setError("Mật khẩu xác nhận không khớp.");
+      return;
+    }
+    setIsPending(true);
+    try {
+      await resetPassword({ email, otp, newPassword, confirmPassword });
+      setSuccess(true);
+      toast.success("Đặt lại mật khẩu thành công");
+      window.setTimeout(() => router.push("/dang-nhap"), 1800);
+    } catch (requestError) {
+      setError(requestError instanceof Error ? requestError.message : "Không thể đặt lại mật khẩu");
+    } finally {
+      setIsPending(false);
+    }
+  }
 
   return (
     <div className="flex w-full max-w-md flex-col gap-8">
@@ -21,10 +69,7 @@ export default function ResetPasswordForm() {
       </div>
 
       <form
-        onSubmit={(event) => {
-          event.preventDefault();
-          router.push("/dang-nhap");
-        }}
+        onSubmit={handleSubmit}
         className="flex flex-col gap-5"
       >
         <div className="flex flex-col gap-1.5">
@@ -34,6 +79,8 @@ export default function ResetPasswordForm() {
             label="Mật khẩu mới"
             placeholder="Nhập mật khẩu mới"
             autoComplete="new-password"
+            value={newPassword}
+            onChange={(event) => setNewPassword(event.target.value)}
           />
           <p className="text-sm text-[#64748B]">
             Mật khẩu phải có ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường và
@@ -47,13 +94,23 @@ export default function ResetPasswordForm() {
           label="Xác nhận mật khẩu"
           placeholder="Nhập lại mật khẩu mới"
           autoComplete="new-password"
+          value={confirmPassword}
+          onChange={(event) => setConfirmPassword(event.target.value)}
         />
+
+        {error && <p className="text-sm text-red-600">{error}</p>}
+        {success && (
+          <p className="text-sm text-green-600">
+            Đặt lại mật khẩu thành công. Đang chuyển đến trang đăng nhập...
+          </p>
+        )}
 
         <button
           type="submit"
+          disabled={isPending || success}
           className="rounded-lg bg-[#1A56DB] py-3 text-sm font-semibold text-white shadow-sm hover:bg-[#1A56DB]/90"
         >
-          Lưu mật khẩu và đăng nhập
+          {isPending ? "Đang lưu..." : "Lưu mật khẩu và đăng nhập"}
         </button>
       </form>
 

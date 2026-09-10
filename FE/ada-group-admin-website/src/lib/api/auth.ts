@@ -28,8 +28,33 @@ export type LoginResponse = {
   user: UserProfile;
 };
 
+export type EmailRequest = {
+  email: string;
+};
+
+export type VerifyOTPRequest = EmailRequest & {
+  otp: string;
+};
+
+export type ResetPasswordRequest = VerifyOTPRequest & {
+  newPassword: string;
+  confirmPassword: string;
+};
+
 export function login(payload: LoginRequest) {
   return unwrap<LoginResponse>(apiClient.post("/auth/login", payload));
+}
+
+export function forgotPassword(payload: EmailRequest) {
+  return unwrap<void>(apiClient.post("/auth/forgotPassword", payload));
+}
+
+export function verifyOTP(payload: VerifyOTPRequest) {
+  return unwrap<void>(apiClient.post("/auth/verifyOTP", payload));
+}
+
+export function resetPassword(payload: ResetPasswordRequest) {
+  return unwrap<void>(apiClient.post("/auth/resetPassword", payload));
 }
 
 export function logout() {

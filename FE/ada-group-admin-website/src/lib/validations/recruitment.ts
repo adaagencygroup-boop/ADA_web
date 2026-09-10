@@ -27,8 +27,30 @@ export const recruitmentSchema = z.object({
   minSalary: z.string().optional(),
   maxSalary: z.string().optional(),
   isNegotiable: z.boolean().optional(),
-  requiredCandidateNum: z.string().optional(),
-  expiresAt: z.date({ message: "Vui lòng chọn hạn ứng tuyển" }),
-});
+  requiredCandidateNum: z.string().optional().refine(
+    (val) => !val || parseInt(val) > 0,
+    { message: "Số lượng tuyển dụng phải lớn hơn 0" }
+  ),
+  expiresAt: z.date({ message: "Vui lòng chọn hạn ứng tuyển" }).refine(
+    (date) => {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      return date >= today;
+    },
+    { message: "Hạn ứng tuyển không được nằm trong quá khứ" }
+  ),
+}).refine(
+  (data) => {
+    if (!data.minSalary || !data.maxSalary) return true;
+    const min = parseFloat(data.minSalary.replace(/,/g, ""));
+    const max = parseFloat(data.maxSalary.replace(/,/g, ""));
+    if (isNaN(min) || isNaN(max)) return true;
+    return max >= min;
+  },
+  {
+    message: "Lương tối đa phải lớn hơn hoặc bằng lương tối thiểu",
+    path: ["maxSalary"],
+  }
+);
 
 export type RecruitmentFormValues = z.infer<typeof recruitmentSchema>;

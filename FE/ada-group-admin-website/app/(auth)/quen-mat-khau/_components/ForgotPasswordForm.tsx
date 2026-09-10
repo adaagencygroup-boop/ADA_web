@@ -5,10 +5,32 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, ArrowRight, Mail } from "lucide-react";
 import { Input } from "@/src/components/ui/input";
+import { forgotPassword } from "@/src/lib/api/auth";
 
 export default function ForgotPasswordForm() {
   const router = useRouter();
   const [email, setEmail] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [isPending, setIsPending] = useState(false);
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setError(null);
+    setIsPending(true);
+    try {
+      await forgotPassword({ email });
+      const params = new URLSearchParams({
+        email,
+        next: "/dat-lai-mat-khau",
+        back: "/quen-mat-khau",
+      });
+      router.push(`/xac-thuc-email?${params.toString()}`);
+    } catch (requestError) {
+      setError(requestError instanceof Error ? requestError.message : "Không thể gửi mã OTP");
+    } finally {
+      setIsPending(false);
+    }
+  }
 
   return (
     <div className="flex w-full max-w-md flex-col gap-8">
@@ -20,15 +42,7 @@ export default function ForgotPasswordForm() {
       </div>
 
       <form
-        onSubmit={(event) => {
-          event.preventDefault();
-          const params = new URLSearchParams({
-            email,
-            next: "/dat-lai-mat-khau",
-            back: "/quen-mat-khau",
-          });
-          router.push(`/xac-thuc-email?${params.toString()}`);
-        }}
+        onSubmit={handleSubmit}
         className="flex flex-col gap-6"
       >
         <div className="flex flex-col gap-2">
@@ -50,11 +64,14 @@ export default function ForgotPasswordForm() {
           </div>
         </div>
 
+        {error && <p className="text-sm text-red-600">{error}</p>}
+
         <button
           type="submit"
+          disabled={isPending}
           className="flex items-center justify-center gap-2 rounded-lg bg-[#003274] py-3 text-base text-white shadow-sm hover:bg-[#003274]/90"
         >
-          Gửi mã xác nhận
+          {isPending ? "Đang gửi..." : "Gửi mã xác nhận"}
           <ArrowRight className="size-4" />
         </button>
       </form>

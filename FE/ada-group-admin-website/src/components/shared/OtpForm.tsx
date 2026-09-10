@@ -9,6 +9,7 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/src/components/ui/input-otp";
+import { forgotPassword, verifyOTP } from "@/src/lib/api/auth";
 
 const OTP_LENGTH = 6;
 const EXPIRES_IN_SECONDS = 5 * 60;
@@ -43,6 +44,8 @@ export default function OtpForm({
   const [resendCooldown, setResendCooldown] = useState(
     RESEND_COOLDOWN_SECONDS
   );
+  const [error, setError] = useState<string | null>(null);
+  const [isPending, setIsPending] = useState(false);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -52,11 +55,40 @@ export default function OtpForm({
     return () => clearInterval(timer);
   }, []);
 
-  function handleResend() {
+  async function handleResend() {
     if (resendCooldown > 0) return;
-    setResendCooldown(RESEND_COOLDOWN_SECONDS);
-    setExpiresIn(EXPIRES_IN_SECONDS);
-    setOtp("");
+    setError(null);
+    setIsPending(true);
+    try {
+      await forgotPassword({ email });
+      setResendCooldown(RESEND_COOLDOWN_SECONDS);
+      setExpiresIn(EXPIRES_IN_SECONDS);
+      setOtp("");
+    } catch (requestError) {
+      setError(requestError instanceof Error ? requestError.message : "Không thể gửi lại mã OTP");
+    } finally {
+      setIsPending(false);
+    }
+  }
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setError(null);
+    setIsPending(true);
+    try {
+      await verifyOTP({ email, otp });
+      if (onVerified) onVerified();
+      else if (nextHref) {
+        const separator = nextHref.includes("?") ? "&" : "?";
+        router.push(
+          `${nextHref}${separator}email=${encodeURIComponent(email)}&otp=${encodeURIComponent(otp)}`
+        );
+      }
+    } catch (requestError) {
+      setError(requestError instanceof Error ? requestError.message : "Mã OTP không hợp lệ");
+    } finally {
+      setIsPending(false);
+    }
   }
 
   return (
@@ -76,11 +108,7 @@ export default function OtpForm({
       </p>
 
       <form
-        onSubmit={(event) => {
-          event.preventDefault();
-          if (onVerified) onVerified();
-          else if (nextHref) router.push(nextHref);
-        }}
+        onSubmit={handleSubmit}
         className="flex w-full flex-col items-center"
       >
         <div className="mb-6">
@@ -104,12 +132,14 @@ export default function OtpForm({
           </span>
         </p>
 
+        {error && <p className="mb-4 text-sm text-red-600">{error}</p>}
+
         <p className="mb-4 text-sm text-[#64748B]">
           Chưa nhận được mã?{" "}
           <button
             type="button"
             onClick={handleResend}
-            disabled={resendCooldown > 0}
+            disabled={resendCooldown > 0 || isPending}
             className="font-medium text-[#64748B] enabled:text-[#1A56DB] enabled:hover:underline disabled:cursor-not-allowed"
           >
             Gửi lại{resendCooldown > 0 ? ` (${resendCooldown}s)` : ""}
@@ -118,6 +148,7 @@ export default function OtpForm({
 
         <button
           type="submit"
+          disabled={isPending || otp.length !== OTP_LENGTH}
           className="mb-4 w-full rounded-lg bg-[#1A56DB] py-3.5 text-base font-semibold text-white shadow-sm hover:bg-[#1A56DB]/90"
         >
           Xác thực

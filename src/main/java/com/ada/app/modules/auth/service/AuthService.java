@@ -164,7 +164,11 @@ public class AuthService {
       .purpose(OTPPurpose.forgotPassword)
       .expiresAt(Instant.now().plusSeconds(300))
       .build();
-    userOTPRepository.save(userOTP);
+    userOTPRepository.findTopByUserIdAndPurposeAndUsedAtIsNullOrderByCreatedAtDesc(user.getId(), OTPPurpose.forgotPassword)
+      .ifPresent(existingOTP -> {
+        existingOTP.setUsedAt(Instant.now());
+        userOTPRepository.saveAndFlush(existingOTP);
+      });
     try {
       SimpleMailMessage message = new SimpleMailMessage();
       message.setFrom(senderEmail);
@@ -174,7 +178,9 @@ public class AuthService {
       mailSender.send(message);
     } catch (Exception e) {
       log.warn("Failed To Send Password Reset OTP Email To {}: {}", user.getEmail(), e.getMessage());
+      throw AppException.internal("Unable To Send OTP Email");
     }
+    userOTPRepository.save(userOTP);
   }
   @Transactional(readOnly = true)
   public void verifyOTP(VerifyOTPRequest request) {

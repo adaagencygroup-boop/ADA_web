@@ -47,7 +47,7 @@ public class FileUtils {
       }
       Path targetPath = targetDir.resolve(filename);
       Files.copy(file.getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
-      return publicUrl + "/files/" + subDirectory + "/" + filename;
+      return "/files/" + subDirectory + "/" + filename;
     } catch (IOException e) {
       throw AppException.internal("Failed To Store File: " + e.getMessage());
     }
