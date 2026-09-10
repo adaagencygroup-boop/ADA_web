@@ -17,10 +17,10 @@ export default function Hero({ badge, title, desc, imagePlaceholder }: HeroProps
           {/* Left: Content */}
           <div className="flex flex-col gap-(--heading-space) lg:col-span-5">
             {/* Badge */}
-            <div className="hidden md:inline-flex w-fit items-center rounded-full bg-slate-100 px-3 py-1 lg:text-[12px] font-semibold uppercase tracking-wider text-blue-900">
+            <div className="hidden md:inline-flex w-fit items-center rounded-full bg-slate-300 px-3 py-1 lg:text-[12px] font-semibold uppercase tracking-wider text-blue-900">
               {badge}
             </div>
-            <div className="inline-flex md:hidden w-fit items-center rounded-full bg-slate-100 px-3 py-1 text-[12px] font-semibold text-zinc-900">
+            <div className="inline-flex md:hidden w-fit items-center rounded-full bg-slate-300 px-3 py-1 text-[12px] font-semibold text-zinc-900">
               {badge}
             </div>
 

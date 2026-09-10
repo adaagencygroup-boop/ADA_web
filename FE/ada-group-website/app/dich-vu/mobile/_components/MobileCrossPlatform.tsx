@@ -60,7 +60,7 @@ export default function MobileCrossPlatform() {
   ];
 
   return (
-    <section className="section-y max-md:py-5! md:pt-(--heading-space)!">
+    <section className="section-y pt-0! max-md:pb-5!">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col lg:items-center bg-white lg:bg-[#0a1526] rounded-4xl lg:rounded-[3rem] lg:px-6 lg:py-14 text-left lg:text-center border border-slate-100 lg:border-none shadow-[0_2px_15px_rgb(0,0,0,0.03)] lg:shadow-none overflow-hidden lg:overflow-visible">
           

@@ -57,7 +57,7 @@ export default function MobileBackend() {
   ];
 
   return (
-    <section className="section-y max-md:py-5! md:pt-(--heading-space)!">
+    <section className="section-y pt-0! max-md:pb-5!">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         
         {/* Mobile Card / Desktop Top Section */}

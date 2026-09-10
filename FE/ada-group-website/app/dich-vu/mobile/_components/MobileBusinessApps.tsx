@@ -103,7 +103,7 @@ export default function MobileBusinessApps() {
   ];
 
   return (
-    <section className="section-y md:pt-(--heading-space)!">
+    <section className="section-y pt-0! max-md:pb-5!">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col lg:grid lg:grid-cols-2 gap-(--section-padding) lg:items-center rounded-4xl lg:rounded-none border border-slate-100 lg:border-none shadow-[0_2px_15px_rgb(0,0,0,0.03)] lg:shadow-none overflow-hidden lg:overflow-visible">
           

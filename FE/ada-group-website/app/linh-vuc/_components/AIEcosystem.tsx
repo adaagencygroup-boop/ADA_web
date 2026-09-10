@@ -39,9 +39,12 @@ export default function AIEcosystem() {
     <section className="section-y">
       <div className="mx-auto flex max-w-360 flex-col items-start gap-8 px-4 sm:px-6 lg:grid lg:grid-cols-2 lg:items-center lg:gap-20 lg:px-8">
         <div className="flex flex-col items-start gap-4 lg:gap-6">
-          <span className="inline-flex items-center rounded-full bg-[#D5E3FD] px-4 py-1.5 text-[12px] font-semibold tracking-widest text-[#57657B] uppercase lg:text-[12px] lg:font-normal lg:tracking-[1.6px]">
+          <div className="hidden md:inline-flex w-fit items-center rounded-full bg-slate-300 px-3 py-1 lg:text-[12px] font-semibold uppercase tracking-wider text-blue-900">
             {CONTENT.badge}
-          </span>
+          </div>
+          <div className="inline-flex md:hidden w-fit items-center rounded-full bg-slate-300 px-3 py-1 text-[12px] font-semibold text-zinc-900">
+            {CONTENT.badge}
+          </div>
 
           <h2 className="text-[28px] leading-[1.21] font-semibold text-[#002A64] lg:text-[44px] lg:leading-tight lg:tracking-[-0.96px]">
             {CONTENT.heading}
