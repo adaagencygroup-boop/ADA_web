@@ -24,40 +24,40 @@ function SearchIcon({ className = "h-4 w-4" }: IconProps) {
   );
 }
 
-function GlobeIcon({ className = "h-4 w-4" }: IconProps) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={1.8}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden="true"
-    >
-      <circle cx="12" cy="12" r="9" />
-      <path d="M3 12h18M12 3a14 14 0 0 1 0 18 14 14 0 0 1 0-18Z" />
-    </svg>
-  );
-}
+// function GlobeIcon({ className = "h-4 w-4" }: IconProps) {
+//   return (
+//     <svg
+//       viewBox="0 0 24 24"
+//       fill="none"
+//       stroke="currentColor"
+//       strokeWidth={1.8}
+//       strokeLinecap="round"
+//       strokeLinejoin="round"
+//       className={className}
+//       aria-hidden="true"
+//     >
+//       <circle cx="12" cy="12" r="9" />
+//       <path d="M3 12h18M12 3a14 14 0 0 1 0 18 14 14 0 0 1 0-18Z" />
+//     </svg>
+//   );
+// }
 
-function ChevronDownIcon({ className = "h-3 w-3" }: IconProps) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2.5}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      className={className}
-      aria-hidden="true"
-    >
-      <path d="m6 9 6 6 6-6" />
-    </svg>
-  );
-}
+// function ChevronDownIcon({ className = "h-3 w-3" }: IconProps) {
+//   return (
+//     <svg
+//       viewBox="0 0 24 24"
+//       fill="none"
+//       stroke="currentColor"
+//       strokeWidth={2.5}
+//       strokeLinecap="round"
+//       strokeLinejoin="round"
+//       className={className}
+//       aria-hidden="true"
+//     >
+//       <path d="m6 9 6 6 6-6" />
+//     </svg>
+//   );
+// }
 
 export default function SearchBar({
   category,
@@ -95,7 +95,7 @@ export default function SearchBar({
             </button>
           </div>
 
-          <div className="relative sm:w-32">
+          {/* <div className="relative sm:w-32">
             <GlobeIcon className="pointer-events-none absolute top-1/2 left-4 h-4 w-4 -translate-y-1/2 text-gray-400" />
             <select
               defaultValue="vi"
@@ -106,7 +106,7 @@ export default function SearchBar({
               <option value="en">EN</option>
             </select>
             <ChevronDownIcon className="pointer-events-none absolute top-1/2 right-4 h-3 w-3 -translate-y-1/2 text-gray-400" />
-          </div>
+          </div> */}
         </form>
       </div>
     </section>
