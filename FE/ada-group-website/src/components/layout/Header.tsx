@@ -155,7 +155,7 @@ export default function Header() {
         >
           <div className="flex items-center justify-between border-b border-zinc-200 px-4 py-4">
             <div className="flex items-center gap-2">
-              <Image src="/images/logo/logonobg.png" alt="ADA Group Logo" width={40} height={40} className="h-8 w-auto object-contain" />
+              <Image src="/images/logo/logo.png" alt="ADA Group Logo" width={40} height={40} className="h-8 w-auto object-contain" />
               <span className="text-lg font-bold text-zinc-900">ADA Group</span>
             </div>
             <button
