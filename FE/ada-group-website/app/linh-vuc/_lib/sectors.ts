@@ -19,7 +19,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
       "Trợ lý AI chuyên biệt hỗ trợ bác sĩ trong việc đọc ảnh y khoa, phân tích chỉ số máu và chẩn đoán sớm các bệnh lý phức tạp.",
     content:
       "ADA Group đặt y tế là lĩnh vực ưu tiên hàng đầu với sản phẩm ADAMECT - hệ thống AI hỗ trợ bác sĩ đọc ảnh X-quang, MRI, xét nghiệm và chẩn đoán nhanh, chính xác hơn.",
-    imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/y-te.jpg",
+    imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/linh-vuc/y-te/y-te1.jpg",
     whyChoose: {
       quoteBefore: "Mục tiêu là ",
       quoteHighlight: "rút ngắn thời gian chẩn đoán từ vài giờ xuống vài phút",
@@ -43,7 +43,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
       heading: "Cách tiếp cận của ADA Group",
       blocks: [
         {
-          imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/y-te.jpg",
+          imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/linh-vuc/y-te/y-te2.png",
           paragraph:
             "Sử dụng AI phân tích hình ảnh và dữ liệu y khoa để mang lại kết quả chẩn đoán tham khảo chuẩn xác và nhanh chóng nhất cho các y bác sĩ.",
           checklist: [
@@ -65,7 +65,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
           "Tích hợp dễ dàng với hệ thống PACS/RIS",
           "Báo cáo tự động, tiết kiệm thời gian cho bác sĩ",
         ],
-        imageSrc: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/y-te.jpg",
+        imageSrc: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/linh-vuc/y-te/y-te3.png",
         mockup: {
           appName: "ADAMEC",
           userName: "BN. Nguyễn Văn A",
@@ -86,7 +86,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
       "Giải pháp kết hợp Computer Vision, IoT và Blockchain giúp nông dân tối ưu hóa năng suất, giám sát dịch bệnh và minh bạch nguồn gốc nông sản.",
     content:
       "ADA Group tập trung vào nông nghiệp với sản phẩm ADAFARM - giải pháp kết hợp Computer Vision, IoT và Blockchain giúp nông dân tối ưu năng suất và minh bạch nguồn gốc nông sản.",
-    imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/nong-nghiep.jpg",
+    imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/linh-vuc/nong-nghiep/nong-nghiep1.jpg",
     whyChoose: {
       quoteBefore: "Mục tiêu là ",
       quoteHighlight: "nâng cao năng suất và chất lượng nông sản",
@@ -109,7 +109,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
       heading: "Cách tiếp cận của ADA Group",
       blocks: [
         {
-          imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/nong-nghiep.jpg",
+          imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/linh-vuc/nong-nghiep/nong-nghiep2.png",
           paragraph: "Chúng tôi mang công nghệ AI và IoT đến gần hơn với người nông dân, thông qua giao diện đơn giản và trực quan nhất.",
           checklist: [
             "Phát hiện sâu bệnh và cảnh báo sớm qua camera thông minh",
@@ -130,7 +130,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
           "Cảnh báo sâu bệnh sớm qua Camera AI",
           "Truy xuất nguồn gốc bằng Blockchain",
         ],
-        imageSrc: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/nong-nghiep.jpg",
+        imageSrc: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/linh-vuc/nong-nghiep/nong-nghiep3.png",
         mockup: {
           appName: "ADAFARM",
           userName: "Nông trại Xanh",
@@ -151,7 +151,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
       "Mạng xã hội luật đầu tiên ứng dụng AI để hỗ trợ tra cứu văn bản, phân tích án lệ và kết nối luật sư với người dùng một cách hiệu quả.",
     content:
       "ADA Group phát triển lĩnh vực pháp lý với sản phẩm ADALAW - mạng xã hội luật ứng dụng AI hỗ trợ tra cứu văn bản, phân tích án lệ và kết nối luật sư với người dùng.",
-    imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/luat-phap-ly.jpg",
+    imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/linh-vuc/luat-phap-ly/luat-phap-ly1.jpg",
     whyChoose: {
       quoteBefore: "Mục tiêu là ",
       quoteHighlight: "dân chủ hóa kiến thức pháp luật",
@@ -174,7 +174,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
       heading: "Cách tiếp cận của ADA Group",
       blocks: [
         {
-          imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/luat-phap-ly.jpg",
+          imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/linh-vuc/luat-phap-ly/luat-phap-ly2.png",
           paragraph: "ADALAW kết hợp kho dữ liệu pháp luật đồ sộ của Việt Nam cùng mô hình LLM chuyên biệt để đưa ra những phân tích pháp lý chuẩn xác.",
           checklist: [
             "Tra cứu và tóm tắt văn bản luật tự động",
@@ -195,7 +195,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
           "Rà soát lỗ hổng pháp lý trong hợp đồng",
           "Kết nối luật sư chuyên nghiệp",
         ],
-        imageSrc: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/luat-phap-ly.jpg",
+        imageSrc: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/linh-vuc/luat-phap-ly/luat-phap-ly3.png",
         mockup: {
           appName: "ADALAW",
           userName: "Luật sư Trí tuệ",
@@ -216,7 +216,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
       "Hệ sinh thái TMĐT thế hệ mới, tích hợp AI Livestream cá nhân hóa và giải pháp thanh toán thông minh cho thị trường xuyên biên giới.",
     content:
       "ADA Group xây dựng hệ sinh thái thương mại điện tử với các sản phẩm ADATIK, ADAWORLD, ADAMART - tích hợp AI Livestream cá nhân hóa và thanh toán thông minh cho thị trường xuyên biên giới.",
-    imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/thuong-mai-dien-tu.jpg",
+    imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/linh-vuc/thuong-mai/thuong-mai1.jpg",
     whyChoose: {
       quoteBefore: "Mục tiêu là ",
       quoteHighlight: "tối ưu hóa trải nghiệm mua sắm",
@@ -239,7 +239,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
       heading: "Cách tiếp cận của ADA Group",
       blocks: [
         {
-          imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/thuong-mai-dien-tu.jpg",
+          imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/linh-vuc/thuong-mai/thuong-mai2.png",
           paragraph: "Chúng tôi thay đổi cách người tiêu dùng tương tác với sản phẩm bằng các AI Livestreamer hoạt động liên tục.",
           checklist: [
             "MC ảo Livestream bán hàng chuyên nghiệp 24/7",
@@ -260,7 +260,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
           "Tự động trả lời bình luận chốt đơn",
           "Tăng 150% tỷ lệ chuyển đổi mua hàng",
         ],
-        imageSrc: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/thuong-mai-dien-tu.jpg",
+        imageSrc: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/linh-vuc/thuong-mai/thuong-mai2.png",
       },
     ],
   },
@@ -272,7 +272,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
       "Nền tảng ghép xe thông minh, tối ưu hóa lộ trình và giảm xe rỗng chạy ngược chiều trên toàn quốc, giúp tiết kiệm chi phí và bảo vệ môi trường.",
     content:
       "ADA Group đầu tư vào logistics và vận tải với sản phẩm ADACAR - nền tảng ghép xe thông minh giúp tối ưu lộ trình, giảm xe rỗng chạy ngược chiều và tiết kiệm chi phí.",
-    imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/logistics-van-tai.jpg",
+    imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/linh-vuc/logistics/logistics1.jpg",
     whyChoose: {
       quoteBefore: "Mục tiêu là ",
       quoteHighlight: "xóa bỏ lãng phí trong vận tải",
@@ -295,7 +295,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
       heading: "Cách tiếp cận của ADA Group",
       blocks: [
         {
-          imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/logistics-van-tai.jpg",
+          imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/linh-vuc/logistics/logistics2.png",
           paragraph: "Sử dụng thuật toán tối ưu hóa đa mục tiêu để giải bài toán định tuyến và ghép hàng theo thời gian thực.",
           checklist: [
             "Ghép xe tiện chuyến, giảm thiểu xe chạy rỗng",
@@ -316,7 +316,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
           "Giảm thiểu xe chạy rỗng",
           "Thanh toán và hợp đồng vận tải điện tử",
         ],
-        imageSrc: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/logistics-van-tai.jpg",
+        imageSrc: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/linh-vuc/logistics/logistics3.png",
       },
     ],
   },
@@ -328,7 +328,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
       "Mạng xã hội kết nối tri thức và tình cảm, ứng dụng AI để gợi ý những mối quan hệ chất lượng, có chiều sâu và đảm bảo an toàn tuyệt đối cho người dùng.",
     content:
       "ADA Group phát triển mạng xã hội với sản phẩm ADALOVE - nền tảng ứng dụng AI để gợi ý những mối quan hệ chất lượng, có chiều sâu và đảm bảo an toàn cho người dùng.",
-    imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/mang-xa-hoi.jpg",
+    imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/linh-vuc/mang-xa-hoi/mang-xa-hoi1.jpg",
     whyChoose: {
       quoteBefore: "Mục tiêu là ",
       quoteHighlight: "kết nối những tâm hồn đồng điệu",
@@ -351,7 +351,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
       heading: "Cách tiếp cận của ADA Group",
       blocks: [
         {
-          imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/mang-xa-hoi.jpg",
+          imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/linh-vuc/mang-xa-hoi/mang-xa-hoi2.png",
           paragraph: "Chúng tôi áp dụng mô hình phân tích tính cách và hành vi để tạo ra những gợi ý kết nối phù hợp nhất.",
           checklist: [
             "Thuật toán ghép đôi dựa trên AI Matching tâm lý học",
@@ -372,7 +372,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
           "Xác thực eKYC ngăn chặn tài khoản ảo",
           "Trợ lý AI tư vấn tình cảm",
         ],
-        imageSrc: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/mang-xa-hoi.jpg",
+        imageSrc: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/linh-vuc/mang-xa-hoi/mang-xa-hoi3.png",
       },
     ],
   },
@@ -384,7 +384,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
       "Trợ lý AI dinh dưỡng, vận động và sàn thực phẩm sạch truy vết QR.",
     content:
       "ADA Group đồng hành cùng sức khỏe và lối sống với sản phẩm ADAHEALTH - trợ lý AI dinh dưỡng, vận động và sàn thực phẩm sạch truy vết nguồn gốc qua mã QR.",
-    imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/suc-khoe-loi-song.png",
+    imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/linh-vuc/suc-khoe/suc-khoe1.jpg",
     whyChoose: {
       quoteBefore: "Mục tiêu là ",
       quoteHighlight: "nâng tầm chất lượng sống",
@@ -407,7 +407,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
       heading: "Cách tiếp cận của ADA Group",
       blocks: [
         {
-          imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/suc-khoe-loi-song.png",
+          imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/linh-vuc/suc-khoe/suc-khoe2.png",
           paragraph: "Phân tích dữ liệu cá nhân hóa để cung cấp các kế hoạch chăm sóc sức khỏe chuẩn y khoa và dễ thực hiện nhất.",
           checklist: [
             "Trợ lý ảo gợi ý thực đơn và bài tập cá nhân hóa",
@@ -428,7 +428,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
           "Kết nối đồng hồ thông minh đo nhịp tim",
           "Mua sắm thực phẩm hữu cơ với QR Code",
         ],
-        imageSrc: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/suc-khoe-loi-song.png",
+        imageSrc: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/linh-vuc/suc-khoe/suc-khoe3.png",
       },
     ],
   },
@@ -439,7 +439,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
     description: "Camera xuyên tường dựa trên tín hiệu Wi-Fi.",
     content:
       "ADA Group ứng dụng AI vào an ninh và cảm biến với sản phẩm ADACAMRA - giải pháp camera xuyên tường dựa trên tín hiệu Wi-Fi.",
-    imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/an-ninh-cam-bien.png",
+    imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/linh-vuc/an-ninh-cam-bien/an-ninh1.jpg",
     whyChoose: {
       quoteBefore: "Mục tiêu là ",
       quoteHighlight: "bảo vệ an toàn tuyệt đối",
@@ -462,7 +462,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
       heading: "Cách tiếp cận của ADA Group",
       blocks: [
         {
-          imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/an-ninh-cam-bien.png",
+          imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/linh-vuc/an-ninh-cam-bien/an-ninh2.png",
           paragraph: "Chúng tôi nghiên cứu các giải pháp AI xử lý tín hiệu Wi-Fi và Radio để nhận diện chuyển động mà không cần quang học.",
           checklist: [
             "Cảm biến xuyên tường phát hiện hô hấp và chuyển động",
@@ -483,7 +483,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
           "Báo động khẩn cấp tới điện thoại chủ nhà",
           "Đảm bảo riêng tư 100% (không thu hình ảnh)",
         ],
-        imageSrc: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/an-ninh-cam-bien.png",
+        imageSrc: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/linh-vuc/an-ninh-cam-bien/an-ninh3.png",
       },
     ],
   },
@@ -494,7 +494,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
     description: "Bộ ba quản lý chi tiêu, crypto và chứng khoán.",
     content:
       "ADA Group phát triển bộ sản phẩm tài chính ADAFIN, ADACOIN, ADASTOCK - hỗ trợ người dùng quản lý chi tiêu, crypto và chứng khoán một cách thông minh.",
-    imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/tai-chinh-dau-tu.png",
+    imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/linh-vuc/tai-chinh-dau-tu/tai-chinh1.jpg",
     whyChoose: {
       quoteBefore: "Mục tiêu là ",
       quoteHighlight: "tối đa hóa hiệu quả đầu tư",
@@ -517,7 +517,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
       heading: "Cách tiếp cận của ADA Group",
       blocks: [
         {
-          imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/tai-chinh-dau-tu.png",
+          imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/linh-vuc/tai-chinh-dau-tu/tai-chinh2.png",
           paragraph: "Sử dụng Big Data và Machine Learning để dự báo xu hướng dòng tiền và quản trị rủi ro tự động.",
           checklist: [
             "Bot AI tự động báo động xu hướng chứng khoán, crypto",
@@ -538,7 +538,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
           "Quản lý danh mục đầu tư tự động",
           "Báo cáo phân tích vĩ mô hàng ngày",
         ],
-        imageSrc: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/tai-chinh-dau-tu.png",
+        imageSrc: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/linh-vuc/tai-chinh-dau-tu/tai-chinh3.png",
         mockup: {
           appName: "ADASTOCK",
           userName: "Nhà đầu tư F0",
@@ -559,7 +559,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
       "AI tư vấn cá nhân hóa, vé máy bay tối ưu giá và dịch giọng nói thời gian thực.",
     content:
       "ADA Group ứng dụng AI vào du lịch và lữ hành với sản phẩm ADAGO - tư vấn hành trình cá nhân hóa, tìm vé máy bay tối ưu giá và dịch giọng nói thời gian thực.",
-    imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/du-lich-lu-hanh.jpg",
+    imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/linh-vuc/du-lich-lu-hanh/du-lich1.jpg",
     whyChoose: {
       quoteBefore: "Mục tiêu là ",
       quoteHighlight: "trải nghiệm du lịch không giới hạn",
@@ -582,7 +582,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
       heading: "Cách tiếp cận của ADA Group",
       blocks: [
         {
-          imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/du-lich-lu-hanh.jpg",
+          imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/linh-vuc/du-lich-lu-hanh/du-lich2.png",
           paragraph: "Tích hợp công nghệ AI sinh tạo và nhận diện giọng nói để trở thành người hướng dẫn viên ảo đáng tin cậy.",
           checklist: [
             "Lên lịch trình du lịch cá nhân hóa tự động",
@@ -603,7 +603,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
           "Phiên dịch giọng nói theo thời gian thực",
           "Tự động gợi ý nhà hàng, địa điểm gần đây",
         ],
-        imageSrc: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/du-lich-lu-hanh.jpg",
+        imageSrc: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/linh-vuc/du-lich-lu-hanh/du-lich3.png",
       },
     ],
   },
@@ -615,7 +615,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
       "Nền tảng kết nối môi giới và khách hàng, mở rộng sang dự án & công nghiệp.",
     content:
       "ADA Group phát triển lĩnh vực bất động sản với sản phẩm ADALAND - nền tảng kết nối môi giới và khách hàng, mở rộng sang dự án và bất động sản công nghiệp.",
-    imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/bat-dong-san.jpg",
+    imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/linh-vuc/bat-dong-san/bat-dong-san1.jpg",
     whyChoose: {
       quoteBefore: "Mục tiêu là ",
       quoteHighlight: "minh bạch hóa thị trường bất động sản",
@@ -638,7 +638,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
       heading: "Cách tiếp cận của ADA Group",
       blocks: [
         {
-          imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/bat-dong-san.jpg",
+          imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/linh-vuc/bat-dong-san/bat-dong-san2.png",
           paragraph: "Áp dụng định giá tự động và bản đồ nhiệt thông minh để giúp nhà đầu tư thấy rõ tiềm năng của từng khu vực.",
           checklist: [
             "Môi giới ảo AI hỗ trợ tìm nhà và tư vấn pháp lý 24/7",
@@ -659,7 +659,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
           "Xác minh tin đăng tự động chống spam",
           "Trợ lý AI phân tích hợp đồng mua bán",
         ],
-        imageSrc: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/bat-dong-san.jpg",
+        imageSrc: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/linh-vuc/bat-dong-san/bat-dong-san3.png",
       },
     ],
   },
@@ -670,7 +670,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
     description: "Bộ công cụ vận hành toàn diện cho SME Việt.",
     content:
       "ADA Group xây dựng hệ sinh thái doanh nghiệp với các sản phẩm ADAWORK, ADAWEB, ADASHOP - bộ công cụ vận hành toàn diện dành cho doanh nghiệp vừa và nhỏ tại Việt Nam.",
-    imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/he-sinh-thai-doanh-nghiep.jpg",
+    imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/linh-vuc/he-sinh-thai/he-sinh-thai1.jpg",
     whyChoose: {
       quoteBefore: "Mục tiêu là ",
       quoteHighlight: "chuyển đổi số toàn diện cho SME",
@@ -693,7 +693,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
       heading: "Cách tiếp cận của ADA Group",
       blocks: [
         {
-          imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/he-sinh-thai-doanh-nghiep.jpg",
+          imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/linh-vuc/he-sinh-thai/he-sinh-thai2.png",
           paragraph: "Tích hợp sâu các mô hình LLM vào các phần mềm quản trị ERP, CRM và HRM để biến chúng thành những trợ lý kinh doanh thực thụ.",
           checklist: [
             "Hệ thống quản lý công việc và tự động hóa quy trình",
@@ -714,7 +714,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
           "Chấm công bằng nhận diện khuôn mặt AI",
           "Báo cáo tài chính tự động",
         ],
-        imageSrc: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/he-sinh-thai-doanh-nghiep.jpg",
+        imageSrc: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/linh-vuc/he-sinh-thai/he-sinh-thai3.png",
       },
     ],
   },
@@ -725,7 +725,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
     description: "Mô hình ngôn ngữ và sinh video do ADA Group tự phát triển.",
     content:
       "ADA Group đầu tư vào AI nền tảng với sản phẩm ADA LLM và ADA VIDEO - mô hình ngôn ngữ và sinh video do ADA Group tự nghiên cứu và phát triển.",
-    imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/ai-nen-tang.jpg",
+    imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/linh-vuc/ai-nen-tang/ai-nen-tang1.jpg",
     whyChoose: {
       quoteBefore: "Mục tiêu là ",
       quoteHighlight: "tự chủ công nghệ lõi",
@@ -748,7 +748,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
       heading: "Cách tiếp cận của ADA Group",
       blocks: [
         {
-          imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/ai-nen-tang.jpg",
+          imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/linh-vuc/ai-nen-tang/ai-nen-tang2.png",
           paragraph:
             "Mô hình được huấn luyện trên dữ liệu chất lượng cao tiếng Việt, hiểu sâu ngữ cảnh và chuyên ngành như pháp lý, y tế, tài chính...",
           checklist: [
@@ -770,7 +770,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
           "Tốc độ phản hồi cực nhanh, không phụ thuộc API ngoài",
           "Cho phép triển khai cục bộ tại máy chủ doanh nghiệp",
         ],
-        imageSrc: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/ai-nen-tang.jpg",
+        imageSrc: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/linh-vuc/ai-nen-tang/ai-nen-tang3.png",
       },
     ],
   },
@@ -781,7 +781,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
     description: "Robot đồ chơi tích hợp AI giáo dục cho trẻ em Việt.",
     content:
       "ADA Group ứng dụng AI vào giáo dục với sản phẩm ADAKID - robot đồ chơi tích hợp AI giáo dục, giúp trẻ em Việt Nam tiếp cận công nghệ từ sớm.",
-    imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/giao-duc.jpg",
+    imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/linh-vuc/giao-duc/giao-duc1.jpg",
     whyChoose: {
       quoteBefore: "Mục tiêu là ",
       quoteHighlight: "cá nhân hóa hành trình học tập",
@@ -804,7 +804,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
       heading: "Cách tiếp cận của ADA Group",
       blocks: [
         {
-          imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/giao-duc.jpg",
+          imageUrl: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/linh-vuc/giao-duc/giao-duc2.png",
           paragraph: "Tích hợp công nghệ nhận diện giọng nói và NLP thân thiện với trẻ em để tạo ra môi trường giao tiếp tự nhiên và an toàn.",
           checklist: [
             "Robot AI hỗ trợ học ngoại ngữ và kỹ năng mềm",
@@ -825,7 +825,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
           "Kể chuyện tương tác và hát ru thông minh",
           "Hỗ trợ phụ huynh giới hạn thời gian sử dụng",
         ],
-        imageSrc: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/giao-duc.jpg",
+        imageSrc: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/linh-vuc/giao-duc/giao-duc3.png",
       },
     ],
   },

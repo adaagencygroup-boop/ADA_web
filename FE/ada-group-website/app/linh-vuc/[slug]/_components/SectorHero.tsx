@@ -22,6 +22,7 @@ export default function SectorHero({ sector }: { sector: Sector }) {
             src={sector.imageUrl}
             alt={sector.title}
             fill
+            priority
             sizes="(min-width: 1024px) 681px, 100vw"
             className="object-cover"
           />
