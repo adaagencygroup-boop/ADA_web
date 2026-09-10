@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { formatEmploymentType, getRecruitmentBySlug } from "@/src/lib/api/recruitments";
+import { ArrowRightIcon } from "@/app/_components/icons";
 
 export const revalidate = 60;
 
@@ -268,8 +269,9 @@ export default async function JobDetailsPage({ params }: PageProps) {
               <p className="text-[14px] text-zinc-500 mb-4 leading-relaxed line-clamp-4">
                 ADA Group cung cấp các giải pháp công nghệ toàn diện, ứng dụng AI và tự động hóa để giúp doanh nghiệp tối ưu vận hành và bứt phá tăng trưởng. Môi trường làm việc hiện đại, chuyên nghiệp.
               </p>
-              <Link href="/gioi-thieu" className="text-[14px] font-semibold text-[#002A64] hover:text-blue-700 transition-colors inline-flex items-center gap-1">
-                Tìm hiểu thêm về chúng tôi <span className="text-lg leading-none">&rarr;</span>
+              <Link href="/gioi-thieu" className="text-[14px] font-semibold text-[#002A64] hover:text-blue-700 transition-colors inline-flex items-center gap-1.5 group">
+                <span>Tìm hiểu thêm về chúng tôi</span>
+                <ArrowRightIcon className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
               </Link>
             </div>
 
