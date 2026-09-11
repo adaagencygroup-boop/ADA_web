@@ -423,6 +423,9 @@ export default function JobForm({
                   className="h-9.5 w-full rounded-lg border border-[#C4C6D2] bg-[#FCF9F8] px-4 text-sm text-[#1C1B1B] outline-none placeholder:text-[#9CA3AF] focus-visible:border-[#316EE9]"
                   {...register("location")}
                 />
+                {errors.location && (
+                  <p className="text-sm text-red-600">{errors.location.message}</p>
+                )}
               </div>
 
               <div className="flex flex-col gap-1.5">
@@ -488,6 +491,9 @@ export default function JobForm({
                   className="h-9.5 w-full rounded-lg border border-[#C4C6D2] bg-[#FCF9F8] px-4 text-sm text-[#1C1B1B] outline-none placeholder:text-[#9CA3AF] focus-visible:border-[#316EE9]"
                   {...register("requiredCandidateNum")}
                 />
+                {errors.requiredCandidateNum && (
+                  <p className="text-sm text-red-600">{errors.requiredCandidateNum.message}</p>
+                )}
               </div>
 
               <div className="flex flex-col gap-1.5">
@@ -501,6 +507,9 @@ export default function JobForm({
                     <DatePickerField value={field.value} onChange={field.onChange} />
                   )}
                 />
+                {errors.expiresAt && (
+                  <p className="text-sm text-red-600">{errors.expiresAt.message}</p>
+                )}
               </div>
             </div>
           </div>
@@ -612,6 +621,9 @@ export default function JobForm({
                 {uploadMutation.isPending ? "Đang tải lên..." : "Chọn ảnh"}
               </button>
             </div>
+            {errors.coverImageURL && (
+              <p className="text-sm text-red-600">{errors.coverImageURL.message}</p>
+            )}
             {uploadMutation.isError && (
               <p className="text-xs text-red-600">
                 Tải ảnh lên thất bại. Vui lòng thử lại.
@@ -642,6 +654,9 @@ export default function JobForm({
                   />
                 )}
               />
+              {errors.minSalary && (
+                <p className="text-sm text-red-600">{errors.minSalary.message}</p>
+              )}
             </div>
 
             <div className="flex flex-col gap-1.5">
@@ -658,6 +673,9 @@ export default function JobForm({
                   />
                 )}
               />
+              {errors.maxSalary && (
+                <p className="text-sm text-red-600">{errors.maxSalary.message}</p>
+              )}
             </div>
 
             <div className="flex items-center gap-3">
