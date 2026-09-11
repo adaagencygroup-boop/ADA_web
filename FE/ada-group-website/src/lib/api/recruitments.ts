@@ -70,6 +70,20 @@ export function formatEmploymentType(type: EmploymentType): string {
   return map[type] || type;
 }
 
+export function formatDate(iso: string | null | undefined): string {
+  if (!iso) return "—";
+  const date = new Date(iso);
+  if (isNaN(date.getTime())) return "—";
+  return date.toLocaleDateString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" });
+}
+
+export function formatDeadlineDate(iso: string | null | undefined): string {
+  if (!iso) return "Đang mở";
+  const date = new Date(iso);
+  if (isNaN(date.getTime())) return "Đang mở";
+  return date.toLocaleDateString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" });
+}
+
 // description/requirements/benefits are rich-text HTML (authored via the admin's
 // RichTextEditor); use this to derive a clean plain-text snippet for card previews.
 export function stripHtml(html: string): string {
@@ -86,3 +100,4 @@ export function getJobIconLabel(title: string): string {
   if (t.includes("mobile") || t.includes("app")) return "App";
   return "💼";
 }
+

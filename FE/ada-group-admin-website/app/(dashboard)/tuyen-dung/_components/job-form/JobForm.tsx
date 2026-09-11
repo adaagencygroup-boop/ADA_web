@@ -214,7 +214,11 @@ export default function JobForm({
       requiredCandidateNum: values.requiredCandidateNum
         ? Number(values.requiredCandidateNum)
         : null,
-      expiresAt: values.expiresAt.toISOString(),
+      expiresAt: (() => {
+        const d = new Date(values.expiresAt);
+        d.setHours(23, 59, 59, 999);
+        return d.toISOString();
+      })(),
     };
 
     setPendingSubmit(payload);

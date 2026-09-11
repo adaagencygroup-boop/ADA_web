@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
-import { formatEmploymentType, getJobIconLabel, getRecruitments, stripHtml } from "@/src/lib/api/recruitments";
+import { formatDate, formatDeadlineDate, formatEmploymentType, getJobIconLabel, getRecruitments, stripHtml } from "@/src/lib/api/recruitments";
 import type { Department, EmploymentType, Recruitment } from "@/src/types/recruitments";
 
 const EMPLOYMENT_TYPE_OPTIONS: EmploymentType[] = ["fulltime", "parttime", "remote", "hybrid"];
@@ -167,11 +167,11 @@ export default function JobBoard({
                   <div className="flex flex-col gap-1.5 text-[12.5px] text-zinc-500 w-full sm:w-40">
                     <div className="flex items-center gap-2">
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
-                      <span>Đăng ngày: {new Date(job.createdAt).toLocaleDateString("vi-VN")}</span>
+                      <span>Đăng ngày: {formatDate(job.createdAt)}</span>
                     </div>
                     <div className="flex items-center gap-2 text-zinc-500">
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                      <span>Hạn ứng tuyển: <span className="hidden lg:inline"><br/></span>{job.expiresAt ? new Date(job.expiresAt).toLocaleDateString("vi-VN") : "Đang mở"}</span>
+                      <span>Hạn ứng tuyển: <span className="hidden lg:inline"><br/></span>{formatDeadlineDate(job.expiresAt)}</span>
                     </div>
                   </div>
 

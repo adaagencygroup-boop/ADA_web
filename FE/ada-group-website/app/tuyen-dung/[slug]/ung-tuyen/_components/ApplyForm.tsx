@@ -3,7 +3,7 @@
 import React, { useState, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { applyToJob, formatEmploymentType } from "@/src/lib/api/recruitments";
+import { applyToJob, formatDate, formatDeadlineDate, formatEmploymentType } from "@/src/lib/api/recruitments";
 import type { Recruitment } from "@/src/types/recruitments";
 import Alert from "@/src/components/common/Alert";
 
@@ -92,8 +92,8 @@ export default function ApplyForm({ job, slug }: { job: Recruitment; slug: strin
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [alertInfo, setAlertInfo] = useState<{type: 'success'|'error'|'warning'|'info', title: string, message: string} | null>(null);
 
-  const postDate = new Date(job.createdAt).toLocaleDateString("vi-VN");
-  const expireDate = job.expiresAt ? new Date(job.expiresAt).toLocaleDateString("vi-VN") : "Đang mở";
+  const postDate = formatDate(job.createdAt);
+  const expireDate = formatDeadlineDate(job.expiresAt);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;

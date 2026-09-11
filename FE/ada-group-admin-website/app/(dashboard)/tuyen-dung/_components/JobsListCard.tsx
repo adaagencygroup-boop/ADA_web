@@ -36,7 +36,9 @@ const PAGE_SIZE = 10;
 
 function formatDeadline(iso: string | null) {
   if (!iso) return "—";
-  return new Date(iso).toLocaleDateString("vi-VN");
+  const date = new Date(iso);
+  if (isNaN(date.getTime())) return "—";
+  return date.toLocaleDateString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" });
 }
 
 export default function JobsListCard({
