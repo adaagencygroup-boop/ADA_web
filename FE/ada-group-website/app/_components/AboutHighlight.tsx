@@ -70,10 +70,10 @@ export default function AboutHighlight() {
           ))}
           <Link
             href={CONTENT.ctaHref}
-            className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-blue-700 hover:text-blue-800"
+            className="group mt-6 inline-flex items-center gap-1.5 text-sm font-semibold text-blue-700 hover:text-blue-800"
           >
             {CONTENT.ctaLabel}
-            <ArrowRightIcon className="h-3.5 w-3.5" />
+            <ArrowRightIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
         </div>
         </div>
