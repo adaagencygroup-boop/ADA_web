@@ -14,7 +14,7 @@ export default function SectorsGrid() {
             <Link
               key={sector.slug}
               href={`/linh-vuc/${sector.slug}`}
-              className="flex flex-col overflow-hidden rounded-2xl border border-[#C4C6D2]/20 bg-white transition-shadow shadow-sm hover:shadow-lg"
+              className="group flex flex-col overflow-hidden rounded-2xl border border-[#C4C6D2]/20 bg-white transition-shadow shadow-sm hover:shadow-lg"
             >
               <div className="relative aspect-417/224 w-full bg-zinc-200">
                 <Image
@@ -38,9 +38,9 @@ export default function SectorsGrid() {
                   </span>{" "}
                   — {sector.description}
                 </p>
-                <span className="mt-auto inline-flex items-center gap-2 pt-6 text-[14px] font-semibold text-[#002A64]">
+                <span className="mt-auto inline-flex items-center gap-1.5 pt-6 text-[14px] font-semibold text-[#002A64]">
                   Khám phá thêm
-                  <ArrowRightIcon className="h-3.5 w-3.5" />
+                  <ArrowRightIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                 </span>
               </div>
             </Link>

@@ -4,7 +4,7 @@ import type { Sector, SectorStat } from "@/app/linh-vuc/_types/sector";
 function StatCard({ stat }: { stat: SectorStat }) {
   const Icon = STAT_ICONS[stat.icon];
   return (
-    <div className="flex flex-1 flex-col items-center gap-1 rounded-lg bg-white p-4 text-center lg:items-start lg:gap-4 lg:rounded-2xl lg:border lg:border-slate-100 lg:p-8 lg:text-left lg:shadow-[0_1px_2px_rgba(0,0,0,0.05)]">
+    <div className="flex flex-1 flex-col items-center gap-1 rounded-xl bg-white p-4 text-center lg:items-start lg:gap-4 lg:rounded-2xl lg:border lg:border-slate-100 lg:p-8 lg:text-left lg:shadow-[0_1px_2px_rgba(0,0,0,0.05)]">
       <Icon className="hidden h-10 w-10 text-[#2563EB] lg:block" />
       <span className="text-2xl leading-8.75 font-semibold text-[#002A64] lg:leading-10 lg:text-[#1E3A8A]">
         {stat.value}
@@ -21,15 +21,15 @@ export default function SectorWhyChoose({ sector }: { sector: Sector }) {
   if (!whyChoose) return null;
 
   return (
-    <section className="section-y bg-white">
+    <section className="section-y bg-white max-lg:pb-0!">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
-        <h2 className="text-xl leading-7.25 font-semibold text-[#0F172A] lg:text-center lg:text-[36px] lg:leading-9 lg:font-bold">
+        <h2 className="text-[24px] lg:text-[36px] leading-[1.2] font-semibold text-[#0F172A] lg:text-center lg:font-bold">
           Tại sao <span className="hidden lg:inline">ADA Group </span>chọn{" "}
           {sector.title}?
         </h2>
 
-        <div className="mt-(--inner-space) flex flex-col gap-6 lg:grid lg:grid-cols-2 lg:items-center lg:gap-(--inner-space)">
-          <div className="min-w-0 rounded-xl border border-slate-200 bg-white p-4 lg:border-none lg:bg-transparent lg:p-0">
+        <div className="mt-(--inner-space) flex flex-col gap-4 lg:grid lg:grid-cols-2 lg:items-center lg:gap-(--inner-space)">
+          <div className="min-w-0 rounded-2xl border border-slate-200 bg-white p-5 lg:border-none lg:bg-transparent lg:p-0">
             <p className="text-base leading-6 font-semibold text-[#0F172A] lg:text-2xl lg:leading-9 lg:font-semibold lg:text-[#1E293B]">
               <span
                 aria-hidden="true"

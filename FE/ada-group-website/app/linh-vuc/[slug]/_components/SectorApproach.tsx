@@ -25,23 +25,23 @@ export default function SectorApproach({ sector }: { sector: Sector }) {
   return (
     <section className="section-y">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col items-center gap-4">
-          <h2 className="text-center text-[28px] leading-10 font-bold text-[#000000] lg:text-[36px]">
+        <div className="flex flex-col items-center gap-3">
+          <h2 className="text-center text-[24px] lg:text-[36px] leading-[1.2] font-semibold text-[#000000] lg:font-bold">
             {approach.heading}
           </h2>
           <span className="h-1 w-16 bg-[#2563EB]" />
         </div>
 
-        <div className="mt-(--inner-space) flex flex-col gap-10">
+        <div className="mt-(--inner-space) flex flex-col gap-6 lg:gap-10">
           {approach.blocks.map((block, index) => (
             <div
               key={block.paragraph}
-              className={`flex flex-col items-center gap-8 lg:flex-row lg:gap-(--inner-space) ${
+              className={`flex flex-col items-center gap-6 lg:flex-row lg:gap-(--inner-space) ${
                 index % 2 === 1 ? "lg:flex-row-reverse" : ""
               }`}
             >
               <div className="w-full rounded-2xl border border-[#F3F4F6] bg-white p-4 shadow-[0_1px_2px_rgba(0,0,0,0.05)] lg:w-157.5 lg:shrink-0 lg:p-8">
-                <div className="relative aspect-628/342 w-full overflow-hidden rounded-lg">
+                <div className="relative aspect-628/342 w-full overflow-hidden rounded-xl">
                   <Image
                     src={block.imageUrl}
                     alt={approach.heading}
@@ -52,17 +52,17 @@ export default function SectorApproach({ sector }: { sector: Sector }) {
                 </div>
               </div>
 
-              <div className="flex min-w-0 flex-col items-start gap-6">
-                <p className="text-sm leading-6.5 text-[#4B5563] lg:text-base">
+              <div className="flex min-w-0 flex-col items-start gap-4 lg:gap-6">
+                <p className="text-[14px] lg:text-base leading-relaxed text-[#4B5563]">
                   {block.paragraph}
                 </p>
-                <ul className="flex flex-col items-start gap-4">
+                <ul className="flex flex-col items-start gap-3 lg:gap-4">
                   {block.checklist.map((item) => (
                     <li key={item} className="flex items-center gap-3">
-                      <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#2563EB] text-white">
+                      <span className="flex h-5 w-5 lg:h-6 lg:w-6 shrink-0 items-center justify-center rounded-full bg-[#2563EB] text-white">
                         <CheckIcon className="h-3 w-3" />
                       </span>
-                      <span className="text-sm font-medium text-[#374151] lg:text-base">
+                      <span className="text-[14px] lg:text-base font-medium text-[#374151]">
                         {item}
                       </span>
                     </li>

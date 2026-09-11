@@ -5,7 +5,7 @@ export default function SectorHero({ sector }: { sector: Sector }) {
   return (
     <section className="section-y">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:flex lg:items-center lg:gap-(--inner-space) lg:px-8">
-        <div className="flex flex-col items-start gap-2 lg:max-w-139 lg:shrink-0 lg:gap-(--heading-space)">
+        <div className="flex flex-col items-start gap-3 lg:max-w-139 lg:shrink-0 lg:gap-(--heading-space)">
           <span className="text-xs font-semibold tracking-wide text-[#2563EB] uppercase lg:hidden">
             Chi tiết lĩnh vực
           </span>
@@ -17,7 +17,7 @@ export default function SectorHero({ sector }: { sector: Sector }) {
           </p>
         </div>
 
-        <div className="relative mt-(--inner-space) aspect-358/200 w-full overflow-hidden rounded-xl lg:mt-0 lg:aspect-681/430 lg:flex-1">
+        <div className="relative mt-(--inner-space) aspect-358/200 w-full overflow-hidden rounded-2xl lg:mt-0 lg:aspect-681/430 lg:flex-1">
           <Image
             src={sector.imageUrl}
             alt={sector.title}
