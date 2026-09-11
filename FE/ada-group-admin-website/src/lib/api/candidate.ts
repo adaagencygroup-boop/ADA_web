@@ -71,3 +71,11 @@ export async function exportCandidatesExcel(
   });
   return response.data as Blob;
 }
+
+export async function getCandidateCvFile(id: string, signal?: AbortSignal) {
+  const response = await apiClient.get(`/admin/candidates/${id}/cv`, {
+    signal,
+    responseType: "blob",
+  });
+  return response.data as Blob;
+}

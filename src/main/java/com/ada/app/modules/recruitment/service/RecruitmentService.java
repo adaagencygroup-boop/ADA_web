@@ -37,12 +37,19 @@ import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Pattern;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -55,6 +62,8 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 @RequiredArgsConstructor
 public class RecruitmentService {
+  @Value("${app.storage.path}")
+  private String storagePath;
   private final RecruitmentRepository recruitmentRepository;
   private final CandidateRepository candidateRepository;
   private final DepartmentRepository departmentRepository;
@@ -342,6 +351,46 @@ public class RecruitmentService {
     c.setUpdatedAt(Instant.now());
     c = candidateRepository.save(c);
     return new CandidateNoteResponse(c.getId(), c.getNote(), c.getUpdatedAt());
+  }
+
+  public record CandidateCvResource(Resource resource, String filename, String mimeType) {}
+
+  @Transactional(readOnly = true)
+  public CandidateCvResource getCandidateCv(UUID id) {
+    Candidate c = candidateRepository.findById(id).orElseThrow(() -> AppException.notFound("Candidate Not Found"));
+    if (c.getResumeURL() == null || c.getResumeURL().isBlank()) {
+      throw AppException.notFound("Candidate Has No Resume");
+    }
+    String resumeUrl = c.getResumeURL();
+    String rawFilename = resumeUrl.substring(resumeUrl.lastIndexOf('/') + 1);
+    Path filePath = Paths.get(storagePath, "resumes", rawFilename);
+    if (!Files.exists(filePath)) {
+      try (var stream = Files.list(Paths.get(storagePath, "resumes"))) {
+        var match = stream.filter(p -> p.getFileName().toString().startsWith(rawFilename)).findFirst();
+        if (match.isPresent()) {
+          filePath = match.get();
+        }
+      } catch (IOException ignored) {}
+    }
+    if (!Files.exists(filePath)) {
+      throw AppException.notFound("Resume File Not Found On Server");
+    }
+    Resource resource = new FileSystemResource(filePath.toFile());
+    String mimeType = "application/pdf";
+    try {
+      byte[] bytes = Files.readAllBytes(filePath);
+      String detected = fileUtils.detectMIMEType(bytes);
+      if (detected != null && !detected.isBlank()) {
+        mimeType = detected;
+      }
+    } catch (IOException ignored) {}
+
+    String extension = fileUtils.getExtensionFromMimeType(mimeType);
+    String downloadFilename = rawFilename;
+    if (!downloadFilename.contains(".") && !extension.isBlank()) {
+      downloadFilename = downloadFilename + extension;
+    }
+    return new CandidateCvResource(resource, downloadFilename, mimeType);
   }
   @Transactional(readOnly = true)
   public PageResponse<RecruitmentResponse> getPublicRecruitments(

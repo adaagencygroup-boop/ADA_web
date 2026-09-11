@@ -134,4 +134,12 @@ public class AdminRecruitmentController {
   public ResponseEntity<APIResponse<CandidateNoteResponse>> updateCandidateNote(@PathVariable UUID id, @Valid @RequestBody CandidateNoteRequest request) {
     return ResponseEntity.ok(APIResponse.ok("Candidate Note Updated Successfully", recruitmentService.updateCandidateNote(id, request)));
   }
+  @GetMapping("/candidates/{id}/cv")
+  public ResponseEntity<org.springframework.core.io.Resource> getCandidateCv(@PathVariable UUID id) {
+    var cv = recruitmentService.getCandidateCv(id);
+    return ResponseEntity.ok()
+      .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + cv.filename() + "\"")
+      .contentType(MediaType.parseMediaType(cv.mimeType()))
+      .body(cv.resource());
+  }
 }

@@ -40,6 +40,13 @@ public class FileUtils {
       if (originalFilename != null && originalFilename.contains(".")) {
         extension = originalFilename.substring(originalFilename.lastIndexOf("."));
       }
+      if (extension.isBlank()) {
+        String mimeType = file.getContentType();
+        if (mimeType == null || mimeType.isBlank()) {
+          mimeType = detectMIMEType(file.getBytes());
+        }
+        extension = getExtensionFromMimeType(mimeType);
+      }
       String filename = UUID.randomUUID() + extension;
       Path targetDir = Paths.get(storagePath, subDirectory);
       if (!Files.exists(targetDir)) {
@@ -54,5 +61,24 @@ public class FileUtils {
   }
   public String detectMIMEType(byte[] data) {
     return tika.detect(data);
+  }
+  public String getExtensionFromMimeType(String mimeType) {
+    if (mimeType == null) return "";
+    switch (mimeType.toLowerCase()) {
+      case "application/pdf":
+        return ".pdf";
+      case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+        return ".docx";
+      case "application/msword":
+        return ".doc";
+      case "image/jpeg":
+        return ".jpg";
+      case "image/png":
+        return ".png";
+      case "image/webp":
+        return ".webp";
+      default:
+        return "";
+    }
   }
 }

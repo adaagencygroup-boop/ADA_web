@@ -21,7 +21,7 @@ import {
 } from "lucide-react";
 import { useRecruitmentById } from "@/src/hooks/useRecruitments";
 import { useUpdateCandidateNote } from "@/src/hooks/useCandidates";
-import type { Candidate } from "@/src/lib/api/candidate";
+import { getCandidateCvFile, type Candidate } from "@/src/lib/api/candidate";
 import type { EmploymentType } from "@/src/lib/api/recruitment";
 
 const EMPLOYMENT_TYPE_LABELS: Record<EmploymentType, string> = {
@@ -40,6 +40,33 @@ function getFileName(url: string) {
   return url.split("/").pop() ?? url;
 }
 
+function getExtensionFromMimeType(mimeType?: string): string {
+  if (!mimeType) return "";
+  const lower = mimeType.toLowerCase();
+  if (lower.includes("pdf")) return ".pdf";
+  if (lower.includes("wordprocessingml") || lower.includes("docx")) return ".docx";
+  if (lower.includes("msword") || lower.includes("doc")) return ".doc";
+  if (lower.includes("png")) return ".png";
+  if (lower.includes("jpeg") || lower.includes("jpg")) return ".jpg";
+  return "";
+}
+
+function resolveFileName(fullname: string, resumeUrl: string | null, mimeType?: string): string {
+  const cleanName = fullname ? `CV_${fullname.trim().replace(/\s+/g, "_")}` : "CV_Candidate";
+  let ext = "";
+  if (resumeUrl && resumeUrl.includes(".")) {
+    const rawExt = "." + resumeUrl.split(".").pop();
+    if ([".pdf", ".docx", ".doc", ".png", ".jpg", ".jpeg"].includes(rawExt.toLowerCase())) {
+      ext = rawExt;
+    }
+  }
+  if (!ext && mimeType) {
+    ext = getExtensionFromMimeType(mimeType);
+  }
+  if (!ext) ext = ".pdf";
+  return cleanName.endsWith(ext) ? cleanName : cleanName + ext;
+}
+
 export default function CandidateDetailView({
   candidate,
 }: {
@@ -48,9 +75,31 @@ export default function CandidateDetailView({
   const { data: job } = useRecruitmentById(candidate.recruitmentId);
   const noteMutation = useUpdateCandidateNote();
   const [note, setNote] = useState(candidate.note ?? "");
+  const [isDownloading, setIsDownloading] = useState(false);
 
   function handleSaveNote() {
     noteMutation.mutate({ id: candidate.id, note });
+  }
+
+  async function handleDownloadCv() {
+    if (!candidate.resumeURL) return;
+    setIsDownloading(true);
+    try {
+      const blob = await getCandidateCvFile(candidate.id);
+      const url = URL.createObjectURL(blob);
+      const fileName = resolveFileName(candidate.fullname, candidate.resumeURL, blob.type);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error("Failed to download CV:", err);
+    } finally {
+      setIsDownloading(false);
+    }
   }
 
   return (
@@ -154,14 +203,15 @@ export default function CandidateDetailView({
                       <Eye className="size-3.5" />
                       Xem
                     </Link>
-                    <a
-                      href={candidate.resumeURL}
-                      download
-                      className="flex h-9 items-center gap-1.5 rounded-lg border border-[#C4C6D2] px-3 text-sm font-medium text-[#1C1B1B] hover:bg-white"
+                    <button
+                      type="button"
+                      onClick={handleDownloadCv}
+                      disabled={isDownloading}
+                      className="flex h-9 items-center gap-1.5 rounded-lg border border-[#C4C6D2] px-3 text-sm font-medium text-[#1C1B1B] hover:bg-white disabled:opacity-50"
                     >
                       <Download className="size-3.5" />
-                      Tải xuống
-                    </a>
+                      {isDownloading ? "Đang tải..." : "Tải xuống"}
+                    </button>
                   </div>
                 </div>
               </>
