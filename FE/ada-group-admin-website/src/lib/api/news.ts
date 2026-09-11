@@ -96,7 +96,7 @@ export function getNewsCategories(search?: string, signal?: AbortSignal) {
 
 export type NewsCategoryPayload = {
   name: string;
-  isActive?: boolean;
+  isActive: boolean;
 };
 
 export function createNewsCategory(payload: NewsCategoryPayload) {

@@ -58,7 +58,7 @@ export default function CategoryManager() {
 
   const onAdd = addForm.handleSubmit((values) => {
     createMutation.mutate(
-      { name: values.name },
+      { name: values.name, isActive: true },
       { onSuccess: () => addForm.reset({ name: "" }) }
     );
   });
