@@ -34,6 +34,13 @@ export default function DatePickerField({
         <Calendar
           mode="single"
           selected={value}
+          disabled={(date) => {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const d = new Date(date);
+            d.setHours(0, 0, 0, 0);
+            return d <= today;
+          }}
           onSelect={(date) => {
             if (!date) return;
             onChange(date);

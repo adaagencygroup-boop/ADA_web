@@ -32,6 +32,8 @@ import com.ada.app.modules.user.repository.UserRepository;
 import java.math.BigDecimal;
 import java.text.Normalizer;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -117,6 +119,13 @@ public class RecruitmentService {
     if (request.minSalary() != null && request.maxSalary() != null && request.maxSalary().compareTo(request.minSalary()) <= 0) {
       throw AppException.badRequest("Lương tối đa phải lớn hơn lương tối thiểu");
     }
+    if (request.expiresAt() != null) {
+      LocalDate today = LocalDate.now(ZoneId.of("Asia/Ho_Chi_Minh"));
+      LocalDate expDate = request.expiresAt().atZone(ZoneId.of("Asia/Ho_Chi_Minh")).toLocalDate();
+      if (!expDate.isAfter(today)) {
+        throw AppException.badRequest("Hạn ứng tuyển phải lớn hơn ngày hiện tại");
+      }
+    }
     UUID userId = SecurityUtils.getCurrentUserId();
     User recruiter = userRepository.findById(userId).orElseThrow(() -> AppException.notFound("Recruiter User Not Found"));
     Department dept = null;
@@ -153,6 +162,13 @@ public class RecruitmentService {
     }
     if (request.minSalary() != null && request.maxSalary() != null && request.maxSalary().compareTo(request.minSalary()) <= 0) {
       throw AppException.badRequest("Lương tối đa phải lớn hơn lương tối thiểu");
+    }
+    if (request.expiresAt() != null) {
+      LocalDate today = LocalDate.now(ZoneId.of("Asia/Ho_Chi_Minh"));
+      LocalDate expDate = request.expiresAt().atZone(ZoneId.of("Asia/Ho_Chi_Minh")).toLocalDate();
+      if (!expDate.isAfter(today)) {
+        throw AppException.badRequest("Hạn ứng tuyển phải lớn hơn ngày hiện tại");
+      }
     }
     Recruitment r = recruitmentRepository.findById(id).orElseThrow(() -> AppException.notFound("Recruitment Not Found"));
     if (request.departmentId() != null) {
@@ -205,6 +221,11 @@ public class RecruitmentService {
       r.setRequiredCandidateNum(request.requiredCandidateNum());
     }
     if (request.expiresAt() != null) {
+      LocalDate today = LocalDate.now(ZoneId.of("Asia/Ho_Chi_Minh"));
+      LocalDate expDate = request.expiresAt().atZone(ZoneId.of("Asia/Ho_Chi_Minh")).toLocalDate();
+      if (!expDate.isAfter(today)) {
+        throw AppException.badRequest("Hạn ứng tuyển phải lớn hơn ngày hiện tại");
+      }
       r.setExpiresAt(request.expiresAt());
     }
     r = recruitmentRepository.save(r);

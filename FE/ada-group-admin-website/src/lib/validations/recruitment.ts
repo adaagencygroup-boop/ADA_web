@@ -35,9 +35,11 @@ export const recruitmentSchema = z.object({
     (date) => {
       const today = new Date();
       today.setHours(0, 0, 0, 0);
-      return date >= today;
+      const selected = new Date(date);
+      selected.setHours(0, 0, 0, 0);
+      return selected > today;
     },
-    { message: "Hạn ứng tuyển không được nằm trong quá khứ" }
+    { message: "Hạn ứng tuyển phải lớn hơn ngày hiện tại" }
   ),
 }).refine(
   (data) => {
