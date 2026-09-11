@@ -111,8 +111,11 @@ public class RecruitmentService {
   }
   @Transactional
   public RecruitmentResponse createRecruitment(CreateRecruitmentRequest request) {
-    if (request.minSalary() != null && request.maxSalary() != null && request.maxSalary().compareTo(request.minSalary()) < 0) {
-      throw AppException.badRequest("Lương tối đa phải lớn hơn hoặc bằng lương tối thiểu");
+    if (request.minSalary() != null && request.minSalary().compareTo(BigDecimal.ZERO) <= 0) {
+      throw AppException.badRequest("Mức lương tối thiểu phải lớn hơn 0");
+    }
+    if (request.minSalary() != null && request.maxSalary() != null && request.maxSalary().compareTo(request.minSalary()) <= 0) {
+      throw AppException.badRequest("Lương tối đa phải lớn hơn lương tối thiểu");
     }
     UUID userId = SecurityUtils.getCurrentUserId();
     User recruiter = userRepository.findById(userId).orElseThrow(() -> AppException.notFound("Recruiter User Not Found"));
@@ -145,8 +148,11 @@ public class RecruitmentService {
   }
   @Transactional
   public RecruitmentResponse updateRecruitment(UUID id, UpdateRecruitmentRequest request) {
-    if (request.minSalary() != null && request.maxSalary() != null && request.maxSalary().compareTo(request.minSalary()) < 0) {
-      throw AppException.badRequest("Lương tối đa phải lớn hơn hoặc bằng lương tối thiểu");
+    if (request.minSalary() != null && request.minSalary().compareTo(BigDecimal.ZERO) <= 0) {
+      throw AppException.badRequest("Mức lương tối thiểu phải lớn hơn 0");
+    }
+    if (request.minSalary() != null && request.maxSalary() != null && request.maxSalary().compareTo(request.minSalary()) <= 0) {
+      throw AppException.badRequest("Lương tối đa phải lớn hơn lương tối thiểu");
     }
     Recruitment r = recruitmentRepository.findById(id).orElseThrow(() -> AppException.notFound("Recruitment Not Found"));
     if (request.departmentId() != null) {
@@ -185,6 +191,12 @@ public class RecruitmentService {
     }
     if (request.maxSalary() != null) {
       r.setMaxSalary(request.maxSalary());
+    }
+    if (r.getMinSalary() != null && r.getMinSalary().compareTo(BigDecimal.ZERO) <= 0) {
+      throw AppException.badRequest("Mức lương tối thiểu phải lớn hơn 0");
+    }
+    if (r.getMinSalary() != null && r.getMaxSalary() != null && r.getMaxSalary().compareTo(r.getMinSalary()) <= 0) {
+      throw AppException.badRequest("Lương tối đa phải lớn hơn lương tối thiểu");
     }
     if (request.isNegotiable() != null) {
       r.setIsNegotiable(request.isNegotiable());

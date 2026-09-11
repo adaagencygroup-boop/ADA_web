@@ -96,6 +96,7 @@ export default function JobForm({
     handleSubmit,
     watch,
     setValue,
+    trigger,
     formState: { errors },
   } = useForm<RecruitmentFormValues>({
     resolver: zodResolver(recruitmentSchema),
@@ -150,8 +151,12 @@ export default function JobForm({
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const isNegotiable = watch("isNegotiable");
+  const minSalaryValue = watch("minSalary");
+  const maxSalaryValue = watch("maxSalary");
   const coverImageURL = watch("coverImageURL");
   const displayedCover = coverPreview ?? (coverImageURL || null);
+
+  const isSalaryMissing = !isNegotiable && !minSalaryValue && !maxSalaryValue;
 
   function selectCoverFile(file: File | undefined) {
     if (!file) return;
@@ -640,9 +645,16 @@ export default function JobForm({
           </div>
 
           <div className="flex flex-col gap-4 rounded-xl border border-[#C4C6D2] bg-white p-5 shadow-xs">
-            <h3 className="text-xl font-semibold text-[#001E4B]">
-              TIỀN LƯƠNG
-            </h3>
+            <div>
+              <h3 className="text-xl font-semibold text-[#001E4B]">
+                TIỀN LƯƠNG
+              </h3>
+              {(errors as Record<string, any>).salarySection && isSalaryMissing && (
+                <p className="mt-1 text-sm text-red-600">
+                  {(errors as Record<string, any>).salarySection.message}
+                </p>
+              )}
+            </div>
 
             <div className="flex flex-col gap-1.5">
               <label className="text-sm font-medium text-[#1C1B1B]">Min</label>
@@ -652,7 +664,10 @@ export default function JobForm({
                 render={({ field }) => (
                   <CurrencyInput
                     value={field.value ?? ""}
-                    onChange={field.onChange}
+                    onChange={(val) => {
+                      field.onChange(val);
+                      trigger(["minSalary", "maxSalary"]);
+                    }}
                     placeholder="Nhập số tiền..."
                     disabled={isNegotiable}
                   />
@@ -671,7 +686,10 @@ export default function JobForm({
                 render={({ field }) => (
                   <CurrencyInput
                     value={field.value ?? ""}
-                    onChange={field.onChange}
+                    onChange={(val) => {
+                      field.onChange(val);
+                      trigger(["minSalary", "maxSalary"]);
+                    }}
                     placeholder="Nhập số tiền..."
                     disabled={isNegotiable}
                   />

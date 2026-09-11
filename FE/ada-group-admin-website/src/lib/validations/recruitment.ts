@@ -42,22 +42,68 @@ export const recruitmentSchema = z.object({
 }).refine(
   (data) => {
     if (data.isNegotiable) return true;
-    return !!data.minSalary && !!data.maxSalary;
+    return !!data.minSalary || !!data.maxSalary;
   },
   {
     message: "Vui lòng nhập mức lương hoặc chọn Thỏa thuận",
+    path: ["salarySection"],
+  }
+).refine(
+  (data) => {
+    if (data.isNegotiable) return true;
+    if (data.minSalary && !data.maxSalary) return false;
+    return true;
+  },
+  {
+    message: "Vui lòng nhập mức lương tối đa",
+    path: ["maxSalary"],
+  }
+).refine(
+  (data) => {
+    if (data.isNegotiable) return true;
+    if (data.maxSalary && !data.minSalary) return false;
+    return true;
+  },
+  {
+    message: "Vui lòng nhập mức lương tối thiểu",
     path: ["minSalary"],
   }
 ).refine(
   (data) => {
+    if (data.isNegotiable) return true;
+    if (!data.minSalary) return true;
+    const min = parseFloat(data.minSalary.replace(/,/g, ""));
+    if (isNaN(min)) return true;
+    return min > 0;
+  },
+  {
+    message: "Mức lương tối thiểu phải lớn hơn 0",
+    path: ["minSalary"],
+  }
+).refine(
+  (data) => {
+    if (data.isNegotiable) return true;
     if (!data.minSalary || !data.maxSalary) return true;
     const min = parseFloat(data.minSalary.replace(/,/g, ""));
     const max = parseFloat(data.maxSalary.replace(/,/g, ""));
     if (isNaN(min) || isNaN(max)) return true;
-    return max >= min;
+    return min < max;
   },
   {
-    message: "Mức lương tối đa không được nhỏ hơn mức lương tối thiểu",
+    message: "Mức lương tối thiểu phải nhỏ hơn mức lương tối đa",
+    path: ["minSalary"],
+  }
+).refine(
+  (data) => {
+    if (data.isNegotiable) return true;
+    if (!data.minSalary || !data.maxSalary) return true;
+    const min = parseFloat(data.minSalary.replace(/,/g, ""));
+    const max = parseFloat(data.maxSalary.replace(/,/g, ""));
+    if (isNaN(min) || isNaN(max)) return true;
+    return max > min;
+  },
+  {
+    message: "Mức lương tối đa phải lớn hơn mức lương tối thiểu",
     path: ["maxSalary"],
   }
 );
