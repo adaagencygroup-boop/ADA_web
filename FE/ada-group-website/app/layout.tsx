@@ -31,7 +31,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full flex flex-col">
         <Header />
-        <main className="flex flex-1 flex-col">{children}</main>
+        <main className="flex flex-1 flex-col overflow-x-clip">{children}</main>
         <Footer />
         <FloatingContact />
       </body>
