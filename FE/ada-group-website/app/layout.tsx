@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Be_Vietnam_Pro } from "next/font/google";
 import Header from "@/src/components/layout/Header";
 import Footer from "@/src/components/layout/Footer";
@@ -10,6 +10,12 @@ const beVietnamPro = Be_Vietnam_Pro({
   subsets: ["latin", "vietnamese"],
   weight: ["300", "400", "500", "600", "700", "800"],
 });
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+};
 
 export const metadata: Metadata = {
   title: "ADA Group",
