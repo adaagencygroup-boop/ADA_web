@@ -7,7 +7,6 @@ import { applyToJob, formatDate, formatDeadlineDate, formatEmploymentType } from
 import type { Recruitment } from "@/src/types/recruitments";
 import Alert from "@/src/components/common/Alert";
 
-// ── Validation ─────────────────────────────────────────────────────────────
 const PHONE_REGEX = /^\+?[0-9]{1,4}[\s\-.]?\(?[0-9]{1,4}\)?[\s\-.]?[0-9]{1,4}[\s\-.]?[0-9]{1,9}$/;
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -46,7 +45,6 @@ function validateForm(data: { fullname: string; email: string; phone: string }):
   return errors;
 }
 
-// ── Styles ─────────────────────────────────────────────────────────────────
 const normalInputClass =
   "w-full border border-slate-200 rounded-lg px-4 py-3 pl-10 text-[14px] outline-none focus:border-blue-500 transition-colors";
 const errorInputClass =
@@ -74,8 +72,6 @@ function FieldError({ message }: { message?: string }) {
     </p>
   );
 }
-
-// ── Main Component ─────────────────────────────────────────────────────────
 
 export default function ApplyForm({ job, slug }: { job: Recruitment; slug: string }) {
   const [formData, setFormData] = useState({
@@ -206,11 +202,28 @@ export default function ApplyForm({ job, slug }: { job: Recruitment; slug: strin
       setFile(null);
     } catch (error) {
       console.error("Submit error:", error);
-      setAlertInfo({
-        type: 'error',
-        title: 'Đã xảy ra lỗi',
-        message: error instanceof Error ? error.message : 'Chúng tôi không thể kết nối tới máy chủ lúc này. Vui lòng thử lại sau ít phút.'
-      });
+      const rawMsg = error instanceof Error ? error.message : "";
+      const isDuplicate =
+        rawMsg.includes("uxCandidatesRecruitmentIdEmail") ||
+        rawMsg.includes("duplicate key value") ||
+        rawMsg.includes("already exists");
+
+      if (isDuplicate) {
+        setAlertInfo({
+          type: "warning",
+          title: "Đã ứng tuyển công việc này",
+          message:
+            "Bạn đã ứng tuyển công việc này trước đó rồi. Vui lòng gửi lại CV qua email sau: hr@adagroup.vn",
+        });
+      } else {
+        setAlertInfo({
+          type: "error",
+          title: "Đã xảy ra lỗi",
+          message:
+            rawMsg ||
+            "Chúng tôi không thể kết nối tới máy chủ lúc này. Vui lòng thử lại sau ít phút.",
+        });
+      }
     } finally {
       setIsSubmitting(false);
     }

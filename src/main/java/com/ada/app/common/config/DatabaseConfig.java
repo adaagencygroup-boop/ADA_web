@@ -13,6 +13,7 @@ public class DatabaseConfig implements BeanPostProcessor {
         .dataSource(dataSource)
         .locations("classpath:db/migration")
         .baselineOnMigrate(true)
+        .validateOnMigrate(false)
         .load()
         .migrate();
     }
