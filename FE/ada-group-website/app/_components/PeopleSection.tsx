@@ -1,4 +1,5 @@
 import Image from "next/image";
+import GsapWaveText from "@/app/_components/GsapWaveText";
 
 const CONTENT = {
   title: "Công nghệ vì người Việt, được xây dựng bởi người Việt",
@@ -9,7 +10,7 @@ const CONTENT = {
 };
 
 const IMAGE = {
-  src: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/trang-chu/PeopleSection.png",
+  src: "/images/home_images/PeopleSection.png",
   alt: "Đội ngũ ADA Group làm việc cùng nhau",
 };
 
@@ -18,9 +19,11 @@ export default function PeopleSection() {
     <section className="section-y">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 items-start gap-x-12 lg:grid-cols-2">
-          <h2 className="text-[28px] leading-[1.2] font-semibold tracking-tight text-zinc-900 lg:hidden">
-            {CONTENT.title}
-          </h2>
+          <GsapWaveText
+            text={CONTENT.title}
+            as="h2"
+            className="text-[28px] leading-[1.2] font-semibold tracking-tight text-zinc-900 lg:hidden"
+          />
 
           <Image
             src={IMAGE.src}
@@ -32,9 +35,11 @@ export default function PeopleSection() {
           />
 
           <div className="mt-(--inner-space) lg:col-start-2 lg:row-start-1 lg:mt-0">
-            <h2 className="hidden text-[36px] leading-[1.2] font-semibold tracking-tight text-zinc-900 lg:block">
-              {CONTENT.title}
-            </h2>
+            <GsapWaveText
+              text={CONTENT.title}
+              as="h2"
+              className="hidden text-[36px] leading-[1.2] font-semibold tracking-tight text-zinc-900 lg:block"
+            />
             {CONTENT.paragraphs.map((paragraph) => (
               <p
                 key={paragraph}

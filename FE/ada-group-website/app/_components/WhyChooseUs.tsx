@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowRightIcon, WhyChoose1Icon, WhyChoose2Icon, WhyChoose3Icon, WhyChoose4Icon } from "@/app/_components/icons";
+import GsapWaveText from "@/app/_components/GsapWaveText";
 
 const CONTENT = {
   title: "Vì sao doanh nghiệp lựa chọn ADA Group?",
@@ -40,9 +41,11 @@ export default function WhyChooseUs() {
   return (
     <section className="section-y">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
-        <h2 className="text-[28px] leading-[1.2] font-semibold tracking-tight text-zinc-900 lg:text-[44px] lg:leading-[1.1]">
-          {CONTENT.title}
-        </h2>
+        <GsapWaveText
+          text={CONTENT.title}
+          as="h2"
+          className="text-[28px] leading-[1.2] font-semibold tracking-tight text-zinc-900 lg:text-[44px] lg:leading-[1.1]"
+        />
         <p className="mt-(--heading-space) text-[14px] lg:text-[16px] leading-relaxed text-zinc-600">
           {CONTENT.description}
         </p>

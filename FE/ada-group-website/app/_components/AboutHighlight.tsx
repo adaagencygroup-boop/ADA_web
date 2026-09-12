@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRightIcon } from "@/app/_components/icons";
+import GsapWaveText from "@/app/_components/GsapWaveText";
 
 const CONTENT = {
   badge: "ADA GROUP",
@@ -15,11 +16,11 @@ const CONTENT = {
 
 const IMAGES = {
   primary: {
-    src: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/trang-chu/AboutHighlight1.png",
+    src: "/images/home_images/AboutHighlight1.png",
     alt: "Không gian làm việc tại văn phòng ADA Group",
   },
   secondary: {
-    src: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/trang-chu/AboutHighlight.webp",
+    src: "/images/home_images/AboutHighlight.webp",
     alt: "Hệ thống hạ tầng máy chủ của ADA Group",
   },
 };
@@ -33,9 +34,11 @@ export default function AboutHighlight() {
           <span className="inline-flex items-center rounded-full bg-[#D8E2FF] px-3 py-1 text-[12px] font-semibold text-[#002A64] lg:text-[12px]">
             {CONTENT.badge}
           </span>
-          <h2 className="mt-(--heading-space) text-[28px] leading-[1.2] font-semibold tracking-tight text-zinc-900 lg:text-[36px] lg:leading-[1.3]">
-            {CONTENT.title}
-          </h2>
+          <GsapWaveText
+            text={CONTENT.title}
+            as="h2"
+            className="mt-(--heading-space) text-[28px] leading-[1.2] font-semibold tracking-tight text-zinc-900 lg:text-[36px] lg:leading-[1.3]"
+          />
         </div>
 
         <div className="relative order-2 mx-auto mt-(--inner-space) pb-15 pr-22.5 md:w-143 md:pb-10 md:pr-56 lg:order-0 lg:col-start-1 lg:row-start-1 lg:row-span-2 lg:mx-0 lg:mt-0 lg:w-full lg:max-w-none lg:pb-[8%] lg:pr-0">
