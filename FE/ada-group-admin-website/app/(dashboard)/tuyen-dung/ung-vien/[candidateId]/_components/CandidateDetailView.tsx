@@ -20,9 +20,10 @@ import {
   User,
   Users,
 } from "lucide-react";
+import CandidateRespondSection from "./CandidateRespondSection";
 import { useRecruitmentById } from "@/src/hooks/useRecruitments";
 import { useUpdateCandidateNote } from "@/src/hooks/useCandidates";
-import { getCandidateCvFile, type Candidate } from "@/src/lib/api/candidate";
+import { getCandidateCvFile, type Candidate, type CandidateStatus } from "@/src/lib/api/candidate";
 import type { EmploymentType } from "@/src/lib/api/recruitment";
 
 const EMPLOYMENT_TYPE_LABELS: Record<EmploymentType, string> = {
@@ -30,6 +31,25 @@ const EMPLOYMENT_TYPE_LABELS: Record<EmploymentType, string> = {
   parttime: "Bán thời gian",
   remote: "Từ xa",
   hybrid: "Hybrid",
+};
+
+const CANDIDATE_STATUS_STYLES: Record<CandidateStatus, { label: string; className: string }> = {
+  pending: {
+    label: "Chờ duyệt",
+    className: "bg-[#FEF3C7] text-[#D97706]",
+  },
+  passed: {
+    label: "Đạt vòng hồ sơ",
+    className: "bg-[#E1FCEF] text-[#15803D]",
+  },
+  interview_passed: {
+    label: "Trúng tuyển",
+    className: "bg-[#DBEAFE] text-[#1E40AF]",
+  },
+  failed: {
+    label: "Từ chối",
+    className: "bg-[#FEE2E2] text-[#DC2626]",
+  },
 };
 
 function formatDate(iso: string | null) {
@@ -150,10 +170,19 @@ export default function CandidateDetailView({
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
         <div className="flex flex-col gap-6 rounded-xl border border-[#C4C6D2] bg-white p-6 shadow-xs xl:col-span-2">
           <div className="flex flex-col gap-4">
-            <h2 className="flex items-center gap-2 text-lg font-semibold text-[#1D4ED8]">
-              <User className="size-4" />
-              THÔNG TIN ỨNG VIÊN
-            </h2>
+            <div className="flex items-center justify-between gap-4">
+              <h2 className="flex items-center gap-2 text-lg font-semibold text-[#1D4ED8]">
+                <User className="size-4" />
+                THÔNG TIN ỨNG VIÊN
+              </h2>
+              <span
+                className={`inline-flex shrink-0 items-center rounded-full px-3 py-1 text-xs font-medium ${
+                  CANDIDATE_STATUS_STYLES[candidate.status ?? "pending"].className
+                }`}
+              >
+                {CANDIDATE_STATUS_STYLES[candidate.status ?? "pending"].label}
+              </span>
+            </div>
             <div className="flex flex-col gap-4">
               <div className="flex items-center gap-3">
                 <User className="size-4 shrink-0 text-[#94A3B8]" />
@@ -252,6 +281,10 @@ export default function CandidateDetailView({
               )}
             </div>
           </div>
+
+          <div className="border-t border-[#E5E2E1]" />
+
+          <CandidateRespondSection candidate={candidate} />
         </div>
 
         <div className="flex flex-col gap-6">

@@ -7,6 +7,7 @@ import { ChevronRight, Download } from "lucide-react";
 import type { DateRange } from "react-day-picker";
 import { useExportCandidatesExcel } from "@/src/hooks/useCandidates";
 import { useRecruitments } from "@/src/hooks/useRecruitments";
+import type { CandidateStatus } from "@/src/lib/api/candidate";
 import { endOfDayISO, startOfDayISO } from "@/src/lib/date-range";
 import CandidatesTable from "@/app/(dashboard)/tuyen-dung/ung-vien/_components/CandidatesTable";
 
@@ -14,6 +15,7 @@ function UngVienContent() {
   const searchParams = useSearchParams();
   const initialRecruitmentId = searchParams.get("recruitmentId") ?? "all";
   const [recruitmentId, setRecruitmentId] = useState(initialRecruitmentId);
+  const [status, setStatus] = useState("all");
   const [dateRange, setDateRange] = useState<DateRange | null>(null);
 
   const exportMutation = useExportCandidatesExcel();
@@ -30,6 +32,7 @@ function UngVienContent() {
   function handleExport() {
     exportMutation.mutate({
       recruitmentId: recruitmentId === "all" ? undefined : recruitmentId,
+      status: status === "all" ? undefined : (status as CandidateStatus),
       fromDate,
       toDate,
     });
@@ -75,6 +78,8 @@ function UngVienContent() {
         jobs={jobs}
         recruitmentId={recruitmentId}
         onRecruitmentIdChange={setRecruitmentId}
+        status={status}
+        onStatusChange={setStatus}
         dateRange={dateRange}
         onDateRangeChange={setDateRange}
         fromDate={fromDate}

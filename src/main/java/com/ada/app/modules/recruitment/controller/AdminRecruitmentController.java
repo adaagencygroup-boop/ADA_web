@@ -108,19 +108,21 @@ public class AdminRecruitmentController {
     @RequestParam(defaultValue = "1") int page,
     @RequestParam(defaultValue = "10") int size,
     @RequestParam(required = false) UUID recruitmentId,
+    @RequestParam(required = false) com.ada.app.modules.recruitment.enums.CandidateStatus status,
     @RequestParam(required = false) String search,
     @RequestParam(required = false) Instant fromDate,
     @RequestParam(required = false) Instant toDate
   ) {
-    return ResponseEntity.ok(APIResponse.ok("Candidates Retrieved Successfully", recruitmentService.getCandidates(page, size, recruitmentId, search, fromDate, toDate)));
+    return ResponseEntity.ok(APIResponse.ok("Candidates Retrieved Successfully", recruitmentService.getCandidates(page, size, recruitmentId, status, search, fromDate, toDate)));
   }
   @GetMapping("/candidates/exportExcel")
   public ResponseEntity<byte[]> exportCandidatesExcel(
     @RequestParam(required = false) UUID recruitmentId,
+    @RequestParam(required = false) com.ada.app.modules.recruitment.enums.CandidateStatus status,
     @RequestParam(required = false) Instant fromDate,
     @RequestParam(required = false) Instant toDate
   ) {
-    byte[] excelBytes = recruitmentService.exportCandidatesExcel(recruitmentId, fromDate, toDate);
+    byte[] excelBytes = recruitmentService.exportCandidatesExcel(recruitmentId, status, fromDate, toDate);
     return ResponseEntity.ok()
       .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=candidates.xlsx")
       .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
@@ -129,6 +131,10 @@ public class AdminRecruitmentController {
   @GetMapping("/candidates/{id}")
   public ResponseEntity<APIResponse<CandidateDTO>> getCandidateById(@PathVariable UUID id) {
     return ResponseEntity.ok(APIResponse.ok("Candidate Retrieved Successfully", recruitmentService.getCandidateById(id)));
+  }
+  @PostMapping("/candidates/{id}/respond")
+  public ResponseEntity<APIResponse<CandidateDTO>> respondCandidate(@PathVariable UUID id, @Valid @RequestBody com.ada.app.modules.recruitment.dto.CandidateRespondAdminRequest request) {
+    return ResponseEntity.ok(APIResponse.ok("Candidate Responded Successfully", recruitmentService.respondCandidate(id, request)));
   }
   @PatchMapping("/candidates/{id}/note")
   public ResponseEntity<APIResponse<CandidateNoteResponse>> updateCandidateNote(@PathVariable UUID id, @Valid @RequestBody CandidateNoteRequest request) {

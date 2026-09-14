@@ -4,7 +4,9 @@ import {
   exportCandidatesExcel,
   getCandidateById,
   getCandidates,
+  respondCandidate,
   updateCandidateNote,
+  type CandidateRespondRequest,
   type ExportCandidatesParams,
   type GetCandidatesParams,
 } from "@/src/lib/api/candidate";
@@ -36,6 +38,24 @@ export function useUpdateCandidateNote() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: CANDIDATES_QUERY_KEY });
       toast.success("Đã lưu ghi chú");
+    },
+    onError: (error: Error) => toast.error(error.message),
+  });
+}
+
+export function useRespondCandidate() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      id,
+      payload,
+    }: {
+      id: string;
+      payload: CandidateRespondRequest;
+    }) => respondCandidate(id, payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: CANDIDATES_QUERY_KEY });
+      toast.success("Đã gửi phản hồi thành công cho ứng viên");
     },
     onError: (error: Error) => toast.error(error.message),
   });

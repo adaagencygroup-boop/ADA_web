@@ -14,9 +14,29 @@ import {
 import DateRangeFilter from "@/src/components/shared/DateRangeFilter";
 import { useDebouncedValue } from "@/src/hooks/useDebouncedValue";
 import { useCandidates } from "@/src/hooks/useCandidates";
+import type { CandidateStatus } from "@/src/lib/api/candidate";
 import type { Recruitment } from "@/src/lib/api/recruitment";
 
 const PAGE_SIZE = 10;
+
+const STATUS_STYLES: Record<CandidateStatus, { label: string; className: string }> = {
+  pending: {
+    label: "Chờ duyệt",
+    className: "bg-[#FEF3C7] text-[#D97706]",
+  },
+  passed: {
+    label: "Đạt vòng hồ sơ",
+    className: "bg-[#E1FCEF] text-[#15803D]",
+  },
+  interview_passed: {
+    label: "Trúng tuyển",
+    className: "bg-[#DBEAFE] text-[#1E40AF]",
+  },
+  failed: {
+    label: "Từ chối",
+    className: "bg-[#FEE2E2] text-[#DC2626]",
+  },
+};
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString("vi-VN");
@@ -26,6 +46,8 @@ export default function CandidatesTable({
   jobs,
   recruitmentId,
   onRecruitmentIdChange,
+  status,
+  onStatusChange,
   dateRange,
   onDateRangeChange,
   fromDate,
@@ -34,6 +56,8 @@ export default function CandidatesTable({
   jobs: Recruitment[];
   recruitmentId: string;
   onRecruitmentIdChange: (value: string) => void;
+  status: string;
+  onStatusChange: (value: string) => void;
   dateRange: DateRange | null;
   onDateRangeChange: (value: DateRange | null) => void;
   fromDate?: string;
@@ -47,16 +71,18 @@ export default function CandidatesTable({
   const [prevFilters, setPrevFilters] = useState({
     search,
     recruitmentId,
+    status,
     fromDate,
     toDate,
   });
   if (
     search !== prevFilters.search ||
     recruitmentId !== prevFilters.recruitmentId ||
+    status !== prevFilters.status ||
     fromDate !== prevFilters.fromDate ||
     toDate !== prevFilters.toDate
   ) {
-    setPrevFilters({ search, recruitmentId, fromDate, toDate });
+    setPrevFilters({ search, recruitmentId, status, fromDate, toDate });
     setPage(1);
   }
 
@@ -65,6 +91,7 @@ export default function CandidatesTable({
     size: PAGE_SIZE,
     search: search || undefined,
     recruitmentId: recruitmentId === "all" ? undefined : recruitmentId,
+    status: status === "all" ? undefined : (status as CandidateStatus),
     fromDate,
     toDate,
   });
@@ -115,6 +142,30 @@ export default function CandidatesTable({
           </SelectContent>
         </Select>
 
+        <Select
+          value={status}
+          onValueChange={(next) => {
+            if (!next) return;
+            onStatusChange(next);
+          }}
+        >
+          <SelectTrigger className="h-11 w-52 rounded-lg border-[#C4C6D2] bg-white text-sm text-[#1C1B1B] data-[size=default]:h-11">
+            <SelectValue placeholder="Tất cả trạng thái">
+              {(value: string) => {
+                if (value === "all") return "Tất cả trạng thái";
+                return STATUS_STYLES[value as CandidateStatus]?.label ?? value;
+              }}
+            </SelectValue>
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">Tất cả trạng thái</SelectItem>
+            <SelectItem value="pending">Chờ duyệt</SelectItem>
+            <SelectItem value="passed">Đạt vòng hồ sơ</SelectItem>
+            <SelectItem value="interview_passed">Trúng tuyển (Đạt phỏng vấn)</SelectItem>
+            <SelectItem value="failed">Từ chối</SelectItem>
+          </SelectContent>
+        </Select>
+
         <DateRangeFilter value={dateRange} onChange={onDateRangeChange} />
       </div>
 
@@ -124,58 +175,128 @@ export default function CandidatesTable({
             <tr className="border-b border-[#C4C6D2] text-left">
               <th className="px-6 py-3 text-sm font-semibold text-[#1C1B1B]">Ứng viên</th>
               <th className="px-3 py-3 text-sm font-semibold text-[#1C1B1B]">Vị trí ứng tuyển</th>
+              <th className="px-3 py-3 text-sm font-semibold text-[#1C1B1B]">Trạng thái</th>
               <th className="px-3 py-3 text-sm font-semibold text-[#1C1B1B]">Ngày ứng tuyển</th>
               <th className="px-3 py-3 text-sm font-semibold text-[#1C1B1B]">Thao tác</th>
             </tr>
           </thead>
           <tbody>
-            {isLoading && (<tr><td colSpan={4} className="px-6 py-10 text-center text-sm text-[#6B7280]">Đang tải...</td></tr>)}
-            {isError && (<tr><td colSpan={4} className="px-6 py-10 text-center text-sm text-red-600">{error?.message ?? "Đã có lỗi xảy ra khi tải danh sách ứng viên."}</td></tr>)}
-            {!isLoading && !isError && items.map((candidate) => (
-              <tr key={candidate.id} className="border-b border-[#E5E2E1] last:border-b-0">
-                <td className="px-6 py-4">
-                  <div className="flex items-center gap-3">
-                    <div className="flex size-11 shrink-0 items-center justify-center rounded-full bg-[#D8E2FF]">
-                      <User className="size-5 text-[#001E4B]" />
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="text-sm font-semibold text-[#1C1B1B]">{candidate.fullname}</span>
-                      <span className="text-sm text-[#6B7280]">{candidate.email ?? "—"}</span>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-3 py-4 text-sm text-[#434750]">{candidate.recruitmentTitle}</td>
-                <td className="px-3 py-4 text-sm text-[#434750]">{formatDate(candidate.appliedAt)}</td>
-                <td className="px-3 py-4">
-                  {(() => {
-                    const activeId = recruitmentId !== "all" ? recruitmentId : candidate.recruitmentId;
-                    const queryParam = activeId ? `?recruitmentId=${activeId}` : "";
-                    return (
-                      <Link
-                        href={`/tuyen-dung/ung-vien/${candidate.id}${queryParam}`}
-                        className="inline-flex items-center gap-1.5 rounded-lg border border-[#BFDBFE] px-3 py-1.5 text-sm font-medium text-[#1D4ED8] hover:bg-[#EFF6FF]"
-                      >
-                        <Eye className="size-3.5" />
-                        Xem
-                      </Link>
-                    );
-                  })()}
+            {isLoading && (
+              <tr>
+                <td colSpan={5} className="px-6 py-10 text-center text-sm text-[#6B7280]">
+                  Đang tải...
                 </td>
               </tr>
-            ))}
-            {!isLoading && !isError && items.length === 0 && (<tr><td colSpan={4} className="px-6 py-10 text-center text-sm text-[#6B7280]">Không có ứng viên nào.</td></tr>)}
+            )}
+            {isError && (
+              <tr>
+                <td colSpan={5} className="px-6 py-10 text-center text-sm text-red-600">
+                  {error?.message ?? "Đã có lỗi xảy ra khi tải danh sách ứng viên."}
+                </td>
+              </tr>
+            )}
+            {!isLoading &&
+              !isError &&
+              items.map((candidate) => {
+                const statusStyle = STATUS_STYLES[candidate.status ?? "pending"];
+                return (
+                  <tr key={candidate.id} className="border-b border-[#E5E2E1] last:border-b-0">
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-3">
+                        <div className="flex size-11 shrink-0 items-center justify-center rounded-full bg-[#D8E2FF]">
+                          <User className="size-5 text-[#001E4B]" />
+                        </div>
+                        <div className="flex flex-col">
+                          <span className="text-sm font-semibold text-[#1C1B1B]">
+                            {candidate.fullname}
+                          </span>
+                          <span className="text-sm text-[#6B7280]">
+                            {candidate.email ?? "—"}
+                          </span>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-3 py-4 text-sm text-[#434750]">
+                      {candidate.recruitmentTitle}
+                    </td>
+                    <td className="px-3 py-4">
+                      <span
+                        className={`inline-flex shrink-0 items-center rounded-full px-2.5 py-1 text-xs font-medium ${statusStyle.className}`}
+                      >
+                        {statusStyle.label}
+                      </span>
+                    </td>
+                    <td className="px-3 py-4 text-sm text-[#434750]">
+                      {formatDate(candidate.appliedAt)}
+                    </td>
+                    <td className="px-3 py-4">
+                      {(() => {
+                        const activeId =
+                          recruitmentId !== "all" ? recruitmentId : candidate.recruitmentId;
+                        const queryParam = activeId ? `?recruitmentId=${activeId}` : "";
+                        return (
+                          <Link
+                            href={`/tuyen-dung/ung-vien/${candidate.id}${queryParam}`}
+                            className="inline-flex items-center gap-1.5 rounded-lg border border-[#BFDBFE] px-3 py-1.5 text-sm font-medium text-[#1D4ED8] hover:bg-[#EFF6FF]"
+                          >
+                            <Eye className="size-3.5" />
+                            Xem
+                          </Link>
+                        );
+                      })()}
+                    </td>
+                  </tr>
+                );
+              })}
+            {!isLoading && !isError && items.length === 0 && (
+              <tr>
+                <td colSpan={5} className="px-6 py-10 text-center text-sm text-[#6B7280]">
+                  Không có ứng viên nào.
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
 
       <div className="flex flex-wrap items-center justify-between gap-4 px-6 py-4">
-        <span className="text-sm text-[#434750]">Hiển thị {totalElements === 0 ? 0 : (currentPage - 1) * PAGE_SIZE + 1} - {Math.min(currentPage * PAGE_SIZE, totalElements)} của {totalElements} ứng viên</span>
+        <span className="text-sm text-[#434750]">
+          Hiển thị {totalElements === 0 ? 0 : (currentPage - 1) * PAGE_SIZE + 1} -{" "}
+          {Math.min(currentPage * PAGE_SIZE, totalElements)} của {totalElements} ứng viên
+        </span>
         <div className="flex flex-wrap items-center gap-1.5">
-          <button type="button" aria-label="Trang trước" disabled={currentPage === 1} onClick={() => setPage((p) => Math.max(1, p - 1))} className="flex size-8.5 items-center justify-center rounded-lg border border-[#C4C6D2] text-[#434750] hover:bg-[#F8FAFC] disabled:cursor-not-allowed disabled:opacity-50">‹</button>
+          <button
+            type="button"
+            aria-label="Trang trước"
+            disabled={currentPage === 1}
+            onClick={() => setPage((p) => Math.max(1, p - 1))}
+            className="flex size-8.5 items-center justify-center rounded-lg border border-[#C4C6D2] text-[#434750] hover:bg-[#F8FAFC] disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            ‹
+          </button>
           {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
-            <button key={num} type="button" onClick={() => setPage(num)} className={`flex size-8.5 items-center justify-center rounded-lg text-sm font-medium ${num === currentPage ? "bg-[#1A56DB] text-white" : "border border-[#C4C6D2] text-[#1C1B1B] hover:bg-[#F8FAFC]"}`}>{num}</button>
+            <button
+              key={num}
+              type="button"
+              onClick={() => setPage(num)}
+              className={`flex size-8.5 items-center justify-center rounded-lg text-sm font-medium ${
+                num === currentPage
+                  ? "bg-[#1A56DB] text-white"
+                  : "border border-[#C4C6D2] text-[#1C1B1B] hover:bg-[#F8FAFC]"
+              }`}
+            >
+              {num}
+            </button>
           ))}
-          <button type="button" aria-label="Trang sau" disabled={currentPage === totalPages} onClick={() => setPage((p) => Math.min(totalPages, p + 1))} className="flex size-8.5 items-center justify-center rounded-lg border border-[#C4C6D2] text-[#434750] hover:bg-[#F8FAFC] disabled:cursor-not-allowed disabled:opacity-50">›</button>
+          <button
+            type="button"
+            aria-label="Trang sau"
+            disabled={currentPage === totalPages}
+            onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+            className="flex size-8.5 items-center justify-center rounded-lg border border-[#C4C6D2] text-[#434750] hover:bg-[#F8FAFC] disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            ›
+          </button>
         </div>
       </div>
     </div>

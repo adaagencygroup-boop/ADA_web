@@ -96,10 +96,10 @@ public class RecruitmentControllerFunctionalTest {
   @Test
   public void testAdminCandidateEndpoints() {
     UUID candId = UUID.randomUUID();
-    CandidateDTO cand = new CandidateDTO(candId, UUID.randomUUID(), "Senior Java Backend Engineer", "Hà Nội", EmploymentType.fulltime, "Alexander Nguyen", "alexander.nguyen@ada.com.vn", "+84 912 045 678", "https://ada.com/files/resumes/resume.pdf", "Kính Gửi ADA Group Tôi Muốn Ứng Tuyển", "Đã Phỏng Vấn Vòng 1", Instant.now(), Instant.now(), Instant.now(), Instant.now());
+    CandidateDTO cand = new CandidateDTO(candId, UUID.randomUUID(), "Senior Java Backend Engineer", "Hà Nội", EmploymentType.fulltime, "Alexander Nguyen", "alexander.nguyen@ada.com.vn", "+84 912 045 678", "https://ada.com/files/resumes/resume.pdf", "Kính Gửi ADA Group Tôi Muốn Ứng Tuyển", com.ada.app.modules.recruitment.enums.CandidateStatus.pending, null, null, null, "Đã Phỏng Vấn Vòng 1", Instant.now(), Instant.now(), Instant.now(), Instant.now());
     PageResponse<CandidateDTO> page = new PageResponse<>(List.of(cand), new PageResponse.Pagination(1, 10, 1, 1, true, true));
-    Mockito.when(recruitmentService.getCandidates(ArgumentMatchers.anyInt(), ArgumentMatchers.anyInt(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(page);
-    ResponseEntity<APIResponse<PageResponse<CandidateDTO>>> getCands = adminRecruitmentController.getCandidates(1, 10, null, null, null, null);
+    Mockito.when(recruitmentService.getCandidates(ArgumentMatchers.anyInt(), ArgumentMatchers.anyInt(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(page);
+    ResponseEntity<APIResponse<PageResponse<CandidateDTO>>> getCands = adminRecruitmentController.getCandidates(1, 10, null, null, null, null, null);
     Assertions.assertEquals(200, getCands.getStatusCode().value());
     Mockito.when(recruitmentService.getCandidateById(candId)).thenReturn(cand);
     ResponseEntity<APIResponse<CandidateDTO>> getCandDetail = adminRecruitmentController.getCandidateById(candId);
@@ -110,8 +110,8 @@ public class RecruitmentControllerFunctionalTest {
     ResponseEntity<APIResponse<CandidateNoteResponse>> updateNote = adminRecruitmentController.updateCandidateNote(candId, noteReq);
     Assertions.assertEquals(200, updateNote.getStatusCode().value());
     byte[] excelBytes = new byte[]{0x50, 0x4B, 0x03, 0x04};
-    Mockito.when(recruitmentService.exportCandidatesExcel(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(excelBytes);
-    ResponseEntity<byte[]> exportResp = adminRecruitmentController.exportCandidatesExcel(null, null, null);
+    Mockito.when(recruitmentService.exportCandidatesExcel(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(excelBytes);
+    ResponseEntity<byte[]> exportResp = adminRecruitmentController.exportCandidatesExcel(null, null, null, null);
     Assertions.assertEquals(200, exportResp.getStatusCode().value());
   }
   @Test

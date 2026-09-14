@@ -1,4 +1,5 @@
 package com.ada.app.modules.recruitment.dto;
+import com.ada.app.modules.recruitment.enums.CandidateStatus;
 import com.ada.app.modules.recruitment.enums.EmploymentType;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.time.Instant;
@@ -15,6 +16,10 @@ public record CandidateDTO(
   String phone,
   String resumeURL,
   String message,
+  CandidateStatus status,
+  String feedbackContent,
+  String feedbackAttachmentURL,
+  Instant feedbackSentAt,
   String note,
   Instant appliedAt,
   Instant expiresAt,

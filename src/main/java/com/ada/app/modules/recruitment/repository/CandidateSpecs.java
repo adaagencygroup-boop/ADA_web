@@ -1,5 +1,6 @@
 package com.ada.app.modules.recruitment.repository;
 import com.ada.app.modules.recruitment.entity.Candidate;
+import com.ada.app.modules.recruitment.enums.CandidateStatus;
 import jakarta.persistence.criteria.Predicate;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -7,11 +8,14 @@ import java.util.List;
 import java.util.UUID;
 import org.springframework.data.jpa.domain.Specification;
 public class CandidateSpecs {
-  public static Specification<Candidate> filter(UUID recruitmentId, String search, Instant fromDate, Instant toDate) {
+  public static Specification<Candidate> filter(UUID recruitmentId, CandidateStatus status, String search, Instant fromDate, Instant toDate) {
     return (root, query, cb) -> {
       List<Predicate> predicates = new ArrayList<>();
       if (recruitmentId != null) {
         predicates.add(cb.equal(root.get("recruitment").get("id"), recruitmentId));
+      }
+      if (status != null) {
+        predicates.add(cb.equal(root.get("status"), status));
       }
       if (search != null && !search.isBlank()) {
         String pattern = "%" + search.trim().toLowerCase() + "%";

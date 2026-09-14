@@ -20,8 +20,12 @@ import com.ada.app.modules.recruitment.dto.UpdateRecruitmentRequest;
 import com.ada.app.modules.recruitment.entity.Candidate;
 import com.ada.app.modules.recruitment.entity.Department;
 import com.ada.app.modules.recruitment.entity.Recruitment;
+import com.ada.app.modules.recruitment.dto.CandidateRespondAdminRequest;
+import com.ada.app.modules.recruitment.enums.CandidateStatus;
 import com.ada.app.modules.recruitment.enums.EmploymentType;
 import com.ada.app.modules.recruitment.enums.RecruitmentStatus;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import com.ada.app.modules.recruitment.repository.CandidateRepository;
 import com.ada.app.modules.recruitment.repository.CandidateSpecs;
 import com.ada.app.modules.recruitment.repository.DepartmentRepository;
@@ -47,6 +51,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Pattern;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -59,6 +64,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class RecruitmentService {
@@ -72,6 +78,9 @@ public class RecruitmentService {
   private final ExcelExportService excelExportService;
   private final FileUtils fileUtils;
   private final StringRedisTemplate redisTemplate;
+  private final JavaMailSender mailSender;
+  @Value("${spring.mail.username}")
+  private String senderEmail;
   private static final Pattern nonLatin = Pattern.compile("[^a-zA-Z0-9\\s]");
   private static final Pattern whitespace = Pattern.compile("\\s+");
   @Transactional(readOnly = true)
@@ -273,9 +282,9 @@ public class RecruitmentService {
     return excelExportService.exportToExcel("Recruitments", headers, rows);
   }
   @Transactional(readOnly = true)
-  public byte[] exportCandidatesExcel(UUID recruitmentId, Instant fromDate, Instant toDate) {
-    List<Candidate> list = candidateRepository.findAll(CandidateSpecs.filter(recruitmentId, null, fromDate, toDate), Sort.by("appliedAt").descending());
-    List<String> headers = List.of("ID", "Recruitment", "Fullname", "Email", "Phone", "Resume URL", "Applied At", "Note");
+  public byte[] exportCandidatesExcel(UUID recruitmentId, CandidateStatus status, Instant fromDate, Instant toDate) {
+    List<Candidate> list = candidateRepository.findAll(CandidateSpecs.filter(recruitmentId, status, null, fromDate, toDate), Sort.by("appliedAt").descending());
+    List<String> headers = List.of("ID", "Recruitment", "Fullname", "Email", "Phone", "Status", "Resume URL", "Feedback", "Feedback Sent At", "Applied At", "Note");
     List<List<Object>> rows = new ArrayList<>();
     for (Candidate c : list) {
       rows.add(List.of(
@@ -284,7 +293,10 @@ public class RecruitmentService {
         c.getFullname(),
         c.getEmail() != null ? c.getEmail() : "",
         c.getPhone() != null ? c.getPhone() : "",
+        c.getStatus() != null ? c.getStatus().name() : "",
         c.getResumeURL() != null ? c.getResumeURL() : "",
+        c.getFeedbackContent() != null ? c.getFeedbackContent() : "",
+        c.getFeedbackSentAt() != null ? c.getFeedbackSentAt().toString() : "",
         c.getAppliedAt().toString(),
         c.getNote() != null ? c.getNote() : ""
       ));
@@ -333,15 +345,63 @@ public class RecruitmentService {
     departmentRepository.delete(d);
   }
   @Transactional(readOnly = true)
-  public PageResponse<CandidateDTO> getCandidates(int page, int size, UUID recruitmentId, String search, Instant fromDate, Instant toDate) {
+  public PageResponse<CandidateDTO> getCandidates(int page, int size, UUID recruitmentId, CandidateStatus status, String search, Instant fromDate, Instant toDate) {
     Pageable pageable = PageRequest.of(Math.max(0, page - 1), Math.max(1, size), Sort.by("appliedAt").descending());
-    Page<Candidate> result = candidateRepository.findAll(CandidateSpecs.filter(recruitmentId, search, fromDate, toDate), pageable);
+    Page<Candidate> result = candidateRepository.findAll(CandidateSpecs.filter(recruitmentId, status, search, fromDate, toDate), pageable);
     List<CandidateDTO> items = result.getContent().stream().map(this::mapToCandidateListItemDTO).toList();
     return new PageResponse<>(items, PageResponse.Pagination.from(result));
   }
   @Transactional(readOnly = true)
   public CandidateDTO getCandidateById(UUID id) {
     Candidate c = candidateRepository.findById(id).orElseThrow(() -> AppException.notFound("Candidate Not Found"));
+    return mapToCandidateDTO(c);
+  }
+  @Transactional
+  public CandidateDTO respondCandidate(UUID id, CandidateRespondAdminRequest request) {
+    Candidate c = candidateRepository.findById(id)
+      .orElseThrow(() -> AppException.notFound("Candidate Not Found"));
+    
+    c.setStatus(request.status());
+    c.setFeedbackContent(request.feedbackContent());
+    c.setFeedbackAttachmentURL(request.feedbackAttachmentURL());
+    c.setFeedbackSentAt(Instant.now());
+    c = candidateRepository.save(c);
+
+    if (c.getEmail() != null && !c.getEmail().isBlank()) {
+      try {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom(senderEmail);
+        message.setTo(c.getEmail());
+        String subject;
+        if (request.status() == CandidateStatus.passed) {
+          subject = "Thông Báo Kết Quả Ứng Tuyển - Thư Mời Phỏng Vấn (ADA Group)";
+        } else if (request.status() == CandidateStatus.interview_passed) {
+          subject = "Thông Báo Kết Quả Ứng Tuyển - Thư Mời Nhận Việc (ADA Group)";
+        } else {
+          subject = "Thông Báo Kết Quả Ứng Tuyển (ADA Group)";
+        }
+        message.setSubject(subject);
+        message.setText(request.feedbackContent());
+        mailSender.send(message);
+      } catch (Exception e) {
+        log.warn("Failed To Send Email Feedback To Candidate {}: {}", c.getEmail(), e.getMessage());
+      }
+    }
+
+    String statusText;
+    if (request.status() == CandidateStatus.passed) {
+      statusText = "Đạt Vòng Hồ Sơ";
+    } else if (request.status() == CandidateStatus.interview_passed) {
+      statusText = "Trúng Tuyển / Đạt Phỏng Vấn";
+    } else {
+      statusText = "Từ Chối";
+    }
+    notificationService.createAndBroadcast(
+      "Phản Hồi Ứng Viên Đã Được Gửi",
+      "Bạn Đã Phản Hồi Hồ Sơ Ứng Viên " + c.getFullname() + " (" + statusText + ").",
+      NotificationType.recruitments
+    );
+
     return mapToCandidateDTO(c);
   }
   @Transactional
@@ -614,11 +674,15 @@ public class RecruitmentService {
       null,
       null,
       null,
-      null,
+      c.getStatus(),
+      c.getFeedbackContent(),
+      c.getFeedbackAttachmentURL(),
+      c.getFeedbackSentAt(),
+      c.getNote(),
       c.getAppliedAt(),
       null,
       null,
-      null
+      c.getUpdatedAt()
     );
   }
   private CandidateDTO mapToCandidateDTO(Candidate c) {
@@ -634,6 +698,10 @@ public class RecruitmentService {
       c.getPhone(),
       c.getResumeURL(),
       c.getMessage(),
+      c.getStatus(),
+      c.getFeedbackContent(),
+      c.getFeedbackAttachmentURL(),
+      c.getFeedbackSentAt(),
       c.getNote(),
       c.getAppliedAt(),
       r != null ? r.getExpiresAt() : null,

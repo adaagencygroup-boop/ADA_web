@@ -1,6 +1,9 @@
 package com.ada.app.modules.recruitment.entity;
+import com.ada.app.modules.recruitment.enums.CandidateStatus;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -15,7 +18,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UuidGenerator;
+import org.hibernate.type.SqlTypes;
 @Entity
 @Table(name = "\"candidates\"")
 @Getter
@@ -41,6 +46,16 @@ public class Candidate {
   private String resumeURL;
   @Column(name = "\"message\"", columnDefinition = "TEXT")
   private String message;
+  @Enumerated(EnumType.STRING)
+  @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+  @Column(name = "\"status\"", nullable = false)
+  private CandidateStatus status;
+  @Column(name = "\"feedbackContent\"", columnDefinition = "TEXT")
+  private String feedbackContent;
+  @Column(name = "\"feedbackAttachmentURL\"")
+  private String feedbackAttachmentURL;
+  @Column(name = "\"feedbackSentAt\"")
+  private Instant feedbackSentAt;
   @Column(name = "\"note\"", columnDefinition = "TEXT")
   private String note;
   @Column(name = "\"appliedAt\"", nullable = false, updatable = false)
@@ -50,6 +65,9 @@ public class Candidate {
   @PrePersist
   protected void onCreate() {
     Instant now = Instant.now();
+    if (this.status == null) {
+      this.status = CandidateStatus.pending;
+    }
     if (this.appliedAt == null) {
       this.appliedAt = now;
     }
