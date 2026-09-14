@@ -27,6 +27,9 @@ public interface RecruitmentRepository extends JpaRepository<Recruitment, UUID>,
   Page<Recruitment> findAll(Specification<Recruitment> spec, Pageable pageable);
   @EntityGraph(attributePaths = {"recruiter", "department"})
   List<Recruitment> findAll(Specification<Recruitment> spec);
+  @Modifying
+  @Query(value = "UPDATE recruitments SET status = 'closed'::\"recruitmentStatus\" WHERE status = 'hiring'::\"recruitmentStatus\" AND \"expiresAt\" IS NOT NULL AND \"expiresAt\" <= :now", nativeQuery = true)
+  int closeExpiredRecruitments(@Param("now") Instant now);
   long countByStatus(RecruitmentStatus status);
   @Query("SELECT count(r) FROM Recruitment r WHERE r.status = 'hiring' AND r.expiresAt IS NOT NULL AND r.expiresAt BETWEEN :now AND :soon")
   long countExpiringSoon(@Param("now") Instant now, @Param("soon") Instant soon);

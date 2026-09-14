@@ -90,8 +90,10 @@ export default function ApplyForm({ job, slug }: { job: Recruitment; slug: strin
 
   const postDate = formatDate(job.createdAt);
   const expireDate = formatDeadlineDate(job.expiresAt);
+  const isClosed = job.status === "closed" || (!!job.expiresAt && new Date(job.expiresAt).getTime() <= Date.now());
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    if (isClosed) return;
     const { name, value, type } = e.target;
     if (type === "checkbox") {
       const checked = (e.target as HTMLInputElement).checked;
@@ -108,6 +110,7 @@ export default function ApplyForm({ job, slug }: { job: Recruitment; slug: strin
   };
 
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    if (isClosed) return;
     const { name } = e.target;
     if (name === "fullname" || name === "email" || name === "phone") {
       setTouched(prev => ({ ...prev, [name]: true }));
@@ -117,10 +120,12 @@ export default function ApplyForm({ job, slug }: { job: Recruitment; slug: strin
   };
 
   const handleFileClick = () => {
+    if (isClosed) return;
     fileInputRef.current?.click();
   };
 
   const validateAndSetFile = (selectedFile: File) => {
+    if (isClosed) return;
     const validExtensions = ['.pdf', '.doc', '.docx'];
     const fileName = selectedFile.name.toLowerCase();
 
@@ -160,6 +165,10 @@ export default function ApplyForm({ job, slug }: { job: Recruitment; slug: strin
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isClosed) {
+      setAlertInfo({ type: 'warning', title: 'Tin tuyển dụng đã đóng', message: 'Tin tuyển dụng này đã hết hạn nhận hồ sơ ứng tuyển.' });
+      return;
+    }
 
     // Mark all required fields as touched & run validation
     setTouched({ fullname: true, email: true, phone: true });
@@ -276,13 +285,13 @@ export default function ApplyForm({ job, slug }: { job: Recruitment; slug: strin
         <div className="relative z-10 mx-auto max-w-360 px-4 sm:px-6 lg:px-8 text-white flex flex-col gap-(--heading-space)">
           <div className="inline-flex w-fit items-center gap-2 bg-white/10 border border-white/20 text-white px-3 py-1.5 rounded-full font-semibold text-[12px] uppercase tracking-wider">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-3.5 h-3.5"><path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" /></svg>
-            Tuyển dụng
+            {isClosed ? "Đã đóng tuyển dụng" : "Tuyển dụng"}
           </div>
           <h1 className="text-[28px] lg:text-[44px] font-semibold tracking-tight">
             Ứng tuyển vị trí {job.jobTitle}
           </h1>
           <p className="text-blue-100/90 text-[14px] lg:text-[15px] mb-(--inner-space)">
-            Vui lòng điền thông tin bên dưới để gửi hồ sơ ứng tuyển của bạn.
+            {isClosed ? "Tin tuyển dụng này đã hết hạn nhận hồ sơ." : "Vui lòng điền thông tin bên dưới để gửi hồ sơ ứng tuyển của bạn."}
           </p>
 
           <div className="pt-(--inner-space) border-t border-white/20 flex flex-wrap items-center gap-(--inner-space) text-[13px] text-blue-100/80">
@@ -292,7 +301,7 @@ export default function ApplyForm({ job, slug }: { job: Recruitment; slug: strin
             </div>
             <div className="flex items-center gap-2 text-red-300">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-4 h-4"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
-              Hạn ứng tuyển: {expireDate}
+              Hạn ứng tuyển: {expireDate} {isClosed && "(Đã hết hạn)"}
             </div>
           </div>
         </div>
@@ -305,6 +314,14 @@ export default function ApplyForm({ job, slug }: { job: Recruitment; slug: strin
           {/* Left Column (Form) */}
           <div className="lg:col-span-8">
             <div className="bg-white rounded-2xl border border-slate-100 p-6 md:p-8 shadow-sm">
+              {isClosed && (
+                <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-6 text-red-700 text-[14px] flex items-center gap-3">
+                  <svg className="w-5 h-5 text-red-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                  </svg>
+                  <span>Tin tuyển dụng này đã hết hạn nhận hồ sơ ứng tuyển (Trạng thái: Đã đóng). Bạn không thể gửi hồ sơ cho vị trí này.</span>
+                </div>
+              )}
               <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-(--inner-space)">
 
                 {/* 1. THÔNG TIN ỨNG VIÊN */}
@@ -323,6 +340,7 @@ export default function ApplyForm({ job, slug }: { job: Recruitment; slug: strin
                           id="af-fullname"
                           type="text"
                           name="fullname"
+                          disabled={isClosed}
                           value={formData.fullname}
                           onChange={handleInputChange}
                           onBlur={handleBlur}
@@ -347,6 +365,7 @@ export default function ApplyForm({ job, slug }: { job: Recruitment; slug: strin
                           id="af-email"
                           type="text"
                           name="email"
+                          disabled={isClosed}
                           value={formData.email}
                           onChange={handleInputChange}
                           onBlur={handleBlur}
@@ -371,6 +390,7 @@ export default function ApplyForm({ job, slug }: { job: Recruitment; slug: strin
                           id="af-phone"
                           type="tel"
                           name="phone"
+                          disabled={isClosed}
                           value={formData.phone}
                           onChange={handleInputChange}
                           onBlur={handleBlur}
@@ -400,11 +420,12 @@ export default function ApplyForm({ job, slug }: { job: Recruitment; slug: strin
                       onClick={handleFileClick}
                       onDragOver={handleDragOver}
                       onDrop={handleDrop}
-                      className="border-2 border-dashed border-blue-200 rounded-xl p-8 flex flex-col items-center justify-center bg-blue-50/50 hover:bg-blue-50 transition-colors cursor-pointer group"
+                      className={`border-2 border-dashed border-blue-200 rounded-xl p-8 flex flex-col items-center justify-center bg-blue-50/50 hover:bg-blue-50 transition-colors cursor-pointer group ${isClosed ? "opacity-50 cursor-not-allowed" : ""}`}
                     >
                       <input
                         type="file"
                         ref={fileInputRef}
+                        disabled={isClosed}
                         onChange={handleFileChange}
                         className="hidden"
                         accept=".pdf,.doc,.docx"
@@ -418,7 +439,7 @@ export default function ApplyForm({ job, slug }: { job: Recruitment; slug: strin
                         <p className="text-[14px] font-medium text-zinc-700 mb-1">Kéo thả file vào đây hoặc</p>
                       )}
                       {!file && (
-                        <button type="button" className="text-[13px] font-semibold text-white bg-[#002A64] hover:bg-[#002A64]/90 px-4 py-2 rounded-lg mt-2 transition-colors">
+                        <button type="button" disabled={isClosed} className="text-[13px] font-semibold text-white bg-[#002A64] hover:bg-[#002A64]/90 px-4 py-2 rounded-lg mt-2 transition-colors disabled:opacity-50">
                           Chọn file
                         </button>
                       )}
@@ -436,6 +457,7 @@ export default function ApplyForm({ job, slug }: { job: Recruitment; slug: strin
                   <div>
                     <textarea
                       name="message"
+                      disabled={isClosed}
                       value={formData.message}
                       onChange={handleInputChange}
                       rows={4}
@@ -450,14 +472,16 @@ export default function ApplyForm({ job, slug }: { job: Recruitment; slug: strin
                 {/* Submit Area */}
                 <div className="pt-6 border-t border-slate-100">
                   <div className="flex items-start gap-3 mb-6">
-                    <input type="checkbox" id="agree" name="agreeTerm" checked={formData.agreeTerm} onChange={handleInputChange} className="mt-1 w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500" />
+                    <input type="checkbox" id="agree" name="agreeTerm" disabled={isClosed} checked={formData.agreeTerm} onChange={handleInputChange} className="mt-1 w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500" />
                     <label htmlFor="agree" className="text-[13px] text-zinc-600 leading-relaxed cursor-pointer select-none">
                       Tôi đồng ý với việc sử dụng thông tin cá nhân cho <a href="#" className="text-blue-600 font-medium hover:underline">mục đích tuyển dụng</a>.
                     </label>
                   </div>
-                  <button type="submit" disabled={isSubmitting} className="w-full inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-[#002A64] text-white rounded-lg font-semibold text-[14px] hover:bg-[#002A64]/90 transition-colors shadow-md group disabled:opacity-70 disabled:cursor-not-allowed">
+                  <button type="submit" disabled={isSubmitting || isClosed} className="w-full inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-[#002A64] text-white rounded-lg font-semibold text-[14px] hover:bg-[#002A64]/90 transition-colors shadow-md group disabled:opacity-60 disabled:cursor-not-allowed">
                     {isSubmitting ? (
                       "Đang gửi..."
+                    ) : isClosed ? (
+                      "Tin tuyển dụng đã hết hạn"
                     ) : (
                       <>
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-4 h-4 group-hover:translate-x-1 transition-transform"><path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" /></svg>

@@ -29,6 +29,7 @@ export default async function JobDetailsPage({ params }: PageProps) {
 
   const postDate = formatDate(job.createdAt);
   const expireDate = formatDeadlineDate(job.expiresAt);
+  const isClosed = job.status === "closed" || (!!job.expiresAt && new Date(job.expiresAt).getTime() <= Date.now());
 
   return (
     <div className="bg-slate-50 w-full flex-1 flex flex-col">
@@ -67,7 +68,7 @@ export default async function JobDetailsPage({ params }: PageProps) {
             <div className="flex-1 flex flex-col gap-(--heading-space)">
               <div className="inline-flex w-fit items-center gap-2 bg-white/10 border border-white/20 text-white px-3 py-1.5 rounded-full font-semibold text-[12px] uppercase tracking-wider">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-3.5 h-3.5"><path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" /></svg>
-                Tuyển dụng
+                {isClosed ? "Đã đóng tuyển dụng" : "Tuyển dụng"}
               </div>
               <h1 className="text-[28px] lg:text-[44px] font-semibold tracking-tight">
                 {job.jobTitle}
@@ -93,10 +94,16 @@ export default async function JobDetailsPage({ params }: PageProps) {
             </div>
             
             <div className="shrink-0 flex items-center justify-start lg:justify-end">
-              <Link href={`/tuyen-dung/${slug}/ung-tuyen`} className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-white text-[#002A64] rounded-lg font-semibold text-[14px] hover:bg-slate-100 transition-colors shadow-lg group">
-                Ứng tuyển ngay
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} className="w-4 h-4 group-hover:translate-x-1 transition-transform"><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
-              </Link>
+              {isClosed ? (
+                <button disabled className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-slate-300 text-slate-600 rounded-lg font-semibold text-[14px] cursor-not-allowed shadow-md">
+                  Đã hết hạn nộp hồ sơ
+                </button>
+              ) : (
+                <Link href={`/tuyen-dung/${slug}/ung-tuyen`} className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-white text-[#002A64] rounded-lg font-semibold text-[14px] hover:bg-slate-100 transition-colors shadow-lg group">
+                  Ứng tuyển ngay
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} className="w-4 h-4 group-hover:translate-x-1 transition-transform"><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
+                </Link>
+              )}
             </div>
           </div>
 
@@ -107,7 +114,7 @@ export default async function JobDetailsPage({ params }: PageProps) {
             </div>
             <div className="flex items-center gap-2 text-red-300">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-4 h-4"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
-              Hạn ứng tuyển: {expireDate}
+              Hạn ứng tuyển: {expireDate} {isClosed && "(Đã hết hạn)"}
             </div>
           </div>
         </div>
@@ -223,10 +230,16 @@ export default async function JobDetailsPage({ params }: PageProps) {
                     Hạn ứng tuyển: {expireDate}
                   </div>
                 </div>
-                <Link href={`/tuyen-dung/${slug}/ung-tuyen`} className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#002A64] text-white rounded-lg font-semibold text-[14px] hover:bg-[#002A64]/90 transition-colors shadow-md group">
-                  Ứng tuyển ngay
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} className="w-4 h-4 group-hover:translate-x-1 transition-transform"><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
-                </Link>
+                {isClosed ? (
+                  <button disabled className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 bg-slate-200 text-slate-500 rounded-lg font-semibold text-[14px] cursor-not-allowed">
+                    Đã hết hạn nộp hồ sơ
+                  </button>
+                ) : (
+                  <Link href={`/tuyen-dung/${slug}/ung-tuyen`} className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 bg-[#002A64] text-white rounded-lg font-semibold text-[14px] hover:bg-[#002A64]/90 transition-colors shadow-md group">
+                    Ứng tuyển ngay
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} className="w-4 h-4 group-hover:translate-x-1 transition-transform"><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
+                  </Link>
+                )}
               </div>
 
               {/* Box 2: Thông tin liên hệ */}
@@ -292,10 +305,16 @@ export default async function JobDetailsPage({ params }: PageProps) {
               </div>
             </div>
             <div className="shrink-0 w-full md:w-auto">
-              <Link href={`/tuyen-dung/${slug}/ung-tuyen`} className="w-full inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-white text-[#002A64] rounded-lg font-semibold text-[14px] hover:bg-slate-100 transition-colors shadow-lg group">
-                Gửi CV ngay
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} className="w-4 h-4 group-hover:translate-x-1 transition-transform"><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
-              </Link>
+              {isClosed ? (
+                <button disabled className="w-full inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-slate-300 text-slate-600 rounded-lg font-semibold text-[14px] cursor-not-allowed">
+                  Tin tuyển dụng đã đóng
+                </button>
+              ) : (
+                <Link href={`/tuyen-dung/${slug}/ung-tuyen`} className="w-full inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-white text-[#002A64] rounded-lg font-semibold text-[14px] hover:bg-slate-100 transition-colors shadow-lg group">
+                  Gửi CV ngay
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} className="w-4 h-4 group-hover:translate-x-1 transition-transform"><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
+                </Link>
+              )}
             </div>
           </div>
         </section>

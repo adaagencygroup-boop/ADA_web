@@ -83,8 +83,33 @@ public class RecruitmentService {
   private String senderEmail;
   private static final Pattern nonLatin = Pattern.compile("[^a-zA-Z0-9\\s]");
   private static final Pattern whitespace = Pattern.compile("\\s+");
-  @Transactional(readOnly = true)
+  @Transactional
+  public void autoCloseExpiredRecruitments() {
+    try {
+      int closedCount = recruitmentRepository.closeExpiredRecruitments(Instant.now());
+      if (closedCount > 0) {
+        log.info("Auto-closed {} expired recruitment postings", closedCount);
+      }
+    } catch (Exception e) {
+      log.error("Failed to auto-close expired recruitments: {}", e.getMessage());
+    }
+  }
+
+  @Transactional
+  @org.springframework.scheduling.annotation.Scheduled(cron = "0 */5 * * * *")
+  public void scheduledCloseExpiredRecruitments() {
+    autoCloseExpiredRecruitments();
+  }
+
+  @Transactional
+  @org.springframework.context.event.EventListener(org.springframework.boot.context.event.ApplicationReadyEvent.class)
+  public void onApplicationReadyCloseExpiredRecruitments() {
+    autoCloseExpiredRecruitments();
+  }
+
+  @Transactional
   public DashboardMetricsResponse getDashboardMetrics() {
+    autoCloseExpiredRecruitments();
     long activeCount = recruitmentRepository.countByStatus(RecruitmentStatus.hiring);
     long closedCount = recruitmentRepository.countByStatus(RecruitmentStatus.closed);
     long totalCandidatesCount = candidateRepository.count();
@@ -93,7 +118,7 @@ public class RecruitmentService {
     long expiringSoonCount = recruitmentRepository.countExpiringSoon(now, soon);
     return new DashboardMetricsResponse(activeCount, totalCandidatesCount, expiringSoonCount, closedCount);
   }
-  @Transactional(readOnly = true)
+  @Transactional
   public PageResponse<RecruitmentResponse> getAdminRecruitments(
     int page,
     int size,
@@ -107,6 +132,7 @@ public class RecruitmentService {
     Instant fromDate,
     Instant toDate
   ) {
+    autoCloseExpiredRecruitments();
     Pageable pageable = PageRequest.of(Math.max(0, page - 1), Math.max(1, size), Sort.by("createdAt").descending());
     Page<Recruitment> result = recruitmentRepository.findAll(RecruitmentSpecs.adminFilter(status, departmentId, employmentType, location, minSalary, maxSalary, search, fromDate, toDate), pageable);
     List<UUID> ids = result.getContent().stream().map(Recruitment::getId).toList();
@@ -124,8 +150,9 @@ public class RecruitmentService {
       .toList();
     return new PageResponse<>(items, PageResponse.Pagination.from(result));
   }
-  @Transactional(readOnly = true)
+  @Transactional
   public RecruitmentResponse getAdminRecruitmentById(UUID id) {
+    autoCloseExpiredRecruitments();
     Recruitment r = recruitmentRepository.findById(id).orElseThrow(() -> AppException.notFound("Recruitment Not Found"));
     return mapToResponse(r);
   }
@@ -452,7 +479,7 @@ public class RecruitmentService {
     }
     return new CandidateCvResource(resource, downloadFilename, mimeType);
   }
-  @Transactional(readOnly = true)
+  @Transactional
   public PageResponse<RecruitmentResponse> getPublicRecruitments(
     int page,
     int size,
@@ -461,23 +488,37 @@ public class RecruitmentService {
     String location,
     String search
   ) {
+    autoCloseExpiredRecruitments();
     Pageable pageable = PageRequest.of(Math.max(0, page - 1), Math.max(1, size), Sort.by("createdAt").descending());
     Page<Recruitment> result = recruitmentRepository.findAll(RecruitmentSpecs.publicFilter(departmentId, employmentType, location, search), pageable);
     List<RecruitmentResponse> items = result.getContent().stream().map(this::mapToPublicItemResponse).toList();
     return new PageResponse<>(items, PageResponse.Pagination.from(result));
   }
+  @Transactional
   public RecruitmentResponse getPublicRecruitmentBySlug(String slug) {
-    Recruitment r = recruitmentRepository.findBySlugAndStatus(slug, RecruitmentStatus.hiring)
+    autoCloseExpiredRecruitments();
+    Recruitment r = recruitmentRepository.findBySlug(slug)
       .orElseThrow(() -> AppException.notFound("Recruitment Not Found"));
+    if (r.getStatus() == RecruitmentStatus.draft) {
+      throw AppException.notFound("Recruitment Not Found");
+    }
     redisTemplate.opsForValue().increment("viewCount:recruitment:" + r.getId());
     return mapToPublicDetailResponse(r);
   }
   @Transactional
   public void applyCandidate(ApplyCandidateRequest request) {
+    autoCloseExpiredRecruitments();
     Recruitment r = recruitmentRepository.findById(request.recruitmentId())
       .orElseThrow(() -> AppException.notFound("Recruitment Not Found"));
+    if (r.getStatus() == RecruitmentStatus.closed || (r.getExpiresAt() != null && r.getExpiresAt().isBefore(Instant.now()))) {
+      if (r.getStatus() != RecruitmentStatus.closed) {
+        r.setStatus(RecruitmentStatus.closed);
+        recruitmentRepository.save(r);
+      }
+      throw AppException.badRequest("Tin tuyển dụng này đã hết hạn nhận hồ sơ ứng tuyển.");
+    }
     if (r.getStatus() != RecruitmentStatus.hiring) {
-      throw AppException.badRequest("Recruitment Is Not Currently Open");
+      throw AppException.badRequest("Tin tuyển dụng này không ở trạng thái nhận hồ sơ.");
     }
     if (candidateRepository.existsByRecruitmentIdAndEmail(r.getId(), request.email())) {
       throw AppException.badRequest("Bạn đã ứng tuyển công việc này trước đó rồi. Vui lòng gửi lại CV qua email hr@adagroup.vn nếu cần cập nhật!");
@@ -503,10 +544,18 @@ public class RecruitmentService {
   }
   @Transactional
   public void applyJob(UUID recruitmentId, String fullname, String email, String phone, String message, MultipartFile resume) {
+    autoCloseExpiredRecruitments();
     Recruitment r = recruitmentRepository.findById(recruitmentId)
       .orElseThrow(() -> AppException.notFound("Recruitment Not Found"));
+    if (r.getStatus() == RecruitmentStatus.closed || (r.getExpiresAt() != null && r.getExpiresAt().isBefore(Instant.now()))) {
+      if (r.getStatus() != RecruitmentStatus.closed) {
+        r.setStatus(RecruitmentStatus.closed);
+        recruitmentRepository.save(r);
+      }
+      throw AppException.badRequest("Tin tuyển dụng này đã hết hạn nhận hồ sơ ứng tuyển.");
+    }
     if (r.getStatus() != RecruitmentStatus.hiring) {
-      throw AppException.badRequest("Recruitment Is Not Currently Open");
+      throw AppException.badRequest("Tin tuyển dụng này không ở trạng thái nhận hồ sơ.");
     }
     if (candidateRepository.existsByRecruitmentIdAndEmail(recruitmentId, email)) {
       throw AppException.badRequest("Bạn đã ứng tuyển công việc này trước đó rồi. Vui lòng gửi lại CV qua email hr@adagroup.vn nếu cần cập nhật!");
@@ -562,7 +611,7 @@ public class RecruitmentService {
       null,
       null,
       r.getCoverImageURL(),
-      null,
+      r.getStatus(),
       r.getMinSalary(),
       r.getMaxSalary(),
       r.getIsNegotiable(),
@@ -590,7 +639,7 @@ public class RecruitmentService {
       r.getRequirements(),
       r.getBenefits(),
       r.getCoverImageURL(),
-      null,
+      r.getStatus(),
       r.getMinSalary(),
       r.getMaxSalary(),
       r.getIsNegotiable(),
