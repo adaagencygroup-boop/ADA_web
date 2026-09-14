@@ -79,16 +79,16 @@ function formatViews(views: number) {
 
 export default function ArticleDetail({ article }: { article: NewsArticle }) {
   return (
-    <article className="flex flex-col items-start gap-4 rounded-xl border border-slate-200 bg-white p-6 shadow-[0_1px_2px_rgba(0,0,0,0.05)] sm:p-8">
+    <article className="flex w-full min-h-[360px] sm:min-h-[460px] lg:min-h-[580px] flex-col items-start gap-4 rounded-2xl border border-[#F3F4F6] bg-white p-4 sm:p-6 lg:p-8 shadow-sm">
       <span className="text-xs font-semibold tracking-[0.6px] text-[#2563EB] uppercase">
         {article.category}
       </span>
 
-      <h1 className="text-[28px] lg:text-[36px] leading-[1.2] lg:leading-[1.2] font-semibold text-black">
+      <h1 className="text-[24px] sm:text-[28px] lg:text-[36px] leading-[1.2] font-semibold text-black">
         {article.title}
       </h1>
 
-      <div className="flex w-full flex-wrap items-center justify-between gap-4 border-b border-slate-200 pb-6">
+      <div className="flex w-full flex-wrap items-center justify-between gap-3 border-b border-slate-100 pb-4">
         <div className="flex items-center gap-6 text-sm text-slate-500">
           <span className="flex items-center gap-2">
             <CalendarIcon className="h-3.5 w-3.5" />
@@ -139,7 +139,7 @@ export default function ArticleDetail({ article }: { article: NewsArticle }) {
       </div>
 
       <div
-        className="prose prose-slate w-full max-w-none text-[14px] lg:text-[16px] leading-6.75 text-[#334155] [&_h1]:text-black [&_h2]:text-black [&_h3]:text-black [&_strong]:text-black"
+        className="prose prose-slate flex-1 w-full max-w-none text-[14px] lg:text-[16px] leading-6.75 text-[#334155] [&_h1]:text-black [&_h2]:text-black [&_h3]:text-black [&_strong]:text-black"
         dangerouslySetInnerHTML={{ __html: article.content }}
       />
     </article>

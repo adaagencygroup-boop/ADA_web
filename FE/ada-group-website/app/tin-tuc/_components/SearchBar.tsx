@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ALL_CATEGORY, buildNewsHref } from "@/src/lib/api/news";
+import type { NewsCategory } from "@/src/types/news";
+import NewsCategories from "@/app/tin-tuc/_components/NewsCategories";
 
 type IconProps = { className?: string };
 
@@ -24,47 +26,16 @@ function SearchIcon({ className = "h-4 w-4" }: IconProps) {
   );
 }
 
-// function GlobeIcon({ className = "h-4 w-4" }: IconProps) {
-//   return (
-//     <svg
-//       viewBox="0 0 24 24"
-//       fill="none"
-//       stroke="currentColor"
-//       strokeWidth={1.8}
-//       strokeLinecap="round"
-//       strokeLinejoin="round"
-//       className={className}
-//       aria-hidden="true"
-//     >
-//       <circle cx="12" cy="12" r="9" />
-//       <path d="M3 12h18M12 3a14 14 0 0 1 0 18 14 14 0 0 1 0-18Z" />
-//     </svg>
-//   );
-// }
-
-// function ChevronDownIcon({ className = "h-3 w-3" }: IconProps) {
-//   return (
-//     <svg
-//       viewBox="0 0 24 24"
-//       fill="none"
-//       stroke="currentColor"
-//       strokeWidth={2.5}
-//       strokeLinecap="round"
-//       strokeLinejoin="round"
-//       className={className}
-//       aria-hidden="true"
-//     >
-//       <path d="m6 9 6 6 6-6" />
-//     </svg>
-//   );
-// }
-
 export default function SearchBar({
   category,
   search,
+  categories = [],
+  activeCategory,
 }: {
   category?: string;
   search?: string;
+  categories?: NewsCategory[];
+  activeCategory?: string;
 }) {
   const router = useRouter();
   const [keyword, setKeyword] = useState(search ?? "");
@@ -74,9 +45,11 @@ export default function SearchBar({
     router.push(buildNewsHref(category ?? ALL_CATEGORY, 1, keyword.trim() || undefined));
   }
 
+  const currentCategory = activeCategory ?? category ?? ALL_CATEGORY;
+
   return (
-    <section className="pt-8 pb-2">
-      <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
+    <section className="section-y py-3!">
+      <div className="mx-auto flex max-w-360 flex-col gap-3 px-4 sm:px-6 lg:px-8">
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 sm:flex-row sm:items-stretch">
           <div className="flex flex-1 items-stretch overflow-hidden rounded-md bg-white shadow-[0_1px_2px_rgba(0,0,0,0.1)]">
             <input
@@ -94,20 +67,18 @@ export default function SearchBar({
               <SearchIcon className="h-4 w-4" />
             </button>
           </div>
-
-          {/* <div className="relative sm:w-32">
-            <GlobeIcon className="pointer-events-none absolute top-1/2 left-4 h-4 w-4 -translate-y-1/2 text-gray-400" />
-            <select
-              defaultValue="vi"
-              aria-label="Chọn ngôn ngữ"
-              className="h-full w-full appearance-none rounded-md border border-gray-200 bg-white py-2 pr-8 pl-10 text-base text-gray-700 shadow-[0_1px_2px_rgba(0,0,0,0.05)] focus:outline-none"
-            >
-              <option value="vi">VN</option>
-              <option value="en">EN</option>
-            </select>
-            <ChevronDownIcon className="pointer-events-none absolute top-1/2 right-4 h-3 w-3 -translate-y-1/2 text-gray-400" />
-          </div> */}
         </form>
+
+        {/* Mobile News Categories Dropdown */}
+        {categories.length > 0 && (
+          <div className="w-full lg:hidden">
+            <NewsCategories
+              categories={categories}
+              activeCategory={currentCategory}
+              search={search}
+            />
+          </div>
+        )}
       </div>
     </section>
   );

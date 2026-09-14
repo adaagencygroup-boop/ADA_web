@@ -29,11 +29,11 @@ export default async function NewsListing({
   ]);
 
   return (
-    <section id={NEWS_LISTING_ANCHOR} className="scroll-mt-28 scroll-smooth pt-0 pb-6">
+    <section id={NEWS_LISTING_ANCHOR} className="section-y scroll-mt-28 scroll-smooth pt-0!">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-8">
-          <div className="flex min-w-0 flex-1 flex-col items-start gap-6">
-            <h1 className="text-[28px] lg:text-[36px] font-semibold tracking-wide text-black uppercase">
+        <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:gap-8">
+          <div className="flex min-w-0 flex-1 flex-col items-start gap-4 lg:gap-6">
+            <h1 className="text-[24px] sm:text-[28px] lg:text-[36px] font-semibold tracking-wide text-black uppercase">
               {search
                 ? `Kết quả tìm kiếm cho "${search}"`
                 : activeCategory === ALL_CATEGORY
@@ -41,7 +41,7 @@ export default async function NewsListing({
                   : activeCategory}
             </h1>
 
-            <div className="flex w-full flex-col gap-6">
+            <div className="flex w-full flex-col gap-4 lg:gap-6">
               {articles.length > 0 ? (
                 articles.map((article) => (
                   <NewsCard key={article.slug} article={article} />
@@ -63,12 +63,14 @@ export default async function NewsListing({
             />
           </div>
 
-          <aside className="flex w-full flex-col gap-8 lg:w-105 lg:shrink-0">
-            <NewsCategories
-              categories={categories}
-              activeCategory={activeCategory}
-              search={search}
-            />
+          <aside className="flex w-full flex-col gap-5 lg:w-105 lg:shrink-0 lg:gap-8">
+            <div className="hidden lg:block">
+              <NewsCategories
+                categories={categories}
+                activeCategory={activeCategory}
+                search={search}
+              />
+            </div>
             <FeaturedPosts posts={featuredPosts} />
           </aside>
         </div>

@@ -22,11 +22,11 @@ function CalendarIcon({ className = "h-3 w-3" }: { className?: string }) {
 
 export default function FeaturedPosts({ posts }: { posts: NewsArticle[] }) {
   return (
-    <div className="rounded-2xl bg-white p-6 shadow-[0_1px_2px_rgba(0,0,0,0.3)]">
-      <h2 className="border-b border-gray-100 pb-2 text-lg font-semibold text-[#111827]">
+    <div className="rounded-2xl border border-[#F3F4F6] bg-white p-4 sm:p-5 lg:p-6 shadow-sm">
+      <h2 className="border-b border-gray-100 pb-2 text-base font-semibold text-[#111827] lg:text-lg">
         Bài viết nổi bật
       </h2>
-      <ul className="mt-4 flex flex-col gap-4">
+      <ul className="mt-3.5 flex flex-col gap-3.5">
         {posts.map((post) => (
           <li key={post.slug}>
             <Link href={`/tin-tuc/${post.slug}`} className="flex items-start gap-4">

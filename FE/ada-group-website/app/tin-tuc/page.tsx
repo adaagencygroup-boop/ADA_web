@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getCategories } from "@/src/lib/api/news";
 import Breadcrumb from "@/app/tin-tuc/_components/Breadcrumb";
 import CallToAction from "@/app/tin-tuc/_components/CallToAction";
 import HeroCarousel from "@/app/tin-tuc/_components/HeroCarousel";
@@ -19,11 +20,12 @@ type TinTucPageProps = {
 
 export default async function TinTucPage({ searchParams }: TinTucPageProps) {
   const { category, page, search } = await searchParams;
+  const categories = await getCategories();
 
   return (
     <>
       <HeroCarousel />
-      <SearchBar category={category} search={search} />
+      <SearchBar category={category} search={search} categories={categories} activeCategory={category} />
       <Breadcrumb />
       <NewsListing category={category} page={page} search={search} />
       <CallToAction />

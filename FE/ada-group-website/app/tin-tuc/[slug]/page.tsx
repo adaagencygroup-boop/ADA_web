@@ -49,13 +49,13 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
       <section className="section-y pt-0!">
         <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-8">
-            <div className="flex min-w-0 flex-1 flex-col items-start gap-8">
+          <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:gap-8">
+            <div className="flex min-w-0 flex-1 flex-col items-start gap-6 lg:gap-8">
               <ArticleDetail article={article} />
               <RelatedArticles articles={relatedArticles} />
             </div>
 
-            <aside className="hidden w-full flex-col gap-8 lg:flex lg:w-105 lg:shrink-0">
+            <aside className="hidden w-full flex-col gap-5 lg:flex lg:w-105 lg:shrink-0 lg:gap-8">
               <FeaturedPosts posts={featuredPosts} />
               <AISolutionBanner />
             </aside>
