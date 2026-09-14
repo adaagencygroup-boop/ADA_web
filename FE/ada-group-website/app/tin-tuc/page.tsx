@@ -5,7 +5,7 @@ import HeroCarousel from "@/app/tin-tuc/_components/HeroCarousel";
 import NewsListing from "@/app/tin-tuc/_components/NewsListing";
 import SearchBar from "@/app/tin-tuc/_components/SearchBar";
 
-export const revalidate = 60;
+export const revalidate = 0;
 
 export const metadata: Metadata = {
   title: "Tin tức | ADA Group",

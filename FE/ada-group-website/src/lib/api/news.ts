@@ -7,7 +7,7 @@ export const NEWS_BASE_PATH = "/tin-tuc";
 export const NEWS_LISTING_ANCHOR = "tin-tuc-listing";
 
 const FALLBACK_IMAGE = "https://picsum.photos/seed/ada-news-fallback/700/500";
-const REVALIDATE_SECONDS = 60;
+const REVALIDATE_SECONDS = 0;
 
 type NewsResponseDTO = {
   id: string;
@@ -51,7 +51,7 @@ function mapNews(n: NewsResponseDTO): NewsArticle {
 }
 
 export async function getCategories(): Promise<NewsCategory[]> {
-  return apiGet<NewsCategory[]>("/public/newsCategories", undefined, REVALIDATE_SECONDS * 5);
+  return apiGet<NewsCategory[]>("/public/newsCategories", undefined, REVALIDATE_SECONDS);
 }
 
 export async function getArticles(options: { category?: string; page?: number; search?: string }) {
@@ -84,7 +84,7 @@ export async function getFeaturedArticles(limit = 3): Promise<NewsArticle[]> {
   const items = await apiGet<NewsResponseDTO[]>(
     "/public/news/featured",
     { limit },
-    REVALIDATE_SECONDS * 5
+    REVALIDATE_SECONDS
   );
   return items.map(mapNews);
 }

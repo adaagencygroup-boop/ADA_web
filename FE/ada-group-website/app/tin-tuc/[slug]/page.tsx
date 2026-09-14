@@ -12,7 +12,7 @@ import AISolutionBanner from "@/app/tin-tuc/[slug]/_components/AISolutionBanner"
 import ArticleDetail from "@/app/tin-tuc/[slug]/_components/ArticleDetail";
 import RelatedArticles from "@/app/tin-tuc/[slug]/_components/RelatedArticles";
 
-export const revalidate = 60;
+export const revalidate = 0;
 
 type ArticlePageProps = {
   params: Promise<{ slug: string }>;
