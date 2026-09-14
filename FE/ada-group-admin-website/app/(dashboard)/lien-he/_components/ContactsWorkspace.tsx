@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Download, Eye, Mail } from "lucide-react";
+import { Download, Eye, Mail, Search, X } from "lucide-react";
+import type { DateRange } from "react-day-picker";
 import {
   Select,
   SelectContent,
@@ -14,6 +15,8 @@ import {
   SheetContent,
   SheetTitle,
 } from "@/src/components/ui/sheet";
+import DateRangeFilter from "@/src/components/shared/DateRangeFilter";
+import { useDebouncedValue } from "@/src/hooks/useDebouncedValue";
 import {
   useContactById,
   useContactCount,
@@ -21,6 +24,7 @@ import {
   useExportContactsExcel,
 } from "@/src/hooks/useContacts";
 import type { ContactStatus } from "@/src/lib/api/contact";
+import { endOfDayISO, startOfDayISO } from "@/src/lib/date-range";
 import ContactDetailPanel from "@/app/(dashboard)/lien-he/_components/ContactDetailPanel";
 
 function useIsDesktop() {
@@ -78,11 +82,44 @@ export default function ContactsWorkspace() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [pageSize, setPageSize] = useState("5");
   const [page, setPage] = useState(1);
+  const [searchInput, setSearchInput] = useState("");
+  const [dateRange, setDateRange] = useState<DateRange | null>(null);
+
+  const search = useDebouncedValue(searchInput, 400);
+
+  const fromDate = dateRange?.from ? startOfDayISO(dateRange.from) : undefined;
+  const toDate = dateRange?.to
+    ? endOfDayISO(dateRange.to)
+    : dateRange?.from
+      ? endOfDayISO(dateRange.from)
+      : undefined;
+
+  const [prevFilters, setPrevFilters] = useState({
+    search,
+    fromDate,
+    toDate,
+    tab,
+    pageSize,
+  });
+
+  if (
+    search !== prevFilters.search ||
+    fromDate !== prevFilters.fromDate ||
+    toDate !== prevFilters.toDate ||
+    tab !== prevFilters.tab ||
+    pageSize !== prevFilters.pageSize
+  ) {
+    setPrevFilters({ search, fromDate, toDate, tab, pageSize });
+    setPage(1);
+  }
 
   const { data, isLoading, isError, error } = useContacts({
     page,
     size: Number(pageSize),
     status: tab === "all" ? undefined : tab,
+    search: search || undefined,
+    fromDate,
+    toDate,
   });
   const { data: allCount } = useContactCount();
   const { data: pendingCount } = useContactCount("pending");
@@ -139,6 +176,21 @@ export default function ContactsWorkspace() {
                 </span>
               </button>
             ))}
+          </div>
+
+          <div className="flex flex-wrap items-center gap-4 border-b border-[#E5E7EB] bg-[#F9FAFB] p-4">
+            <div className="relative min-w-48 flex-1">
+              <Search className="pointer-events-none absolute top-1/2 left-3.5 size-4 -translate-y-1/2 text-[#94A3B8]" />
+              <input
+                type="text"
+                value={searchInput}
+                onChange={(event) => setSearchInput(event.target.value)}
+                placeholder="Tìm kiếm liên hệ..."
+                className="h-10 w-full rounded-lg border border-[#D1D5DB] bg-white pr-3 pl-10 text-sm text-[#111827] outline-none placeholder:text-[#94A3B8] focus-visible:border-[#1A56DB]"
+              />
+            </div>
+
+            <DateRangeFilter value={dateRange} onChange={setDateRange} />
           </div>
 
           <div className="overflow-x-auto">
@@ -305,11 +357,27 @@ export default function ContactsWorkspace() {
               </p>
             </div>
           ) : isDetailLoading ? (
-            <div className="flex min-h-100 items-center justify-center rounded-xl border border-[#E5E7EB] bg-white p-10 text-sm text-[#6B7280]">
+            <div className="relative flex min-h-100 items-center justify-center rounded-xl border border-[#E5E7EB] bg-white p-10 text-sm text-[#6B7280]">
+              <button
+                type="button"
+                onClick={() => setSelectedId(null)}
+                aria-label="Đóng chi tiết"
+                className="absolute top-4 right-4 flex size-8 items-center justify-center rounded-lg border border-[#E5E7EB] bg-white text-[#6B7280] transition-colors hover:bg-[#F3F4F6] hover:text-[#111827]"
+              >
+                <X className="size-5" />
+              </button>
               Đang tải chi tiết...
             </div>
           ) : isDetailError || !selectedContact ? (
-            <div className="flex min-h-100 items-center justify-center rounded-xl border border-[#E5E7EB] bg-white p-10 text-sm text-red-600">
+            <div className="relative flex min-h-100 items-center justify-center rounded-xl border border-[#E5E7EB] bg-white p-10 text-sm text-red-600">
+              <button
+                type="button"
+                onClick={() => setSelectedId(null)}
+                aria-label="Đóng chi tiết"
+                className="absolute top-4 right-4 flex size-8 items-center justify-center rounded-lg border border-[#E5E7EB] bg-white text-[#6B7280] transition-colors hover:bg-[#F3F4F6] hover:text-[#111827]"
+              >
+                <X className="size-5" />
+              </button>
               Không thể tải chi tiết liên hệ. Vui lòng thử lại.
             </div>
           ) : (
@@ -317,6 +385,7 @@ export default function ContactsWorkspace() {
               key={selectedContact.id}
               contact={selectedContact}
               onDeleted={() => setSelectedId(null)}
+              onClose={() => setSelectedId(null)}
             />
           )}
         </div>

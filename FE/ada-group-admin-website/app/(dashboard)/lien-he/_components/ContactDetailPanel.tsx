@@ -10,6 +10,7 @@ import {
   Send,
   Trash2,
   User,
+  X,
 } from "lucide-react";
 import { useUploadMedia } from "@/src/hooks/useNews";
 import {
@@ -47,9 +48,11 @@ function formatDateTime(iso: string) {
 export default function ContactDetailPanel({
   contact,
   onDeleted,
+  onClose,
 }: {
   contact: Contact;
   onDeleted: () => void;
+  onClose?: () => void;
 }) {
   const [replyContent, setReplyContent] = useState("");
   const [note, setNote] = useState(contact.note ?? "");
@@ -124,11 +127,23 @@ export default function ContactDetailPanel({
           <h2 className="text-xl font-semibold text-[#111827]">
             Chi tiết liên hệ
           </h2>
-          <span
-            className={`inline-flex shrink-0 items-center rounded-full px-3 py-1 text-xs font-medium ${statusStyle.className}`}
-          >
-            {statusStyle.label}
-          </span>
+          <div className="flex items-center gap-3">
+            <span
+              className={`inline-flex shrink-0 items-center rounded-full px-3 py-1 text-xs font-medium ${statusStyle.className}`}
+            >
+              {statusStyle.label}
+            </span>
+            {onClose && (
+              <button
+                type="button"
+                onClick={onClose}
+                aria-label="Đóng chi tiết"
+                className="flex size-8 shrink-0 items-center justify-center rounded-lg border border-[#E5E7EB] bg-white text-[#6B7280] transition-colors hover:bg-[#F3F4F6] hover:text-[#111827]"
+              >
+                <X className="size-5" />
+              </button>
+            )}
+          </div>
         </div>
 
         <div className="mt-4 flex items-center gap-3">
