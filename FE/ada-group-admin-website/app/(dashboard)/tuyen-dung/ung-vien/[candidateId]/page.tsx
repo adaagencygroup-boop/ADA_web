@@ -1,15 +1,10 @@
 "use client";
 
-import { use } from "react";
+import { Suspense, use } from "react";
 import { useCandidateById } from "@/src/hooks/useCandidates";
 import CandidateDetailView from "@/app/(dashboard)/tuyen-dung/ung-vien/[candidateId]/_components/CandidateDetailView";
 
-export default function CandidateDetailPage({
-  params,
-}: {
-  params: Promise<{ candidateId: string }>;
-}) {
-  const { candidateId } = use(params);
+function CandidateDetailContent({ candidateId }: { candidateId: string }) {
   const { data: candidate, isLoading, isError } = useCandidateById(candidateId);
 
   if (isLoading) {
@@ -29,4 +24,23 @@ export default function CandidateDetailPage({
   }
 
   return <CandidateDetailView candidate={candidate} />;
+}
+
+export default function CandidateDetailPage({
+  params,
+}: {
+  params: Promise<{ candidateId: string }>;
+}) {
+  const { candidateId } = use(params);
+  return (
+    <Suspense
+      fallback={
+        <div className="flex flex-1 items-center justify-center py-20 text-sm text-[#64748B]">
+          Đang tải thông tin ứng viên...
+        </div>
+      }
+    >
+      <CandidateDetailContent candidateId={candidateId} />
+    </Suspense>
+  );
 }

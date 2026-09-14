@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import {
   Briefcase,
   Calendar,
@@ -72,6 +73,16 @@ export default function CandidateDetailView({
 }: {
   candidate: Candidate;
 }) {
+  const searchParams = useSearchParams();
+  const paramRecruitmentId = searchParams.get("recruitmentId");
+  const activeRecruitmentId =
+    paramRecruitmentId && paramRecruitmentId !== "all"
+      ? paramRecruitmentId
+      : candidate.recruitmentId;
+  const backLink = activeRecruitmentId
+    ? `/tuyen-dung/ung-vien?recruitmentId=${activeRecruitmentId}`
+    : "/tuyen-dung/ung-vien";
+
   const { data: job } = useRecruitmentById(candidate.recruitmentId);
   const noteMutation = useUpdateCandidateNote();
   const [note, setNote] = useState(candidate.note ?? "");
@@ -115,7 +126,7 @@ export default function CandidateDetailView({
               Tuyển dụng
             </Link>
             <ChevronRight className="size-3" />
-            <Link href="/tuyen-dung/ung-vien" className="hover:text-[#1C1B1B]">
+            <Link href={backLink} className="hover:text-[#1C1B1B]">
               Ứng viên
             </Link>
             <ChevronRight className="size-3" />
@@ -129,7 +140,7 @@ export default function CandidateDetailView({
         </div>
 
         <Link
-          href="/tuyen-dung/ung-vien"
+          href={backLink}
           className="flex h-10 shrink-0 items-center gap-2 rounded-lg border border-[#C4C6D2] bg-white px-4 text-sm font-medium text-[#1C1B1B] hover:bg-[#F8FAFC]"
         >
           ← Quay lại danh sách

@@ -238,8 +238,8 @@ export default function JobDetailView({ job }: { job: RecruitmentDetail }) {
         </div>
 
         <div className="flex flex-col gap-6">
-          <div className="flex flex-col gap-5 self-start rounded-xl border border-[#C4C6D2] bg-white p-5 shadow-xs">
-            <h3 className="text-xl font-semibold tracking-wide text-[#001E4B] uppercase">
+          <div className="flex flex-col gap-5 rounded-xl border border-[#C4C6D2] bg-white p-6 shadow-xs">
+            <h3 className="text-xl font-semibold text-[#001E4B]">
               Thông tin tuyển dụng
             </h3>
 
@@ -301,16 +301,25 @@ export default function JobDetailView({ job }: { job: RecruitmentDetail }) {
               </div>
             </div>
 
-            <div className="flex items-start gap-3">
-              <UserPlus className="mt-0.5 size-4 shrink-0 text-[#434750]" />
-              <div className="flex flex-col gap-0.5">
-                <span className="text-sm text-[#434750]">
-                  Đã ứng tuyển
-                </span>
-                <span className="text-base font-semibold text-[#0054CD]">
-                  {job.applicantCount ?? 0}
-                </span>
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-start gap-3">
+                <UserPlus className="mt-0.5 size-4 shrink-0 text-[#434750]" />
+                <div className="flex flex-col gap-0.5">
+                  <span className="text-sm text-[#434750]">
+                    Đã ứng tuyển
+                  </span>
+                  <span className="text-base font-semibold text-[#0054CD]">
+                    {job.applicantCount ?? 0}
+                  </span>
+                </div>
               </div>
+              <Link
+                href={`/tuyen-dung/ung-vien?recruitmentId=${job.id}`}
+                title="Xem danh sách ứng viên vị trí này"
+                className="flex size-8 items-center justify-center rounded-lg border border-[#BFDBFE] bg-[#EFF6FF] text-[#1D4ED8] transition-colors hover:bg-[#DBEAFE]"
+              >
+                <Eye className="size-4" />
+              </Link>
             </div>
 
             <div className="flex items-start gap-3">
@@ -325,7 +334,7 @@ export default function JobDetailView({ job }: { job: RecruitmentDetail }) {
           </div>
 
           {job.coverImageURL && (
-            <div className="flex flex-col gap-4 rounded-xl border border-[#C4C6D2] bg-white p-5 shadow-xs">
+            <div className="flex flex-col gap-5 rounded-xl border border-[#C4C6D2] bg-white p-6 shadow-xs">
               <h3 className="text-xl font-semibold text-[#001E4B]">
                 Hình ảnh đại diện
               </h3>

@@ -147,10 +147,19 @@ export default function CandidatesTable({
                 <td className="px-3 py-4 text-sm text-[#434750]">{candidate.recruitmentTitle}</td>
                 <td className="px-3 py-4 text-sm text-[#434750]">{formatDate(candidate.appliedAt)}</td>
                 <td className="px-3 py-4">
-                  <Link href={`/tuyen-dung/ung-vien/${candidate.id}`} className="inline-flex items-center gap-1.5 rounded-lg border border-[#BFDBFE] px-3 py-1.5 text-sm font-medium text-[#1D4ED8] hover:bg-[#EFF6FF]">
-                    <Eye className="size-3.5" />
-                    Xem
-                  </Link>
+                  {(() => {
+                    const activeId = recruitmentId !== "all" ? recruitmentId : candidate.recruitmentId;
+                    const queryParam = activeId ? `?recruitmentId=${activeId}` : "";
+                    return (
+                      <Link
+                        href={`/tuyen-dung/ung-vien/${candidate.id}${queryParam}`}
+                        className="inline-flex items-center gap-1.5 rounded-lg border border-[#BFDBFE] px-3 py-1.5 text-sm font-medium text-[#1D4ED8] hover:bg-[#EFF6FF]"
+                      >
+                        <Eye className="size-3.5" />
+                        Xem
+                      </Link>
+                    );
+                  })()}
                 </td>
               </tr>
             ))}

@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { ChevronRight, Download } from "lucide-react";
 import type { DateRange } from "react-day-picker";
 import { useExportCandidatesExcel } from "@/src/hooks/useCandidates";
@@ -9,8 +10,10 @@ import { useRecruitments } from "@/src/hooks/useRecruitments";
 import { endOfDayISO, startOfDayISO } from "@/src/lib/date-range";
 import CandidatesTable from "@/app/(dashboard)/tuyen-dung/ung-vien/_components/CandidatesTable";
 
-export default function UngVienPage() {
-  const [recruitmentId, setRecruitmentId] = useState("all");
+function UngVienContent() {
+  const searchParams = useSearchParams();
+  const initialRecruitmentId = searchParams.get("recruitmentId") ?? "all";
+  const [recruitmentId, setRecruitmentId] = useState(initialRecruitmentId);
   const [dateRange, setDateRange] = useState<DateRange | null>(null);
 
   const exportMutation = useExportCandidatesExcel();
@@ -78,5 +81,19 @@ export default function UngVienPage() {
         toDate={toDate}
       />
     </div>
+  );
+}
+
+export default function UngVienPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex flex-1 items-center justify-center py-20 text-sm text-[#64748B]">
+          Đang tải danh sách ứng viên...
+        </div>
+      }
+    >
+      <UngVienContent />
+    </Suspense>
   );
 }

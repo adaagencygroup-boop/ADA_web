@@ -210,7 +210,14 @@ export default function JobsListCard({
                     {EMPLOYMENT_TYPE_LABELS[job.employmentType]}
                   </td>
                   <td className="px-3 py-4 text-center text-sm font-medium text-[#1C1B1B]">
-                    {job.applicantCount ?? 0}
+                    <Link
+                      href={`/tuyen-dung/ung-vien?recruitmentId=${job.id}`}
+                      className="inline-flex items-center gap-1 font-semibold text-[#0054CD] hover:underline"
+                      title="Xem danh sách ứng viên vị trí này"
+                    >
+                      {job.applicantCount ?? 0}
+                      <Eye className="size-3.5" />
+                    </Link>
                   </td>
                   <td className="px-3 py-4 text-sm text-[#434750]">
                     {formatDeadline(job.expiresAt)}
