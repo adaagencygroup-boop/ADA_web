@@ -29,6 +29,8 @@ public interface CandidateRepository extends JpaRepository<Candidate, UUID>, Jpa
 
   long countByRecruitmentId(UUID recruitmentId);
 
+  boolean existsByRecruitmentIdAndEmail(UUID recruitmentId, String email);
+
   @Query("SELECT c.recruitment.id, count(c.id) FROM Candidate c WHERE c.recruitment.id IN :recruitmentIds GROUP BY c.recruitment.id")
   List<Object[]> countByRecruitmentIds(@Param("recruitmentIds") List<UUID> recruitmentIds);
 

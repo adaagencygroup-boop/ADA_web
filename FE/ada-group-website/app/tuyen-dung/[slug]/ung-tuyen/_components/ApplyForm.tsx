@@ -206,7 +206,8 @@ export default function ApplyForm({ job, slug }: { job: Recruitment; slug: strin
       const isDuplicate =
         rawMsg.includes("uxCandidatesRecruitmentIdEmail") ||
         rawMsg.includes("duplicate key value") ||
-        rawMsg.includes("already exists");
+        rawMsg.includes("already exists") ||
+        rawMsg.toLowerCase().includes("đã ứng tuyển");
 
       if (isDuplicate) {
         setAlertInfo({

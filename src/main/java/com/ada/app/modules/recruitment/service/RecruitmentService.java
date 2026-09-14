@@ -419,6 +419,9 @@ public class RecruitmentService {
     if (r.getStatus() != RecruitmentStatus.hiring) {
       throw AppException.badRequest("Recruitment Is Not Currently Open");
     }
+    if (candidateRepository.existsByRecruitmentIdAndEmail(r.getId(), request.email())) {
+      throw AppException.badRequest("Bạn đã ứng tuyển công việc này trước đó rồi. Vui lòng gửi lại CV qua email hr@adagroup.vn nếu cần cập nhật!");
+    }
     Candidate candidate = Candidate.builder()
       .recruitment(r)
       .fullname(request.fullname())
@@ -427,7 +430,11 @@ public class RecruitmentService {
       .resumeURL(request.resumeURL())
       .message(request.message())
       .build();
-    candidateRepository.save(candidate);
+    try {
+      candidateRepository.save(candidate);
+    } catch (org.springframework.dao.DataIntegrityViolationException e) {
+      throw AppException.badRequest("Bạn đã ứng tuyển công việc này trước đó rồi. Vui lòng gửi lại CV qua email hr@adagroup.vn nếu cần cập nhật!");
+    }
     notificationService.createAndBroadcast(
       "Tin Nhắn Từ Ứng Viên Mới",
       "Ứng Viên " + request.fullname() + " Đã Ứng Tuyển Vị Trí " + r.getJobTitle() + ".",
@@ -441,6 +448,9 @@ public class RecruitmentService {
     if (r.getStatus() != RecruitmentStatus.hiring) {
       throw AppException.badRequest("Recruitment Is Not Currently Open");
     }
+    if (candidateRepository.existsByRecruitmentIdAndEmail(recruitmentId, email)) {
+      throw AppException.badRequest("Bạn đã ứng tuyển công việc này trước đó rồi. Vui lòng gửi lại CV qua email hr@adagroup.vn nếu cần cập nhật!");
+    }
     String resumeURL = fileUtils.uploadFile(resume, "resumes");
     Candidate candidate = Candidate.builder()
       .recruitment(r)
@@ -450,7 +460,11 @@ public class RecruitmentService {
       .resumeURL(resumeURL)
       .message(message)
       .build();
-    candidateRepository.save(candidate);
+    try {
+      candidateRepository.save(candidate);
+    } catch (org.springframework.dao.DataIntegrityViolationException e) {
+      throw AppException.badRequest("Bạn đã ứng tuyển công việc này trước đó rồi. Vui lòng gửi lại CV qua email hr@adagroup.vn nếu cần cập nhật!");
+    }
     notificationService.createAndBroadcast(
       "Tin Nhắn Từ Ứng Viên Mới",
       "Ứng Viên " + fullname + " Đã Ứng Tuyển Vị Trí " + r.getJobTitle() + ".",
