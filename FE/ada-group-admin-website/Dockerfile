@@ -3,6 +3,21 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
 
+FROM node:22-alpine AS dev
+WORKDIR /app
+COPY package.json package-lock.json ./
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+ARG NEXT_PUBLIC_API_BASE_URL=https://adagroup.com.vn/api/v1
+ENV NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL}
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV WATCHPACK_POLLING=true
+ENV CHOKIDAR_USEPOLLING=true
+EXPOSE 3000
+ENV PORT=3000
+ENV HOSTNAME=0.0.0.0
+CMD ["npm", "run", "dev"]
+
 FROM node:22-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
@@ -25,3 +40,4 @@ EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
 CMD ["node", "server.js"]
+

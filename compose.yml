@@ -24,25 +24,33 @@ services:
     image: ${adminWebImage:-ada-admin-web:latest}
     build:
       context: ./FE/ada-group-admin-website
+      target: dev
       args:
         NEXT_PUBLIC_API_BASE_URL: ${nextPublicApiBaseUrl:-https://adagroup.com.vn/api/v1}
     container_name: admin-web
     restart: always
     environment:
       API_BASE_URL: http://app:8080/api/v1
+      WATCHPACK_POLLING: "true"
+      CHOKIDAR_USEPOLLING: "true"
+    volumes:
+      - ./FE/ada-group-admin-website:/app
+      - /app/.next
+      - /app/node_modules
     depends_on:
       - app
     deploy:
       resources:
         limits:
           cpus: '1.0'
-          memory: 512M
+          memory: 1024M
     networks:
       - net
   public-web:
     image: ${publicWebImage:-ada-public-web:latest}
     build:
       context: ./FE/ada-group-website
+      target: dev
       args:
         NEXT_PUBLIC_API_BASE_URL: ${nextPublicApiBaseUrl:-https://adagroup.com.vn/api/v1}
     container_name: public-web
@@ -52,13 +60,19 @@ services:
       # backend via the Docker network's service name, not the public URL
       # baked into the browser bundle via NEXT_PUBLIC_API_BASE_URL.
       API_BASE_URL: http://app:8080/api/v1
+      WATCHPACK_POLLING: "true"
+      CHOKIDAR_USEPOLLING: "true"
+    volumes:
+      - ./FE/ada-group-website:/app
+      - /app/.next
+      - /app/node_modules
     depends_on:
       - app
     deploy:
       resources:
         limits:
           cpus: '1.0'
-          memory: 512M
+          memory: 1024M
     networks:
       - net
   postgres:
