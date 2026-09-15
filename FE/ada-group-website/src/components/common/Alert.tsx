@@ -1,4 +1,7 @@
-import React from 'react';
+"use client";
+
+import React, { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import Link from 'next/link';
 
 type AlertType = 'success' | 'error' | 'warning' | 'info';
@@ -44,14 +47,22 @@ const icons = {
 };
 
 export default function Alert({ type, title, description, onClose, actionText = "Về trang chủ", actionLink }: AlertProps) {
-  return (
-    <div className="fixed inset-0 z-100 flex items-center justify-center p-4">
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
+  return createPortal(
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
       <div 
-        className="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity"
+        className="fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity"
         onClick={onClose}
       />
       
-      <div className="relative w-full max-w-105 bg-white rounded-3xl p-8 md:p-10 flex flex-col items-center text-center shadow-2xl animate-in fade-in zoom-in-95 duration-200">
+      <div className="relative z-10 w-full max-w-105 bg-white rounded-3xl p-8 md:p-10 flex flex-col items-center text-center shadow-2xl animate-in fade-in zoom-in-95 duration-200">
         {icons[type]}
         
         <h3 className="text-[22px] font-bold text-[#002A64] mb-3 leading-tight">{title}</h3>
@@ -67,6 +78,7 @@ export default function Alert({ type, title, description, onClose, actionText = 
           </button>
         )}
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
