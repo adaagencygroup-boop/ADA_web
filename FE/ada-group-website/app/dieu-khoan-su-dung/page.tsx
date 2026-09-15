@@ -96,29 +96,6 @@ const SECTIONS = [
         </p>
       </div>
     )
-  },
-  {
-    id: "lien-he",
-    title: "6. Thông tin liên hệ",
-    content: (
-      <div className="text-zinc-600 leading-[1.7] text-[15px] lg:text-[16px]">
-        <p className="mb-4">
-          Mọi thắc mắc về tính pháp lý, khiếu nại vi phạm bản quyền hoặc góp ý về Điều khoản sử dụng này, Quý khách vui lòng liên hệ trực tiếp với bộ phận pháp chế của chúng tôi:
-        </p>
-        <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100">
-          <strong className="text-zinc-900 block mb-3 font-medium">ADA Group</strong>
-          <ul className="space-y-3">
-            <li className="flex items-start">
-              <span className="text-zinc-500 w-20 inline-block font-medium shrink-0 mt-0.5">Địa chỉ:</span> 
-              <span>Tầng 7 toà An Phú Building, LK19A-19B, khu tái định cư Dương Nội, đường Lê Trọng Tấn, Phường Dương Nội, TP Hà Nội, Việt Nam</span>
-            </li>
-            <li><span className="text-zinc-500 w-20 inline-block font-medium">Hotline:</span> <a href="tel:+84924574444" className="text-blue-600 hover:underline">(+84) 924 574 444</a></li>
-            <li><span className="text-zinc-500 w-20 inline-block font-medium">Email:</span> <a href="mailto:contact@adagroup.vn" className="text-blue-600 hover:underline">contact@adagroup.vn</a></li>
-            <li><span className="text-zinc-500 w-20 inline-block font-medium">Website:</span> <a href="https://www.adagroup.vn" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">www.adagroup.vn</a></li>
-          </ul>
-        </div>
-      </div>
-    )
   }
 ];
 
