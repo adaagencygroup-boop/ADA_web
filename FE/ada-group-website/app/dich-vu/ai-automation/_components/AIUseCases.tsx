@@ -221,7 +221,7 @@ export default function AIUseCases() {
           })}
 
           {/* Split Container (5 & 6) */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-(--inner-space)">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-(--section-padding) lg:gap-(--inner-space)">
             {splitUseCases.map((item) => {
               const bg = "bg-white";
               const border = "border border-slate-200 shadow-sm";
@@ -230,7 +230,7 @@ export default function AIUseCases() {
               <div key={item.id} className={`${bg} rounded-3xl lg:rounded-[2.5rem] p-6 lg:p-12 ${border} flex flex-col`}>
                 
                 {item.image && (
-                  <div className={`relative w-full min-h-64 lg:min-h-0 lg:aspect-4/3 rounded-2xl overflow-hidden mb-(--inner-space) lg:mt-auto order-1 ${item.id === '06' ? 'lg:hidden' : 'lg:order-3'}`}>
+                  <div className={`relative w-full min-h-64 lg:min-h-0 lg:aspect-4/3 rounded-2xl overflow-hidden mb-(--section-padding) lg:mb-(--inner-space) lg:mt-auto order-1 ${item.id === '06' ? 'lg:hidden' : 'lg:order-3'}`}>
                     <Image src={item.image} alt={item.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
                   </div>
                 )}
@@ -244,7 +244,7 @@ export default function AIUseCases() {
                   </h3>
                   
                   {item.descriptions.map((desc, idx) => (
-                    <p key={idx} className={`text-[14px] lg:text-[16px] leading-relaxed text-zinc-600 ${idx === item.descriptions.length - 1 ? 'mb-(--inner-space)' : 'mb-(--inner-space)'} ${idx > 0 ? 'hidden md:block' : ''} text-justify`}>
+                    <p key={idx} className={`text-[14px] lg:text-[16px] leading-relaxed text-zinc-600 mb-(--inner-space) ${idx > 0 ? 'hidden md:block' : ''} text-justify`}>
                       {desc}
                     </p>
                   ))}
