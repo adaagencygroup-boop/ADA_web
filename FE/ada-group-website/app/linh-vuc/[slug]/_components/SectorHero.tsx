@@ -26,7 +26,7 @@ export default function SectorHero({ sector }: { sector: Sector }) {
               fill
               priority
               sizes="(min-width: 1024px) 681px, 100vw"
-              className="object-cover"
+              className="object-cover transition-transform duration-500 hover:scale-105"
             />
           </div>
         </div>

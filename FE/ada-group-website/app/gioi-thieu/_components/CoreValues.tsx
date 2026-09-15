@@ -1,3 +1,5 @@
+import GsapWaveText from "@/app/_components/GsapWaveText";
+
 type IconProps = { className?: string };
 
 function RealisticIcon({ className = "h-6 w-6" }: IconProps) {
@@ -92,9 +94,11 @@ export default function CoreValues() {
     <section className="section-y bg-blue-50">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center text-center">
-          <h2 className="text-[28px] font-extrabold leading-[1.2] text-slate-900 lg:text-[44px] lg:font-semibold lg:leading-[1.1] lg:text-black">
-            {CONTENT.title}
-          </h2>
+          <GsapWaveText
+            text={CONTENT.title}
+            as="h2"
+            className="text-[28px] font-extrabold leading-[1.2] text-slate-900 lg:text-[44px] lg:font-semibold lg:leading-[1.1] lg:text-black"
+          />
           <span className="mt-4 h-1 w-12 shrink-0 rounded-full bg-[#002A64] lg:bg-blue-900" />
         </div>
 

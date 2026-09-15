@@ -25,14 +25,16 @@ export default function PeopleSection() {
             className="text-[28px] leading-[1.2] font-semibold tracking-tight text-zinc-900 lg:hidden"
           />
 
-          <Image
-            src={IMAGE.src}
-            alt={IMAGE.alt}
-            width={1372}
-            height={737}
-            sizes="(min-width: 1024px) 50vw, 100vw"
-            className="mt-(--inner-space) h-auto w-full lg:col-start-1 lg:row-start-1 lg:mt-0 rounded-2xl"
-          />
+          <div className="overflow-hidden rounded-2xl mt-(--inner-space) lg:col-start-1 lg:row-start-1 lg:mt-0">
+            <Image
+              src={IMAGE.src}
+              alt={IMAGE.alt}
+              width={1372}
+              height={737}
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              className="h-auto w-full transition-transform duration-500 hover:scale-105"
+            />
+          </div>
 
           <div className="mt-(--inner-space) lg:col-start-2 lg:row-start-1 lg:mt-0">
             <GsapWaveText

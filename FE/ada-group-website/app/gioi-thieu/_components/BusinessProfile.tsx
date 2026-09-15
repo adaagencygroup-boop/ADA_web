@@ -1,4 +1,5 @@
 import Image from "next/image";
+import GsapWaveText from "@/app/_components/GsapWaveText";
 import { BuildingIcon, HandshakeIcon, FileTextIcon, MapPinIcon } from "./icons";
 
 const CONTENT = {
@@ -41,9 +42,11 @@ export default function BusinessProfile() {
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="lg:rounded-xl lg:border lg:border-[#C4C6D2] lg:bg-[#EFF6FF] lg:px-6 lg:py-7.5 lg:shadow-sm">
           <div className="mb-6 lg:mb-0 lg:border-none lg:pb-0">
-            <h2 className="text-[28px] font-semibold leading-[1.2] text-[#000000] lg:text-[44px] lg:leading-[1.1] lg:text-center">
-              {CONTENT.title}
-            </h2>
+            <GsapWaveText
+              text={CONTENT.title}
+              as="h2"
+              className="text-[28px] font-semibold leading-[1.2] text-[#000000] lg:text-[44px] lg:leading-[1.1] lg:text-center"
+            />
             <div className="mt-2 h-1 w-12 bg-[#003384] lg:hidden"></div>
             <p className="mt-3 text-[14px] text-gray-500 lg:hidden">
               {CONTENT.subtitle}
@@ -57,7 +60,7 @@ export default function BusinessProfile() {
                 alt={IMAGE.alt}
                 fill
                 sizes="624px"
-                className="object-cover"
+                className="object-cover transition-transform duration-500 hover:scale-105"
               />
             </div>
 

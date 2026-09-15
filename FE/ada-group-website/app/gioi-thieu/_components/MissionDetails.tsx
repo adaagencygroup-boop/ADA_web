@@ -1,4 +1,5 @@
 import Image from "next/image";
+import GsapWaveText from "@/app/_components/GsapWaveText";
 
 const BLOCKS = [
   {
@@ -40,9 +41,11 @@ export default function MissionDetails() {
             className="grid grid-cols-1 items-center gap-2 sm:gap-10 lg:grid-cols-2"
           >
             <div className={block.imageOnLeft ? "lg:order-2" : "lg:order-1"}>
-              <h3 className="text-[28px] lg:text-[36px] font-semibold leading-[1.2] text-zinc-900">
-                {block.title}
-              </h3>
+              <GsapWaveText
+                text={block.title}
+                as="h3"
+                className="text-[28px] lg:text-[36px] font-semibold leading-[1.2] text-zinc-900"
+              />
               <p className="mt-(--heading-space) text-justify text-[14px] lg:text-[16px] leading-relaxed text-gray-600">
                 {block.paragraph}
               </p>
@@ -56,7 +59,7 @@ export default function MissionDetails() {
                 alt={block.imageAlt}
                 fill
                 sizes="(min-width: 1024px) 50vw, 100vw"
-                className="object-cover"
+                className="object-cover transition-transform duration-500 hover:scale-105"
               />
             </div>
           </div>

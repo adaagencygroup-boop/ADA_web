@@ -1,4 +1,5 @@
 import Image from "next/image";
+import GsapWaveText from "@/app/_components/GsapWaveText";
 
 type IconProps = { className?: string };
 
@@ -111,9 +112,11 @@ export default function DevelopmentStrategy() {
             <span className="text-[12px] lg:text-[12px] font-semibold uppercase leading-5 tracking-wider text-blue-900">
               {CONTENT.eyebrow}
             </span>
-            <h2 className="mt-(--heading-space) text-[28px] font-semibold leading-[1.2] text-zinc-900 lg:text-[36px] lg:leading-[1.2]">
-              {CONTENT.title}
-            </h2>
+            <GsapWaveText
+              text={CONTENT.title}
+              as="h2"
+              className="mt-(--heading-space) text-[28px] font-semibold leading-[1.2] text-zinc-900 lg:text-[36px] lg:leading-[1.2]"
+            />
 
             <div className="mt-(--inner-space)">
               {CONTENT.paragraphs.map((paragraph) => (
@@ -152,7 +155,7 @@ export default function DevelopmentStrategy() {
                 alt={IMAGE.alt}
                 fill
                 sizes="(min-width: 1024px) 50vw, 100vw"
-                className="object-cover"
+                className="object-cover transition-transform duration-500 hover:scale-105"
               />
             </div>
 

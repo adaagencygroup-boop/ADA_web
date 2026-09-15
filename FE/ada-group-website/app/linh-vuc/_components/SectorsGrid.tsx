@@ -16,13 +16,13 @@ export default function SectorsGrid() {
               href={`/linh-vuc/${sector.slug}`}
               className="group flex flex-col overflow-hidden rounded-2xl border border-[#C4C6D2]/20 bg-white transition-shadow shadow-sm hover:shadow-lg"
             >
-              <div className="relative aspect-417/224 w-full bg-zinc-200">
+              <div className="relative aspect-417/224 w-full overflow-hidden bg-zinc-200">
                 <Image
                   src={sector.imageUrl}
                   alt={sector.title}
                   fill
                   sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                  className="object-cover"
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
                 />
               </div>
               <div className="flex flex-1 flex-col items-start p-6 lg:p-8">

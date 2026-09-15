@@ -3,6 +3,7 @@ import Image from "next/image";
 import React from "react";
 import { ArrowRightIcon } from "@/app/_components/icons";
 import GsapScrollReveal from "@/app/_components/GsapScrollReveal";
+import GsapWaveText from "@/app/_components/GsapWaveText";
 
 const mainUseCases = [
   {
@@ -137,9 +138,11 @@ export default function AIUseCases() {
               </svg>
               AI & Automation
             </div>
-            <h2 className="text-[28px] lg:text-[44px] font-semibold leading-[1.2] tracking-tight text-[#0a1a2f] mb-(--inner-space) max-w-full">
-              Ứng dụng AI vào những hoạt động tạo ra giá trị
-            </h2>
+            <GsapWaveText
+              text="Ứng dụng AI vào những hoạt động tạo ra giá trị"
+              as="h2"
+              className="text-[28px] lg:text-[44px] font-semibold leading-[1.2] tracking-tight text-[#0a1a2f] mb-(--inner-space) max-w-full"
+            />
             <div className="w-16 h-1 bg-blue-600 mx-auto mb-(--inner-space)"></div>
             <p className="text-[14px] lg:text-[16px] leading-relaxed text-zinc-600">
               Mỗi giải pháp được xây dựng dựa trên nhu cầu thực tế, dữ liệu hiện có và cách người dùng làm việc, để công nghệ không chỉ tạo ra khả năng mới mà còn mang lại giá trị có thể sử dụng trong thực tế.
@@ -199,14 +202,14 @@ export default function AIUseCases() {
                         </div>
                         {item.image && (
                           <div className="relative w-full aspect-16/10 rounded-2xl overflow-hidden bg-slate-100 order-1 lg:hidden">
-                            <Image src={item.image} alt={item.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
+                            <Image src={item.image} alt={item.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover transition-transform duration-500 hover:scale-105" />
                           </div>
                         )}
                       </>
                     ) : (
                       <div className={`relative w-full min-h-64 lg:min-h-0 ${item.id === '01' ? 'lg:aspect-4/3' : 'lg:aspect-16/10'} rounded-2xl overflow-hidden ${item.id === '01' ? 'shadow-lg border border-slate-200/50' : 'bg-slate-100'} order-1 ${layout === 'right-text' ? 'lg:order-1' : 'lg:order-2'}`}>
                         {item.image && (
-                          <Image src={item.image} alt={item.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
+                          <Image src={item.image} alt={item.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover transition-transform duration-500 hover:scale-105" />
                         )}
                         {imageBadge && (
                           <div className="absolute top-4 right-4 bg-white/95 backdrop-blur px-4 py-2.5 rounded-xl shadow-lg border border-slate-100 flex items-center gap-(--inner-space)">
@@ -237,7 +240,7 @@ export default function AIUseCases() {
                     
                     {item.image && (
                       <div className={`relative w-full min-h-64 lg:min-h-0 lg:aspect-4/3 rounded-2xl overflow-hidden mb-(--section-padding) lg:mb-(--inner-space) lg:mt-auto order-1 ${item.id === '06' ? 'lg:hidden' : 'lg:order-3'}`}>
-                        <Image src={item.image} alt={item.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
+                        <Image src={item.image} alt={item.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover transition-transform duration-500 hover:scale-105" />
                       </div>
                     )}
 

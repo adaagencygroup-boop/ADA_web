@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowRightIcon } from "@/app/_components/icons";
+import GsapWaveText from "@/app/_components/GsapWaveText";
 
 export default function AIProblemSolving() {
   const contentData = [
@@ -24,9 +25,11 @@ export default function AIProblemSolving() {
                 <span className="text-[12px] font-semibold uppercase tracking-wider text-blue-800 mb-(--heading-space) block">
                   {item.tag}
                 </span>
-                <h2 className="text-[28px] lg:text-[44px] font-semibold leading-[1.2] tracking-tight text-[#000000] mb-(--inner-space) uppercase max-w-full">
-                  {item.title}
-                </h2>
+                <GsapWaveText
+                  text={item.title}
+                  as="h2"
+                  className="text-[28px] lg:text-[44px] font-semibold leading-[1.2] tracking-tight text-[#000000] mb-(--inner-space) max-w-full"
+                />
                 <p className="text-[18px] lg:text-[20px] font-medium text-blue-600 mb-(--inner-space) leading-snug">
                   {item.subtitle}
                 </p>

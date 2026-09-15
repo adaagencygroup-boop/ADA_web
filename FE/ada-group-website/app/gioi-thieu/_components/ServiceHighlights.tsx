@@ -1,3 +1,5 @@
+import GsapWaveText from "@/app/_components/GsapWaveText";
+
 type IconProps = { className?: string };
 
 function WebMobileIcon({ className = "h-6 w-6" }: IconProps) {
@@ -75,9 +77,11 @@ export default function ServiceHighlights() {
   return (
     <section className="section-y bg-white lg:bg-white">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
-        <h2 className="text-center text-[28px] font-semibold leading-[1.2] text-zinc-900 lg:text-[44px] lg:leading-[1.1]">
-          {CONTENT.title}
-        </h2>
+        <GsapWaveText
+          text={CONTENT.title}
+          as="h2"
+          className="text-center text-[28px] font-semibold leading-[1.2] text-zinc-900 lg:text-[44px] lg:leading-[1.1]"
+        />
 
         <div className="mt-(--inner-space) grid grid-cols-2 lg:hidden">
           {STATS.map((stat, index) => (
@@ -104,7 +108,7 @@ export default function ServiceHighlights() {
                 index < STATS.length - 1 ? "border-r border-zinc-300" : ""
               }`}
             >
-              <span className="text-3xl font-extrabold leading-10 text-blue-900">
+              <span className="text-3xl font-semibold leading-10 text-blue-900">
                 {stat.title}
               </span>
               <span className="text-sm leading-5 font-medium text-gray-600">

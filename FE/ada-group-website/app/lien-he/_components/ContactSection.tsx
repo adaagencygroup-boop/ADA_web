@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { submitContact } from "@/src/lib/api/contacts";
 import Alert from "@/src/components/common/Alert";
+import GsapWaveText from "@/app/_components/GsapWaveText";
 
 const headerData = [
   {
@@ -214,12 +215,16 @@ export default function ContactSection() {
             key={index}
             className="max-w-xl mb-(--section-padding) flex flex-col gap-(--heading-space)"
           >
-            <h1 className="text-[28px] leading-[1.2] font-semibold tracking-tight text-zinc-900 lg:text-[44px] lg:leading-[1.1]">
-              {item.title}
-            </h1>
-            <h2 className="text-[19px] lg:text-[21px] font-semibold text-zinc-900 leading-snug">
-              {item.subtitle}
-            </h2>
+            <GsapWaveText
+              text={item.title}
+              as="h1"
+              className="text-[28px] leading-[1.2] font-semibold tracking-tight text-zinc-900 lg:text-[44px] lg:leading-[1.1]"
+            />
+            <GsapWaveText
+              text={item.subtitle}
+              as="h2"
+              className="text-[19px] lg:text-[21px] font-semibold text-zinc-900 leading-snug"
+            />
             <p className="text-zinc-500 leading-relaxed text-[14px] lg:text-[16px] text-justify mt-(--inner-space)">
               {item.description}
             </p>

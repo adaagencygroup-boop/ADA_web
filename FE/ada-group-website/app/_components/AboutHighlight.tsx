@@ -48,7 +48,7 @@ export default function AboutHighlight() {
               alt={IMAGES.primary.alt}
               fill
               sizes="(min-width: 1024px) 35vw, (min-width: 768px) 348px, 220px"
-              className="object-cover"
+              className="object-cover transition-transform duration-500 hover:scale-105"
             />
           </div>
           <div className="absolute bottom-0 right-0 h-30 w-45 overflow-hidden rounded-xl border-4 border-white shadow-lg md:h-62.5 md:w-87 md:border lg:aspect-348/250 lg:h-auto lg:w-[55%]">
@@ -57,7 +57,7 @@ export default function AboutHighlight() {
               alt={IMAGES.secondary.alt}
               fill
               sizes="(min-width: 1024px) 28vw, (min-width: 768px) 348px, 180px"
-              className="object-cover"
+              className="object-cover transition-transform duration-500 hover:scale-105"
             />
           </div>
         </div>

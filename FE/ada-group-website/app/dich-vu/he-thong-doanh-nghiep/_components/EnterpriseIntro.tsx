@@ -1,4 +1,5 @@
-import Image from"next/image";
+import Image from "next/image";
+import GsapWaveText from "@/app/_components/GsapWaveText";
 
 export default function EnterpriseIntro() {
   return (
@@ -7,10 +8,13 @@ export default function EnterpriseIntro() {
         
         {/* Text Content */}
         <div className="mx-auto max-w-full text-center mb-(--heading-space) md:mb-(--section-padding)">
-          <h2 className="text-[28px] lg:text-[44px] font-semibold leading-[1.2] mb-(--inner-space) md:mb-(--inner-space) max-w-full">
+          <GsapWaveText
+            as="h2"
+            className="text-[28px] lg:text-[44px] font-semibold leading-[1.2] mb-(--inner-space) md:mb-(--inner-space) max-w-full"
+          >
             <span className="text-zinc-900 block mb-(--heading-space) md:mb-(--heading-space)">Kết nối từng hoạt động để tạo nên một hệ thống</span>
             <span className="text-[#1e3a8a] block">doanh nghiệp hoàn chỉnh</span>
-          </h2>
+          </GsapWaveText>
           <p className="text-zinc-600 leading-[1.8] text-[14px] lg:text-[16px] max-w-4xl mx-auto px-2 md:px-0 text-justify md:text-center">
             ADA Group xây dựng các giải pháp dựa trên sự kết nối giữa con người, quy trình và dữ liệu, giúp các bộ phận phối hợp hiệu quả, thông tin lưu chuyển xuyên suốt và hạn chế những hệ thống rời rạc. Mỗi giải pháp được phát triển như một phần của hệ thống tổng thể, sẵn sàng kết nối và mở rộng theo nhu cầu doanh nghiệp.
           </p>
@@ -18,7 +22,7 @@ export default function EnterpriseIntro() {
 
         {/* Large Image */}
         <div className="hidden md:flex w-full aspect-4/3 md:aspect-video lg:aspect-21/9 bg-slate-100 rounded-3xl lg:rounded-4xl border border-slate-200 items-center justify-center relative overflow-hidden shadow-sm">
-          <Image src="/images/dich-vu/he-thong/EnterpriseIntro.png" alt="ADA Group Workspace" fill sizes="(max-width: 768px) 100vw, 80vw" className="object-cover" />
+          <Image src="/images/dich-vu/he-thong/EnterpriseIntro.png" alt="ADA Group Workspace" fill sizes="(max-width: 768px) 100vw, 80vw" className="object-cover transition-transform duration-500 hover:scale-105" />
         </div>
 
       </div>

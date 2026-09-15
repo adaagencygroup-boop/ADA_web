@@ -78,7 +78,7 @@ export default function PartnersSection() {
                   alt={partner.name}
                   width={partner.logoWidth}
                   height={partner.logoHeight}
-                  className="h-auto max-h-11 w-autos scale-85"
+                  className="h-auto max-h-11 w-autos scale-85 transition-transform duration-300 hover:scale-105"
                 />
               </div>
               <p className="mt-1 text-center text-sm text-zinc-600">
@@ -92,7 +92,7 @@ export default function PartnersSection() {
           {PARTNERS.map((partner) => (
             <div
               key={partner.name}
-              className="flex flex-col items-center rounded-2xl border border-zinc-200 bg-white p-8"
+              className="flex flex-col items-center rounded-2xl border border-zinc-200 bg-white p-8 group"
             >
               <div className="flex h-11 items-center">
                 <Image
@@ -100,7 +100,7 @@ export default function PartnersSection() {
                   alt={partner.name}
                   width={partner.logoWidth}
                   height={partner.logoHeight}
-                  className="h-auto max-h-11 w-autos scale-85"
+                  className="h-auto max-h-11 w-autos scale-85 transition-transform duration-300 group-hover:scale-105"
                 />
               </div>
               <h3 className="mt-4 text-base font-semibold text-[#001E4B]">

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRightIcon } from "@/app/_components/icons";
+import GsapWaveText from "@/app/_components/GsapWaveText";
 
 export default function WebVision() {
   return (
@@ -10,11 +11,14 @@ export default function WebVision() {
           
           {/* Left: Content */}
           <div className="w-full lg:w-[55%] flex flex-col justify-center">
-            <h2 className="text-[28px] lg:text-[36px] font-semibold leading-[1.2] tracking-tight text-zinc-900 mb-(--inner-space) max-w-full">
+            <GsapWaveText
+              as="h2"
+              className="text-[28px] lg:text-[36px] font-semibold leading-[1.2] tracking-tight text-zinc-900 mb-(--inner-space) max-w-full"
+            >
               Website không chỉ để hiện diện.<br className="hidden lg:block" />
               <span className="lg:hidden"> </span>
               Hãy biến nó thành <span className="text-[#004bb4]">công cụ kinh doanh.</span>
-            </h2>
+            </GsapWaveText>
             
             {/* Blue Divider Line */}
             <div className="hidden lg:block w-16 h-1.5 bg-blue-600 rounded-full mb-(--inner-space)"></div>
@@ -41,7 +45,7 @@ export default function WebVision() {
             
             {/* Image Container */}
             <div className="relative w-full aspect-4/3 lg:aspect-16/11 bg-white rounded-3xl overflow-hidden shadow-[0_10px_50px_-10px_rgba(0,0,0,0.1)] border border-slate-100 flex items-center justify-center p-4">
-              <Image src="/images/dich-vu/web/WebVision.png" alt="ADA Group Mockup" fill sizes="(max-width: 768px) 100vw, 80vw" className="object-cover rounded-2xl" />
+              <Image src="/images/dich-vu/web/WebVision.png" alt="ADA Group Mockup" fill sizes="(max-width: 768px) 100vw, 80vw" className="object-cover rounded-2xl transition-transform duration-500 hover:scale-105" />
             </div>
           </div>
           

@@ -65,7 +65,7 @@ export default function MobileBackend() {
           
           {/* Right Column: Image (Top on Mobile) */}
           <div className="relative w-full min-h-64 lg:min-h-0 lg:aspect-16/10 bg-[#0a1526] lg:rounded-[2.5rem] overflow-hidden lg:shadow-xl border-b border-slate-100 lg:border-slate-200 order-1 lg:order-2">
-            <Image src="/images/dich-vu/mobile/AIUseCases5.png" alt="Backend Infrastructure" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
+            <Image src="/images/dich-vu/mobile/AIUseCases5.png" alt="Backend Infrastructure" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover transition-transform duration-500 hover:scale-105" />
           </div>
 
           {/* Left Column: Text (Bottom on Mobile) */}

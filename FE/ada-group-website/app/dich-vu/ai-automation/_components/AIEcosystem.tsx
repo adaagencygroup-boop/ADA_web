@@ -45,7 +45,7 @@ export default function AIEcosystem() {
                 src="/images/dich-vu/ai/AIEcosystem.png" 
                 alt="System Ecosystem Diagram" 
                 fill sizes="(max-width: 768px) 100vw, 50vw" 
-                className="object-cover opacity-90" 
+                className="object-cover opacity-90 transition-transform duration-500 hover:scale-105" 
               />
             </div>
           </div>

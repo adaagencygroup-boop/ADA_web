@@ -11,6 +11,7 @@ import FeaturedPosts from "@/app/tin-tuc/_components/FeaturedPosts";
 import AISolutionBanner from "@/app/tin-tuc/[slug]/_components/AISolutionBanner";
 import ArticleDetail from "@/app/tin-tuc/[slug]/_components/ArticleDetail";
 import RelatedArticles from "@/app/tin-tuc/[slug]/_components/RelatedArticles";
+import GsapScrollReveal from "@/app/_components/GsapScrollReveal";
 
 export const revalidate = 0;
 
@@ -63,7 +64,9 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         </div>
       </section>
 
-      <CallToAction />
+      <GsapScrollReveal>
+        <CallToAction />
+      </GsapScrollReveal>
     </>
   );
 }

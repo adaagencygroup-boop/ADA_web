@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRightIcon } from "@/app/_components/icons";
 import GsapScrollReveal from "@/app/_components/GsapScrollReveal";
+import GsapWaveText from "@/app/_components/GsapWaveText";
 
 export default function WebSolutions() {
   const solutions = [
@@ -116,10 +117,13 @@ export default function WebSolutions() {
               </svg>
               <span className="text-[12px] font-semibold uppercase tracking-widest">GIẢI PHÁP WEB HOÀN CHỈNH</span>
             </div>
-            <h2 className="text-[28px] lg:text-[44px] font-semibold text-zinc-900 leading-[1.2] mb-(--inner-space) max-w-full">
+            <GsapWaveText
+              as="h2"
+              className="text-[28px] lg:text-[44px] font-semibold text-zinc-900 leading-[1.2] mb-(--inner-space) max-w-full"
+            >
               Giải pháp web cho từng <br className="hidden md:block" />
               giai đoạn <span className="text-blue-600">phát triển doanh nghiệp</span>
-            </h2>
+            </GsapWaveText>
             <div className="w-16 h-1 bg-blue-600 mx-auto rounded-full mb-(--inner-space)"></div>
             <p className="text-[14px] lg:text-[16px] text-zinc-500 leading-relaxed max-w-2xl mx-auto mt-(--inner-space)">
               Từ website giới thiệu thương hiệu đến các nền tảng phức tạp, chúng tôi cung cấp giải pháp web toàn diện, linh hoạt và sẵn sàng đồng hành cùng doanh nghiệp.
@@ -165,7 +169,7 @@ export default function WebSolutions() {
                       </Link>
                     </div>
                     <div className="w-full lg:flex-1 bg-slate-100 lg:bg-[#111827] min-h-64 lg:min-h-75 relative flex items-center justify-center lg:p-8">
-                      <Image src={item.imagePlaceholder} alt={item.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover " />
+                      <Image src={item.imagePlaceholder} alt={item.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover transition-transform duration-500 hover:scale-105" />
                     </div>
                   </div>
                 </GsapScrollReveal>
@@ -204,7 +208,7 @@ export default function WebSolutions() {
                       </Link>
                     </div>
                     <div className="w-full lg:flex-1 bg-slate-200 min-h-75 relative flex items-center justify-center">
-                      <Image src={item.imagePlaceholder} alt={item.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
+                      <Image src={item.imagePlaceholder} alt={item.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover transition-transform duration-500 hover:scale-105" />
                     </div>
                   </div>
                 </GsapScrollReveal>
@@ -242,7 +246,7 @@ export default function WebSolutions() {
                     </Link>
                   </div>
                   <div className="w-full xl:w-[45%] bg-slate-100 min-h-64 xl:min-h-full relative flex items-center justify-center">
-                    <Image src={item.imagePlaceholder} alt={item.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover" />
+                    <Image src={item.imagePlaceholder} alt={item.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover transition-transform duration-500 hover:scale-105" />
                   </div>
                 </div>
               </GsapScrollReveal>

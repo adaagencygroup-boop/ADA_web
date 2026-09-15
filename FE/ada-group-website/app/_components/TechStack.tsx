@@ -66,7 +66,7 @@ export default function TechStack() {
                     width={200}
                     height={100}
                     draggable={false}
-                    className="w-26 select-none object-contain"
+                    className="w-26 select-none object-contain transition-transform duration-300 hover:scale-105"
                   />
                   <span className="">{tool.name}</span>
                 </div>

@@ -1,3 +1,5 @@
+import GsapWaveText from "@/app/_components/GsapWaveText";
+
 export default function MobileCoreValues() {
   const values = [
     {
@@ -42,9 +44,11 @@ export default function MobileCoreValues() {
     <section className="bg-blue-50 section-y">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-4xl lg:max-w-full text-center mb-(--section-padding) md:mb-(--section-padding)">
-          <h2 className="text-[28px] lg:text-[44px] font-semibold leading-[1.01] lg:leading-[1.01] text-zinc-900 mb-(--inner-space) md:mb-(--inner-space)">
-            Một trải nghiệm luôn đồng hành cùng người dùng
-          </h2>
+          <GsapWaveText
+            text="Một trải nghiệm luôn đồng hành cùng người dùng"
+            as="h2"
+            className="text-[28px] lg:text-[44px] font-semibold leading-[1.2] lg:leading-[1.2] text-zinc-900 mb-(--inner-space) md:mb-(--inner-space)"
+          />
           {/* Subtitle Desktop */}
           <p className="hidden md:block text-[16px] text-zinc-500 leading-relaxed max-w-3xl mx-auto">
             ADA Group đồng hành từ việc xác định nhu cầu, thiết kế trải nghiệm, phát triển ứng dụng đến kết nối backend, triển khai và tiếp tục cải tiến sau khi sản phẩm đi vào sử dụng.
