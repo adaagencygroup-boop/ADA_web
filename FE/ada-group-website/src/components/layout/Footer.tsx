@@ -22,7 +22,7 @@ const SUPPORT_LINKS = [
 
 function MapPinIcon() {
   return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 shrink-0" aria-hidden="true">
       <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
       <circle cx="12" cy="10" r="3" />
     </svg>
@@ -31,7 +31,7 @@ function MapPinIcon() {
 
 function PhoneIcon() {
   return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 shrink-0" aria-hidden="true">
       <path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465a2 2 0 0 1 2.53-.607l4.322 2.161a2 2 0 0 1 1.088 2.129l-.376 2.253a2 2 0 0 1-1.977 1.677A18 18 0 0 1 2.5 5.36a2 2 0 0 1 1.677-1.977l2.253-.376a2 2 0 0 1 2.129 1.088l2.161 4.322a2 2 0 0 1-.607 2.53l-.465.355a1 1 0 0 0-.303 1.213 12.035 12.035 0 0 0 4.487 4.053Z" />
     </svg>
   );
@@ -39,7 +39,7 @@ function PhoneIcon() {
 
 function MailIcon() {
   return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 shrink-0" aria-hidden="true">
       <rect width="20" height="16" x="2" y="4" rx="2" />
       <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
     </svg>
@@ -48,7 +48,7 @@ function MailIcon() {
 
 function GlobeIcon() {
   return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 shrink-0" aria-hidden="true">
       <circle cx="12" cy="12" r="10" />
       <path d="M2 12h20" />
       <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10Z" />
@@ -58,7 +58,7 @@ function GlobeIcon() {
 
 function ClockIcon() {
   return (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 shrink-0" aria-hidden="true">
       <circle cx="12" cy="12" r="10" />
       <path d="M12 6v6l4 2" />
     </svg>
@@ -86,33 +86,27 @@ const CONTACT_ROWS = [
     icon: MapPinIcon,
     content: (
       <span>
-        Tầng 7 toà An Phú Building,
-        <br />
-        LK19A-19B, khu tái định cư Dương Nội, đường Lê Trọng Tấn, Phường Dương Nội,
-        <br />
-        TP Hà Nội, Việt Nam
+        Tầng 7 toà An Phú Building, LK19A-19B, khu tái định cư Dương Nội, đường Lê Trọng Tấn, Phường Dương Nội, TP Hà Nội, Việt Nam
       </span>
     ),
   },
   {
     icon: PhoneIcon,
-    content: <a href="tel:+84924574444" className="hover:text-blue-600 transition-colors">(+84) 924 574 444</a>,
+    content: <a href="tel:+84924574444" className="hover:text-blue-600 transition-colors font-medium">(+84) 924 574 444</a>,
   },
   {
     icon: MailIcon,
-    content: <a href="mailto:ada.agency.group@gmail.com" className="hover:text-blue-600 transition-colors">ada.agency.group@gmail.com</a>,
+    content: <a href="mailto:ada.agency.group@gmail.com" className="hover:text-blue-600 transition-colors font-medium">ada.agency.group@gmail.com</a>,
   },
   {
     icon: GlobeIcon,
-    content: <a href="https://www.adagroup.vn" target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 transition-colors">www.adagroup.vn</a>,
+    content: <a href="https://www.adagroup.vn" target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 transition-colors font-medium">www.adagroup.vn</a>,
   },
   {
     icon: ClockIcon,
     content: (
       <span>
-        Thứ 2 – Thứ 6: 8:30 – 17:30
-        <br />
-        <span className="text-zinc-400">(Nghỉ thứ 7, Chủ nhật và ngày lễ)</span>
+        Thứ 2 – Thứ 6: 8:30 – 17:30 <span className="text-zinc-400 font-normal">(Nghỉ T7, CN & Ngày lễ)</span>
       </span>
     ),
   },
@@ -127,13 +121,13 @@ function FooterLinkList({
 }) {
   return (
     <div>
-      <h3 className="text-sm font-semibold text-blue-700">{title}</h3>
-      <ul className="mt-4 space-y-3">
+      <h3 className="text-sm font-semibold uppercase tracking-wider text-zinc-900">{title}</h3>
+      <ul className="mt-3 space-y-2.5">
         {links.map((link) => (
           <li key={link.href}>
             <Link
               href={link.href}
-              className="text-sm text-zinc-600 transition-colors hover:text-zinc-900"
+              className="group inline-flex items-center text-sm text-zinc-600 transition-all duration-200 hover:text-blue-600 hover:translate-x-0.5"
             >
               {link.label}
             </Link>
@@ -146,22 +140,35 @@ function FooterLinkList({
 
 export default function Footer() {
   return (
-    <footer className="border-t border-zinc-200 bg-white section-y">
+    <footer className="border-t border-zinc-200 bg-slate-50/50 section-y pb-5! lg:pb-6!">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-(--section-padding) lg:grid-cols-[minmax(0,1.4fr)_repeat(3,minmax(0,1fr))]">
-          <div>
-            <Link href="/" className="flex items-center gap-2">
-              <Image src="/images/logo/logo.png" alt="ADA Group Logo" width={40} height={40} className="h-8 sm:h-10 w-auto object-contain" />
-              <span className="text-lg font-bold text-zinc-900">ADA Group</span>
-            </Link>
+        <div className="grid grid-cols-1 gap-(--section-padding) lg:grid-cols-12">
+          {/* Brand & Contact Info */}
+          <div className="lg:col-span-6 space-y-(--inner-space)">
+            <div>
+              <Link href="/" className="inline-flex items-center gap-2.5 group">
+                <Image
+                  src="/images/logo/logo.png"
+                  alt="ADA Group Logo"
+                  width={40}
+                  height={40}
+                  className="h-8 sm:h-10 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+                />
+                <span className="text-lg sm:text-xl font-bold tracking-tight text-zinc-900">ADA Group</span>
+              </Link>
+              <p className="mt-2.5 text-sm leading-relaxed text-zinc-600 max-w-xl text-justify">
+                ADA Group là đối tác công nghệ hàng đầu chuyên tư vấn, thiết kế và phát triển giải pháp phần mềm toàn diện, hệ thống quản trị doanh nghiệp, ứng dụng di động và AI Automation. Chúng tôi đồng hành cùng doanh nghiệp trong hành trình chuyển đổi số, tối ưu hóa quy trình vận hành và kiến tạo giá trị đột phá bền vững.
+              </p>
+            </div>
 
-            <div className="mt-(--inner-space) divide-y divide-zinc-200 rounded-xl border border-zinc-200 w-full overflow-hidden">
+            {/* Contact Rows */}
+            <div className="space-y-2.5 pt-1 max-w-xl">
               {CONTACT_ROWS.map((row, index) => (
-                <div key={index} className="flex items-start gap-3 p-3 w-full">
-                  <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-50 text-blue-700">
+                <div key={index} className="flex items-start gap-3">
+                  <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-blue-100/70 text-blue-700">
                     <row.icon />
                   </span>
-                  <span className="text-[13.5px] leading-relaxed text-zinc-600 mt-1 wrap-break-word flex-1">
+                  <span className="text-sm leading-relaxed text-zinc-600 text-justify flex-1">
                     {row.content}
                   </span>
                 </div>
@@ -169,7 +176,8 @@ export default function Footer() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-(--inner-space) sm:grid-cols-3 lg:col-span-3">
+          {/* Quick Links */}
+          <div className="lg:col-span-6 grid grid-cols-2 sm:grid-cols-3 gap-(--inner-space) sm:gap-6">
             <FooterLinkList
               title="Dịch vụ"
               links={SERVICE_LINKS}
@@ -187,18 +195,19 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-(--section-padding) flex flex-col items-center justify-between gap-(--inner-space) border-t border-zinc-200 pt-(--inner-space) sm:flex-row">
-          <p className="text-sm text-zinc-500 text-center sm:text-left">
-            © {new Date().getFullYear()} ADA Group. Redesign Vietnam Initiative. All
-            rights reserved.
+        {/* Bottom Bar */}
+        <div className="mt-8 lg:mt-10 pt-4 lg:pt-5 flex flex-col items-center justify-between gap-4 border-t border-zinc-200/80 sm:flex-row">
+          <p className="text-xs sm:text-sm text-zinc-500 text-center sm:text-left">
+            © {new Date().getFullYear()} ADA Group. All rights reserved.
           </p>
+
           <div className="flex items-center gap-3">
             <a
               href="https://www.facebook.com"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Facebook"
-              className="flex h-9 w-9 items-center justify-center rounded-full bg-zinc-900 text-white transition-colors hover:bg-zinc-700"
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-zinc-200/70 text-zinc-700 transition-all duration-300 hover:bg-blue-600 hover:text-white hover:scale-105 active:scale-95"
             >
               <FacebookIcon />
             </a>
@@ -207,7 +216,7 @@ export default function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn"
-              className="flex h-9 w-9 items-center justify-center rounded-full bg-zinc-900 text-white transition-colors hover:bg-zinc-700"
+              className="flex h-9 w-9 items-center justify-center rounded-full bg-zinc-200/70 text-zinc-700 transition-all duration-300 hover:bg-blue-600 hover:text-white hover:scale-105 active:scale-95"
             >
               <LinkedInIcon />
             </a>
