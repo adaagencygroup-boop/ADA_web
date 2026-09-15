@@ -41,12 +41,12 @@ export default function EnterpriseCoreValues() {
   return (
     <section className="bg-blue-50 section-y">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-4xl lg:max-w-full text-center mb-(--section-padding) md:mb-(--section-padding)">
-          <h2 className="text-[28px] lg:text-[44px] font-semibold leading-[1.2] lg:leading-[1.1] text-zinc-900 mb-(--inner-space) md:mb-(--inner-space)">
+        <div className="mx-auto max-w-4xl lg:max-w-full text-left md:text-center mb-(--section-padding) md:mb-(--section-padding)">
+          <h2 className="text-left md:text-center text-[28px] lg:text-[44px] font-semibold leading-[1.2] lg:leading-[1.1] text-zinc-900 mb-(--inner-space) md:mb-(--inner-space)">
             Công nghệ bắt đầu từ cách doanh nghiệp vận hành
           </h2>
           {/* Subtitle Desktop */}
-          <div className="hidden md:block text-[16px] text-zinc-600 leading-relaxed max-w-5xl lg:max-w-6xl mx-auto text-center space-y-2">
+          <div className="hidden md:block text-[16px] text-zinc-600 leading-relaxed max-w-5xl lg:max-w-6xl mx-auto space-y-2 text-center">
             <p>
               Không có một hệ thống duy nhất phù hợp với mọi doanh nghiệp. Quy mô, cách tổ chức, quy trình và nhu cầu quản lý của mỗi đơn vị đều khác nhau.
             </p>
@@ -55,7 +55,7 @@ export default function EnterpriseCoreValues() {
             </p>
           </div>
           {/* Subtitle Mobile */}
-          <p className="md:hidden text-[14px] text-zinc-600 leading-relaxed px-2">
+          <p className="md:hidden text-[14px] text-zinc-600 leading-relaxed text-justify [word-break:break-word]">
             Không có một hệ thống duy nhất phù hợp với mọi doanh nghiệp. Vì vậy, ADA Group bắt đầu từ việc tìm hiểu cách doanh nghiệp vận hành để tạo ra những thay đổi rõ ràng bằng công nghệ.
           </p>
         </div>

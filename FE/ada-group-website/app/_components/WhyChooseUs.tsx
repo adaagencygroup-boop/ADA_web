@@ -40,12 +40,14 @@ export default function WhyChooseUs() {
   return (
     <section className="section-y">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
-        <h2 className="text-[28px] leading-[1.2] font-semibold tracking-tight text-zinc-900 lg:text-[44px] lg:leading-[1.1]">
-          {CONTENT.title}
-        </h2>
-        <p className="mt-(--heading-space) text-[14px] lg:text-[16px] leading-relaxed text-zinc-600">
-          {CONTENT.description}
-        </p>
+        <div className="text-left md:text-center max-w-4xl mx-auto">
+          <h2 className="text-[28px] leading-[1.2] font-semibold tracking-tight text-zinc-900 lg:text-[44px] lg:leading-[1.1] text-left md:text-center">
+            {CONTENT.title}
+          </h2>
+          <p className="mt-(--heading-space) text-[14px] lg:text-[16px] leading-relaxed text-zinc-600 text-left text-justify md:text-center [word-break:break-word]">
+            {CONTENT.description}
+          </p>
+        </div>
 
         <div className="mt-(--inner-space) grid grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-x-6 md:gap-x-12 sm:gap-y-12">
           {REASONS.map((reason) => (
@@ -66,7 +68,7 @@ export default function WhyChooseUs() {
                 <h3 className="text-[16px] lg:text-[18px] font-semibold text-[#001E4B] [grid-area:title]">
                   {reason.title}
                 </h3>
-                <p className="text-[14px] lg:text-[16px] leading-relaxed text-zinc-600 [grid-area:desc]">
+                <p className="text-[14px] lg:text-[16px] leading-relaxed text-zinc-600 [grid-area:desc] text-justify [word-break:break-word]">
                   {reason.description}
                 </p>
               </div>

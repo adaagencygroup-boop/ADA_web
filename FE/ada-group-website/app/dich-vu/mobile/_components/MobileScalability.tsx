@@ -43,12 +43,12 @@ export default function MobileScalability() {
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         
         {/* Top Header */}
-        <div className="text-center max-w-3xl mx-auto mb-(--section-padding)">
-          <h2 className="text-[28px] lg:text-[44px] font-semibold leading-[1.2] tracking-tight text-[#0a1a2f] mb-(--inner-space) max-w-full">
+        <div className="text-left md:text-center max-w-3xl mx-auto mb-(--section-padding)">
+          <h2 className="text-left md:text-center text-[28px] lg:text-[44px] font-semibold leading-[1.2] tracking-tight text-[#0a1a2f] mb-(--inner-space) max-w-full">
             Sẵn sàng phát triển cùng <br className="hidden md:block" />
             <span className="text-[#1c3a6e]">nhu cầu doanh nghiệp</span>
           </h2>
-          <p className="text-[14px] lg:text-[16px] leading-relaxed text-zinc-600 text-justify md:text-center">
+          <p className="text-[14px] lg:text-[16px] leading-relaxed text-zinc-600 text-justify md:text-center [word-break:break-word]">
             Mỗi ứng dụng có yêu cầu và định hướng phát triển khác nhau. Nền tảng của chúng tôi được thiết kế với kiến trúc linh hoạt, sẵn sàng mở rộng và tích hợp các công nghệ mới nhất để đáp ứng mục tiêu kinh doanh của bạn.
           </p>
         </div>

@@ -10,7 +10,7 @@ export default function WebVision() {
           
           {/* Left: Content */}
           <div className="w-full lg:w-[55%] flex flex-col justify-center">
-            <h2 className="text-[28px] lg:text-[36px] font-semibold leading-[1.2] tracking-tight text-zinc-900 mb-(--inner-space) max-w-full">
+            <h2 className="text-left text-[28px] lg:text-[36px] font-semibold leading-[1.2] tracking-tight text-zinc-900 mb-(--inner-space) max-w-full">
               Website không chỉ để hiện diện.<br className="hidden lg:block" />
               <span className="lg:hidden"> </span>
               Hãy biến nó thành <span className="text-[#004bb4]">công cụ kinh doanh.</span>
@@ -19,7 +19,7 @@ export default function WebVision() {
             {/* Blue Divider Line */}
             <div className="hidden lg:block w-16 h-1.5 bg-blue-600 rounded-full mb-(--inner-space)"></div>
             
-            <p className="text-[14px] lg:text-[16px] leading-relaxed text-zinc-600 mb-(--inner-space) pr-4 lg:pr-0">
+            <p className="text-[14px] lg:text-[16px] leading-relaxed text-zinc-600 mb-(--inner-space) text-justify [word-break:break-word]">
               Từ website doanh nghiệp đến ứng dụng web và hệ thống quản trị, chúng tôi xây dựng giải pháp phù hợp với cách doanh nghiệp vận hành.
             </p>
             
