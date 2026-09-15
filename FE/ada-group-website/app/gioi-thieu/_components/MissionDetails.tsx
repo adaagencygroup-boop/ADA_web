@@ -5,7 +5,7 @@ const BLOCKS = [
     title: "Cách chúng tôi tạo ra mỗi sản phẩm?",
     paragraph:
       "Mỗi sản phẩm tại ADA Group bắt đầu từ việc tìm hiểu bài toán và nhu cầu thực tế. Chúng tôi cùng khách hàng xác định mục tiêu, người dùng và những vấn đề cần giải quyết trước khi lựa chọn công nghệ. Từ đó, đội ngũ thiết kế và phát triển giải pháp phù hợp với từng dự án — từ website, ứng dụng web, ứng dụng di động đến các hệ thống quản lý và nền tảng chuyên biệt. Chúng tôi ưu tiên những sản phẩm dễ sử dụng, ổn định và có khả năng mở rộng theo sự phát triển của doanh nghiệp.",
-    imageSrc: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/gioi-thieu/MissionDetails1.png",
+    imageSrc: "/images/gioi-thieu/MissionDetails1.png",
     imageAlt: "Cách ADA Group tạo ra sản phẩm",
     imageOnLeft: false,
   },
@@ -24,7 +24,7 @@ const BLOCKS = [
         </strong>
       </>
     ),
-    imageSrc: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/gioi-thieu/MissionDetails2.png",
+    imageSrc: "/images/gioi-thieu/MissionDetails2.png",
     imageAlt: "Công nghệ phù hợp cho từng bài toán",
     imageOnLeft: true,
   },

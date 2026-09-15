@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import GsapScrollReveal from "@/app/_components/GsapScrollReveal";
 import Hero from "@/app/dich-vu/_components/Hero";
 import MobileIntro from "./_components/MobileIntro";
 import MobileCustomerApps from "./_components/MobileCustomerApps";
@@ -24,18 +25,38 @@ export default function MobileServicePage() {
         badge="Mobile Application"
         title="Đưa sản phẩm và dịch vụ đến gần người dùng hơn"
         desc="ADA Group thiết kế và phát triển ứng dụng di động phục vụ khách hàng, nhân viên và hoạt động kinh doanh của doanh nghiệp. Từ ứng dụng dịch vụ, thương mại đến các ứng dụng quản lý nội bộ, chúng tôi xây dựng sản phẩm hướng tới trải nghiệm trực quan, hoạt động ổn định và khả năng phát triển lâu dài."
-        imagePlaceholder="https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/dich-vu/mobile/Hero2%20(1).png"
+        imagePlaceholder="/images/dich-vu/mobile/Hero2.png"
       />
-      <MobileCoreValues />
-      <MobileIntro />
-      <MobileCustomerApps />
-      <MobileBusinessApps />
-      <MobileEcommerceApps />
-      <MobileCrossPlatform />
-      <MobileBackend />
-      <MobileAdminCMS />
-      <MobileScalability />
-      <MobileCTASection />
+      <GsapScrollReveal>
+        <MobileCoreValues />
+      </GsapScrollReveal>
+      <GsapScrollReveal>
+        <MobileIntro />
+      </GsapScrollReveal>
+      <GsapScrollReveal>
+        <MobileCustomerApps />
+      </GsapScrollReveal>
+      <GsapScrollReveal>
+        <MobileBusinessApps />
+      </GsapScrollReveal>
+      <GsapScrollReveal>
+        <MobileEcommerceApps />
+      </GsapScrollReveal>
+      <GsapScrollReveal>
+        <MobileCrossPlatform />
+      </GsapScrollReveal>
+      <GsapScrollReveal>
+        <MobileBackend />
+      </GsapScrollReveal>
+      <GsapScrollReveal>
+        <MobileAdminCMS />
+      </GsapScrollReveal>
+      <GsapScrollReveal>
+        <MobileScalability />
+      </GsapScrollReveal>
+      <GsapScrollReveal>
+        <MobileCTASection />
+      </GsapScrollReveal>
     </>
   );
 }

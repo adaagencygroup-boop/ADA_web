@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import GsapScrollReveal from "@/app/_components/GsapScrollReveal";
 import { getCategories } from "@/src/lib/api/news";
 import Breadcrumb from "@/app/tin-tuc/_components/Breadcrumb";
 import CallToAction from "@/app/tin-tuc/_components/CallToAction";
@@ -28,7 +29,9 @@ export default async function TinTucPage({ searchParams }: TinTucPageProps) {
       <SearchBar category={category} search={search} categories={categories} activeCategory={category} />
       <Breadcrumb />
       <NewsListing category={category} page={page} search={search} />
-      <CallToAction />
+      <GsapScrollReveal>
+        <CallToAction />
+      </GsapScrollReveal>
     </>
   );
 }

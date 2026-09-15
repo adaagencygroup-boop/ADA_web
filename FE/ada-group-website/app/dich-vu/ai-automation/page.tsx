@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import GsapScrollReveal from "@/app/_components/GsapScrollReveal";
 import Hero from "@/app/dich-vu/_components/Hero";
 import AIProblemSolving from "./_components/AIProblemSolving";
 import AIEcosystem from "./_components/AIEcosystem";
@@ -18,12 +19,18 @@ export default function AIAutomationServicePage() {
         badge="AI & Automation"
         title="Ứng dụng AI và tự động hóa vào những bài toán thực tế"
         desc="ADA Group hỗ trợ doanh nghiệp ứng dụng trí tuệ nhân tạo và tự động hóa để khai thác thông tin, cải thiện quy trình và nâng cao hiệu quả hoạt động. Mỗi dự án bắt đầu từ bài toán thực tế, dữ liệu hiện có và giá trị doanh nghiệp muốn đạt được, sau đó mới lựa chọn công nghệ phù hợp."
-        imagePlaceholder="https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/dich-vu/ai/Hero4.png"
+        imagePlaceholder="/images/dich-vu/ai/Hero4.png"
       />
-      <AIProblemSolving />
+      <GsapScrollReveal>
+        <AIProblemSolving />
+      </GsapScrollReveal>
       <AIUseCases />
-      <AIEcosystem />
-      <AICTASection />
+      <GsapScrollReveal>
+        <AIEcosystem />
+      </GsapScrollReveal>
+      <GsapScrollReveal>
+        <AICTASection />
+      </GsapScrollReveal>
     </>
   );
 }

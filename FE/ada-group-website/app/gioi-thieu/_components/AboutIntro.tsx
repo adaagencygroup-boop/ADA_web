@@ -1,4 +1,5 @@
 import Image from "next/image";
+import GsapHeroReveal from "@/app/_components/GsapHeroReveal";
 
 const CONTENT = {
   title: "Về ADA Group",
@@ -9,44 +10,47 @@ const CONTENT = {
 };
 
 const IMAGE = {
-  src: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/gioi-thieu/AboutIntro.png",
+  src: "/images/gioi-thieu/AboutIntro.png",
   alt: "Giới thiệu về công ty ADA Group",
 };
 
 export default function AboutIntro() {
   return (
-    <section className="section-y">
-      <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 items-start gap-x-16 lg:grid-cols-2">
-          <div>
-            <h1 className="text-[28px] leading-[1.2] font-semibold tracking-tight text-zinc-900 lg:text-[44px] lg:leading-[1.1]">
-              {CONTENT.title}
-            </h1>
-            <span className="mt-4 block h-1 w-11 rounded-full bg-blue-800" />
+    <GsapHeroReveal>
+      <section className="section-y">
+        <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 items-start gap-x-16 lg:grid-cols-2">
+            <div className="hero-text-left">
+              <h1 className="text-[28px] leading-[1.2] font-semibold tracking-tight text-zinc-900 lg:text-[44px] lg:leading-[1.1]">
+                {CONTENT.title}
+              </h1>
+              <span className="mt-4 block h-1 w-11 rounded-full bg-blue-800" />
 
-            <div className="mt-(--inner-space)">
-              {CONTENT.paragraphs.map((paragraph) => (
-                <p
-                  key={paragraph}
-                  className="text-[14px] lg:text-[16px] text-justify leading-relaxed text-zinc-600 [&+&]:mt-6"
-                >
-                  {paragraph}
-                </p>
-              ))}
+              <div className="mt-(--inner-space)">
+                {CONTENT.paragraphs.map((paragraph) => (
+                  <p
+                    key={paragraph}
+                    className="text-[14px] lg:text-[16px] text-justify leading-relaxed text-zinc-600 [&+&]:mt-6"
+                  >
+                    {paragraph}
+                  </p>
+                ))}
+              </div>
+            </div>
+
+            <div className="hero-image-right relative mt-(--inner-space) hidden aspect-512/279 w-full overflow-hidden rounded-2xl lg:mt-0 lg:block">
+              <Image
+                src={IMAGE.src}
+                alt={IMAGE.alt}
+                fill
+                priority
+                sizes="(min-width: 1024px) 50vw, 100vw"
+                className="object-cover"
+              />
             </div>
           </div>
-
-          <div className="relative mt-(--inner-space) hidden aspect-512/279 w-full overflow-hidden rounded-2xl lg:mt-0 lg:block">
-            <Image
-              src={IMAGE.src}
-              alt={IMAGE.alt}
-              fill
-              sizes="(min-width: 1024px) 50vw, 100vw"
-              className="object-cover"
-            />
-          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </GsapHeroReveal>
   );
 }

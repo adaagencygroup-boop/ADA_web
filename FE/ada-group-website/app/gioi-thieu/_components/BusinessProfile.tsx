@@ -7,7 +7,7 @@ const CONTENT = {
 };
 
 const IMAGE = {
-  src: "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/gioi-thieu/BusinessProfile.png",
+  src: "/images/gioi-thieu/BusinessProfile.png",
   alt: "Thông tin doanh nghiệp ADA Group",
 };
 

@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import GsapScrollReveal from "@/app/_components/GsapScrollReveal";
 import ContactSection from "./_components/ContactSection";
+
 export const metadata: Metadata = {
   title: "Liên hệ | ADA Group",
   description:
@@ -9,7 +11,9 @@ export const metadata: Metadata = {
 export default function LienHePage() {
   return (
     <>
-      <ContactSection />
+      <GsapScrollReveal>
+        <ContactSection />
+      </GsapScrollReveal>
     </>
   );
 }

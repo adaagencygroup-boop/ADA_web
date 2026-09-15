@@ -1,4 +1,5 @@
 import { CheckCircleIcon } from "@/app/_components/icons";
+import GsapHeroReveal from "@/app/_components/GsapHeroReveal";
 
 type IconProps = { className?: string };
 
@@ -36,55 +37,57 @@ const CONTENT = {
 
 export default function AIEcosystem() {
   return (
-    <section className="section-y">
-      <div className="mx-auto flex max-w-360 flex-col items-start gap-8 px-4 sm:px-6 lg:grid lg:grid-cols-2 lg:items-center lg:gap-20 lg:px-8">
-        <div className="flex flex-col items-start gap-4 lg:gap-6">
-          <div className="hidden md:inline-flex w-fit items-center rounded-full bg-slate-300 px-3 py-1 lg:text-[12px] font-semibold uppercase tracking-wider text-blue-900">
-            {CONTENT.badge}
-          </div>
-          <div className="inline-flex md:hidden w-fit items-center rounded-full bg-slate-300 px-3 py-1 text-[12px] font-semibold text-zinc-900">
-            {CONTENT.badge}
-          </div>
+    <GsapHeroReveal>
+      <section className="section-y">
+        <div className="mx-auto flex max-w-360 flex-col items-start gap-8 px-4 sm:px-6 lg:grid lg:grid-cols-2 lg:items-center lg:gap-20 lg:px-8">
+          <div className="hero-text-left flex flex-col items-start gap-4 lg:gap-6">
+            <div className="hidden md:inline-flex w-fit items-center rounded-full bg-slate-300 px-3 py-1 lg:text-[12px] font-semibold uppercase tracking-wider text-blue-900">
+              {CONTENT.badge}
+            </div>
+            <div className="inline-flex md:hidden w-fit items-center rounded-full bg-slate-300 px-3 py-1 text-[12px] font-semibold text-zinc-900">
+              {CONTENT.badge}
+            </div>
 
-          <h2 className="text-[28px] leading-[1.21] font-semibold text-[#002A64] lg:text-[44px] lg:leading-tight lg:tracking-[-0.96px]">
-            {CONTENT.heading}
-          </h2>
+            <h2 className="text-[28px] leading-[1.21] font-semibold text-[#002A64] lg:text-[44px] lg:leading-tight lg:tracking-[-0.96px]">
+              {CONTENT.heading}
+            </h2>
 
-          <div className="flex flex-col items-start gap-4 lg:gap-5.75 lg:pt-1.5">
-            <p className="text-[14px] leading-[1.57] text-[#475569] lg:text-[16px] lg:leading-[1.6] lg:text-[#434750]">
-              {CONTENT.paragraph}
-            </p>
-
-            <div className="flex flex-col items-start gap-3">
-              <p className="text-base font-semibold text-zinc-900 lg:text-lg lg:text-[#191C1E]">
-                {CONTENT.criteriaHeading}
+            <div className="flex flex-col items-start gap-4 lg:gap-5.75 lg:pt-1.5">
+              <p className="text-[14px] leading-[1.57] text-[#475569] lg:text-[16px] lg:leading-[1.6] lg:text-[#434750]">
+                {CONTENT.paragraph}
               </p>
-              <ul className="flex flex-col items-start gap-3">
-                {CONTENT.criteria.map((item) => (
-                  <li key={item} className="flex items-start gap-3">
-                    <CheckCircleIcon className="mt-1 h-5 w-5 shrink-0 text-[#002A64]" />
-                    <span className="text-[14px] leading-[1.57] text-[#475569] lg:text-[16px] lg:leading-[1.6] lg:text-[#434750]">
-                      {item}
-                    </span>
-                  </li>
-                ))}
-              </ul>
+
+              <div className="flex flex-col items-start gap-3">
+                <p className="text-base font-semibold text-zinc-900 lg:text-lg lg:text-[#191C1E]">
+                  {CONTENT.criteriaHeading}
+                </p>
+                <ul className="flex flex-col items-start gap-3">
+                  {CONTENT.criteria.map((item) => (
+                    <li key={item} className="flex items-start gap-3">
+                      <CheckCircleIcon className="mt-1 h-5 w-5 shrink-0 text-[#002A64]" />
+                      <span className="text-[14px] leading-[1.57] text-[#475569] lg:text-[16px] lg:leading-[1.6] lg:text-[#434750]">
+                        {item}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div className="hero-image-right relative flex aspect-610/500 w-full items-center justify-center overflow-hidden rounded-2xl border border-[#C4C6D2]/10 bg-[#E6E8EA] p-6 lg:rounded-3xl">
+            <div className="flex w-full max-w-96 flex-col items-center gap-2 rounded-2xl border border-white/20 bg-white/80 px-8 py-8 text-center backdrop-blur-md">
+              <AiChipIcon className="h-10 w-10 text-[#1A4182]" />
+              <h3 className="mt-1 text-2xl font-semibold text-[#002A64]">
+                {CONTENT.card.title}
+              </h3>
+              <p className="text-base text-[#434750]">
+                {CONTENT.card.description}
+              </p>
             </div>
           </div>
         </div>
-
-        <div className="relative flex aspect-610/500 w-full items-center justify-center overflow-hidden rounded-2xl border border-[#C4C6D2]/10 bg-[#E6E8EA] p-6 lg:rounded-3xl">
-          <div className="flex w-full max-w-96 flex-col items-center gap-2 rounded-2xl border border-white/20 bg-white/80 px-8 py-8 text-center backdrop-blur-md">
-            <AiChipIcon className="h-10 w-10 text-[#1A4182]" />
-            <h3 className="mt-1 text-2xl font-semibold text-[#002A64]">
-              {CONTENT.card.title}
-            </h3>
-            <p className="text-base text-[#434750]">
-              {CONTENT.card.description}
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
+      </section>
+    </GsapHeroReveal>
   );
 }

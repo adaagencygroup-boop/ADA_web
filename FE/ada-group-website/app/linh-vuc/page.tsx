@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import GsapScrollReveal from "@/app/_components/GsapScrollReveal";
 import AIEcosystem from "@/app/linh-vuc/_components/AIEcosystem";
 import CTASection from "@/app/linh-vuc/_components/CTASection";
 import SectorsGrid from "@/app/linh-vuc/_components/SectorsGrid";
@@ -13,8 +14,12 @@ export default function LinhVucPage() {
   return (
     <>
       <AIEcosystem />
-      <SectorsGrid />
-      <CTASection />
+      <GsapScrollReveal>
+        <SectorsGrid />
+      </GsapScrollReveal>
+      <GsapScrollReveal>
+        <CTASection />
+      </GsapScrollReveal>
     </>
   );
 }

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import GsapScrollReveal from "@/app/_components/GsapScrollReveal";
 import { getDepartments, getRecruitments } from "@/src/lib/api/recruitments";
 import RecruitmentHero from "./_components/RecruitmentHero";
 import JobBoard from "./_components/JobBoard";
@@ -28,8 +29,12 @@ export default async function TuyendungPage() {
     <>
       <RecruitmentHero />
       <JobBoard initialJobs={jobsPage.items} departments={departments} />
-      <WhyChooseUs />
-      <RecruitmentCTA />
+      <GsapScrollReveal>
+        <WhyChooseUs />
+      </GsapScrollReveal>
+      <GsapScrollReveal>
+        <RecruitmentCTA />
+      </GsapScrollReveal>
     </>
   );
 }

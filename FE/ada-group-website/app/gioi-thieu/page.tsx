@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import GsapScrollReveal from "@/app/_components/GsapScrollReveal";
 import AboutIntro from "@/app/gioi-thieu/_components/AboutIntro";
 import BusinessProfile from "@/app/gioi-thieu/_components/BusinessProfile";
 import ClosingStatement from "@/app/gioi-thieu/_components/ClosingStatement";
@@ -19,14 +20,30 @@ export default function AboutPage() {
   return (
     <>
       <AboutIntro />
-      <MissionBanner />
-      <CoreValues />
-      <DevelopmentStrategy />
-      <MissionDetails />
-      <ServiceHighlights />
-      <BusinessProfile />
-      <LeadershipTeam />
-      <ClosingStatement />
+      <GsapScrollReveal>
+        <MissionBanner />
+      </GsapScrollReveal>
+      <GsapScrollReveal>
+        <CoreValues />
+      </GsapScrollReveal>
+      <GsapScrollReveal>
+        <DevelopmentStrategy />
+      </GsapScrollReveal>
+      <GsapScrollReveal>
+        <MissionDetails />
+      </GsapScrollReveal>
+      <GsapScrollReveal>
+        <ServiceHighlights />
+      </GsapScrollReveal>
+      <GsapScrollReveal>
+        <BusinessProfile />
+      </GsapScrollReveal>
+      <GsapScrollReveal>
+        <LeadershipTeam />
+      </GsapScrollReveal>
+      <GsapScrollReveal>
+        <ClosingStatement />
+      </GsapScrollReveal>
     </>
   );
 }

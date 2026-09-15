@@ -119,7 +119,7 @@ export default function HeroCarousel() {
           {/* Background */}
           <div className="absolute inset-0 bg-linear-to-r from-[#001A40] to-[#003274] opacity-90" />
           <Image
-            src="https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/news-banner.jpg"
+            src="/images/tin-tuc/news-banner.jpg"
             alt=""
             fill
             sizes="100vw"

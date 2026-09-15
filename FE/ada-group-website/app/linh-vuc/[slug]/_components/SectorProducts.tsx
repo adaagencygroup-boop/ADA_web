@@ -150,7 +150,7 @@ export default function SectorProducts({ products = [] }: SectorProductsProps) {
                         
                         <div className="relative w-full aspect-4/3 sm:aspect-video rounded-lg overflow-hidden bg-slate-100 border border-slate-100">
                           <Image 
-                            src={product.imageSrc || "https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/y-te.jpg"} 
+                            src={product.imageSrc || "/images/linh-vuc/y-te/y-te1.jpg"} 
                             alt={product.title}
                             fill 
                             sizes="(max-width: 768px) 100vw, 40vw"

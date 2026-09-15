@@ -44,9 +44,11 @@ export default function RecruitmentHero() {
         {/* Mobile Background */}
         <div className="absolute inset-0 lg:hidden">
           <Image 
-            src="https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/tuyen-dung/RecruitmentHero1.png" 
+            src="/images/tuyen-dung/RecruitmentHero1.png" 
             alt="ADA Group Office" 
-            fill sizes="(max-width: 768px) 100vw, 90vw"
+            fill
+            priority
+            sizes="(max-width: 768px) 100vw, 90vw"
             className="object-cover" 
           />
           {/* Overlay to ensure text readability */}
@@ -58,9 +60,11 @@ export default function RecruitmentHero() {
           <div className="absolute inset-0 bg-[#003274]"></div>
           <div className="absolute top-0 right-0 bottom-0 w-1/2 bg-slate-100 [clip-path:polygon(10%_0,100%_0,100%_100%,0_100%)]">
             <Image 
-              src="https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/tuyen-dung/RecruitmentHero1.png" 
+              src="/images/tuyen-dung/RecruitmentHero1.png" 
               alt="ADA Group Office" 
-              fill sizes="(max-width: 768px) 100vw, 90vw"
+              fill
+              priority
+              sizes="(max-width: 768px) 100vw, 90vw"
               className="object-cover" 
             />
           </div>

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import GsapScrollReveal from "@/app/_components/GsapScrollReveal";
 import { getSectorBySlug, getSectors } from "@/app/linh-vuc/_lib/sectors";
 import SectorApproach from "@/app/linh-vuc/[slug]/_components/SectorApproach";
 import SectorHero from "@/app/linh-vuc/[slug]/_components/SectorHero";
@@ -38,12 +39,20 @@ export default async function SectorDetailPage({ params }: SectorPageProps) {
   return (
     <>
       <SectorHero sector={sector} />
-      <SectorWhyChoose sector={sector} />
-      <SectorApproach sector={sector} />
+      <GsapScrollReveal>
+        <SectorWhyChoose sector={sector} />
+      </GsapScrollReveal>
+      <GsapScrollReveal>
+        <SectorApproach sector={sector} />
+      </GsapScrollReveal>
       {sector.products && sector.products.length > 0 && (
-        <SectorProducts products={sector.products} />
+        <GsapScrollReveal>
+          <SectorProducts products={sector.products} />
+        </GsapScrollReveal>
       )}
-      <SectorCTA sectorName={sector.title} />
+      <GsapScrollReveal>
+        <SectorCTA sectorName={sector.title} />
+      </GsapScrollReveal>
     </>
   );
 }
