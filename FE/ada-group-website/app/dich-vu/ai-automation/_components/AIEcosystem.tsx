@@ -14,19 +14,19 @@ export default function AIEcosystem() {
   return (
     <section className="bg-white section-y">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
-        <div className="bg-[#0a2347] rounded-3xl lg:rounded-4xl px-8 py-12 lg:p-16 flex flex-col lg:flex-row items-center gap-(--section-padding) shadow-lg">
+        <div className="bg-[#0a2347] rounded-3xl lg:rounded-4xl p-6 sm:p-8 lg:p-16 flex flex-col lg:flex-row items-center gap-(--section-padding) shadow-lg">
           
           {/* Left Column: Content */}
-          <div className="flex flex-col flex-1">
+          <div className="flex flex-col flex-1 w-full">
             {contentData.map((item, index) => (
               <div key={index}>
                 <span className="text-[12px] font-semibold uppercase tracking-widest text-blue-300 mb-(--inner-space) block">
                   {item.tag}
                 </span>
-                <h2 className="text-[28px] lg:text-[36px] font-semibold leading-[1.2] tracking-tight text-white mb-(--inner-space) text-justify">
+                <h2 className="text-left text-[28px] lg:text-[36px] font-semibold leading-[1.2] tracking-tight text-white mb-(--inner-space)">
                   {item.title}
                 </h2>
-                <p className="text-[14px] lg:text-[16px] leading-relaxed text-blue-100/80 mb-(--inner-space) text-justify">
+                <p className="text-[14px] lg:text-[16px] leading-relaxed text-blue-100/80 mb-(--inner-space) text-justify [word-break:break-word]">
                   {item.description}
                 </p>
               </div>
