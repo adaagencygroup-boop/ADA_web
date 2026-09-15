@@ -100,7 +100,7 @@ const CONTACT_ROWS = [
   },
   {
     icon: MailIcon,
-    content: <a href="mailto:contact@adagroup.vn" className="hover:text-blue-600 transition-colors">contact@adagroup.vn</a>,
+    content: <a href="mailto:ada.agency.group@gmail.com" className="hover:text-blue-600 transition-colors">ada.agency.group@gmail.com</a>,
   },
   {
     icon: GlobeIcon,

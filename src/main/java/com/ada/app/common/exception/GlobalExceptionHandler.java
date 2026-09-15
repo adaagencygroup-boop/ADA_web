@@ -63,7 +63,7 @@ public class GlobalExceptionHandler {
     log.warn("Data Integrity Violation: {}", ex.getMessage());
     String message = "Dữ liệu đã tồn tại hoặc vi phạm ràng buộc hệ thống.";
     if (ex.getMessage() != null && (ex.getMessage().contains("uxCandidatesRecruitmentIdEmail") || ex.getMessage().contains("candidates"))) {
-      message = "Bạn đã ứng tuyển công việc này trước đó rồi. Vui lòng gửi lại CV qua email hr@adagroup.vn nếu cần cập nhật!";
+      message = "Bạn đã ứng tuyển công việc này trước đó rồi. Vui lòng gửi lại CV qua email ada.agency.group@gmail.com nếu cần cập nhật!";
     }
     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(APIResponse.error(message));
   }

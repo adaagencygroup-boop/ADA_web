@@ -210,7 +210,7 @@ export default function ApplyForm({ job, slug }: { job: Recruitment; slug: strin
       setTouched({});
       setFile(null);
     } catch (error) {
-      const rawMsg = error instanceof Error ? error.message : "";
+      const rawMsg = (error instanceof Error ? error.message : "").replace(/hr@adagroup\.vn/gi, "ada.agency.group@gmail.com");
       const isDuplicate =
         rawMsg.includes("uxCandidatesRecruitmentIdEmail") ||
         rawMsg.includes("duplicate key value") ||
@@ -223,7 +223,7 @@ export default function ApplyForm({ job, slug }: { job: Recruitment; slug: strin
           title: "Đã ứng tuyển công việc này",
           message:
             rawMsg ||
-            "Bạn đã ứng tuyển công việc này trước đó rồi. Vui lòng gửi lại CV qua email hr@adagroup.vn nếu cần cập nhật!",
+            "Bạn đã ứng tuyển công việc này trước đó rồi. Vui lòng gửi lại CV qua email ada.agency.group@gmail.com nếu cần cập nhật!",
         });
       } else {
         setAlertInfo({
@@ -552,9 +552,9 @@ export default function ApplyForm({ job, slug }: { job: Recruitment; slug: strin
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-4 h-4 text-blue-500"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-2.896-1.596-5.25-3.95-6.847-6.847l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" /></svg>
                   (+84) 924 574 444
                 </a>
-                <a href="mailto:hr@adagroup.vn" className="flex items-center gap-3 hover:text-blue-600 transition-colors">
+                <a href="mailto:ada.agency.group@gmail.com" className="flex items-center gap-3 hover:text-blue-600 transition-colors">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-4 h-4 text-blue-500"><path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" /></svg>
-                  hr@adagroup.vn
+                  ada.agency.group@gmail.com
                 </a>
                 <div className="flex items-center gap-3 text-zinc-600">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} className="w-4 h-4 text-zinc-400"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
