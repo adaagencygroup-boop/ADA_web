@@ -173,7 +173,8 @@ export default function CandidatesTable({
         <table className="w-full min-w-200 border-collapse">
           <thead>
             <tr className="border-b border-[#C4C6D2] text-left">
-              <th className="px-6 py-3 text-sm font-semibold text-[#1C1B1B]">Ứng viên</th>
+              <th className="w-14 px-6 py-3 text-center text-sm font-semibold text-[#1C1B1B]">STT</th>
+              <th className="px-3 py-3 text-sm font-semibold text-[#1C1B1B]">Ứng viên</th>
               <th className="px-3 py-3 text-sm font-semibold text-[#1C1B1B]">Vị trí ứng tuyển</th>
               <th className="px-3 py-3 text-sm font-semibold text-[#1C1B1B]">Trạng thái</th>
               <th className="px-3 py-3 text-sm font-semibold text-[#1C1B1B]">Ngày ứng tuyển</th>
@@ -183,25 +184,29 @@ export default function CandidatesTable({
           <tbody>
             {isLoading && (
               <tr>
-                <td colSpan={5} className="px-6 py-10 text-center text-sm text-[#6B7280]">
+                <td colSpan={6} className="px-6 py-10 text-center text-sm text-[#6B7280]">
                   Đang tải...
                 </td>
               </tr>
             )}
             {isError && (
               <tr>
-                <td colSpan={5} className="px-6 py-10 text-center text-sm text-red-600">
+                <td colSpan={6} className="px-6 py-10 text-center text-sm text-red-600">
                   {error?.message ?? "Đã có lỗi xảy ra khi tải danh sách ứng viên."}
                 </td>
               </tr>
             )}
             {!isLoading &&
               !isError &&
-              items.map((candidate) => {
+              items.map((candidate, index) => {
                 const statusStyle = STATUS_STYLES[candidate.status ?? "pending"];
+                const stt = (currentPage - 1) * PAGE_SIZE + index + 1;
                 return (
                   <tr key={candidate.id} className="border-b border-[#E5E2E1] last:border-b-0">
-                    <td className="px-6 py-4">
+                    <td className="px-6 py-4 text-center text-sm font-medium text-[#434750]">
+                      {stt}
+                    </td>
+                    <td className="px-3 py-4">
                       <div className="flex items-center gap-3">
                         <div className="flex size-11 shrink-0 items-center justify-center rounded-full bg-[#D8E2FF]">
                           <User className="size-5 text-[#001E4B]" />
@@ -250,7 +255,7 @@ export default function CandidatesTable({
               })}
             {!isLoading && !isError && items.length === 0 && (
               <tr>
-                <td colSpan={5} className="px-6 py-10 text-center text-sm text-[#6B7280]">
+                <td colSpan={6} className="px-6 py-10 text-center text-sm text-[#6B7280]">
                   Không có ứng viên nào.
                 </td>
               </tr>

@@ -151,7 +151,10 @@ export default function JobsListCard({
         <table className="w-full min-w-225 border-collapse">
           <thead>
             <tr className="border-b border-[#C4C6D2] bg-[#FCF9F8] text-left">
-              <th className="px-6 py-3 text-sm font-medium text-[#434750]">
+              <th className="w-14 px-6 py-3 text-center text-sm font-medium text-[#434750]">
+                STT
+              </th>
+              <th className="px-3 py-3 text-sm font-medium text-[#434750]">
                 Vị trí tuyển dụng
               </th>
               <th className="px-3 py-3 text-sm font-medium text-[#434750]">
@@ -177,83 +180,89 @@ export default function JobsListCard({
           <tbody>
             {isLoading && (
               <tr>
-                <td colSpan={7} className="px-6 py-10 text-center text-sm text-[#6B7280]">
+                <td colSpan={8} className="px-6 py-10 text-center text-sm text-[#6B7280]">
                   Đang tải...
                 </td>
               </tr>
             )}
             {isError && (
               <tr>
-                <td colSpan={7} className="px-6 py-10 text-center text-sm text-red-600">
+                <td colSpan={8} className="px-6 py-10 text-center text-sm text-red-600">
                   {error?.message ?? "Đã có lỗi xảy ra khi tải danh sách tin tuyển dụng."}
                 </td>
               </tr>
             )}
             {!isLoading && !isError &&
-              items.map((job) => (
-                <tr
-                  key={job.id}
-                  className="border-b border-[#C4C6D2]/50 last:border-b-0"
-                >
-                  <td className="px-6 py-4 text-sm font-medium text-[#316EE9]">
-                    <Link href={`/tuyen-dung/${job.id}`} className="hover:underline">
-                      {job.jobTitle}
-                    </Link>
-                  </td>
-                  <td className="px-3 py-4 text-sm text-[#434750]">
-                    {job.departmentName ?? "—"}
-                  </td>
-                  <td className="px-3 py-4 text-sm text-[#434750]">
-                    {job.location ?? "—"}
-                  </td>
-                  <td className="px-3 py-4 text-sm text-[#434750]">
-                    {EMPLOYMENT_TYPE_LABELS[job.employmentType]}
-                  </td>
-                  <td className="px-3 py-4 text-center text-sm font-medium text-[#1C1B1B]">
-                    <Link
-                      href={`/tuyen-dung/ung-vien?recruitmentId=${job.id}`}
-                      className="inline-flex items-center gap-1 font-semibold text-[#0054CD] hover:underline"
-                      title="Xem danh sách ứng viên vị trí này"
-                    >
-                      {job.applicantCount ?? 0}
-                      <Eye className="size-3.5" />
-                    </Link>
-                  </td>
-                  <td className="px-3 py-4 text-sm text-[#434750]">
-                    {formatDeadline(job.expiresAt)}
-                  </td>
-                  <td className="px-3 py-4">
-                    <div className="flex items-center justify-end gap-2">
-                      <Link
-                        href={`/tuyen-dung/${job.id}`}
-                        aria-label="Xem chi tiết"
-                        className="inline-flex size-8 items-center justify-center rounded text-[#434750] hover:bg-[#F3F4F6]"
-                      >
-                        <Eye className="size-4" />
+              items.map((job, index) => {
+                const stt = (currentPage - 1) * PAGE_SIZE + index + 1;
+                return (
+                  <tr
+                    key={job.id}
+                    className="border-b border-[#C4C6D2]/50 last:border-b-0"
+                  >
+                    <td className="px-6 py-4 text-center text-sm font-medium text-[#434750]">
+                      {stt}
+                    </td>
+                    <td className="px-3 py-4 text-sm font-medium text-[#316EE9]">
+                      <Link href={`/tuyen-dung/${job.id}`} className="hover:underline">
+                        {job.jobTitle}
                       </Link>
+                    </td>
+                    <td className="px-3 py-4 text-sm text-[#434750]">
+                      {job.departmentName ?? "—"}
+                    </td>
+                    <td className="px-3 py-4 text-sm text-[#434750]">
+                      {job.location ?? "—"}
+                    </td>
+                    <td className="px-3 py-4 text-sm text-[#434750]">
+                      {EMPLOYMENT_TYPE_LABELS[job.employmentType]}
+                    </td>
+                    <td className="px-3 py-4 text-center text-sm font-medium text-[#1C1B1B]">
                       <Link
-                        href={`/tuyen-dung/${job.id}/sua`}
-                        aria-label="Chỉnh sửa"
-                        className="inline-flex size-8 items-center justify-center rounded text-[#434750] hover:bg-[#F3F4F6]"
+                        href={`/tuyen-dung/ung-vien?recruitmentId=${job.id}`}
+                        className="inline-flex items-center gap-1 font-semibold text-[#0054CD] hover:underline"
+                        title="Xem danh sách ứng viên vị trí này"
                       >
-                        <Pencil className="size-4" />
+                        {job.applicantCount ?? 0}
+                        <Eye className="size-3.5" />
                       </Link>
-                      <button
-                        type="button"
-                        aria-label="Xóa"
-                        onClick={() => setDeleteTarget(job)}
-                        className="inline-flex size-8 items-center justify-center rounded text-[#434750] hover:bg-red-50 hover:text-red-600"
-                      >
-                        <Trash2 className="size-4" />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
+                    </td>
+                    <td className="px-3 py-4 text-sm text-[#434750]">
+                      {formatDeadline(job.expiresAt)}
+                    </td>
+                    <td className="px-3 py-4">
+                      <div className="flex items-center justify-end gap-2">
+                        <Link
+                          href={`/tuyen-dung/${job.id}`}
+                          aria-label="Xem chi tiết"
+                          className="inline-flex size-8 items-center justify-center rounded text-[#434750] hover:bg-[#F3F4F6]"
+                        >
+                          <Eye className="size-4" />
+                        </Link>
+                        <Link
+                          href={`/tuyen-dung/${job.id}/sua`}
+                          aria-label="Chỉnh sửa"
+                          className="inline-flex size-8 items-center justify-center rounded text-[#434750] hover:bg-[#F3F4F6]"
+                        >
+                          <Pencil className="size-4" />
+                        </Link>
+                        <button
+                          type="button"
+                          aria-label="Xóa"
+                          onClick={() => setDeleteTarget(job)}
+                          className="inline-flex size-8 items-center justify-center rounded text-[#434750] hover:bg-red-50 hover:text-red-600"
+                        >
+                          <Trash2 className="size-4" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
             {!isLoading && !isError && items.length === 0 && (
               <tr>
                 <td
-                  colSpan={7}
+                  colSpan={8}
                   className="px-6 py-10 text-center text-sm text-[#6B7280]"
                 >
                   Không có tin tuyển dụng nào.

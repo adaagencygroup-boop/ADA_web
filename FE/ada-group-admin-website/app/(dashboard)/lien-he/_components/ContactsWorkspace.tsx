@@ -197,6 +197,9 @@ export default function ContactsWorkspace() {
             <table className="w-full min-w-150 border-collapse">
               <thead>
                 <tr className="border-b border-[#E5E7EB] bg-[#F9FAFB] text-left">
+                  <th className="w-12 px-3 py-3 text-center text-xs font-semibold text-[#374151]">
+                    STT
+                  </th>
                   <th className="px-3 py-3 text-xs font-semibold text-[#374151]">
                     Họ và tên
                   </th>
@@ -217,21 +220,22 @@ export default function ContactsWorkspace() {
               <tbody>
                 {isLoading && (
                   <tr>
-                    <td colSpan={5} className="px-6 py-10 text-center text-sm text-[#6B7280]">
+                    <td colSpan={6} className="px-6 py-10 text-center text-sm text-[#6B7280]">
                       Đang tải...
                     </td>
                   </tr>
                 )}
                 {isError && (
                   <tr>
-                    <td colSpan={5} className="px-6 py-10 text-center text-sm text-red-600">
+                    <td colSpan={6} className="px-6 py-10 text-center text-sm text-red-600">
                       {error?.message ?? "Đã có lỗi xảy ra khi tải danh sách liên hệ."}
                     </td>
                   </tr>
                 )}
                 {!isLoading && !isError &&
-                  items.map((contact) => {
+                  items.map((contact, index) => {
                     const sentAt = formatSentAt(contact.createdAt);
+                    const stt = (currentPage - 1) * Number(pageSize) + index + 1;
                     return (
                       <tr
                         key={contact.id}
@@ -240,6 +244,9 @@ export default function ContactsWorkspace() {
                           selectedId === contact.id ? "bg-[#EFF6FF]" : "hover:bg-[#F9FAFB]"
                         }`}
                       >
+                        <td className="px-3 py-3 text-center text-sm font-medium text-[#4B5563]">
+                          {stt}
+                        </td>
                         <td className="px-3 py-3 text-sm font-medium text-[#111827]">
                           {contact.customerFullname}
                         </td>
@@ -277,7 +284,7 @@ export default function ContactsWorkspace() {
                 {!isLoading && !isError && items.length === 0 && (
                   <tr>
                     <td
-                      colSpan={5}
+                      colSpan={6}
                       className="px-6 py-10 text-center text-sm text-[#6B7280]"
                     >
                       Không có liên hệ nào.

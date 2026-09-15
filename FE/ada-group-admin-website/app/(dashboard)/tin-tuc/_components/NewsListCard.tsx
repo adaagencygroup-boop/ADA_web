@@ -58,7 +58,6 @@ export default function NewsListCard() {
   const [featured, setFeatured] = useState("all");
   const [pageSize, setPageSize] = useState("10");
   const [page, setPage] = useState(1);
-  const [selectedRows, setSelectedRows] = useState<Set<string>>(new Set());
   const [deleteTarget, setDeleteTarget] = useState<NewsItem | null>(null);
 
   const deleteMutation = useDeleteNews();
@@ -87,31 +86,6 @@ export default function NewsListCard() {
   const totalPages = pagination?.totalPages ?? 1;
   const currentPage = pagination?.page ?? 1;
   const totalElements = pagination?.totalElements ?? 0;
-
-  const allPagedSelected =
-    items.length > 0 && items.every((article) => selectedRows.has(article.id));
-
-  function toggleRow(id: string) {
-    setSelectedRows((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-  }
-
-  function toggleAllRows() {
-    setSelectedRows((prev) => {
-      if (allPagedSelected) {
-        const next = new Set(prev);
-        items.forEach((article) => next.delete(article.id));
-        return next;
-      }
-      const next = new Set(prev);
-      items.forEach((article) => next.add(article.id));
-      return next;
-    });
-  }
 
   function handleConfirmDelete() {
     if (!deleteTarget) return;
@@ -191,13 +165,8 @@ export default function NewsListCard() {
           <table className="w-full min-w-250 border-collapse">
             <thead>
               <tr className="border-b border-[#E5E7EB] bg-[#F9FAFB] text-left">
-                <th className="w-12 px-6 py-4">
-                  <input
-                    type="checkbox"
-                    checked={allPagedSelected}
-                    onChange={toggleAllRows}
-                    className="size-4 rounded border-[#D1D5DB]"
-                  />
+                <th className="w-14 px-6 py-4 text-center text-sm font-semibold text-[#374151]">
+                  STT
                 </th>
                 <th className="px-3 py-4 text-sm font-semibold text-[#374151]">
                   Tiêu đề
@@ -238,20 +207,16 @@ export default function NewsListCard() {
                 </tr>
               )}
               {!isLoading && !isError &&
-                items.map((article) => {
+                items.map((article, index) => {
                   const created = formatDateParts(article.createdAt);
+                  const stt = (currentPage - 1) * Number(pageSize) + index + 1;
                   return (
                     <tr
                       key={article.id}
                       className="border-b border-[#E5E7EB] last:border-b-0 hover:bg-[#F9FAFB]"
                     >
-                      <td className="px-6 py-5" onClick={(e) => e.stopPropagation()}>
-                        <input
-                          type="checkbox"
-                          checked={selectedRows.has(article.id)}
-                          onChange={() => toggleRow(article.id)}
-                          className="size-4 rounded border-[#D1D5DB]"
-                        />
+                      <td className="px-6 py-5 text-center text-sm font-medium text-[#4B5563]">
+                        {stt}
                       </td>
                       <td className="px-3 py-5">
                         <div className="flex items-start gap-3">
