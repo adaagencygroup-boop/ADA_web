@@ -210,7 +210,6 @@ export default function ApplyForm({ job, slug }: { job: Recruitment; slug: strin
       setTouched({});
       setFile(null);
     } catch (error) {
-      console.error("Submit error:", error);
       const rawMsg = error instanceof Error ? error.message : "";
       const isDuplicate =
         rawMsg.includes("uxCandidatesRecruitmentIdEmail") ||
@@ -223,12 +222,13 @@ export default function ApplyForm({ job, slug }: { job: Recruitment; slug: strin
           type: "warning",
           title: "Đã ứng tuyển công việc này",
           message:
-            "Bạn đã ứng tuyển công việc này trước đó rồi. Vui lòng gửi lại CV qua email sau: hr@adagroup.vn",
+            rawMsg ||
+            "Bạn đã ứng tuyển công việc này trước đó rồi. Vui lòng gửi lại CV qua email hr@adagroup.vn nếu cần cập nhật!",
         });
       } else {
         setAlertInfo({
-          type: "error",
-          title: "Đã xảy ra lỗi",
+          type: "warning",
+          title: "Thông báo",
           message:
             rawMsg ||
             "Chúng tôi không thể kết nối tới máy chủ lúc này. Vui lòng thử lại sau ít phút.",
