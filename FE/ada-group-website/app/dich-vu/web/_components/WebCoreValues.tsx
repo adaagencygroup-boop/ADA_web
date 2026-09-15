@@ -1,5 +1,3 @@
-import GsapWaveText from "@/app/_components/GsapWaveText";
-
 export default function WebCoreValues() {
   const values = [
     {
@@ -45,12 +43,9 @@ export default function WebCoreValues() {
     <section className="bg-blue-50 section-y">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-4xl lg:max-w-5xl text-center mb-(--section-padding) md:mb-(--section-padding)">
-          <GsapWaveText
-            as="h2"
-            className="text-[28px] lg:text-[44px] font-semibold leading-[1.2] lg:leading-[1.1] text-zinc-900 mb-(--inner-space) md:mb-(--inner-space)"
-          >
+          <h2 className="text-[28px] lg:text-[44px] font-semibold leading-[1.2] lg:leading-[1.1] text-zinc-900 mb-(--inner-space) md:mb-(--inner-space)">
             Một nền tảng tốt cần tạo ra<br className="md:hidden" /> giá trị lâu dài
-          </GsapWaveText>
+          </h2>
           <p className="text-[14px] lg:text-[16px] text-zinc-500 leading-relaxed max-w-3xl mx-auto px-2 lg:px-0">
             Một sản phẩm web tốt không chỉ dừng lại ở giao diện đẹp. Hệ thống cần giải quyết đúng nhu cầu của người dùng, vận hành ổn định, dễ quản lý và có khả năng thích ứng khi doanh nghiệp phát triển.
           </p>

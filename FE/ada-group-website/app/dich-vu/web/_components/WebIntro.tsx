@@ -1,5 +1,4 @@
 import Image from "next/image";
-import GsapWaveText from "@/app/_components/GsapWaveText";
 
 export default function WebIntro() {
   return (
@@ -8,13 +7,10 @@ export default function WebIntro() {
         
         {/* Text Content */}
         <div className="mx-auto max-w-full text-center mb-(--heading-space) md:mb-(--section-padding)">
-          <GsapWaveText
-            as="h2"
-            className="text-[28px] lg:text-[44px] font-semibold leading-[1.2] mb-(--inner-space) md:mb-(--inner-space) max-w-full"
-          >
+          <h2 className="text-[28px] lg:text-[44px] font-semibold leading-[1.2] mb-(--inner-space) md:mb-(--inner-space) max-w-full">
             <span className="text-zinc-900 block mb-(--heading-space) md:mb-(--heading-space)">Không chỉ xây dựng website.</span>
             <span className="text-[#1e3a8a] block">Chúng tôi xây dựng nền tảng cho doanh nghiệp phát triển.</span>
-          </GsapWaveText>
+          </h2>
           <p className="text-zinc-600 leading-[1.8] text-[14px] lg:text-[16px] max-w-4xl mx-auto px-2 md:px-0 text-justify md:text-center">
             ADA Group tiếp cận mỗi dự án web như một sản phẩm hoàn chỉnh — nơi trải nghiệm người dùng, nhu cầu kinh doanh và định hướng phát triển được xem xét trong cùng một tổng thể. Từ những website phục vụ thương hiệu đến các nền tảng trực tuyến phục vụ hoạt động kinh doanh, chúng tôi hướng tới những sản phẩm dễ sử dụng, ổn định, linh hoạt và có giá trị sử dụng lâu dài.
           </p>

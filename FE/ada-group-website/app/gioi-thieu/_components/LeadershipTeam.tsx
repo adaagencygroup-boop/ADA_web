@@ -3,8 +3,6 @@
 import { useRef } from "react";
 import Image from "next/image";
 
-import GsapWaveText from "@/app/_components/GsapWaveText";
-
 type IconProps = { className?: string };
 
 function ChevronLeftIcon({ className = "h-3 w-3" }: IconProps) {
@@ -73,11 +71,9 @@ export default function LeadershipTeam() {
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="flex items-end justify-between gap-4 border-b border-zinc-300/40 pb-4 lg:border-none lg:pb-0">
           <div>
-            <GsapWaveText
-              text={CONTENT.title}
-              as="h2"
-              className="text-[28px] font-semibold leading-[1.2] text-zinc-900 lg:text-[44px] lg:leading-[1.1]"
-            />
+            <h2 className="text-[28px] font-semibold leading-[1.2] text-zinc-900 lg:text-[44px] lg:leading-[1.1]">
+              {CONTENT.title}
+            </h2>
             <p className="mt-1 text-[14px] lg:text-[16px] text-gray-600">
               {CONTENT.description}
             </p>

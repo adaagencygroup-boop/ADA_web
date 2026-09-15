@@ -1,5 +1,3 @@
-import GsapWaveText from "@/app/_components/GsapWaveText";
-
 export default function MobileScalability() {
   const features = [
     {
@@ -46,13 +44,10 @@ export default function MobileScalability() {
         
         {/* Top Header */}
         <div className="text-center max-w-3xl mx-auto mb-(--section-padding)">
-          <GsapWaveText
-            as="h2"
-            className="text-[28px] lg:text-[44px] font-semibold leading-[1.2] tracking-tight text-[#0a1a2f] mb-(--inner-space) max-w-full"
-          >
+          <h2 className="text-[28px] lg:text-[44px] font-semibold leading-[1.2] tracking-tight text-[#0a1a2f] mb-(--inner-space) max-w-full">
             Sẵn sàng phát triển cùng <br className="hidden md:block" />
             <span className="text-[#1c3a6e]">nhu cầu doanh nghiệp</span>
-          </GsapWaveText>
+          </h2>
           <p className="text-[14px] lg:text-[16px] leading-relaxed text-zinc-600 text-justify md:text-center">
             Mỗi ứng dụng có yêu cầu và định hướng phát triển khác nhau. Nền tảng của chúng tôi được thiết kế với kiến trúc linh hoạt, sẵn sàng mở rộng và tích hợp các công nghệ mới nhất để đáp ứng mục tiêu kinh doanh của bạn.
           </p>

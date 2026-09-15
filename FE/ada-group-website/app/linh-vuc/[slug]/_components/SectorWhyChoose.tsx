@@ -1,6 +1,5 @@
 import { STAT_ICONS } from "@/app/linh-vuc/_lib/stat-icons";
 import type { Sector, SectorStat } from "@/app/linh-vuc/_types/sector";
-import GsapWaveText from "@/app/_components/GsapWaveText";
 
 function StatCard({ stat }: { stat: SectorStat }) {
   const Icon = STAT_ICONS[stat.icon];
@@ -24,13 +23,10 @@ export default function SectorWhyChoose({ sector }: { sector: Sector }) {
   return (
     <section className="section-y bg-white max-lg:pb-0!">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
-        <GsapWaveText
-          as="h2"
-          className="text-[24px] lg:text-[36px] leading-[1.2] font-semibold text-[#0F172A] lg:text-center lg:font-bold"
-        >
+        <h2 className="text-[24px] lg:text-[36px] leading-[1.2] font-semibold text-[#0F172A] lg:text-center lg:font-bold">
           Tại sao <span className="hidden lg:inline">ADA Group </span>chọn{" "}
           {sector.title}?
-        </GsapWaveText>
+        </h2>
 
         <div className="mt-(--inner-space) flex flex-col gap-4 lg:grid lg:grid-cols-2 lg:items-center lg:gap-(--inner-space)">
           <div className="min-w-0 rounded-2xl border border-slate-200 bg-white p-5 lg:border-none lg:bg-transparent lg:p-0">

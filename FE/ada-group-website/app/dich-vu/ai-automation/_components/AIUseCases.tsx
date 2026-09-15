@@ -3,7 +3,6 @@ import Image from "next/image";
 import React from "react";
 import { ArrowRightIcon } from "@/app/_components/icons";
 import GsapScrollReveal from "@/app/_components/GsapScrollReveal";
-import GsapWaveText from "@/app/_components/GsapWaveText";
 
 const mainUseCases = [
   {
@@ -138,11 +137,9 @@ export default function AIUseCases() {
               </svg>
               AI & Automation
             </div>
-            <GsapWaveText
-              text="Ứng dụng AI vào những hoạt động tạo ra giá trị"
-              as="h2"
-              className="text-[28px] lg:text-[44px] font-semibold leading-[1.2] tracking-tight text-[#0a1a2f] mb-(--inner-space) max-w-full"
-            />
+            <h2 className="text-[28px] lg:text-[44px] font-semibold leading-[1.2] tracking-tight text-[#0a1a2f] mb-(--inner-space) max-w-full">
+              Ứng dụng AI vào những hoạt động tạo ra giá trị
+            </h2>
             <div className="w-16 h-1 bg-blue-600 mx-auto mb-(--inner-space)"></div>
             <p className="text-[14px] lg:text-[16px] leading-relaxed text-zinc-600">
               Mỗi giải pháp được xây dựng dựa trên nhu cầu thực tế, dữ liệu hiện có và cách người dùng làm việc, để công nghệ không chỉ tạo ra khả năng mới mà còn mang lại giá trị có thể sử dụng trong thực tế.

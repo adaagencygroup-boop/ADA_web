@@ -1,5 +1,3 @@
-import GsapWaveText from "@/app/_components/GsapWaveText";
-
 export default function MobileIntro() {
   return (
     <section className="section-y">
@@ -10,11 +8,9 @@ export default function MobileIntro() {
           </svg>
           <span className="text-[12px] font-semibold text-blue-600">Giải pháp Mobile hoàn chỉnh</span>
         </div>
-        <GsapWaveText
-          text="Giải pháp Mobile phù hợp cho từng doanh nghiệp"
-          as="h2"
-          className="text-[28px] lg:text-[44px] font-semibold leading-[1.2] tracking-tight text-[#0a1a2f] max-w-full"
-        />
+        <h2 className="text-[28px] lg:text-[44px] font-semibold leading-[1.2] tracking-tight text-[#0a1a2f] max-w-full">
+          Giải pháp Mobile phù hợp cho từng doanh nghiệp
+        </h2>
       </div>
     </section>
   );

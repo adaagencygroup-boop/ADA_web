@@ -1,7 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRightIcon } from "@/app/_components/icons";
-import GsapWaveText from "@/app/_components/GsapWaveText";
 
 export default function WebVision() {
   return (
@@ -11,14 +10,11 @@ export default function WebVision() {
           
           {/* Left: Content */}
           <div className="w-full lg:w-[55%] flex flex-col justify-center">
-            <GsapWaveText
-              as="h2"
-              className="text-[28px] lg:text-[36px] font-semibold leading-[1.2] tracking-tight text-zinc-900 mb-(--inner-space) max-w-full"
-            >
+            <h2 className="text-[28px] lg:text-[36px] font-semibold leading-[1.2] tracking-tight text-zinc-900 mb-(--inner-space) max-w-full">
               Website không chỉ để hiện diện.<br className="hidden lg:block" />
               <span className="lg:hidden"> </span>
               Hãy biến nó thành <span className="text-[#004bb4]">công cụ kinh doanh.</span>
-            </GsapWaveText>
+            </h2>
             
             {/* Blue Divider Line */}
             <div className="hidden lg:block w-16 h-1.5 bg-blue-600 rounded-full mb-(--inner-space)"></div>

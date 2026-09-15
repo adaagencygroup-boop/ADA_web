@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import GsapWaveText from "@/app/_components/GsapWaveText";
 
 export interface SectorProductMockup {
   appName: string;
@@ -44,11 +43,9 @@ export default function SectorProducts({ products = [] }: SectorProductsProps) {
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         {/* Header Title */}
         <div className="flex flex-col items-center gap-3 mb-6 lg:mb-(--inner-space)">
-          <GsapWaveText
-            text="Sản phẩm trong lĩnh vực"
-            as="h2"
-            className="text-center text-[28px] lg:text-[36px] leading-[1.2] font-semibold text-[#000000] lg:font-bold"
-          />
+          <h2 className="text-center text-[28px] lg:text-[36px] leading-[1.2] font-semibold text-[#000000] lg:font-bold">
+            Sản phẩm trong lĩnh vực
+          </h2>
           <span className="h-1 w-16 bg-[#2563EB]" />
         </div>
 

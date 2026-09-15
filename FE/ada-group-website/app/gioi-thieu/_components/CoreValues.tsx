@@ -1,5 +1,3 @@
-import GsapWaveText from "@/app/_components/GsapWaveText";
-
 type IconProps = { className?: string };
 
 function RealisticIcon({ className = "h-6 w-6" }: IconProps) {
@@ -34,7 +32,7 @@ function UserCentricIcon({ className = "h-6 w-6" }: IconProps) {
   return (
     <svg viewBox="0 0 18 20" fill="none" className={className} xmlns="http://www.w3.org/2000/svg">
       <path
-        d="M1 5V15C1 17.21 4.582 19 9 19C13.418 19 17 17.21 17 15V5M1 5C1 7.21 4.582 9 9 9C13.418 9 17 7.21 17 5M1 5C1 2.79 4.582 1 9 1C13.418 1 17 2.79 17 5M17 10C17 12.21 13.418 14 9 14C4.582 14 1 12.21 1 10"
+        d="M1 5V15C1 17.21 4.582 19 9 19C13.418 19 17 7.21 17 5M1 5C1 2.79 4.582 1 9 1C13.418 1 17 2.79 17 5M17 10C17 12.21 13.418 14 9 14C4.582 14 1 12.21 1 10"
         stroke="currentColor"
         strokeWidth={2}
         strokeLinecap="round"
@@ -94,11 +92,9 @@ export default function CoreValues() {
     <section className="section-y bg-blue-50">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center text-center">
-          <GsapWaveText
-            text={CONTENT.title}
-            as="h2"
-            className="text-[28px] font-extrabold leading-[1.2] text-slate-900 lg:text-[44px] lg:font-semibold lg:leading-[1.1] lg:text-black"
-          />
+          <h2 className="text-[28px] font-extrabold leading-[1.2] text-slate-900 lg:text-[44px] lg:font-semibold lg:leading-[1.1] lg:text-black">
+            {CONTENT.title}
+          </h2>
           <span className="mt-4 h-1 w-12 shrink-0 rounded-full bg-[#002A64] lg:bg-blue-900" />
         </div>
 

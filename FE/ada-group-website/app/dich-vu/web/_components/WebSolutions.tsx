@@ -2,7 +2,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowRightIcon } from "@/app/_components/icons";
 import GsapScrollReveal from "@/app/_components/GsapScrollReveal";
-import GsapWaveText from "@/app/_components/GsapWaveText";
 
 export default function WebSolutions() {
   const solutions = [
@@ -117,13 +116,10 @@ export default function WebSolutions() {
               </svg>
               <span className="text-[12px] font-semibold uppercase tracking-widest">GIẢI PHÁP WEB HOÀN CHỈNH</span>
             </div>
-            <GsapWaveText
-              as="h2"
-              className="text-[28px] lg:text-[44px] font-semibold text-zinc-900 leading-[1.2] mb-(--inner-space) max-w-full"
-            >
+            <h2 className="text-[28px] lg:text-[44px] font-semibold text-zinc-900 leading-[1.2] mb-(--inner-space) max-w-full">
               Giải pháp web cho từng <br className="hidden md:block" />
               giai đoạn <span className="text-blue-600">phát triển doanh nghiệp</span>
-            </GsapWaveText>
+            </h2>
             <div className="w-16 h-1 bg-blue-600 mx-auto rounded-full mb-(--inner-space)"></div>
             <p className="text-[14px] lg:text-[16px] text-zinc-500 leading-relaxed max-w-2xl mx-auto mt-(--inner-space)">
               Từ website giới thiệu thương hiệu đến các nền tảng phức tạp, chúng tôi cung cấp giải pháp web toàn diện, linh hoạt và sẵn sàng đồng hành cùng doanh nghiệp.

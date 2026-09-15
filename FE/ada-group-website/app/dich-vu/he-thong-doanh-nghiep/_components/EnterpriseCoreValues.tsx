@@ -1,5 +1,3 @@
-import GsapWaveText from "@/app/_components/GsapWaveText";
-
 export default function EnterpriseCoreValues() {
   const values = [
     {
@@ -44,11 +42,9 @@ export default function EnterpriseCoreValues() {
     <section className="bg-blue-50 section-y">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-4xl lg:max-w-full text-center mb-(--section-padding) md:mb-(--section-padding)">
-          <GsapWaveText
-            text="Công nghệ bắt đầu từ cách doanh nghiệp vận hành"
-            as="h2"
-            className="text-[28px] lg:text-[44px] font-semibold leading-[1.2] lg:leading-[1.1] text-zinc-900 mb-(--inner-space) md:mb-(--inner-space)"
-          />
+          <h2 className="text-[28px] lg:text-[44px] font-semibold leading-[1.2] lg:leading-[1.1] text-zinc-900 mb-(--inner-space) md:mb-(--inner-space)">
+            Công nghệ bắt đầu từ cách doanh nghiệp vận hành
+          </h2>
           {/* Subtitle Desktop */}
           <div className="hidden md:block text-[16px] text-zinc-600 leading-relaxed max-w-5xl lg:max-w-6xl mx-auto text-center space-y-2">
             <p>

@@ -2,7 +2,6 @@ import Image from "next/image";
 // import Link from "next/link";
 // import { ArrowRightIcon } from "@/app/_components/icons";
 import Marquee from "@/app/_components/Marquee";
-import GsapWaveText from "@/app/_components/GsapWaveText";
 
 const CONTENT = {
   badge: "ĐỐI TÁC",
@@ -52,11 +51,9 @@ export default function PartnersSection() {
           <span className="inline-flex items-center rounded-full bg-[#D8E2FF] px-3 py-1 text-[12px] font-semibold text-[#002A64] lg:text-[12px]">
               {CONTENT.badge}
             </span>
-          <GsapWaveText
-            text={CONTENT.title}
-            as="h2"
-            className="mt-(--heading-space) text-[28px] leading-[1.2] font-semibold tracking-tight text-zinc-900 lg:text-[44px] lg:leading-[1.1]"
-          />
+          <h2 className="mt-(--heading-space) text-[28px] leading-[1.2] font-semibold tracking-tight text-zinc-900 lg:text-[44px] lg:leading-[1.1]">
+            {CONTENT.title}
+          </h2>
           <p className="mt-2 text-[14px] lg:text-[16px] leading-relaxed text-zinc-600">
             {CONTENT.description}
           </p>

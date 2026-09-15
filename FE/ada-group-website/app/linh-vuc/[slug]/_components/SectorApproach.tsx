@@ -1,6 +1,5 @@
 import Image from "next/image";
 import type { Sector } from "@/app/linh-vuc/_types/sector";
-import GsapWaveText from "@/app/_components/GsapWaveText";
 
 function CheckIcon({ className = "h-3 w-3" }: { className?: string }) {
   return (
@@ -27,11 +26,9 @@ export default function SectorApproach({ sector }: { sector: Sector }) {
     <section className="section-y">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center gap-3">
-          <GsapWaveText
-            text={approach.heading}
-            as="h2"
-            className="text-center text-[28px] lg:text-[36px] leading-[1.2] font-semibold text-[#000000] lg:font-bold"
-          />
+          <h2 className="text-center text-[28px] lg:text-[36px] leading-[1.2] font-semibold text-[#000000] lg:font-bold">
+            {approach.heading}
+          </h2>
           <span className="h-1 w-16 bg-[#2563EB]" />
         </div>
 

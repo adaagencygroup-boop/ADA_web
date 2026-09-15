@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { ArrowRightIcon, Service1Icon, Service2Icon, Service3Icon, Service4Icon } from "@/app/_components/icons";
-import GsapWaveText from "@/app/_components/GsapWaveText";
 
 const CONTENT = {
   title: "Công nghệ phục vụ những bài toán thực tế",
@@ -45,11 +44,9 @@ export default function ServicesGrid() {
     <section className="section-y">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-5xl text-center">
-          <GsapWaveText
-            text={CONTENT.title}
-            as="h2"
-            className="text-[28px] leading-[1.2] text-start sm:text-center font-semibold tracking-tight text-zinc-900 lg:text-[44px] lg:leading-[1.1]"
-          />
+          <h2 className="text-[28px] leading-[1.2] text-start sm:text-center font-semibold tracking-tight text-zinc-900 lg:text-[44px] lg:leading-[1.1]">
+            {CONTENT.title}
+          </h2>
           <p className="mt-(--heading-space) md:mx-0 text-[14px] lg:text-[16px] leading-relaxed whitespace-pre-line text-zinc-600 text-justify md:text-center">
             {CONTENT.description}
           </p>
