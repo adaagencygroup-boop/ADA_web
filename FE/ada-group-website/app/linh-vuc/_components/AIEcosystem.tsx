@@ -53,7 +53,7 @@ export default function AIEcosystem() {
             </h2>
 
             <div className="flex flex-col items-start gap-4 lg:gap-5.75 lg:pt-1.5">
-              <p className="text-[14px] leading-[1.57] text-[#475569] lg:text-[16px] lg:leading-[1.6] lg:text-[#434750]">
+              <p className="text-[14px] leading-[1.57] text-[#475569] lg:text-[16px] lg:leading-[1.6] lg:text-[#434750] text-justify [word-break:break-word]">
                 {CONTENT.paragraph}
               </p>
 

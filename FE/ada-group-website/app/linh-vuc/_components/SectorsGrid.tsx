@@ -32,7 +32,7 @@ export default function SectorsGrid() {
                 <h3 className="mt-3 text-[24px] font-semibold text-[#191C1E]">
                   {sector.title}
                 </h3>
-                <p className="mt-4 flex-1 text-[14px] lg:text-[16px] leading-relaxed text-[#434750]">
+                <p className="mt-4 flex-1 text-[14px] lg:text-[16px] leading-relaxed text-[#434750] text-justify [text-align-last:left] [word-break:break-word] sm:text-left sm:[text-align-last:left]">
                   <span className="font-semibold text-[#002A64]">
                     {sector.code}
                   </span>{" "}

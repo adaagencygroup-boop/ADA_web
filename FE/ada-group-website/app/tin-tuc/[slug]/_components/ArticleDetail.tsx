@@ -139,7 +139,7 @@ export default function ArticleDetail({ article }: { article: NewsArticle }) {
       </div>
 
       <div
-        className="prose prose-slate flex-1 w-full max-w-none text-[14px] lg:text-[16px] leading-6.75 text-[#334155] [&_h1]:text-black [&_h2]:text-black [&_h3]:text-black [&_strong]:text-black"
+        className="prose prose-slate flex-1 w-full max-w-none text-[14px] lg:text-[16px] leading-6.75 text-[#334155] text-justify [word-break:break-word] [&_p]:text-justify [&_h1]:text-black [&_h2]:text-black [&_h3]:text-black [&_strong]:text-black"
         dangerouslySetInnerHTML={{ __html: article.content }}
       />
     </article>

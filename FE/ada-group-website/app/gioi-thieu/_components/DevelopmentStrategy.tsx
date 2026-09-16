@@ -119,7 +119,7 @@ export default function DevelopmentStrategy() {
               {CONTENT.paragraphs.map((paragraph) => (
                 <p
                   key={paragraph}
-                  className="text-[14px] lg:text-[16px] text-justify sm:text-start leading-relaxed text-gray-600 [&+&]:mt-4"
+                  className="text-[14px] lg:text-[16px] text-justify leading-relaxed text-gray-600 [&+&]:mt-4 [word-break:break-word]"
                 >
                   {paragraph}
                 </p>
@@ -160,7 +160,7 @@ export default function DevelopmentStrategy() {
               <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-blue-900">
                 <EyeIcon className="h-6 w-6" />
               </span>
-              <p className="text-base font-semibold leading-6 text-slate-900">
+              <p className="text-base font-semibold leading-6 text-slate-900 text-justify flex-1">
                 {CONTENT.ctaText}
               </p>
             </div>
