@@ -165,7 +165,7 @@ export default function WebSolutions() {
                       </Link>
                     </div>
                     <div className="w-full lg:flex-1 bg-slate-100 lg:bg-[#111827] min-h-64 lg:min-h-75 relative flex items-center justify-center lg:p-8">
-                      <Image src={item.imagePlaceholder} alt={item.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover transition-transform duration-500 hover:scale-105" />
+                      <Image src={item.imagePlaceholder} alt={item.title} fill loading="lazy" placeholder="blur" blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZTJlOGYwIi8+PC9zdmc+" sizes="(max-width: 768px) 100vw, 50vw" className="object-cover transition-transform duration-500 hover:scale-105" />
                     </div>
                   </div>
                 </GsapScrollReveal>
@@ -204,7 +204,7 @@ export default function WebSolutions() {
                       </Link>
                     </div>
                     <div className="w-full lg:flex-1 bg-slate-200 min-h-75 relative flex items-center justify-center">
-                      <Image src={item.imagePlaceholder} alt={item.title} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover transition-transform duration-500 hover:scale-105" />
+                      <Image src={item.imagePlaceholder} alt={item.title} fill loading="lazy" placeholder="blur" blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZTJlOGYwIi8+PC9zdmc+" sizes="(max-width: 768px) 100vw, 50vw" className="object-cover transition-transform duration-500 hover:scale-105" />
                     </div>
                   </div>
                 </GsapScrollReveal>

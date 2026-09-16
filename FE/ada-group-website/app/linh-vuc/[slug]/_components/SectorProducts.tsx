@@ -153,6 +153,9 @@ export default function SectorProducts({ products = [] }: SectorProductsProps) {
                             src={product.imageSrc || "/images/linh-vuc/y-te/y-te1.jpg"} 
                             alt={product.title}
                             fill 
+                            loading="lazy"
+                            placeholder="blur"
+                            blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZTJlOGYwIi8+PC9zdmc+"
                             sizes="(max-width: 768px) 100vw, 40vw"
                             className="object-cover transition-transform duration-500 hover:scale-105" 
                           />

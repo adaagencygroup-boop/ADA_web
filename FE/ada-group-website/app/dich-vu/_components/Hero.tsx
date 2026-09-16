@@ -53,7 +53,7 @@ export default function Hero({ badge, title, desc, imagePlaceholder }: HeroProps
             {/* Right: Image */}
             <div className="hero-image-right lg:col-span-7 mt-4 lg:mt-0">
               <div className="relative aspect-692/393 w-full overflow-hidden rounded-4xl bg-slate-100 flex items-center justify-center border border-slate-200">
-                <Image src={imagePlaceholder} alt={title} fill sizes="(max-width: 768px) 100vw, 60vw" className="object-cover transition-transform duration-500 hover:scale-105" priority />
+                <Image src={imagePlaceholder} alt={title} fill sizes="(max-width: 768px) 100vw, 60vw" placeholder="blur" blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZTJlOGYwIi8+PC9zdmc+" className="object-cover transition-transform duration-500 hover:scale-105" priority />
               </div>
             </div>
           </div>

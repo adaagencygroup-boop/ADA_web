@@ -44,6 +44,9 @@ export default function AboutHighlight() {
               src={IMAGES.primary.src}
               alt={IMAGES.primary.alt}
               fill
+              loading="lazy"
+              placeholder="blur"
+              blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZTJlOGYwIi8+PC9zdmc+"
               sizes="(min-width: 1024px) 35vw, (min-width: 768px) 348px, 220px"
               className="object-cover transition-transform duration-500 hover:scale-105"
             />
@@ -53,6 +56,9 @@ export default function AboutHighlight() {
               src={IMAGES.secondary.src}
               alt={IMAGES.secondary.alt}
               fill
+              loading="lazy"
+              placeholder="blur"
+              blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZTJlOGYwIi8+PC9zdmc+"
               sizes="(min-width: 1024px) 28vw, (min-width: 768px) 348px, 180px"
               className="object-cover transition-transform duration-500 hover:scale-105"
             />

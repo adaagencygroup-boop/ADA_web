@@ -56,6 +56,9 @@ export default async function JobDetailsPage({ params }: PageProps) {
             src={job.coverImageURL} 
             alt={job.jobTitle} 
             fill 
+            priority
+            placeholder="blur"
+            blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMDAyQTY0Ii8+PC9zdmc+"
             className="object-cover" 
           />
         )}
