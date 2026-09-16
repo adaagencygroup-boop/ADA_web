@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export const NAV_LINKS = [
   { label: "Trang chủ", href: "/" },
@@ -36,18 +36,36 @@ export default function Navbar({
 }: NavbarProps) {
   const isVertical = orientation === "vertical";
   const [openMobileMenu, setOpenMobileMenu] = useState<string | null>("Dịch vụ");
+  const [openDesktopMenu, setOpenDesktopMenu] = useState<string | null>(null);
+  const navRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (navRef.current && !navRef.current.contains(e.target as Node)) {
+        setOpenDesktopMenu(null);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const toggleMobileMenu = (label: string, e: React.MouseEvent) => {
     e.preventDefault();
     setOpenMobileMenu((prev) => (prev === label ? null : label));
   };
 
+  const toggleDesktopMenu = (label: string, e: React.MouseEvent) => {
+    e.preventDefault();
+    setOpenDesktopMenu((prev) => (prev === label ? null : label));
+  };
+
   return (
-    <nav className={className}>
+    <nav ref={navRef} className={className}>
       {NAV_LINKS.map((link) => {
         const isActive =
           link.href === "/" ? pathname === "/" : pathname.startsWith(link.href);
         const isMobileSubOpen = openMobileMenu === link.label;
+        const isDesktopSubOpen = openDesktopMenu === link.label;
 
         return (
           <div key={link.href} className={`relative group ${!isVertical ? "flex lg:h-20 items-center" : ""}`}>
@@ -55,10 +73,17 @@ export default function Navbar({
               <Link
                 href={link.href}
                 onClick={(e) => {
-                  if (link.subLinks && isVertical) {
-                    toggleMobileMenu(link.label, e);
-                  } else if (onNavigate) {
-                    onNavigate();
+                  if (link.subLinks) {
+                    if (isVertical) {
+                      toggleMobileMenu(link.label, e);
+                    } else {
+                      toggleDesktopMenu(link.label, e);
+                    }
+                  } else {
+                    setOpenDesktopMenu(null);
+                    if (onNavigate) {
+                      onNavigate();
+                    }
                   }
                 }}
                 className={`relative font-medium transition-colors duration-300 inline-flex items-center gap-1 ${
@@ -71,7 +96,7 @@ export default function Navbar({
               >
                 {link.label}
                 {link.subLinks && !isVertical && (
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 opacity-50 transition-transform duration-300 group-hover:rotate-180">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className={`h-4 w-4 opacity-50 transition-transform duration-300 ${isDesktopSubOpen ? "rotate-180" : ""}`}>
                     <polyline points="6 9 12 15 18 9" />
                   </svg>
                 )}
@@ -99,13 +124,21 @@ export default function Navbar({
 
             {link.subLinks && !isVertical && (
               <div
-                className="pointer-events-none absolute left-0 top-full z-50 min-w-64 origin-top pt-0.4 opacity-0 translate-y-2 scale-[0.98] transition-all duration-300 ease-out group-hover:pointer-events-auto group-hover:opacity-100 group-hover:translate-y-0 group-hover:scale-100"
+                className={`absolute left-0 top-full z-50 min-w-64 origin-top pt-0.4 transition-all duration-300 ease-out ${
+                  isDesktopSubOpen
+                    ? "pointer-events-auto opacity-100 translate-y-0 scale-100"
+                    : "pointer-events-none opacity-0 translate-y-2 scale-[0.98]"
+                }`}
               >
                 <div className="relative flex flex-col gap-1 rounded-2xl border border-zinc-100 bg-white p-2.5 shadow-xl before:absolute before:-top-2 before:left-6 before:h-4 before:w-4 before:rotate-45 before:border-l before:border-t before:border-zinc-100 before:bg-white before:content-['']">
                   {link.subLinks.map((sub) => (
                     <Link
                       key={sub.href}
                       href={sub.href}
+                      onClick={() => {
+                        setOpenDesktopMenu(null);
+                        if (onNavigate) onNavigate();
+                      }}
                       className={`rounded-xl px-4 py-2.5 text-sm font-medium transition-colors duration-300 hover:bg-slate-50 ${
                         pathname === sub.href ? "bg-blue-50/50 text-blue-600" : "text-zinc-600 hover:text-blue-600"
                       }`}
