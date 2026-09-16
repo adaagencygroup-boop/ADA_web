@@ -7,6 +7,7 @@ export default function MobileEcommerceApps() {
     {
       tag:"E-COMMERCE & SERVICES",
       title:"Ứng dụng thương mại & dịch vụ",
+      subtitle:"Kết nối toàn bộ hành trình khách hàng trên thiết bị di động",
       description:"ADA Group phát triển Mobile App giúp doanh nghiệp kết nối toàn bộ hành trình khách hàng từ khám phá, lựa chọn đến sử dụng và tương tác với dịch vụ, tạo nên trải nghiệm thống nhất giữa khách hàng và hoạt động vận hành của doanh nghiệp."
     }
   ];
@@ -61,7 +62,7 @@ export default function MobileEcommerceApps() {
   return (
     <section className="section-y pt-0! max-md:pb-5!">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col lg:grid lg:grid-cols-2 gap-(--section-padding) lg:items-start bg-white lg:bg-transparent rounded-4xl lg:rounded-none border border-slate-100 lg:border-none shadow-[0_2px_15px_rgb(0,0,0,0.03)] lg:shadow-none overflow-hidden lg:overflow-visible">
+        <div className="flex flex-col lg:grid lg:grid-cols-2 gap-0 lg:gap-(--section-padding) lg:items-start bg-white lg:bg-transparent rounded-4xl lg:rounded-none border border-slate-100 lg:border-none shadow-[0_2px_15px_rgb(0,0,0,0.03)] lg:shadow-none overflow-hidden lg:overflow-visible">
           
           {/* Left Column / Mobile Card */}
           <div className="flex flex-col lg:col-span-1">
@@ -80,6 +81,9 @@ export default function MobileEcommerceApps() {
                 <h2 className="text-[24px] lg:text-[36px] font-semibold leading-[1.2] tracking-tight text-zinc-900 lg:text-[#0a1a2f] mb-(--inner-space)">
                   {item.title}
                 </h2>
+                <p className="text-[14px] lg:text-[16px] font-medium text-blue-600 mb-(--inner-space)">
+                  {item.subtitle}
+                </p>
                 <p className="text-[14px] lg:text-[16px] leading-relaxed text-zinc-500 lg:text-zinc-600 mb-(--heading-space) text-justify">
                   {item.description}
                 </p>

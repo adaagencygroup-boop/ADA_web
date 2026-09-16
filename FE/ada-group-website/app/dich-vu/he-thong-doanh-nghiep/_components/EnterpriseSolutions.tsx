@@ -164,7 +164,7 @@ export default function EnterpriseSolutions() {
             if (item.layout === "full") {
               return (
                 <GsapScrollReveal key={item.id} className={wrapperClass}>
-                  <div className="bg-[#f4f6f9] rounded-3xl lg:rounded-4xl flex flex-col lg:flex-row overflow-hidden shadow-sm border border-slate-100 h-full">
+                  <div className="bg-white lg:bg-[#f4f6f9] rounded-3xl lg:rounded-4xl flex flex-col lg:flex-row overflow-hidden shadow-[0_2px_20px_rgb(0,0,0,0.04)] lg:shadow-sm border border-slate-100 h-full">
                     <div className="p-6 lg:p-8 flex-1 flex flex-col justify-center lg:max-w-[50%] order-2 lg:order-1">
                       <div className="hidden md:flex items-center gap-(--inner-space) mb-(--inner-space)">
                         <span className="text-3xl lg:text-4xl font-semibold text-blue-600">{item.id}</span>

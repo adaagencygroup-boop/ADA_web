@@ -158,11 +158,11 @@ export default function AIUseCases() {
 
             return (
               <GsapScrollReveal key={item.id}>
-                <div className={`${bg} rounded-3xl lg:rounded-[2.5rem] p-6 lg:p-12 ${border}`}>
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-(--section-padding) items-center">
+                <div className={`${bg} rounded-3xl lg:rounded-[2.5rem] p-0 lg:p-12 ${border} overflow-hidden`}>
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 lg:gap-(--section-padding) items-center">
                     
                     {/* Content Block */}
-                    <div className={`flex flex-col order-2 ${layout === 'right-text' ? 'lg:order-2' : 'lg:order-1'}`}>
+                    <div className={`flex flex-col p-6 lg:p-0 order-2 ${layout === 'right-text' ? 'lg:order-2' : 'lg:order-1'}`}>
                       <span className="text-[12px] font-semibold uppercase tracking-wider text-blue-600 mb-(--heading-space) block">
                         {item.badge}
                       </span>
@@ -198,13 +198,13 @@ export default function AIUseCases() {
                           <CustomFlowchart />
                         </div>
                         {item.image && (
-                          <div className="relative w-full aspect-16/10 rounded-2xl overflow-hidden bg-slate-100 order-1 lg:hidden">
+                          <div className="relative w-full aspect-16/10 lg:rounded-2xl overflow-hidden bg-slate-100 order-1 lg:hidden border-b border-slate-100">
                             <Image src={item.image} alt={item.title} fill loading="lazy" placeholder="blur" blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZTJlOGYwIi8+PC9zdmc+" sizes="(max-width: 768px) 100vw, 50vw" className="object-cover transition-transform duration-500 hover:scale-105" />
                           </div>
                         )}
                       </>
                     ) : (
-                      <div className={`relative w-full min-h-64 lg:min-h-0 ${item.id === '01' ? 'lg:aspect-4/3' : 'lg:aspect-16/10'} rounded-2xl overflow-hidden ${item.id === '01' ? 'shadow-lg border border-slate-200/50' : 'bg-slate-100'} order-1 ${layout === 'right-text' ? 'lg:order-1' : 'lg:order-2'}`}>
+                      <div className={`relative w-full min-h-64 lg:min-h-0 ${item.id === '01' ? 'lg:aspect-4/3' : 'lg:aspect-16/10'} rounded-none lg:rounded-2xl overflow-hidden ${item.id === '01' ? 'lg:shadow-lg lg:border lg:border-slate-200/50' : 'bg-slate-100'} border-b lg:border-b-0 border-slate-100 order-1 ${layout === 'right-text' ? 'lg:order-1' : 'lg:order-2'}`}>
                         {item.image && (
                           <Image src={item.image} alt={item.title} fill loading="lazy" placeholder="blur" blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZTJlOGYwIi8+PC9zdmc+" sizes="(max-width: 768px) 100vw, 50vw" className="object-cover transition-transform duration-500 hover:scale-105" />
                         )}
@@ -233,15 +233,15 @@ export default function AIUseCases() {
 
               return (
                 <GsapScrollReveal key={item.id} className="h-full">
-                  <div className={`${bg} rounded-3xl lg:rounded-[2.5rem] p-6 lg:p-12 ${border} flex flex-col h-full`}>
+                  <div className={`${bg} rounded-3xl lg:rounded-[2.5rem] p-0 lg:p-12 ${border} flex flex-col overflow-hidden h-full`}>
                     
                     {item.image && (
-                      <div className={`relative w-full min-h-64 lg:min-h-0 lg:aspect-4/3 rounded-2xl overflow-hidden mb-(--section-padding) lg:mb-(--inner-space) lg:mt-auto order-1 ${item.id === '06' ? 'lg:hidden' : 'lg:order-3'}`}>
+                      <div className={`relative w-full min-h-64 lg:min-h-0 lg:aspect-4/3 rounded-none lg:rounded-2xl overflow-hidden mb-0 lg:mb-(--inner-space) lg:mt-auto order-1 border-b lg:border-b-0 border-slate-100 ${item.id === '06' ? 'lg:hidden' : 'lg:order-3'}`}>
                         <Image src={item.image} alt={item.title} fill loading="lazy" placeholder="blur" blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZTJlOGYwIi8+PC9zdmc+" sizes="(max-width: 768px) 100vw, 50vw" className="object-cover transition-transform duration-500 hover:scale-105" />
                       </div>
                     )}
 
-                    <div className="order-2 flex flex-col flex-1">
+                    <div className="order-2 flex flex-col flex-1 p-6 lg:p-0">
                       <span className="text-[12px] font-semibold uppercase tracking-wider text-blue-600 mb-(--heading-space) block">
                         {item.badge}
                       </span>
