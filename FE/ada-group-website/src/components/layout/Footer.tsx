@@ -164,8 +164,8 @@ export default function Footer() {
             {/* Contact Rows */}
             <div className="space-y-2.5 pt-1 max-w-xl">
               {CONTACT_ROWS.map((row, index) => (
-                <div key={index} className="flex items-start gap-3">
-                  <span className="mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-blue-100/70 text-blue-700">
+                <div key={index} className="flex items-center gap-3">
+                  <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-blue-100/70 text-blue-700">
                     <row.icon />
                   </span>
                   <span className="text-sm leading-relaxed text-zinc-600 text-justify flex-1">
