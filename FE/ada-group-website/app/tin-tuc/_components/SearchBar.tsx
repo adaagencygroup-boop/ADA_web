@@ -62,7 +62,7 @@ export default function SearchBar({
             <button
               type="submit"
               aria-label="Tìm kiếm"
-              className="flex w-16 items-center justify-center bg-[#1961E6] text-white transition-colors hover:bg-blue-700"
+              className="cursor-pointer flex w-16 items-center justify-center bg-[#1961E6] text-white transition-colors hover:bg-blue-700"
             >
               <SearchIcon className="h-4 w-4" />
             </button>

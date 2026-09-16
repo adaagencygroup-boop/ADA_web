@@ -76,7 +76,7 @@ export default function JobBoard({
 
             <div className="lg:col-span-3 flex flex-col gap-1.5">
               <label className="text-[13px] font-semibold text-zinc-800">Phòng ban</label>
-              <select name="departmentId" value={filters.departmentId} onChange={handleFilterChange} className="w-full border border-slate-200 rounded-lg px-4 py-3 text-[14px] outline-none focus:border-blue-500 transition-colors bg-white">
+              <select name="departmentId" value={filters.departmentId} onChange={handleFilterChange} className="cursor-pointer w-full border border-slate-200 rounded-lg px-4 py-3 text-[14px] outline-none focus:border-blue-500 transition-colors bg-white">
                 <option value="">Tất cả phòng ban</option>
                 {departments.map(dept => (
                   <option key={dept.id} value={dept.id}>{dept.name}</option>
@@ -86,7 +86,7 @@ export default function JobBoard({
 
             <div className="lg:col-span-2 flex flex-col gap-1.5">
               <label className="text-[13px] font-semibold text-zinc-800">Hình thức làm việc</label>
-              <select name="employmentType" value={filters.employmentType} onChange={handleFilterChange} className="w-full border border-slate-200 rounded-lg px-4 py-3 text-[14px] outline-none focus:border-blue-500 transition-colors bg-white">
+              <select name="employmentType" value={filters.employmentType} onChange={handleFilterChange} className="cursor-pointer w-full border border-slate-200 rounded-lg px-4 py-3 text-[14px] outline-none focus:border-blue-500 transition-colors bg-white">
                 <option value="">Tất cả hình thức</option>
                 {EMPLOYMENT_TYPE_OPTIONS.map(type => (
                   <option key={type} value={type}>{formatEmploymentType(type)}</option>
@@ -95,7 +95,7 @@ export default function JobBoard({
             </div>
 
             <div className="lg:col-span-2">
-              <button onClick={handleSearch} disabled={isSearching} className="w-full bg-[#002A64] hover:bg-[#002A64]/90 text-white font-medium text-[14px] py-3 rounded-lg transition-colors disabled:opacity-70 disabled:cursor-not-allowed">
+              <button onClick={handleSearch} disabled={isSearching} className="cursor-pointer w-full bg-[#002A64] hover:bg-[#002A64]/90 text-white font-medium text-[14px] py-3 rounded-lg transition-colors disabled:opacity-70 disabled:cursor-not-allowed">
                 {isSearching ? "Đang tìm..." : "Tìm kiếm"}
               </button>
             </div>
@@ -123,7 +123,7 @@ export default function JobBoard({
                 <div className="flex items-start lg:items-center gap-4 flex-1">
                   <div className="w-12 h-12 lg:w-16 lg:h-16 shrink-0 relative rounded-xl border border-slate-100 overflow-hidden bg-white shadow-xs">
                     {job.coverImageURL ? (
-                      <Image src={job.coverImageURL} alt={job.jobTitle} fill sizes="(max-width: 768px) 100vw, 56px" className="object-cover" />
+                      <Image src={job.coverImageURL} alt={job.jobTitle} fill loading="lazy" placeholder="blur" blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZTJlOGYwIi8+PC9zdmc+" sizes="(max-width: 768px) 100vw, 56px" className="object-cover" />
                     ) : (
                       <div className="w-full h-full bg-[#002A64] text-white flex items-center justify-center font-semibold text-[18px]">
                         {getJobIconLabel(job.jobTitle)}
@@ -199,7 +199,7 @@ export default function JobBoard({
           <div className="flex justify-center mt-[calc(var(--section-padding)-var(--inner-space))]">
             <button
               onClick={() => setDisplayCount(prev => prev + 10)}
-              className="px-6 py-2.5 rounded-lg border border-slate-200 bg-white text-zinc-600 font-medium text-[14px] hover:bg-slate-50 transition-colors flex items-center gap-2"
+              className="cursor-pointer px-6 py-2.5 rounded-lg border border-slate-200 bg-white text-zinc-600 font-medium text-[14px] hover:bg-slate-50 transition-colors flex items-center gap-2"
             >
               Xem thêm vị trí khác
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4"><path d="m6 9 6 6 6-6"/></svg>

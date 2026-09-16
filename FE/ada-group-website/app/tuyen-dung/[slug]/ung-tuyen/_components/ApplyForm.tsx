@@ -477,7 +477,7 @@ export default function ApplyForm({ job, slug }: { job: Recruitment; slug: strin
                       Tôi đồng ý với việc sử dụng thông tin cá nhân cho <a href="#" className="text-blue-600 font-medium hover:underline">mục đích tuyển dụng</a>.
                     </label>
                   </div>
-                  <button type="submit" disabled={isSubmitting || isClosed} className="w-full inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-[#002A64] text-white rounded-lg font-semibold text-[14px] hover:bg-[#002A64]/90 transition-colors shadow-md group disabled:opacity-60 disabled:cursor-not-allowed">
+                  <button type="submit" disabled={isSubmitting || isClosed} className="cursor-pointer w-full inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-[#002A64] text-white rounded-lg font-semibold text-[14px] hover:bg-[#002A64]/90 transition-colors shadow-md group disabled:opacity-60 disabled:cursor-not-allowed">
                     {isSubmitting ? (
                       "Đang gửi..."
                     ) : isClosed ? (

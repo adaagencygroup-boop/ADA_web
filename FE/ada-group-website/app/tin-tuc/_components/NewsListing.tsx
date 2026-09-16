@@ -32,8 +32,8 @@ export default async function NewsListing({
     <section id={NEWS_LISTING_ANCHOR} className="section-y scroll-mt-28 scroll-smooth pt-0!">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:gap-8">
-          <div className="flex min-w-0 flex-1 flex-col items-start gap-4 lg:gap-6">
-            <h1 className="text-[24px] sm:text-[28px] lg:text-[36px] font-semibold tracking-wide text-black uppercase">
+          <div className="flex min-w-0 flex-1 flex-col items-start gap-2.5 lg:gap-3">
+            <h1 className="text-[24px] sm:text-[28px] lg:text-[32px] font-semibold tracking-wide text-black uppercase">
               {search
                 ? `Kết quả tìm kiếm cho "${search}"`
                 : activeCategory === ALL_CATEGORY
@@ -47,7 +47,7 @@ export default async function NewsListing({
                   <NewsCard key={article.slug} article={article} />
                 ))
               ) : (
-                <div className="rounded-2xl bg-white p-12 text-center shadow-[0_1px_2px_rgba(0,0,0,0.05)]">
+                <div className="rounded-2xl bg-white py-5 px-4 sm:py-6 text-center shadow-[0_1px_2px_rgba(0,0,0,0.05)]">
                   <p className="text-zinc-500">
                     Không tìm thấy bài viết phù hợp.
                   </p>

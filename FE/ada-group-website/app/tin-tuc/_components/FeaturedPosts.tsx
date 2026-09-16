@@ -26,32 +26,38 @@ export default function FeaturedPosts({ posts }: { posts: NewsArticle[] }) {
       <h2 className="border-b border-gray-100 pb-2 text-base font-semibold text-[#111827] lg:text-lg">
         Bài viết nổi bật
       </h2>
-      <ul className="mt-3.5 flex flex-col gap-3.5">
-        {posts.map((post) => (
-          <li key={post.slug}>
-            <Link href={`/tin-tuc/${post.slug}`} className="flex items-start gap-4">
-              <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-md">
-                <Image
-                  src={post.imageUrl}
-                  alt={post.title}
-                  fill
-                  sizes="80px"
-                  className="object-cover"
-                />
-              </div>
-              <div className="flex flex-col justify-center gap-1">
-                <h3 className="line-clamp-2 text-sm font-semibold text-[#1F2937]">
-                  {post.title}
-                </h3>
-                <div className="flex items-center gap-1.5 text-xs text-[#9CA3AF]">
-                  <CalendarIcon className="h-3 w-3" />
-                  {post.date}
+      {posts && posts.length > 0 ? (
+        <ul className="mt-3.5 flex flex-col gap-3.5">
+          {posts.map((post) => (
+            <li key={post.slug}>
+              <Link href={`/tin-tuc/${post.slug}`} className="flex items-start gap-4">
+                <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-md">
+                  <Image
+                    src={post.imageUrl}
+                    alt={post.title}
+                    fill
+                    sizes="80px"
+                    className="object-cover"
+                  />
                 </div>
-              </div>
-            </Link>
-          </li>
-        ))}
-      </ul>
+                <div className="flex flex-col justify-center gap-1">
+                  <h3 className="line-clamp-2 text-sm font-semibold text-[#1F2937]">
+                    {post.title}
+                  </h3>
+                  <div className="flex items-center gap-1.5 text-xs text-[#9CA3AF]">
+                    <CalendarIcon className="h-3 w-3" />
+                    {post.date}
+                  </div>
+                </div>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div className="mt-3.5 py-6 text-center text-sm text-slate-500">
+          Không có tin nổi bật
+        </div>
+      )}
     </div>
   );
 }

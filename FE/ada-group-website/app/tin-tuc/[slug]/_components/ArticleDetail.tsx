@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { useState } from "react";
 import type { NewsArticle } from "@/src/types/news";
 
 type IconProps = { className?: string };
@@ -73,11 +76,45 @@ function LinkIcon({ className = "h-3.5 w-3.5" }: IconProps) {
   );
 }
 
+function CheckIcon({ className = "h-3.5 w-3.5" }: IconProps) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2.5}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <polyline points="20 6 9 17 4 12" />
+    </svg>
+  );
+}
+
 function formatViews(views: number) {
   return `${views.toLocaleString("vi-VN")} lượt xem`;
 }
 
 export default function ArticleDetail({ article }: { article: NewsArticle }) {
+  const [copied, setCopied] = useState(false);
+
+  const shareUrl =
+    typeof window !== "undefined" && window.location.host.includes("adaagencygroup.online")
+      ? window.location.href
+      : `https://adaagencygroup.online/tin-tuc/${article.slug}`;
+
+  const handleCopyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error("Lỗi khi sao chép liên kết:", err);
+    }
+  };
+
   return (
     <article className="flex w-full min-h-[360px] sm:min-h-[460px] lg:min-h-[580px] flex-col items-start gap-4 rounded-2xl border border-[#F3F4F6] bg-white p-4 sm:p-6 lg:p-8 shadow-sm">
       <span className="text-xs font-semibold tracking-[0.6px] text-[#2563EB] uppercase">
@@ -104,27 +141,43 @@ export default function ArticleDetail({ article }: { article: NewsArticle }) {
 
         <div className="flex items-center gap-3">
           <span className="text-sm text-slate-500">Chia sẻ:</span>
-          <button
-            type="button"
+          <a
+            href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
+            target="_blank"
+            rel="noopener noreferrer"
             aria-label="Chia sẻ lên Facebook"
-            className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-slate-100 text-[#003274] transition-colors hover:bg-slate-200"
+            className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-[#003274] transition-colors hover:bg-slate-200"
           >
             <FacebookIcon />
-          </button>
-          <button
-            type="button"
+          </a>
+          <a
+            href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`}
+            target="_blank"
+            rel="noopener noreferrer"
             aria-label="Chia sẻ lên LinkedIn"
-            className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-slate-100 text-[#003274] transition-colors hover:bg-slate-200"
+            className="flex h-8 w-8 items-center justify-center rounded-full bg-slate-100 text-[#003274] transition-colors hover:bg-slate-200"
           >
             <LinkedInIcon />
-          </button>
-          <button
-            type="button"
-            aria-label="Sao chép liên kết"
-            className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-slate-100 text-[#003274] transition-colors hover:bg-slate-200"
-          >
-            <LinkIcon />
-          </button>
+          </a>
+          <div className="relative">
+            <button
+              type="button"
+              onClick={handleCopyLink}
+              aria-label="Sao chép liên kết"
+              className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded-full transition-all ${
+                copied
+                  ? "bg-green-100 text-green-700 scale-105"
+                  : "bg-slate-100 text-[#003274] hover:bg-slate-200"
+              }`}
+            >
+              {copied ? <CheckIcon className="h-4 w-4 text-green-600" /> : <LinkIcon />}
+            </button>
+            {copied && (
+              <span className="absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-slate-900 px-2 py-1 text-xs text-white shadow-md animate-fade-in">
+                Đã sao chép!
+              </span>
+            )}
+          </div>
         </div>
       </div>
 
@@ -139,7 +192,7 @@ export default function ArticleDetail({ article }: { article: NewsArticle }) {
       </div>
 
       <div
-        className="prose prose-slate flex-1 w-full max-w-none text-[14px] lg:text-[16px] leading-6.75 text-[#334155] text-justify [word-break:break-word] [&_p]:text-justify [&_h1]:text-black [&_h2]:text-black [&_h3]:text-black [&_strong]:text-black"
+        className="prose prose-slate flex-1 w-full max-w-none text-[14px] lg:text-[16px] leading-6.75 text-[#334155] text-left sm:text-justify [text-align-last:left] [word-break:break-word] [&_p]:text-left [&_p]:sm:text-justify [&_p]:[text-align-last:left] [&_h1]:text-black [&_h2]:text-black [&_h3]:text-black [&_strong]:text-black"
         dangerouslySetInnerHTML={{ __html: article.content }}
       />
     </article>

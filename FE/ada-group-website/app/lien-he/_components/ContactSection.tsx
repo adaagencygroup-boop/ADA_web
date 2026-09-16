@@ -343,7 +343,7 @@ export default function ContactSection() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="bg-[#002A64] hover:bg-[#002A64]/90 text-white font-semibold text-[14px] leading-none px-8 py-3.5 rounded-lg flex items-center gap-1.5 transition-colors w-fit disabled:opacity-70 disabled:cursor-not-allowed"
+                  className="cursor-pointer bg-[#002A64] hover:bg-[#002A64]/90 text-white font-semibold text-[14px] leading-none px-8 py-3.5 rounded-lg flex items-center gap-1.5 transition-colors w-fit disabled:opacity-70 disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? "Đang gửi..." : <span>Gửi liên hệ</span>}
                 </button>

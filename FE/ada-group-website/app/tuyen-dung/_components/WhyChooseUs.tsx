@@ -73,7 +73,11 @@ export default function WhyChooseUs() {
                 <Image 
                   src={item.image} 
                   alt={item.title} 
-                  fill sizes="(max-width: 768px) 100vw, 25vw"
+                  fill
+                  loading="lazy"
+                  placeholder="blur"
+                  blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZTJlOGYwIi8+PC9zdmc+"
+                  sizes="(max-width: 768px) 100vw, 25vw"
                   className="object-cover" 
                 />
               </div>

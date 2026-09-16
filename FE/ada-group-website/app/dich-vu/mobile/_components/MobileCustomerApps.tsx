@@ -72,11 +72,11 @@ export default function MobileCustomerApps() {
   return (
     <section className="section-y pt-0! max-md:pb-5!">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col lg:grid lg:grid-cols-2 gap-(--section-padding) lg:items-center rounded-4xl lg:rounded-none border border-slate-100 lg:border-none shadow-[0_2px_15px_rgb(0,0,0,0.03)] lg:shadow-none overflow-hidden lg:overflow-visible">
+        <div className="flex flex-col lg:grid lg:grid-cols-2 gap-0 lg:gap-(--section-padding) lg:items-center rounded-4xl lg:rounded-none border border-slate-100 lg:border-none shadow-[0_2px_15px_rgb(0,0,0,0.03)] lg:shadow-none overflow-hidden lg:overflow-visible">
           
           {/* Right Column (Image - Top on Mobile) */}
           <div className="relative w-full min-h-64 lg:min-h-0 lg:aspect-4/5 bg-slate-100 lg:rounded-4xl overflow-hidden lg:shadow-sm border-b border-slate-100 lg:border-slate-100 order-1 lg:order-2">
-            <Image src="/images/dich-vu/mobile/AIUseCases1.png" alt="Ứng dụng khách hàng" fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover transition-transform duration-500 hover:scale-105" />
+            <Image src="/images/dich-vu/mobile/AIUseCases1.png" alt="Ứng dụng khách hàng" fill loading="lazy" placeholder="blur" blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZTJlOGYwIi8+PC9zdmc+" sizes="(max-width: 768px) 100vw, 50vw" className="object-cover transition-transform duration-500 hover:scale-105" />
           </div>
 
           {/* Left Column (Text - Bottom on Mobile) */}
