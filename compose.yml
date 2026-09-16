@@ -1,78 +1,80 @@
 services:
   app:
-    image: ${appImage:-ghcr.io/vak1412/ada/app:latest}
+    image: ${appImage:-ghcr.io/adaagencygroup-boop/ada_web/app:latest}
     build: .
     container_name: app
     restart: always
+    entrypoint: >
+      /bin/sh -c "mkdir -p /var/app/storage/news /var/app/storage/recruitments /var/app/storage/contacts /var/app/storage/resumes /var/app/storage/media /var/app/storage/backups && chmod -R 777 /var/app/storage && exec java -Xms256m -Xmx512m -XX:+UseG1GC -XX:MaxMetaspaceSize=160m -Djdk.virtualThreadScheduler.parallelism=2 --enable-preview -jar /app/app.jar"
     env_file:
       - .env
     volumes:
       - storage:/var/app/storage
     ports:
-      - "8080:8080"
+      - "127.0.0.1:8080:8080"
     depends_on:
       - postgres
       - redis
     deploy:
       resources:
         limits:
-          cpus: '2.0'
-          memory: 2048M
+          cpus: '1.2'
+          memory: 768M
+        reservations:
+          cpus: '0.3'
+          memory: 256M
     networks:
       - net
-  admin-web:
-    image: ${adminWebImage:-ada-admin-web:latest}
+  admin:
+    image: ${adminImage:-ada-admin:latest}
     build:
       context: ./FE/ada-group-admin-website
-      target: dev
+      target: runner
       args:
-        NEXT_PUBLIC_API_BASE_URL: ${nextPublicApiBaseUrl:-https://adagroup.com.vn/api/v1}
-    container_name: admin-web
+        NEXT_PUBLIC_API_BASE_URL: ${nextPublicApiBaseUrl:-https://adaagencygroup.online/api/v1}
+    container_name: admin
     restart: always
     environment:
+      NODE_ENV: production
       API_BASE_URL: http://app:8080/api/v1
-      WATCHPACK_POLLING: "true"
-      CHOKIDAR_USEPOLLING: "true"
-    volumes:
-      - ./FE/ada-group-admin-website:/app
-      - /app/.next
-      - /app/node_modules
+      NEXT_PUBLIC_API_BASE_URL: ${nextPublicApiBaseUrl:-https://adaagencygroup.online/api/v1}
+      NODE_OPTIONS: "--max-old-space-size=256"
     depends_on:
       - app
     deploy:
       resources:
         limits:
-          cpus: '1.0'
-          memory: 1024M
+          cpus: '0.6'
+          memory: 384M
+        reservations:
+          cpus: '0.1'
+          memory: 128M
     networks:
       - net
-  public-web:
-    image: ${publicWebImage:-ada-public-web:latest}
+  public:
+    image: ${publicImage:-ada-public:latest}
     build:
       context: ./FE/ada-group-website
-      target: dev
+      target: runner
       args:
-        NEXT_PUBLIC_API_BASE_URL: ${nextPublicApiBaseUrl:-https://adagroup.com.vn/api/v1}
-    container_name: public-web
+        NEXT_PUBLIC_API_BASE_URL: ${nextPublicApiBaseUrl:-https://adaagencygroup.online/api/v1}
+    container_name: public
     restart: always
     environment:
-      # Server Components run inside this container, so they must reach the
-      # backend via the Docker network's service name, not the public URL
-      # baked into the browser bundle via NEXT_PUBLIC_API_BASE_URL.
+      NODE_ENV: production
       API_BASE_URL: http://app:8080/api/v1
-      WATCHPACK_POLLING: "true"
-      CHOKIDAR_USEPOLLING: "true"
-    volumes:
-      - ./FE/ada-group-website:/app
-      - /app/.next
-      - /app/node_modules
+      NEXT_PUBLIC_API_BASE_URL: ${nextPublicApiBaseUrl:-https://adaagencygroup.online/api/v1}
+      NODE_OPTIONS: "--max-old-space-size=256"
     depends_on:
       - app
     deploy:
       resources:
         limits:
-          cpus: '1.0'
-          memory: 1024M
+          cpus: '0.6'
+          memory: 384M
+        reservations:
+          cpus: '0.1'
+          memory: 128M
     networks:
       - net
   postgres:
@@ -88,36 +90,42 @@ services:
     command:
       - postgres
       - -c
-      - shared_buffers=256MB
+      - shared_buffers=128MB
       - -c
-      - work_mem=16MB
+      - work_mem=4MB
       - -c
-      - max_connections=200
+      - max_connections=60
       - -c
-      - effective_cache_size=1024MB
+      - effective_cache_size=384MB
       - -c
-      - maintenance_work_mem=64MB
+      - maintenance_work_mem=32MB
     volumes:
       - pg:/var/lib/postgresql
     deploy:
       resources:
         limits:
-          cpus: '1.0'
-          memory: 768M
+          cpus: '0.8'
+          memory: 384M
+        reservations:
+          cpus: '0.2'
+          memory: 128M
     networks:
       - net
   redis:
     image: redis:latest
     container_name: redis
     restart: always
-    command: redis-server --maxmemory 200mb --maxmemory-policy allkeys-lru --save 900 1
+    command: redis-server --maxmemory 96mb --maxmemory-policy allkeys-lru --save 900 1
     volumes:
       - redis:/data
     deploy:
       resources:
         limits:
-          cpus: '0.5'
-          memory: 256M
+          cpus: '0.3'
+          memory: 128M
+        reservations:
+          cpus: '0.05'
+          memory: 32M
     networks:
       - net
   nginx:
@@ -137,8 +145,11 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '2.0'
-          memory: 512M
+          cpus: '0.6'
+          memory: 128M
+        reservations:
+          cpus: '0.1'
+          memory: 32M
     networks:
       - net
   prometheus:
@@ -146,12 +157,13 @@ services:
     container_name: prometheus
     restart: always
     ports:
-      - "9090:9090"
+      - "127.0.0.1:9090:9090"
     extra_hosts:
       - "host.docker.internal:host-gateway"
     command:
       - --config.file=/etc/prometheus/prometheus.yml
       - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention.time=7d
       - --web.enable-lifecycle
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
@@ -159,8 +171,11 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.5'
-          memory: 512M
+          cpus: '0.3'
+          memory: 256M
+        reservations:
+          cpus: '0.05'
+          memory: 64M
     networks:
       - net
   loki:
@@ -174,8 +189,11 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '1.0'
-          memory: 512M
+          cpus: '0.3'
+          memory: 256M
+        reservations:
+          cpus: '0.05'
+          memory: 64M
     networks:
       - net
   promtail:
@@ -186,12 +204,16 @@ services:
     command: -config.file=/etc/promtail/config.yml
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
       - ./promtail/config.yml:/etc/promtail/config.yml:ro
     deploy:
       resources:
         limits:
-          cpus: '0.2'
-          memory: 100M
+          cpus: '0.1'
+          memory: 64M
+        reservations:
+          cpus: '0.02'
+          memory: 16M
     networks:
       - net
   grafana:
@@ -201,6 +223,8 @@ services:
     user: "0"
     ports:
       - "9000:3000"
+    environment:
+      GOGC: "50"
     volumes:
       - ./grafana/grafana.ini:/etc/grafana/grafana.ini:ro
       - ./grafana/provisioning:/etc/grafana/provisioning:ro
@@ -211,8 +235,11 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.5'
-          memory: 512M
+          cpus: '0.8'
+          memory: 768M
+        reservations:
+          cpus: '0.1'
+          memory: 128M
     networks:
       - net
 volumes:

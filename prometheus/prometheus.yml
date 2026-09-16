@@ -1,12 +1,12 @@
 global:
-  scrape_interval: 1s
-  evaluation_interval: 1s
+  scrape_interval: 15s
+  evaluation_interval: 15s
 scrape_configs:
   - job_name: 'ada'
     metrics_path: '/actuator/prometheus'
-    scrape_interval: 1s
+    scrape_interval: 15s
     static_configs:
-      - targets: ['app:8080', 'host.docker.internal:8080']
+      - targets: ['app:8080']
         labels:
           application: 'ada'
           environment: 'production'

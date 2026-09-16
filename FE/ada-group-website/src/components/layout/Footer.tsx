@@ -100,7 +100,7 @@ const CONTACT_ROWS = [
   },
   {
     icon: GlobeIcon,
-    content: <a href="https://www.adagroup.vn" target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 transition-colors font-medium">www.adagroup.vn</a>,
+    content: <a href="https://www.adaagencygroup.online" target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 transition-colors font-medium">www.adaagencygroup.online</a>,
   },
   {
     icon: ClockIcon,

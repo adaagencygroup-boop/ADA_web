@@ -20,7 +20,7 @@ export default async function XacThucEmailPage({
 
       <div className="flex w-full flex-col items-center justify-center p-8 sm:p-16 lg:w-1/2">
         <OtpForm
-          email={email ?? "admin@adagroup.vn"}
+          email={email ?? "ada.agency.group@gmail.com"}
           nextHref={next ?? "/"}
           backHref={back ?? "/dang-nhap"}
         />

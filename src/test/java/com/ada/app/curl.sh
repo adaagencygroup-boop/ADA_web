@@ -103,9 +103,9 @@ fi
 runCheck "04" "Actuator Info For Authenticated Admin" "GET" "$baseURL/actuator/info" "$authHeader" "" "200"
 runCheck "05" "Actuator Metrics For Authenticated Admin" "GET" "$baseURL/actuator/metrics" "$authHeader" "" "200"
 runCheck "06" "Actuator Prometheus Metrics For Authenticated Admin" "GET" "$baseURL/actuator/prometheus" "$authHeader" "" "200"
-runCheck "07" "Forgot Password Request For OTP Generation" "POST" "$baseURL/api/v1/auth/forgotPassword" "Content-Type: application/json" '{"email":"contact@adagroup.com.vn"}' "200"
-runCheck "08" "Verify OTP Negative Validation" "POST" "$baseURL/api/v1/auth/verifyOTP" "Content-Type: application/json" '{"email":"contact@adagroup.com.vn","otp":"000000"}' "400"
-runCheck "09" "Reset Password Negative Validation" "POST" "$baseURL/api/v1/auth/resetPassword" "Content-Type: application/json" '{"email":"contact@adagroup.com.vn","otp":"000000","newPassword":"UpdatedPassword18","confirmPassword":"UpdatedPassword18"}' "400"
+runCheck "07" "Forgot Password Request For OTP Generation" "POST" "$baseURL/api/v1/auth/forgotPassword" "Content-Type: application/json" '{"email":"ada.agency.group@gmail.com"}' "200"
+runCheck "08" "Verify OTP Negative Validation" "POST" "$baseURL/api/v1/auth/verifyOTP" "Content-Type: application/json" '{"email":"ada.agency.group@gmail.com","otp":"000000"}' "400"
+runCheck "09" "Reset Password Negative Validation" "POST" "$baseURL/api/v1/auth/resetPassword" "Content-Type: application/json" '{"email":"ada.agency.group@gmail.com","otp":"000000","newPassword":"UpdatedPassword18","confirmPassword":"UpdatedPassword18"}' "400"
 runCheck "10" "Refresh Access Token" "POST" "$baseURL/api/v1/auth/refreshToken" "Content-Type: application/json" "{}" "200"
 newAccessToken=$(echo "$lastResponse" | grep -o '"accessToken":"[^"]*' | cut -d'"' -f4)
 if [ -n "$newAccessToken" ]; then

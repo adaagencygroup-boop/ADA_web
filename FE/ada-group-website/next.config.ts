@@ -1,8 +1,8 @@
 import type { NextConfig } from "next";
-
 const nextConfig: NextConfig = {
   output: "standalone",
   images: {
+    unoptimized: true,
     dangerouslyAllowSVG: true,
     dangerouslyAllowLocalIP: true,
     remotePatterns: [
@@ -12,7 +12,11 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "adagroup.com.vn",
+        hostname: "adaagencygroup.online",
+      },
+      {
+        protocol: "https",
+        hostname: "*.adaagencygroup.online",
       },
       {
         protocol: "http",
@@ -32,12 +36,13 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/files/:path*",
-        destination: process.env.NEXT_PUBLIC_API_BASE_URL
-          ? `${process.env.NEXT_PUBLIC_API_BASE_URL.replace("/api/v1", "")}/files/:path*`
-          : "http://localhost:8080/files/:path*",
+        destination: process.env.API_BASE_URL
+          ? `${process.env.API_BASE_URL.replace("/api/v1", "")}/files/:path*`
+          : (process.env.NEXT_PUBLIC_API_BASE_URL
+              ? `${process.env.NEXT_PUBLIC_API_BASE_URL.replace("/api/v1", "")}/files/:path*`
+              : "http://app:8080/files/:path*"),
       },
     ];
   },
 };
-
 export default nextConfig;
