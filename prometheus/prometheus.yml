@@ -10,6 +10,13 @@ scrape_configs:
         labels:
           application: 'ada'
           environment: 'production'
+  - job_name: 'node'
+    scrape_interval: 15s
+    static_configs:
+      - targets: ['node:9100']
+        labels:
+          application: 'node'
+          environment: 'production'
   - job_name: 'prometheus'
     static_configs:
       - targets: ['localhost:9090']

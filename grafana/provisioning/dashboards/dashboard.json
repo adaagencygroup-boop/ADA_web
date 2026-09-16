@@ -13,7 +13,258 @@
       "collapsed": false,
       "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 },
       "id": 100,
-      "title": "Resources",
+      "title": "System & Host Overview",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "#EAB839", "value": 70 },
+              { "color": "red", "value": 85 }
+            ]
+          },
+          "unit": "percent",
+          "min": 0,
+          "max": 100
+        }
+      },
+      "gridPos": { "h": 5, "w": 3, "x": 0, "y": 1 },
+      "id": 1,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "title": "Host CPU %",
+      "type": "gauge",
+      "targets": [
+        {
+          "expr": "100 - (avg(rate(node_cpu_seconds_total{mode=\"idle\"}[1m])) * 100)",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "#EAB839", "value": 75 },
+              { "color": "red", "value": 90 }
+            ]
+          },
+          "unit": "percent",
+          "min": 0,
+          "max": 100
+        }
+      },
+      "gridPos": { "h": 5, "w": 3, "x": 3, "y": 1 },
+      "id": 2,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "title": "System RAM %",
+      "type": "gauge",
+      "targets": [
+        {
+          "expr": "((node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes) * 100",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "#EAB839", "value": 50 },
+              { "color": "red", "value": 80 }
+            ]
+          },
+          "unit": "percent",
+          "min": 0,
+          "max": 100
+        }
+      },
+      "gridPos": { "h": 5, "w": 3, "x": 6, "y": 1 },
+      "id": 3,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "title": "System Swap %",
+      "type": "gauge",
+      "targets": [
+        {
+          "expr": "((node_memory_SwapTotal_bytes - node_memory_SwapFree_bytes) / clamp_min(node_memory_SwapTotal_bytes, 1)) * 100",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "#EAB839", "value": 70 },
+              { "color": "red", "value": 85 }
+            ]
+          },
+          "unit": "percent",
+          "min": 0,
+          "max": 100
+        }
+      },
+      "gridPos": { "h": 5, "w": 3, "x": 9, "y": 1 },
+      "id": 4,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "title": "Storage / Disk %",
+      "type": "gauge",
+      "targets": [
+        {
+          "expr": "((node_filesystem_size_bytes{mountpoint=\"/\",fstype!~\"rootfs|tmpfs\"} - node_filesystem_free_bytes{mountpoint=\"/\",fstype!~\"rootfs|tmpfs\"}) / node_filesystem_size_bytes{mountpoint=\"/\",fstype!~\"rootfs|tmpfs\"}) * 100",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "unit": "bytes"
+        }
+      },
+      "gridPos": { "h": 5, "w": 3, "x": 12, "y": 1 },
+      "id": 5,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }
+      },
+      "title": "JVM Heap Used",
+      "type": "stat",
+      "targets": [
+        {
+          "expr": "sum(jvm_memory_used_bytes{area=\"heap\"})",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "unit": "short"
+        }
+      },
+      "gridPos": { "h": 5, "w": 3, "x": 15, "y": 1 },
+      "id": 6,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }
+      },
+      "title": "Live Threads",
+      "type": "stat",
+      "targets": [
+        {
+          "expr": "max(jvm_threads_live_threads or jvm_threads_live)",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "unit": "short"
+        }
+      },
+      "gridPos": { "h": 5, "w": 3, "x": 18, "y": 1 },
+      "id": 7,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }
+      },
+      "title": "DB Active Pool",
+      "type": "stat",
+      "targets": [
+        {
+          "expr": "max(hikaricp_connections_active or hikaricp_connections{state=\"active\"})",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "unit": "reqps"
+        }
+      },
+      "gridPos": { "h": 5, "w": 3, "x": 21, "y": 1 },
+      "id": 8,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }
+      },
+      "title": "Throughput",
+      "type": "stat",
+      "targets": [
+        {
+          "expr": "sum(rate(http_server_requests_seconds_count[1m]))",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 6 },
+      "id": 101,
+      "title": "Host Infrastructure: System RAM, Swap, Storage & Network",
       "type": "row"
     },
     {
@@ -21,25 +272,38 @@
       "fieldConfig": {
         "defaults": {
           "custom": { "drawStyle": "line", "lineInterpolation": "smooth" },
-          "unit": "percentunit",
-          "min": 0,
-          "max": 1
+          "unit": "bytes"
         }
       },
-      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 1 },
-      "id": 1,
-      "title": "CPU Usage - Process vs System",
+      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 7 },
+      "id": 9,
+      "title": "System RAM & Swap Memory Details",
       "type": "timeseries",
       "targets": [
         {
-          "expr": "process_cpu_usage or vector(0)",
-          "legendFormat": "JVM Process CPU",
+          "expr": "node_memory_MemTotal_bytes",
+          "legendFormat": "Total Host RAM",
           "refId": "A"
         },
         {
-          "expr": "system_cpu_usage or vector(0)",
-          "legendFormat": "Host System CPU",
+          "expr": "node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes",
+          "legendFormat": "Used Host RAM",
           "refId": "B"
+        },
+        {
+          "expr": "node_memory_MemAvailable_bytes",
+          "legendFormat": "Available Host RAM",
+          "refId": "C"
+        },
+        {
+          "expr": "node_memory_SwapTotal_bytes - node_memory_SwapFree_bytes",
+          "legendFormat": "Used Swap",
+          "refId": "D"
+        },
+        {
+          "expr": "node_memory_SwapTotal_bytes",
+          "legendFormat": "Total Swap",
+          "refId": "E"
         }
       ]
     },
@@ -51,29 +315,101 @@
           "unit": "bytes"
         }
       },
-      "gridPos": { "h": 8, "w": 8, "x": 8, "y": 1 },
-      "id": 2,
+      "gridPos": { "h": 8, "w": 8, "x": 8, "y": 7 },
+      "id": 10,
+      "title": "Host Storage / Disk Space Details",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "node_filesystem_size_bytes{mountpoint=\"/\",fstype!~\"rootfs|tmpfs\"}",
+          "legendFormat": "Total Disk Space",
+          "refId": "A"
+        },
+        {
+          "expr": "node_filesystem_size_bytes{mountpoint=\"/\",fstype!~\"rootfs|tmpfs\"} - node_filesystem_free_bytes{mountpoint=\"/\",fstype!~\"rootfs|tmpfs\"}",
+          "legendFormat": "Used Disk Space",
+          "refId": "B"
+        },
+        {
+          "expr": "node_filesystem_free_bytes{mountpoint=\"/\",fstype!~\"rootfs|tmpfs\"}",
+          "legendFormat": "Free Disk Space",
+          "refId": "C"
+        }
+      ]
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": {
+        "defaults": {
+          "custom": { "drawStyle": "line", "lineInterpolation": "smooth" },
+          "unit": "Bps"
+        }
+      },
+      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 7 },
+      "id": 11,
+      "title": "Host Disk I/O & Network Traffic",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "sum(rate(node_disk_read_bytes_total[1m]))",
+          "legendFormat": "Disk Read (B/s)",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(rate(node_disk_written_bytes_total[1m]))",
+          "legendFormat": "Disk Write (B/s)",
+          "refId": "B"
+        },
+        {
+          "expr": "sum(rate(node_network_receive_bytes_total{device!~\"lo|veth.*|docker.*|br-.*\"}[1m]))",
+          "legendFormat": "Network In (B/s)",
+          "refId": "C"
+        },
+        {
+          "expr": "sum(rate(node_network_transmit_bytes_total{device!~\"lo|veth.*|docker.*|br-.*\"}[1m]))",
+          "legendFormat": "Network Out (B/s)",
+          "refId": "D"
+        }
+      ]
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 15 },
+      "id": 102,
+      "title": "JVM Runtime, Memory & GC",
+      "type": "row"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": {
+        "defaults": {
+          "custom": { "drawStyle": "line", "lineInterpolation": "smooth" },
+          "unit": "bytes"
+        }
+      },
+      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 16 },
+      "id": 12,
       "title": "JVM Memory Pools",
       "type": "timeseries",
       "targets": [
         {
-          "expr": "sum(jvm_memory_used_bytes{area=\"heap\"}) or vector(0)",
+          "expr": "sum(jvm_memory_used_bytes{area=\"heap\"})",
           "legendFormat": "Heap Used",
           "refId": "A"
         },
         {
-          "expr": "sum(jvm_memory_committed_bytes{area=\"heap\"}) or vector(0)",
+          "expr": "sum(jvm_memory_committed_bytes{area=\"heap\"})",
           "legendFormat": "Heap Committed",
           "refId": "B"
         },
         {
-          "expr": "sum(jvm_memory_max_bytes{area=\"heap\"}) or vector(0)",
+          "expr": "sum(jvm_memory_max_bytes{area=\"heap\"})",
           "legendFormat": "Heap Max",
           "refId": "C"
         },
         {
-          "expr": "sum(jvm_memory_used_bytes{area=\"nonheap\"}) or vector(0)",
-          "legendFormat": "Non-Heap Used",
+          "expr": "sum(jvm_memory_used_bytes{area=\"nonheap\"})",
+          "legendFormat": "Non-Heap / Metaspace",
           "refId": "D"
         }
       ]
@@ -86,32 +422,57 @@
           "unit": "short"
         }
       },
-      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 1 },
-      "id": 3,
+      "gridPos": { "h": 8, "w": 8, "x": 8, "y": 16 },
+      "id": 13,
       "title": "JVM Threads",
       "type": "timeseries",
       "targets": [
         {
-          "expr": "jvm_threads_live_threads or jvm_threads_live or vector(0)",
+          "expr": "max(jvm_threads_live_threads or jvm_threads_live)",
           "legendFormat": "Live Threads",
           "refId": "A"
         },
         {
-          "expr": "jvm_threads_daemon_threads or jvm_threads_daemon or vector(0)",
+          "expr": "max(jvm_threads_daemon_threads or jvm_threads_daemon)",
           "legendFormat": "Daemon Threads",
           "refId": "B"
         },
         {
-          "expr": "jvm_threads_peak_threads or jvm_threads_peak or vector(0)",
+          "expr": "max(jvm_threads_peak_threads or jvm_threads_peak)",
           "legendFormat": "Peak Threads",
           "refId": "C"
         }
       ]
     },
     {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "fieldConfig": {
+        "defaults": {
+          "custom": { "drawStyle": "line", "lineInterpolation": "smooth" },
+          "unit": "s"
+        }
+      },
+      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 16 },
+      "id": 14,
+      "title": "Garbage Collection Pauses",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "sum(rate(jvm_gc_pause_seconds_sum[1m]))",
+          "legendFormat": "Total GC Pause Time/sec",
+          "refId": "A"
+        },
+        {
+          "expr": "sum(rate(jvm_gc_pause_seconds_count[1m]))",
+          "legendFormat": "GC Pauses/sec",
+          "refId": "B"
+        }
+      ]
+    },
+    {
       "collapsed": false,
-      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 9 },
-      "id": 101,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 24 },
+      "id": 103,
       "title": "Database Connection Pool - HikariCP",
       "type": "row"
     },
@@ -123,28 +484,28 @@
           "unit": "short"
         }
       },
-      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 10 },
-      "id": 4,
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 25 },
+      "id": 15,
       "title": "HikariCP Connections",
       "type": "timeseries",
       "targets": [
         {
-          "expr": "hikaricp_connections_active or hikaricp_connections{state=\"active\"} or vector(0)",
+          "expr": "max(hikaricp_connections_active or hikaricp_connections{state=\"active\"})",
           "legendFormat": "Active Connections",
           "refId": "A"
         },
         {
-          "expr": "hikaricp_connections_idle or hikaricp_connections{state=\"idle\"} or vector(0)",
+          "expr": "max(hikaricp_connections_idle or hikaricp_connections{state=\"idle\"})",
           "legendFormat": "Idle Connections",
           "refId": "B"
         },
         {
-          "expr": "hikaricp_connections_pending or hikaricp_connections{state=\"pending\"} or vector(0)",
+          "expr": "max(hikaricp_connections_pending or hikaricp_connections{state=\"pending\"})",
           "legendFormat": "Pending Threads Waiting",
           "refId": "C"
         },
         {
-          "expr": "hikaricp_connections_max or hikaricp_connections{state=\"max\"} or vector(0)",
+          "expr": "max(hikaricp_connections_max or hikaricp_connections{state=\"max\"})",
           "legendFormat": "Max Pool Size",
           "refId": "D"
         }
@@ -158,18 +519,18 @@
           "unit": "s"
         }
       },
-      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 10 },
-      "id": 5,
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 25 },
+      "id": 16,
       "title": "HikariCP Connection Acquire / Usage Latency",
       "type": "timeseries",
       "targets": [
         {
-          "expr": "(rate(hikaricp_connections_acquire_seconds_sum[1m]) / rate(hikaricp_connections_acquire_seconds_count[1m])) or vector(0)",
+          "expr": "rate(hikaricp_connections_acquire_seconds_sum[1m]) / rate(hikaricp_connections_acquire_seconds_count[1m])",
           "legendFormat": "Avg Acquire Time",
           "refId": "A"
         },
         {
-          "expr": "(rate(hikaricp_connections_usage_seconds_sum[1m]) / rate(hikaricp_connections_usage_seconds_count[1m])) or vector(0)",
+          "expr": "rate(hikaricp_connections_usage_seconds_sum[1m]) / rate(hikaricp_connections_usage_seconds_count[1m])",
           "legendFormat": "Avg Usage Time",
           "refId": "B"
         }
@@ -177,8 +538,8 @@
     },
     {
       "collapsed": false,
-      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 18 },
-      "id": 102,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 33 },
+      "id": 104,
       "title": "HTTP Traffic & Performance",
       "type": "row"
     },
@@ -190,13 +551,13 @@
           "unit": "reqps"
         }
       },
-      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 19 },
-      "id": 6,
+      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 34 },
+      "id": 17,
       "title": "HTTP Throughput",
       "type": "timeseries",
       "targets": [
         {
-          "expr": "sum(rate(http_server_requests_seconds_count[1m])) by (status) or vector(0)",
+          "expr": "sum(rate(http_server_requests_seconds_count[1m])) by (status)",
           "legendFormat": "HTTP {{status}}",
           "refId": "A"
         }
@@ -210,28 +571,28 @@
           "unit": "s"
         }
       },
-      "gridPos": { "h": 8, "w": 8, "x": 8, "y": 19 },
-      "id": 7,
+      "gridPos": { "h": 8, "w": 8, "x": 8, "y": 34 },
+      "id": 18,
       "title": "HTTP Request Latency (p50 / p90 / p95 / p99)",
       "type": "timeseries",
       "targets": [
         {
-          "expr": "histogram_quantile(0.50, sum(rate(http_server_requests_seconds_bucket[1m])) by (le)) or vector(0)",
+          "expr": "histogram_quantile(0.50, sum(rate(http_server_requests_seconds_bucket[1m])) by (le))",
           "legendFormat": "p50 Latency",
           "refId": "A"
         },
         {
-          "expr": "histogram_quantile(0.90, sum(rate(http_server_requests_seconds_bucket[1m])) by (le)) or vector(0)",
+          "expr": "histogram_quantile(0.90, sum(rate(http_server_requests_seconds_bucket[1m])) by (le))",
           "legendFormat": "p90 Latency",
           "refId": "B"
         },
         {
-          "expr": "histogram_quantile(0.95, sum(rate(http_server_requests_seconds_bucket[1m])) by (le)) or vector(0)",
+          "expr": "histogram_quantile(0.95, sum(rate(http_server_requests_seconds_bucket[1m])) by (le))",
           "legendFormat": "p95 Latency",
           "refId": "C"
         },
         {
-          "expr": "histogram_quantile(0.99, sum(rate(http_server_requests_seconds_bucket[1m])) by (le)) or vector(0)",
+          "expr": "histogram_quantile(0.99, sum(rate(http_server_requests_seconds_bucket[1m])) by (le))",
           "legendFormat": "p99 Latency",
           "refId": "D"
         }
@@ -245,18 +606,18 @@
           "unit": "short"
         }
       },
-      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 19 },
-      "id": 8,
+      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 34 },
+      "id": 19,
       "title": "HTTP Errors",
       "type": "timeseries",
       "targets": [
         {
-          "expr": "sum(rate(http_server_requests_seconds_count{status=~\"4..\"}[1m])) or vector(0)",
+          "expr": "sum(rate(http_server_requests_seconds_count{status=~\"4..\"}[1m]))",
           "legendFormat": "4xx Client Errors Per Sec",
           "refId": "A"
         },
         {
-          "expr": "sum(rate(http_server_requests_seconds_count{status=~\"5..\"}[1m])) or vector(0)",
+          "expr": "sum(rate(http_server_requests_seconds_count{status=~\"5..\"}[1m]))",
           "legendFormat": "5xx Server Errors Per Sec",
           "refId": "B"
         }
@@ -264,15 +625,15 @@
     },
     {
       "collapsed": false,
-      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 27 },
-      "id": 103,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 42 },
+      "id": 105,
       "title": "Real-Time Application Logs",
       "type": "row"
     },
     {
       "datasource": { "type": "loki", "uid": "loki" },
-      "gridPos": { "h": 12, "w": 24, "x": 0, "y": 28 },
-      "id": 9,
+      "gridPos": { "h": 12, "w": 24, "x": 0, "y": 43 },
+      "id": 20,
       "options": {
         "showLabels": true,
         "wrapLogMessage": true,
@@ -284,16 +645,16 @@
       "type": "logs",
       "targets": [
         {
-          "expr": "{container=~\"app|postgres|redis|nginx\"}",
+          "expr": "{container=~\"app|postgres|redis|nginx|node\"}",
           "refId": "A"
         }
       ]
     }
   ],
-  "refresh": "1s",
+  "refresh": "10s",
   "schemaVersion": 38,
   "style": "dark",
-  "tags": ["ada", "spring-boot", "loki", "prometheus", "grafana"],
+  "tags": ["ada", "spring-boot", "loki", "prometheus", "grafana", "system", "ram", "storage"],
   "time": {
     "from": "now-15m",
     "to": "now"
@@ -304,5 +665,5 @@
   "timezone": "browser",
   "title": "Dashboard",
   "uid": "dashboard",
-  "version": 1
+  "version": 4
 }
