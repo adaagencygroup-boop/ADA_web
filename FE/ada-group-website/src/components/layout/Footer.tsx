@@ -157,7 +157,7 @@ export default function Footer() {
                 <span className="text-lg sm:text-xl font-bold tracking-tight text-zinc-900">ADA Group</span>
               </Link>
               <p className="mt-2.5 text-sm leading-relaxed text-zinc-600 max-w-xl text-justify">
-                ADA Group là đối tác công nghệ hàng đầu chuyên tư vấn, thiết kế và phát triển giải pháp phần mềm toàn diện, hệ thống quản trị doanh nghiệp, ứng dụng di động và AI Automation. Chúng tôi đồng hành cùng doanh nghiệp trong hành trình chuyển đổi số, tối ưu hóa quy trình vận hành và kiến tạo giá trị đột phá bền vững.
+                ADA Group là đối tác công nghệ tiên phong cung cấp giải pháp phần mềm toàn diện, hệ thống doanh nghiệp và AI Automation. Chúng tôi đồng hành cùng doanh nghiệp chuyển đổi số, tối ưu vận hành và bứt phá bền vững.
               </p>
             </div>
 
@@ -203,7 +203,7 @@ export default function Footer() {
 
           <div className="flex items-center gap-3">
             <a
-              href="https://www.facebook.com"
+              href="https://web.facebook.com/profile.php?id=61581317106700"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Facebook"

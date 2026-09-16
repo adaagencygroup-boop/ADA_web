@@ -102,7 +102,7 @@ export default function NewsCategories({
         <button
           type="button"
           onClick={() => setIsOpen(!isOpen)}
-          className="flex h-11 w-full items-center justify-between rounded-xl border border-zinc-200 bg-zinc-50/60 px-4 text-left text-sm font-medium text-zinc-900 transition-all hover:border-blue-500 hover:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+          className="cursor-pointer flex h-11 w-full items-center justify-between rounded-xl border border-zinc-200 bg-zinc-50/60 px-4 text-left text-sm font-medium text-zinc-900 transition-all hover:border-blue-500 hover:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20"
         >
           <div className="flex items-center gap-2.5 truncate">
             <FolderIcon className="w-4 h-4 shrink-0 text-blue-600" />
@@ -124,7 +124,7 @@ export default function NewsCategories({
                   key={item.key}
                   type="button"
                   onClick={() => handleSelect(item.key)}
-                  className={`flex w-full items-center justify-between rounded-lg px-3.5 py-2.5 text-left text-sm font-medium transition-colors ${
+                  className={`cursor-pointer flex w-full items-center justify-between rounded-lg px-3.5 py-2.5 text-left text-sm font-medium transition-colors ${
                     isSelected
                       ? "bg-blue-50 text-blue-600 font-semibold"
                       : "text-zinc-700 hover:bg-zinc-50 hover:text-zinc-900"
