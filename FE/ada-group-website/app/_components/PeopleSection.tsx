@@ -22,14 +22,14 @@ export default function PeopleSection() {
             {CONTENT.title}
           </h2>
 
-          <Image
+          {/* <Image
             src={IMAGE.src}
             alt={IMAGE.alt}
             width={1372}
             height={737}
             sizes="(min-width: 1024px) 50vw, 100vw"
             className="mt-(--inner-space) h-auto w-full lg:col-start-1 lg:row-start-1 lg:mt-0 rounded-2xl"
-          />
+          /> */}
 
           <div className="mt-(--inner-space) lg:col-start-2 lg:row-start-1 lg:mt-0">
             <h2 className="hidden text-[36px] leading-[1.2] font-semibold tracking-tight text-zinc-900 lg:block">

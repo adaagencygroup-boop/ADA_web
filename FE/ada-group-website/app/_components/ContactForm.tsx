@@ -98,7 +98,7 @@ export default function ContactForm() {
   };
 
   return (
-    <section className="section-y bg-blue-50 relative">
+    <section className="section-y relative">
       {alertInfo && (
         <Alert
           type={alertInfo.type}

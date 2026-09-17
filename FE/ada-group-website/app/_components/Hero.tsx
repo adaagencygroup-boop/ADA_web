@@ -2,7 +2,6 @@ const CONTENT = {
   title: "Giải pháp công nghệ,\n đồng hành cùng doanh nghiệp Việt",
   description:
     "ADA Group phát triển sản phẩm và giải pháp công nghệ giúp doanh nghiệp\n số hóa hoạt động, tối ưu quy trình và tạo ra những trải nghiệm tốt hơn cho khách hàng.",
-  mediaPlaceholder: "Animation về trí tuệ nhân tạo",
 };
 
 export default function Hero() {
@@ -19,11 +18,11 @@ export default function Hero() {
           </p>
         </div>
 
-        <div className="mt-(--inner-space) flex aspect-video w-full items-center justify-center rounded-2xl bg-zinc-100">
-          <span className="text-sm text-zinc-400">
-            {CONTENT.mediaPlaceholder}
-          </span>
-        </div>
+        {/* The hologram particle background (mounted in app/page.tsx) fills
+            this space on devices that render it — the model for the "hero"
+            section shows through here. No 3D on mobile/unsupported browsers,
+            so no space is reserved there either. */}
+        <div className="mt-(--inner-space) hidden aspect-video w-full md:block" />
       </div>
     </section>
   );

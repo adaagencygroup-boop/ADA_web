@@ -12,7 +12,10 @@
 }
 
 body {
-  background: var(--background);
+  /* Transparent so the fixed hologram particle canvas (mounted behind the
+     page content in app/page.tsx) shows through. Falls back to opaque white
+     automatically when that canvas isn't mounted (no WebGPU / mobile). */
+  background: transparent;
   color: var(--foreground);
   font-family: var(--font-be-vietnam), Arial, Helvetica, sans-serif;
 }

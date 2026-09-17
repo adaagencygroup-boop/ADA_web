@@ -26,7 +26,7 @@ const IMAGES = {
 
 export default function AboutHighlight() {
   return (
-    <section className="section-y bg-white  ">
+    <section className="section-y">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 items-center gap-x-12 lg:grid-cols-2">
         <div className="order-1 lg:order-0 lg:col-start-2 lg:row-start-1">
@@ -39,7 +39,7 @@ export default function AboutHighlight() {
         </div>
 
         <div className="relative order-2 mx-auto mt-(--inner-space) pb-15 pr-22.5 md:w-143 md:pb-10 md:pr-56 lg:order-0 lg:col-start-1 lg:row-start-1 lg:row-span-2 lg:mx-0 lg:mt-0 lg:w-full lg:max-w-none lg:pb-[8%] lg:pr-0">
-          <div className="relative h-35 w-55 overflow-hidden rounded-2xl md:h-62.5 md:w-87 lg:aspect-348/250 lg:h-auto lg:w-[55%]">
+          {/* <div className="relative h-35 w-55 overflow-hidden rounded-2xl md:h-62.5 md:w-87 lg:aspect-348/250 lg:h-auto lg:w-[55%]">
             <Image
               src={IMAGES.primary.src}
               alt={IMAGES.primary.alt}
@@ -56,7 +56,7 @@ export default function AboutHighlight() {
               sizes="(min-width: 1024px) 28vw, (min-width: 768px) 348px, 180px"
               className="object-cover"
             />
-          </div>
+          </div> */}
         </div>
 
         <div className="order-3 mt-(--inner-space) lg:order-0 lg:col-start-2 lg:row-start-2 lg:mt-(--heading-space)">

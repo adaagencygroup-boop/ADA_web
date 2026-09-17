@@ -146,7 +146,7 @@ function FooterLinkList({
 
 export default function Footer() {
   return (
-    <footer className="border-t border-zinc-200 bg-white section-y">
+    <footer className="relative z-1 border-t border-zinc-200 bg-white section-y">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-(--section-padding) lg:grid-cols-[minmax(0,1.4fr)_repeat(3,minmax(0,1fr))]">
           <div>
