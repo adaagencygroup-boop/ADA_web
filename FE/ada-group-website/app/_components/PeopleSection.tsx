@@ -17,13 +17,13 @@ export default function PeopleSection() {
   return (
     <section className="section-y">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 items-start gap-x-12 lg:grid-cols-2">
-          <h2 className="text-[28px] leading-[1.2] font-semibold tracking-tight text-zinc-900 lg:hidden">
+        <div className="grid grid-cols-1 items-start gap-x-12 md:grid-cols-2">
+          <h2 className="text-[28px] leading-[1.2] font-semibold tracking-tight text-zinc-900 md:hidden">
             {CONTENT.title}
           </h2>
 
-          <div className="overflow-hidden rounded-2xl mt-(--inner-space) lg:col-start-1 lg:row-start-1 lg:mt-0">
-            <Image
+          <div className="overflow-hidden rounded-2xl mt-(--inner-space) md:col-start-1 md:row-start-1 md:mt-0">
+            {/* <Image
               src={IMAGE.src}
               alt={IMAGE.alt}
               width={1372}
@@ -33,11 +33,11 @@ export default function PeopleSection() {
               blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZTJlOGYwIi8+PC9zdmc+"
               sizes="(min-width: 1024px) 50vw, 100vw"
               className="h-auto w-full transition-transform duration-500 hover:scale-105"
-            />
+            /> */}
           </div>
 
-          <div className="mt-(--inner-space) lg:col-start-2 lg:row-start-1 lg:mt-0">
-            <h2 className="hidden text-[36px] leading-[1.2] font-semibold tracking-tight text-zinc-900 lg:block">
+          <div className="mt-(--inner-space) md:col-start-2 md:row-start-1 md:mt-0">
+            <h2 className="hidden text-[36px] leading-[1.2] font-semibold tracking-tight text-zinc-900 md:block">
               {CONTENT.title}
             </h2>
             {CONTENT.paragraphs.map((paragraph) => (
