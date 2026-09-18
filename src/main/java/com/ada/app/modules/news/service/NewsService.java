@@ -158,6 +158,9 @@ public class NewsService {
   @Transactional
   public void deleteCategory(UUID id) {
     NewsCategory category = categoryRepository.findById(id).orElseThrow(() -> AppException.notFound("Category Not Found"));
+    if (newsRepository.existsByCategoryId(id)) {
+      throw AppException.conflict("Lĩnh vực này đang được sử dụng bởi bài viết tin tức, không thể xóa!");
+    }
     categoryRepository.delete(category);
   }
   @Transactional(readOnly = true)

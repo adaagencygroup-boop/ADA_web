@@ -11,7 +11,8 @@ import {
   useNewsCategories,
   useUpdateNewsCategory,
 } from "@/src/hooks/useNewsCategories";
-import type { NewsCategory } from "@/src/lib/api/news";
+import { getNews, type NewsCategory } from "@/src/lib/api/news";
+import { toast } from "sonner";
 import {
   newsCategorySchema,
   type NewsCategoryFormValues,
@@ -63,8 +64,20 @@ export default function CategoryManager() {
     );
   });
 
-  function handleConfirmDelete() {
+  async function handleConfirmDelete() {
     if (!deleteTarget) return;
+
+    try {
+      const checkRes = await getNews({ categoryId: deleteTarget.id, page: 1, size: 1 });
+      if (checkRes?.pagination?.totalElements && checkRes.pagination.totalElements > 0) {
+        toast.error(`Lĩnh vực "${deleteTarget.name}" đang có ${checkRes.pagination.totalElements} bài viết tin tức sử dụng, không thể xóa!`);
+        setDeleteTarget(null);
+        return;
+      }
+    } catch (err) {
+      console.error("Check category in use error:", err);
+    }
+
     deleteMutation.mutate(deleteTarget.id, {
       onSuccess: () => setDeleteTarget(null),
     });

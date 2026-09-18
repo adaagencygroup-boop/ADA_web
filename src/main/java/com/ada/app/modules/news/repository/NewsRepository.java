@@ -21,6 +21,8 @@ public interface NewsRepository extends JpaRepository<News, UUID>, JpaSpecificat
   @EntityGraph(attributePaths = {"author", "category"})
   Optional<News> findBySlugAndStatus(String slug, NewsStatus status);
   boolean existsBySlug(String slug);
+  @Query("SELECT COUNT(n) > 0 FROM News n WHERE n.category.id = :categoryId")
+  boolean existsByCategoryId(@Param("categoryId") UUID categoryId);
   @EntityGraph(attributePaths = {"author", "category"})
   Page<News> findAll(Specification<News> spec, Pageable pageable);
   @EntityGraph(attributePaths = {"author", "category"})

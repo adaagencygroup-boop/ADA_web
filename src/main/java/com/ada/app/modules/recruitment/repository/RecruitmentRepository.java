@@ -23,6 +23,8 @@ public interface RecruitmentRepository extends JpaRepository<Recruitment, UUID>,
   @EntityGraph(attributePaths = {"recruiter", "department"})
   Optional<Recruitment> findBySlugAndStatus(String slug, RecruitmentStatus status);
   boolean existsBySlug(String slug);
+  @Query("SELECT COUNT(r) > 0 FROM Recruitment r WHERE r.department.id = :departmentId")
+  boolean existsByDepartmentId(@Param("departmentId") UUID departmentId);
   @EntityGraph(attributePaths = {"recruiter", "department"})
   Page<Recruitment> findAll(Specification<Recruitment> spec, Pageable pageable);
   @EntityGraph(attributePaths = {"recruiter", "department"})

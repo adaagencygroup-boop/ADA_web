@@ -11,7 +11,8 @@ import {
   useDepartments,
   useUpdateDepartment,
 } from "@/src/hooks/useDepartments";
-import type { Department } from "@/src/lib/api/recruitment";
+import { getRecruitments, type Department } from "@/src/lib/api/recruitment";
+import { toast } from "sonner";
 import {
   departmentSchema,
   type DepartmentFormValues,
@@ -63,8 +64,21 @@ export default function DepartmentManager() {
     );
   });
 
-  function handleConfirmDelete() {
+  async function handleConfirmDelete() {
     if (!deleteTarget) return;
+
+    try {
+      const checkRes = await getRecruitments({ page: 1, size: 100 });
+      const count = checkRes?.items?.filter((j) => j.departmentId === deleteTarget.id || j.departmentName === deleteTarget.name).length ?? 0;
+      if (count > 0) {
+        toast.error(`Phòng ban "${deleteTarget.name}" đang có ${count} tin tuyển dụng sử dụng, không thể xóa!`);
+        setDeleteTarget(null);
+        return;
+      }
+    } catch (err) {
+      console.error("Check department in use error:", err);
+    }
+
     deleteMutation.mutate(deleteTarget.id, {
       onSuccess: () => setDeleteTarget(null),
     });

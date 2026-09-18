@@ -369,6 +369,9 @@ public class RecruitmentService {
   @Transactional
   public void deleteDepartment(UUID id) {
     Department d = departmentRepository.findById(id).orElseThrow(() -> AppException.notFound("Department Not Found"));
+    if (recruitmentRepository.existsByDepartmentId(id)) {
+      throw AppException.conflict("Phòng ban này đang được sử dụng bởi tin tuyển dụng, không thể xóa!");
+    }
     departmentRepository.delete(d);
   }
   @Transactional(readOnly = true)
