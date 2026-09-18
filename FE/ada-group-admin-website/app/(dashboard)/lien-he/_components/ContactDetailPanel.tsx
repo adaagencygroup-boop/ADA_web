@@ -20,7 +20,7 @@ import {
 } from "@/src/hooks/useContacts";
 import type { Contact } from "@/src/lib/api/contact";
 import DeleteContactDialog from "@/app/(dashboard)/lien-he/_components/DeleteContactDialog";
-import SendReplyDialog from "@/app/(dashboard)/lien-he/_components/SendReplyDialog";
+import ConfirmDialog from "@/src/components/shared/ConfirmDialog";
 
 const STATUS_STYLES = {
   pending: {
@@ -337,18 +337,18 @@ export default function ContactDetailPanel({
         isDeleting={deleteMutation.isPending}
       />
 
-      <SendReplyDialog
+      <ConfirmDialog
         open={sendReplyOpen}
         onOpenChange={setSendReplyOpen}
-        contactName={contact.customerFullname}
-        contactEmail={contact.customerEmail}
-        replyContent={replyContent}
-        attachmentName={attachment?.name}
+        title="Xác nhận gửi phản hồi"
+        description={`Bạn có chắc chắn muốn gửi phản hồi này cho khách hàng ${contact.customerFullname}${contact.customerEmail ? ` (${contact.customerEmail})` : ""}?`}
+        cancelLabel="Hủy"
+        confirmLabel="Gửi phản hồi"
         onConfirm={() => {
           setSendReplyOpen(false);
           handleSendReply();
         }}
-        isSending={isSendingReply}
+        isConfirming={isSendingReply}
       />
     </div>
   );

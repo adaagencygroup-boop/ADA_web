@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -8,6 +8,113 @@ import { formatDate, formatDeadlineDate, formatEmploymentType, getJobIconLabel, 
 import type { Department, EmploymentType, Recruitment } from "@/src/types/recruitments";
 
 const EMPLOYMENT_TYPE_OPTIONS: EmploymentType[] = ["fulltime", "parttime", "remote", "hybrid"];
+
+function ChevronDownIcon({ className = "w-4 h-4" }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="m6 9 6 6 6-6" />
+    </svg>
+  );
+}
+
+function CheckIcon({ className = "w-4 h-4" }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <polyline points="20 6 9 17 4 12" />
+    </svg>
+  );
+}
+
+function CustomSelectFilter({
+  label,
+  options,
+  value,
+  onChange,
+}: {
+  label: string;
+  options: { key: string; label: string }[];
+  value: string;
+  onChange: (value: string) => void;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const currentItem = options.find((opt) => opt.key === value) ?? options[0];
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  return (
+    <div className="flex flex-col gap-1.5">
+      <label className="text-[13px] font-semibold text-zinc-800">{label}</label>
+      <div ref={containerRef} className="relative w-full">
+        <button
+          type="button"
+          onClick={() => setIsOpen(!isOpen)}
+          className="cursor-pointer flex h-11 w-full items-center justify-between rounded-xl border border-slate-200 bg-zinc-50/60 px-4 text-left text-sm font-medium text-zinc-900 transition-all hover:border-blue-500 hover:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+        >
+          <span className="truncate">{currentItem?.label}</span>
+          <ChevronDownIcon
+            className={`w-4 h-4 shrink-0 text-zinc-500 transition-transform duration-200 ${
+              isOpen ? "rotate-180" : ""
+            }`}
+          />
+        </button>
+
+        {isOpen && (
+          <div className="absolute left-0 right-0 top-full z-30 mt-2 max-h-60 overflow-y-auto rounded-xl border border-zinc-100 bg-white p-1.5 shadow-xl ring-1 ring-black/5">
+            {options.map((option) => {
+              const isSelected = option.key === value;
+              return (
+                <button
+                  key={option.key}
+                  type="button"
+                  onClick={() => {
+                    onChange(option.key);
+                    setIsOpen(false);
+                  }}
+                  className={`cursor-pointer flex w-full items-center justify-between rounded-lg px-3.5 py-2.5 text-left text-sm font-medium transition-colors ${
+                    isSelected
+                      ? "bg-blue-50 text-blue-600 font-semibold"
+                      : "text-zinc-700 hover:bg-zinc-50 hover:text-zinc-900"
+                  }`}
+                >
+                  <span className="truncate">{option.label}</span>
+                  {isSelected && <CheckIcon className="w-4 h-4 shrink-0 text-blue-600" />}
+                </button>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
 
 export default function JobBoard({
   initialJobs,
@@ -25,9 +132,9 @@ export default function JobBoard({
     employmentType: "",
   });
 
-  const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFilters(prev => ({ ...prev, [name]: value }));
+    setFilters((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSearch = async () => {
@@ -48,6 +155,19 @@ export default function JobBoard({
 
   const displayedJobs = jobs.slice(0, displayCount);
 
+  const departmentOptions = [
+    { key: "", label: "Tất cả phòng ban" },
+    ...departments.map((dept) => ({ key: dept.id, label: dept.name })),
+  ];
+
+  const employmentTypeOptions = [
+    { key: "", label: "Tất cả hình thức" },
+    ...EMPLOYMENT_TYPE_OPTIONS.map((type) => ({
+      key: type,
+      label: formatEmploymentType(type),
+    })),
+  ];
+
   return (
     <section className="section-y pt-0!">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8 flex flex-col gap-(--inner-space)">
@@ -65,37 +185,39 @@ export default function JobBoard({
                   value={filters.keyword}
                   onChange={handleFilterChange}
                   placeholder="Nhập vị trí, kỹ năng, từ khóa..."
-                  className="w-full border border-slate-200 rounded-lg px-4 py-3 pl-10 text-[14px] outline-none focus:border-blue-500 transition-colors"
+                  className="w-full h-11 border border-slate-200 bg-zinc-50/60 rounded-xl px-4 pl-10 text-[14px] text-zinc-900 outline-none focus:border-blue-500 focus:bg-white focus:ring-2 focus:ring-blue-500/20 transition-all"
                 />
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2">
                   <circle cx="11" cy="11" r="8" />
                   <path d="m21 21-4.3-4.3" />
                 </svg>
               </div>
             </div>
 
-            <div className="lg:col-span-3 flex flex-col gap-1.5">
-              <label className="text-[13px] font-semibold text-zinc-800">Phòng ban</label>
-              <select name="departmentId" value={filters.departmentId} onChange={handleFilterChange} className="cursor-pointer w-full border border-slate-200 rounded-lg px-4 py-3 text-[14px] outline-none focus:border-blue-500 transition-colors bg-white">
-                <option value="">Tất cả phòng ban</option>
-                {departments.map(dept => (
-                  <option key={dept.id} value={dept.id}>{dept.name}</option>
-                ))}
-              </select>
-            </div>
-
-            <div className="lg:col-span-2 flex flex-col gap-1.5">
-              <label className="text-[13px] font-semibold text-zinc-800">Hình thức làm việc</label>
-              <select name="employmentType" value={filters.employmentType} onChange={handleFilterChange} className="cursor-pointer w-full border border-slate-200 rounded-lg px-4 py-3 text-[14px] outline-none focus:border-blue-500 transition-colors bg-white">
-                <option value="">Tất cả hình thức</option>
-                {EMPLOYMENT_TYPE_OPTIONS.map(type => (
-                  <option key={type} value={type}>{formatEmploymentType(type)}</option>
-                ))}
-              </select>
+            <div className="lg:col-span-3">
+              <CustomSelectFilter
+                label="Phòng ban"
+                options={departmentOptions}
+                value={filters.departmentId}
+                onChange={(val) => setFilters((prev) => ({ ...prev, departmentId: val }))}
+              />
             </div>
 
             <div className="lg:col-span-2">
-              <button onClick={handleSearch} disabled={isSearching} className="cursor-pointer w-full bg-[#002A64] hover:bg-[#002A64]/90 text-white font-medium text-[14px] py-3 rounded-lg transition-colors disabled:opacity-70 disabled:cursor-not-allowed">
+              <CustomSelectFilter
+                label="Hình thức làm việc"
+                options={employmentTypeOptions}
+                value={filters.employmentType}
+                onChange={(val) => setFilters((prev) => ({ ...prev, employmentType: val }))}
+              />
+            </div>
+
+            <div className="lg:col-span-2">
+              <button
+                onClick={handleSearch}
+                disabled={isSearching}
+                className="cursor-pointer h-11 w-full bg-[#002A64] hover:bg-[#002A64]/90 text-white font-medium text-[14px] rounded-xl transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
+              >
                 {isSearching ? "Đang tìm..." : "Tìm kiếm"}
               </button>
             </div>

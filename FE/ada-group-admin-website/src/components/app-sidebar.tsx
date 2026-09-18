@@ -23,6 +23,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/src/components/ui/sidebar"
+import LogoutConfirmDialog from "@/src/components/shared/LogoutConfirmDialog"
 import { logout as logoutRequest } from "@/src/lib/api/auth"
 import { clearAuthTokens } from "@/src/lib/storage"
 
@@ -38,8 +39,11 @@ const NAV_ITEMS = [
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname()
   const router = useRouter()
+  const [logoutOpen, setLogoutOpen] = React.useState(false)
+  const [isLoggingOut, setIsLoggingOut] = React.useState(false)
 
   async function handleLogout() {
+    setIsLoggingOut(true)
     try {
       await logoutRequest()
     } catch {
@@ -100,8 +104,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenuItem>
             <SidebarMenuButton
               type="button"
-              onClick={handleLogout}
-              className="h-11 gap-3 rounded-lg px-3 text-[15px] font-medium text-foreground/80 hover:bg-muted"
+              onClick={() => setLogoutOpen(true)}
+              className="cursor-pointer h-11 gap-3 rounded-lg px-3 text-[15px] font-medium text-foreground/80 hover:bg-muted"
             >
               <LogOut className="size-5" />
               <span>Đăng xuất</span>
@@ -109,6 +113,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
+
+      <LogoutConfirmDialog
+        open={logoutOpen}
+        onOpenChange={setLogoutOpen}
+        onConfirm={handleLogout}
+        isLoggingOut={isLoggingOut}
+      />
     </Sidebar>
   )
 }
