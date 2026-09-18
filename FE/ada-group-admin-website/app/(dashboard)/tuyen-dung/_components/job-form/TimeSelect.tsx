@@ -18,9 +18,11 @@ const MINUTES = Array.from({ length: 60 }, (_, i) => pad(i));
 export default function TimeSelect({
   value,
   onChange,
+  hasError,
 }: {
   value: string;
   onChange: (value: string) => void;
+  hasError?: boolean;
 }) {
   const [hour = "", minute = ""] = value.split(":");
 
@@ -35,7 +37,11 @@ export default function TimeSelect({
   return (
     <div className="flex min-w-0 flex-1 items-center gap-1.5">
       <Select value={hour} onValueChange={(v) => v && handleHourChange(v)}>
-        <SelectTrigger className="w-full min-w-0 rounded-lg border-[#C4C6D2] text-sm data-[size=default]:h-9.5">
+        <SelectTrigger
+          className={`w-full min-w-0 rounded-lg text-sm data-[size=default]:h-9.5 ${
+            hasError ? "border-red-500 focus-visible:border-red-500" : "border-[#C4C6D2]"
+          }`}
+        >
           <SelectValue placeholder="Giờ" />
         </SelectTrigger>
         <SelectContent className="max-h-60">
@@ -50,7 +56,11 @@ export default function TimeSelect({
       <span className="text-sm text-[#434750]">:</span>
 
       <Select value={minute} onValueChange={(v) => v && handleMinuteChange(v)}>
-        <SelectTrigger className="w-full min-w-0 rounded-lg border-[#C4C6D2] text-sm data-[size=default]:h-9.5">
+        <SelectTrigger
+          className={`w-full min-w-0 rounded-lg text-sm data-[size=default]:h-9.5 ${
+            hasError ? "border-red-500 focus-visible:border-red-500" : "border-[#C4C6D2]"
+          }`}
+        >
           <SelectValue placeholder="Phút" />
         </SelectTrigger>
         <SelectContent className="max-h-60">
@@ -64,3 +74,4 @@ export default function TimeSelect({
     </div>
   );
 }
+

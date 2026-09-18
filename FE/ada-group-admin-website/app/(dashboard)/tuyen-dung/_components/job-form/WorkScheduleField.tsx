@@ -24,6 +24,71 @@ export type WorkSchedule = {
   endTime: string;
 };
 
+export const DEFAULT_WORK_SCHEDULE: WorkSchedule = {
+  days: ["t2", "t3", "t4", "t5", "t6"],
+  startTime: "08:30",
+  endTime: "18:00",
+};
+
+export function parseWorkSchedule(workingHoursStr?: string | null): WorkSchedule {
+  if (!workingHoursStr) return DEFAULT_WORK_SCHEDULE;
+
+  const timeMatch = workingHoursStr.match(/\((\d{2}:\d{2})\s*-\s*(\d{2}:\d{2})\)/);
+  const startTime = timeMatch ? timeMatch[1] : "08:30";
+  const endTime = timeMatch ? timeMatch[2] : "18:00";
+
+  const daysStr = workingHoursStr.replace(/\s*\(\d{2}:\d{2}\s*-\s*\d{2}:\d{2}\)/, "").trim();
+  if (!daysStr) return { days: ["t2", "t3", "t4", "t5", "t6"], startTime, endTime };
+
+  const daysSet = new Set<string>();
+  const segments = daysStr.split(",").map((s) => s.trim());
+
+  for (const seg of segments) {
+    if (seg.includes("-") || seg.includes("–")) {
+      const parts = seg.split(/[-–]/).map((s) => s.trim());
+      if (parts.length === 2) {
+        const startIdx = DAYS.findIndex(
+          (d) =>
+            d.label.toLowerCase() === parts[0].toLowerCase() ||
+            d.short.toLowerCase() === parts[0].toLowerCase()
+        );
+        const endIdx = DAYS.findIndex(
+          (d) =>
+            d.label.toLowerCase() === parts[1].toLowerCase() ||
+            d.short.toLowerCase() === parts[1].toLowerCase()
+        );
+        if (startIdx !== -1 && endIdx !== -1 && startIdx <= endIdx) {
+          for (let i = startIdx; i <= endIdx; i++) {
+            daysSet.add(DAYS[i].value);
+          }
+        }
+      }
+    } else {
+      const found = DAYS.find(
+        (d) =>
+          d.label.toLowerCase() === seg.toLowerCase() ||
+          d.short.toLowerCase() === seg.toLowerCase()
+      );
+      if (found) {
+        daysSet.add(found.value);
+      }
+    }
+  }
+
+  const days = Array.from(daysSet);
+  return {
+    days: days.length > 0 ? days : ["t2", "t3", "t4", "t5", "t6"],
+    startTime,
+    endTime,
+  };
+}
+
+export function parseTimeToMinutes(timeStr: string): number {
+  if (!timeStr) return 0;
+  const [h, m] = timeStr.split(":").map(Number);
+  return (isNaN(h) ? 0 : h) * 60 + (isNaN(m) ? 0 : m);
+}
+
 export function formatWorkSchedule(schedule: WorkSchedule, placeholder: string) {
   if (schedule.days.length === 0) return placeholder;
 
@@ -61,10 +126,12 @@ export default function WorkScheduleField({
   value,
   onChange,
   placeholder = "Chọn ngày và giờ làm việc",
+  error,
 }: {
   value: WorkSchedule;
   onChange: (value: WorkSchedule) => void;
   placeholder?: string;
+  error?: string;
 }) {
   function toggleDay(day: string) {
     const days = value.days.includes(day)
@@ -79,9 +146,18 @@ export default function WorkScheduleField({
     onChange({ ...value, days: allSelected ? [] : DAYS.map((d) => d.value) });
   }
 
+  const isInvalidTime =
+    !!value.startTime &&
+    !!value.endTime &&
+    parseTimeToMinutes(value.endTime) <= parseTimeToMinutes(value.startTime);
+
   return (
     <Popover>
-      <PopoverTrigger className="flex h-9.5 w-full items-center justify-between rounded-lg border border-[#C4C6D2] bg-[#FCF9F8] px-4 text-left text-sm outline-none focus-visible:border-[#316EE9]">
+      <PopoverTrigger
+        className={`flex h-9.5 w-full items-center justify-between rounded-lg border bg-[#FCF9F8] px-4 text-left text-sm outline-none focus-visible:border-[#316EE9] ${
+          isInvalidTime || error ? "border-red-500" : "border-[#C4C6D2]"
+        }`}
+      >
         <span
           className={`truncate ${value.days.length ? "text-[#1C1B1B]" : "text-[#6B7280]"}`}
         >
@@ -129,6 +205,7 @@ export default function WorkScheduleField({
               <TimeSelect
                 value={value.startTime}
                 onChange={(startTime) => onChange({ ...value, startTime })}
+                hasError={isInvalidTime}
               />
             </div>
             <div className="flex items-center gap-2">
@@ -136,11 +213,18 @@ export default function WorkScheduleField({
               <TimeSelect
                 value={value.endTime}
                 onChange={(endTime) => onChange({ ...value, endTime })}
+                hasError={isInvalidTime}
               />
             </div>
+            {isInvalidTime && (
+              <p className="mt-1 text-xs font-medium text-red-600">
+                Thời gian kết thúc phải lớn hơn thời gian bắt đầu
+              </p>
+            )}
           </div>
         </div>
       </PopoverContent>
     </Popover>
   );
 }
+

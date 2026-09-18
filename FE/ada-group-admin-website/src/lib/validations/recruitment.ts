@@ -18,8 +18,8 @@ export const recruitmentSchema = z.object({
   }),
   workingHours: z
     .string()
-    .max(100, "Thời gian làm việc không được vượt quá 100 ký tự")
-    .optional(),
+    .min(1, "Vui lòng chọn thời gian làm việc")
+    .max(100, "Thời gian làm việc không được vượt quá 100 ký tự"),
   description: z.string().min(1, "Vui lòng nhập mô tả công việc"),
   requirements: z.string().min(1, "Vui lòng nhập yêu cầu ứng viên"),
   benefits: z.string().min(1, "Vui lòng nhập quyền lợi được hưởng"),
@@ -108,6 +108,23 @@ export const recruitmentSchema = z.object({
     message: "Mức lương tối đa phải lớn hơn mức lương tối thiểu",
     path: ["maxSalary"],
   }
+).refine(
+  (data) => {
+    if (!data.workingHours) return true;
+    const timeMatch = data.workingHours.match(/\((\d{2}:\d{2})\s*-\s*(\d{2}:\d{2})\)/);
+    if (!timeMatch) return true;
+    const [, start, end] = timeMatch;
+    const parseMinutes = (t: string) => {
+      const [h, m] = t.split(":").map(Number);
+      return (isNaN(h) ? 0 : h) * 60 + (isNaN(m) ? 0 : m);
+    };
+    return parseMinutes(end) > parseMinutes(start);
+  },
+  {
+    message: "Thời gian kết thúc phải lớn hơn thời gian bắt đầu",
+    path: ["workingHours"],
+  }
 );
 
 export type RecruitmentFormValues = z.infer<typeof recruitmentSchema>;
+
