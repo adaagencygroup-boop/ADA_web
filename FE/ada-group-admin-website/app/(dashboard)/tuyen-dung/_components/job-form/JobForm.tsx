@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -27,7 +27,9 @@ import ImageCropDialog from "@/src/components/shared/ImageCropDialog";
 import DatePickerField from "@/app/(dashboard)/tuyen-dung/_components/job-form/DatePickerField";
 import CurrencyInput from "@/app/(dashboard)/tuyen-dung/_components/job-form/CurrencyInput";
 import WorkScheduleField, {
+  DEFAULT_WORK_SCHEDULE,
   formatWorkSchedule,
+  parseWorkSchedule,
   type WorkSchedule,
 } from "@/app/(dashboard)/tuyen-dung/_components/job-form/WorkScheduleField";
 import AddDepartmentDialog from "@/app/(dashboard)/tuyen-dung/_components/job-form/AddDepartmentDialog";
@@ -63,12 +65,6 @@ const STATUS_OPTIONS: { value: RecruitmentStatus; label: string }[] = [
 ];
 
 const DEFAULT_DEADLINE = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
-
-const DEFAULT_WORK_SCHEDULE: WorkSchedule = {
-  days: ["t2", "t3", "t4", "t5", "t6"],
-  startTime: "08:30",
-  endTime: "18:00",
-};
 
 export type JobFormMode = "create" | "edit";
 
@@ -149,6 +145,12 @@ export default function JobForm({
   );
   const [addDepartmentOpen, setAddDepartmentOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (job?.workingHours) {
+      setWorkSchedule(parseWorkSchedule(job.workingHours));
+    }
+  }, [job?.workingHours]);
 
   const isNegotiable = watch("isNegotiable");
   const minSalaryValue = watch("minSalary");
@@ -424,7 +426,7 @@ export default function JobForm({
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
               <div className="flex flex-col gap-1.5">
                 <label className="text-sm font-medium text-[#1C1B1B]">
-                  Địa điểm làm việc
+                  Địa điểm làm việc <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
@@ -439,7 +441,7 @@ export default function JobForm({
 
               <div className="flex flex-col gap-1.5">
                 <label className="text-sm font-medium text-[#1C1B1B]">
-                  Thời gian làm việc
+                  Thời gian làm việc <span className="text-red-500">*</span>
                 </label>
                 <Controller
                   control={control}
@@ -450,10 +452,15 @@ export default function JobForm({
                       onChange={(next) => {
                         setWorkSchedule(next);
                         field.onChange(formatWorkSchedule(next, ""));
+                        trigger("workingHours");
                       }}
+                      error={errors.workingHours?.message}
                     />
                   )}
                 />
+                {errors.workingHours && (
+                  <p className="text-sm text-red-600">{errors.workingHours.message}</p>
+                )}
               </div>
             </div>
 
@@ -491,7 +498,7 @@ export default function JobForm({
 
               <div className="flex flex-col gap-1.5">
                 <label className="text-sm font-medium text-[#1C1B1B]">
-                  Số lượng cần tuyển
+                  Số lượng cần tuyển <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="number"
@@ -597,7 +604,7 @@ export default function JobForm({
           <div className="flex flex-col gap-4 rounded-xl border border-[#C4C6D2] bg-white p-5 shadow-xs">
             <h3 className="flex items-center gap-2 text-xl font-semibold text-[#001E4B]">
               <ImagePlus className="size-5 text-[#001E4B]" />
-              ẢNH ĐẠI DIỆN
+              ẢNH ĐẠI DIỆN <span className="text-red-500">*</span>
             </h3>
             <div className="flex flex-col items-center gap-4 rounded-lg border border-dashed border-[#C4C6D2] p-6">
               <div className="relative flex aspect-video w-full items-center justify-center overflow-hidden rounded-lg bg-[#E5E7EB]">
