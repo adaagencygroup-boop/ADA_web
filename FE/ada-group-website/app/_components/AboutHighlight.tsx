@@ -39,7 +39,7 @@ export default function AboutHighlight() {
         </div>
 
         <div className="relative order-2 mx-auto mt-(--inner-space) pb-15 pr-22.5 md:w-143 md:pb-10 md:pr-56 lg:order-0 lg:col-start-1 lg:row-start-1 lg:row-span-2 lg:mx-0 lg:mt-0 lg:w-full lg:max-w-none lg:pb-[8%] lg:pr-0">
-          {/* <div className="relative h-35 w-55 overflow-hidden rounded-2xl md:h-62.5 md:w-87 lg:aspect-348/250 lg:h-auto lg:w-[55%]">
+          <div className="relative h-35 w-55 overflow-hidden md:hidden rounded-2xl md:h-62.5 md:w-87 lg:aspect-348/250 lg:h-auto lg:w-[55%]">
             <Image
               src={IMAGES.primary.src}
               alt={IMAGES.primary.alt}
@@ -51,7 +51,7 @@ export default function AboutHighlight() {
               className="object-cover transition-transform duration-500 hover:scale-105"
             />
           </div>
-          <div className="absolute bottom-0 right-0 h-30 w-45 overflow-hidden rounded-xl border-4 border-white shadow-lg md:h-62.5 md:w-87 md:border lg:aspect-348/250 lg:h-auto lg:w-[55%]">
+          <div className="absolute bottom-0 right-0 h-30 w-45 overflow-hidden md:hidden rounded-xl border-4 border-white shadow-lg md:h-62.5 md:w-87 md:border lg:aspect-348/250 lg:h-auto lg:w-[55%]">
             <Image
               src={IMAGES.secondary.src}
               alt={IMAGES.secondary.alt}
@@ -62,7 +62,15 @@ export default function AboutHighlight() {
               sizes="(min-width: 1024px) 28vw, (min-width: 768px) 348px, 180px"
               className="object-cover transition-transform duration-500 hover:scale-105"
             />
-          </div> */}
+          </div>
+
+          {/* The two photos above are mobile-only (md:hidden) — the
+              hologram model shows through here on desktop instead, but
+              needs its own sized slot to sit in: the wrapper's own padding
+              tricks (pb-15/md:pb-10/lg:pb-[8%]) only give it a few tens of
+              pixels of height, since they were sized for the small photo
+              thumbnails, not a squarish 3D model. */}
+          {/* <div className="hidden aspect-square w-full md:block" /> */}
         </div>
 
         <div className="order-3 mt-(--inner-space) md:order-0 md:col-start-2 md:row-start-2 md:mt-(--heading-space)">

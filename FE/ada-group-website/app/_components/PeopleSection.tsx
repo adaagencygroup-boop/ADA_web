@@ -23,7 +23,7 @@ export default function PeopleSection() {
           </h2>
 
           <div className="overflow-hidden rounded-2xl mt-(--inner-space) md:col-start-1 md:row-start-1 md:mt-0">
-            {/* <Image
+            <Image
               src={IMAGE.src}
               alt={IMAGE.alt}
               width={1372}
@@ -32,8 +32,15 @@ export default function PeopleSection() {
               placeholder="blur"
               blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZTJlOGYwIi8+PC9zdmc+"
               sizes="(min-width: 1024px) 50vw, 100vw"
-              className="h-auto w-full transition-transform duration-500 hover:scale-105"
-            /> */}
+              className="h-auto w-full transition-transform duration-500 hover:scale-105 md:hidden"
+            />
+            {/* The photo above is mobile-only (md:hidden) — the hologram
+                model shows through here on desktop instead, but this
+                wrapper has no height of its own once the image is hidden,
+                so it needs an explicit reserved slot (matching Hero's and
+                AboutHighlight's aspect-square convention) instead of
+                collapsing to zero. */}
+            {/* <div className="hidden aspect-square w-full md:block" /> */}
           </div>
 
           <div className="mt-(--inner-space) md:col-start-2 md:row-start-1 md:mt-0">

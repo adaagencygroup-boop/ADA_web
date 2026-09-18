@@ -71,7 +71,7 @@ import { SECTION_CONFIG } from "./sectionConfig";
 // sizeAttenuation on (default), sizeNode is a WORLD-space size — it's
 // converted to screen pixels via size * canvasHeight/2 / distanceToCamera,
 // the same perspective-shrink-with-distance rule the old mesh radius had.
-const PARTICLE_SIZE = 0.085;
+const PARTICLE_SIZE = 0.1;
 const FLOAT_AMP = 0.01;
 const WRAP = 0.35;
 
@@ -85,7 +85,7 @@ const MASK_CONTRAST = 3.8;
 const TRANSITION_MASK_CONTRAST = 1.65;
 
 const TRANSITION_DEFORM_DUR = 0.4;
-const TRANSITION_MORPH_DUR = 2.05;
+const TRANSITION_MORPH_DUR = 1.05;
 const TRANSITION_REFORM_DUR = 0.45;
 const ENTRANCE_MORPH_DUR = 1.4;
 const ENTRANCE_REFORM_DUR = 1.1;
@@ -140,6 +140,29 @@ const UNIFORM_LERP_SPEED = 2.5;
 // at 1 so wide/ultrawide windows keep the originally-tuned offset, keeps the
 // model at roughly the same fractional on-screen position at any width.
 const MODEL_X_REFERENCE_ASPECT = 1.9;
+
+// modelScale values were also tuned by eye against a normal desktop window
+// (~1600px wide). The camera's vertical FOV/distance are fixed, so a
+// model's rendered PIXEL height only tracks viewport HEIGHT, not width — a
+// DOM layout that reserves space for it based on WIDTH (e.g. an
+// aspect-square column, which shrinks as the window narrows) can then fall
+// out of sync with the model's actual on-screen size and get overflowed by
+// it. Scaling modelScale by (current width / reference width), capped at 1,
+// shrinks the model together with any width-driven reserved space instead
+// of leaving it a fixed size regardless of window width.
+const MODEL_SCALE_REFERENCE_WIDTH = 1600;
+
+// Wraps an angle (radians) into [-PI, PI]. The auto-rotate spin accumulates
+// via `+= rotDelta` every frame indefinitely on whichever axis is active
+// (see the animate loop) — without wrapping, a section left spinning for a
+// while builds up a large raw angle (many full turns), and when the other
+// axis takes over and eases *this* one back to 0, it "unwinds" through that
+// entire accumulated history instead of the short way round, reading as a
+// sudden, violent multi-rotation spin. Wrapping after every increment caps
+// the worst case at half a turn.
+function wrapAngle(angle: number): number {
+  return ((angle + Math.PI) % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2) - Math.PI;
+}
 
 // ── Module-level geometry cache ───────────────────────────────────────────────
 
@@ -901,7 +924,8 @@ export default function HologramField({
       const posGroup = new Group();
       const modelXScale = Math.min(1, camera.aspect / MODEL_X_REFERENCE_ASPECT);
       posGroup.position.set(cfg0.modelX * modelXScale, cfg0.modelY, 0);
-      posGroup.scale.setScalar(cfg0.modelScale);
+      const modelSizeScale = Math.min(1, container.clientWidth / MODEL_SCALE_REFERENCE_WIDTH);
+      posGroup.scale.setScalar(cfg0.modelScale * modelSizeScale);
       const rotGroup = new Group();
       rotGroup.add(instancedMesh);
       posGroup.add(rotGroup);
@@ -1002,8 +1026,10 @@ export default function HologramField({
           cfg.modelX * Math.min(1, camera.aspect / MODEL_X_REFERENCE_ASPECT);
         posGroup.position.x += (targetModelX - posGroup.position.x) * alpha;
         posGroup.position.y += (cfg.modelY - posGroup.position.y) * alpha;
+        const targetModelScale =
+          cfg.modelScale * Math.min(1, container.clientWidth / MODEL_SCALE_REFERENCE_WIDTH);
         posGroup.scale.setScalar(
-          posGroup.scale.x + (cfg.modelScale - posGroup.scale.x) * alpha,
+          posGroup.scale.x + (targetModelScale - posGroup.scale.x) * alpha,
         );
         autoRotateSpeedRef.current +=
           (cfg.autoRotateSpeed - autoRotateSpeedRef.current) * alpha;
@@ -1071,7 +1097,7 @@ export default function HologramField({
         // sections do the opposite so a leftover ring Z-spin unwinds away.
         const rotDelta = ((2 * Math.PI) / 60) * autoRotateSpeedRef.current * delta;
         if (cfg.shape === "ring") {
-          rotGroup.rotation.z += rotDelta;
+          rotGroup.rotation.z = wrapAngle(rotGroup.rotation.z + rotDelta);
           rotGroup.rotation.y += (0 - rotGroup.rotation.y) * alpha;
           // Fixed tilt around X (doesn't accumulate over time like the Z
           // spin) so the ring reads as an inclined hoop instead of a flat
@@ -1079,7 +1105,7 @@ export default function HologramField({
           // itself stays on Z.
           rotGroup.rotation.x += (cfg.ringTiltX - rotGroup.rotation.x) * alpha;
         } else {
-          rotGroup.rotation.y += rotDelta;
+          rotGroup.rotation.y = wrapAngle(rotGroup.rotation.y + rotDelta);
           rotGroup.rotation.z += (0 - rotGroup.rotation.z) * alpha;
           rotGroup.rotation.x += (0 - rotGroup.rotation.x) * alpha;
         }

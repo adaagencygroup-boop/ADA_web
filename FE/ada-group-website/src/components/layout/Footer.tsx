@@ -140,7 +140,7 @@ function FooterLinkList({
 
 export default function Footer() {
   return (
-    <footer className="relative z-1 border-t border-zinc-200 bg-slate-50/50 section-y pb-5! lg:pb-6!">
+    <footer className="relative z-1 border-t border-zinc-200 bg-slate-50 section-y pb-5! lg:pb-6!">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-(--section-padding) lg:grid-cols-12">
           {/* Brand & Contact Info */}

@@ -18,7 +18,7 @@ export type GeometryData = {
 // slots get a real sampled position; the rest are filled with a sparse wide
 // scatter so they're generally invisible instead of clustering into a
 // bright hot-spot.
-export const MAX_PARTICLE_COUNT = 25_000;
+export const MAX_PARTICLE_COUNT = 20_000;
 
 export type SectionId =
   | "hero"
