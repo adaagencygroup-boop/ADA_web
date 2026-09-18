@@ -39,7 +39,7 @@ export class ApiError extends Error {
   }
 }
 
-function buildQuery(params?: Record<string, string | number | undefined>) {
+function buildQuery(params?: Record<string, string | number | boolean | undefined>) {
   if (!params) return "";
   const usp = new URLSearchParams();
   for (const [key, value] of Object.entries(params)) {
@@ -81,7 +81,7 @@ async function request<T>(
 // browser, e.g. from client-side search/filter handlers.
 export function apiGet<T>(
   path: string,
-  params?: Record<string, string | number | undefined>,
+  params?: Record<string, string | number | boolean | undefined>,
   revalidate?: number
 ) {
   return request<T>(`${path}${buildQuery(params)}`, { method: "GET", revalidate });

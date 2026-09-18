@@ -100,8 +100,8 @@ public class NewsControllerFunctionalTest {
   public void testPublicNewsEndpoints() {
     NewsResponse publicNews = new NewsResponse(UUID.randomUUID(), "Tự Động Hóa DevOps Với AI", "tuDongHoaDevOpsVoiAI", "Ứng Dụng AI Trong Vận Hành DevOps", "https://ada.com/files/media/devopsCover.png", null, 100, null, UUID.randomUUID(), "DevOps", null, Instant.now(), Instant.now());
     PageResponse<NewsResponse> page = new PageResponse<>(List.of(publicNews), new PageResponse.Pagination(1, 10, 1, 1, true, true));
-    Mockito.when(newsService.getPublicNews(ArgumentMatchers.anyInt(), ArgumentMatchers.anyInt(), ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(page);
-    ResponseEntity<APIResponse<PageResponse<NewsResponse>>> getPublic = publicNewsController.getPublicNews(1, 10, null, null);
+    Mockito.when(newsService.getPublicNews(ArgumentMatchers.anyInt(), ArgumentMatchers.anyInt(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(page);
+    ResponseEntity<APIResponse<PageResponse<NewsResponse>>> getPublic = publicNewsController.getPublicNews(1, 10, null, null, null);
     Assertions.assertEquals(200, getPublic.getStatusCode().value());
     Mockito.when(newsService.getFeaturedNews(3)).thenReturn(List.of(publicNews));
     ResponseEntity<APIResponse<List<NewsResponse>>> getFeatured = publicNewsController.getFeaturedNews(3);

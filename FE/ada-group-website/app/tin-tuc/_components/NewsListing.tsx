@@ -14,19 +14,23 @@ type NewsListingProps = {
   category?: string;
   page?: string;
   search?: string;
+  isFeatured?: string;
 };
 
 export default async function NewsListing({
   category,
   page,
   search,
+  isFeatured,
 }: NewsListingProps) {
   const { articles, activeCategory, currentPage, totalPages } =
-    await getArticles({ category, page: Number(page) || 1, search });
+    await getArticles({ category, page: Number(page) || 1, search, isFeatured });
   const [featuredPosts, categories] = await Promise.all([
     getFeaturedArticles(),
     getCategories(),
   ]);
+
+  const isFeaturedFilterActive = isFeatured === "true" || isFeatured === "1";
 
   return (
     <section id={NEWS_LISTING_ANCHOR} className="section-y scroll-mt-28 scroll-smooth pt-0!">
@@ -36,9 +40,13 @@ export default async function NewsListing({
             <h1 className="text-[24px] sm:text-[28px] lg:text-[32px] font-semibold tracking-wide text-black uppercase">
               {search
                 ? `Kết quả tìm kiếm cho "${search}"`
-                : activeCategory === ALL_CATEGORY
-                  ? "Tin tức"
-                  : activeCategory}
+                : isFeaturedFilterActive
+                  ? activeCategory === ALL_CATEGORY
+                    ? "Tin nổi bật"
+                    : `${activeCategory} (Tin nổi bật)`
+                  : activeCategory === ALL_CATEGORY
+                    ? "Tin tức"
+                    : activeCategory}
             </h1>
 
             <div className="flex w-full flex-col gap-4 lg:gap-6">
@@ -60,6 +68,7 @@ export default async function NewsListing({
               currentPage={currentPage}
               totalPages={totalPages}
               search={search}
+              isFeatured={isFeatured}
             />
           </div>
 
@@ -69,9 +78,10 @@ export default async function NewsListing({
                 categories={categories}
                 activeCategory={activeCategory}
                 search={search}
+                isFeatured={isFeatured}
               />
             </div>
-            <FeaturedPosts posts={featuredPosts} />
+            {!isFeaturedFilterActive && <FeaturedPosts posts={featuredPosts} />}
           </aside>
         </div>
       </div>

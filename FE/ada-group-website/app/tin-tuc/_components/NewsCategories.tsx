@@ -60,10 +60,12 @@ export default function NewsCategories({
   categories,
   activeCategory,
   search,
+  isFeatured,
 }: {
   categories: NewsCategory[];
   activeCategory: string;
   search?: string;
+  isFeatured?: string | boolean;
 }) {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
@@ -88,9 +90,11 @@ export default function NewsCategories({
 
   function handleSelect(key: string) {
     setIsOpen(false);
-    const href = buildNewsHref(key, 1, search);
+    const href = buildNewsHref(key, 1, search, isFeatured);
     router.push(href);
   }
+
+  const isChecked = isFeatured === true || isFeatured === "true";
 
   return (
     <div className="rounded-2xl border border-[#F3F4F6] bg-white p-4 sm:p-5 lg:p-6 shadow-sm">
@@ -137,6 +141,21 @@ export default function NewsCategories({
             })}
           </div>
         )}
+      </div>
+
+      <div className="mt-3.5 border-t border-zinc-100 pt-3">
+        <label className="group flex cursor-pointer items-center gap-2.5 text-sm font-medium text-zinc-700 select-none transition-colors hover:text-blue-600">
+          <input
+            type="checkbox"
+            checked={isChecked}
+            onChange={(e) => {
+              const href = buildNewsHref(activeCategory, 1, search, e.target.checked);
+              router.push(href);
+            }}
+            className="h-4 w-4 cursor-pointer rounded border-zinc-300 accent-blue-600 text-blue-600 focus:ring-blue-500/20"
+          />
+          <span>Tin nổi bật</span>
+        </label>
       </div>
     </div>
   );

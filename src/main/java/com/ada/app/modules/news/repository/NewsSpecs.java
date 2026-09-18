@@ -36,12 +36,15 @@ public class NewsSpecs {
       return cb.and(predicates.toArray(new Predicate[0]));
     };
   }
-  public static Specification<News> publicFilter(UUID categoryId, String search) {
+  public static Specification<News> publicFilter(UUID categoryId, Boolean isFeatured, String search) {
     return (root, query, cb) -> {
       List<Predicate> predicates = new ArrayList<>();
       predicates.add(cb.equal(root.get("status"), NewsStatus.published));
       if (categoryId != null) {
         predicates.add(cb.equal(root.get("category").get("id"), categoryId));
+      }
+      if (isFeatured != null) {
+        predicates.add(cb.equal(root.get("isFeatured"), isFeatured));
       }
       if (search != null && !search.isBlank()) {
         String pattern = "%" + search.trim().toLowerCase() + "%";

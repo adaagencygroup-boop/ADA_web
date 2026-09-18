@@ -16,19 +16,25 @@ export const metadata: Metadata = {
 };
 
 type TinTucPageProps = {
-  searchParams: Promise<{ category?: string; page?: string; search?: string }>;
+  searchParams: Promise<{ category?: string; page?: string; search?: string; isFeatured?: string }>;
 };
 
 export default async function TinTucPage({ searchParams }: TinTucPageProps) {
-  const { category, page, search } = await searchParams;
+  const { category, page, search, isFeatured } = await searchParams;
   const categories = await getCategories();
 
   return (
     <>
       <HeroCarousel />
-      <SearchBar category={category} search={search} categories={categories} activeCategory={category} />
+      <SearchBar
+        category={category}
+        search={search}
+        categories={categories}
+        activeCategory={category}
+        isFeatured={isFeatured}
+      />
       <Breadcrumb />
-      <NewsListing category={category} page={page} search={search} />
+      <NewsListing category={category} page={page} search={search} isFeatured={isFeatured} />
       <GsapScrollReveal>
         <CallToAction />
       </GsapScrollReveal>

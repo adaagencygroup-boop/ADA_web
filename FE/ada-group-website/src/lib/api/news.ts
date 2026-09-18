@@ -54,7 +54,12 @@ export async function getCategories(): Promise<NewsCategory[]> {
   return apiGet<NewsCategory[]>("/public/newsCategories", undefined, REVALIDATE_SECONDS);
 }
 
-export async function getArticles(options: { category?: string; page?: number; search?: string }) {
+export async function getArticles(options: {
+  category?: string;
+  page?: number;
+  search?: string;
+  isFeatured?: boolean | string;
+}) {
   const categories = await getCategories();
   const activeCategory =
     options.category && categories.some((c) => c.name === options.category)
@@ -66,9 +71,18 @@ export async function getArticles(options: { category?: string; page?: number; s
       : categories.find((c) => c.name === activeCategory)?.id;
 
   const page = Math.max(1, options.page ?? 1);
+  const isFeaturedParam =
+    options.isFeatured === true || options.isFeatured === "true" ? true : undefined;
+
   const result = await apiGet<PageResponse<NewsResponseDTO>>(
     "/public/news",
-    { page, size: PAGE_SIZE, categoryId, search: options.search || undefined },
+    {
+      page,
+      size: PAGE_SIZE,
+      categoryId,
+      isFeatured: isFeaturedParam,
+      search: options.search || undefined,
+    },
     REVALIDATE_SECONDS
   );
 
@@ -111,11 +125,17 @@ export async function getRelatedArticles(
   return items.map(mapNews).filter((article) => article.slug !== current.slug).slice(0, limit);
 }
 
-export function buildNewsHref(category: string, page: number, search?: string) {
+export function buildNewsHref(
+  category: string,
+  page: number,
+  search?: string,
+  isFeatured?: boolean | string
+) {
   const params = new URLSearchParams();
   if (category !== ALL_CATEGORY) params.set("category", category);
   if (page > 1) params.set("page", String(page));
   if (search) params.set("search", search);
+  if (isFeatured === true || isFeatured === "true") params.set("isFeatured", "true");
   const query = params.toString();
   return `${NEWS_BASE_PATH}${query ? `?${query}` : ""}#${NEWS_LISTING_ANCHOR}`;
 }

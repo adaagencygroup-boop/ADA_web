@@ -164,9 +164,9 @@ public class NewsService {
     categoryRepository.delete(category);
   }
   @Transactional(readOnly = true)
-  public PageResponse<NewsResponse> getPublicNews(int page, int size, UUID categoryId, String search) {
+  public PageResponse<NewsResponse> getPublicNews(int page, int size, UUID categoryId, Boolean isFeatured, String search) {
     Pageable pageable = PageRequest.of(Math.max(0, page - 1), Math.max(1, size), Sort.by("createdAt").descending());
-    Page<News> result = newsRepository.findAll(NewsSpecs.publicFilter(categoryId, search), pageable);
+    Page<News> result = newsRepository.findAll(NewsSpecs.publicFilter(categoryId, isFeatured, search), pageable);
     List<NewsResponse> items = result.getContent().stream().map(this::mapToPublicItemResponse).toList();
     return new PageResponse<>(items, PageResponse.Pagination.from(result));
   }
@@ -236,7 +236,7 @@ public class NewsService {
       n.getCoverImageURL(),
       null,
       null,
-      null,
+      n.getIsFeatured(),
       n.getCategory() != null ? n.getCategory().getId() : null,
       n.getCategory() != null ? n.getCategory().getName() : null,
       null,
