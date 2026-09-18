@@ -219,7 +219,7 @@ export default function NewsForm({
           </button>
           <button
             type="button"
-            disabled={isBusy}
+            disabled={isBusy || (isEdit && article?.status === "draft")}
             onClick={requestSubmit("draft")}
             className="flex h-10.5 items-center gap-2 rounded-lg border border-[#BFDBFE] bg-[#EFF6FF] px-4 text-sm font-medium text-[#2563EB] hover:bg-[#DBEAFE] disabled:cursor-not-allowed disabled:opacity-50"
           >
