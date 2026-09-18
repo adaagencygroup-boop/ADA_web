@@ -20,6 +20,7 @@ import {
 } from "@/src/hooks/useContacts";
 import type { Contact } from "@/src/lib/api/contact";
 import DeleteContactDialog from "@/app/(dashboard)/lien-he/_components/DeleteContactDialog";
+import SendReplyDialog from "@/app/(dashboard)/lien-he/_components/SendReplyDialog";
 
 const STATUS_STYLES = {
   pending: {
@@ -58,6 +59,7 @@ export default function ContactDetailPanel({
   const [note, setNote] = useState(contact.note ?? "");
   const [attachment, setAttachment] = useState<File | null>(null);
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const [sendReplyOpen, setSendReplyOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const uploadMutation = useUploadMedia();
@@ -279,7 +281,10 @@ export default function ContactDetailPanel({
 
           <button
             type="button"
-            onClick={handleSendReply}
+            onClick={() => {
+              if (!replyContent.trim()) return;
+              setSendReplyOpen(true);
+            }}
             disabled={!replyContent.trim() || isSendingReply}
             className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-[#1A56DB] py-3 text-sm font-semibold text-white hover:bg-[#1A56DB]/90 disabled:cursor-not-allowed disabled:opacity-50"
           >
@@ -330,6 +335,20 @@ export default function ContactDetailPanel({
         contactName={contact.customerFullname}
         onConfirm={handleConfirmDelete}
         isDeleting={deleteMutation.isPending}
+      />
+
+      <SendReplyDialog
+        open={sendReplyOpen}
+        onOpenChange={setSendReplyOpen}
+        contactName={contact.customerFullname}
+        contactEmail={contact.customerEmail}
+        replyContent={replyContent}
+        attachmentName={attachment?.name}
+        onConfirm={() => {
+          setSendReplyOpen(false);
+          handleSendReply();
+        }}
+        isSending={isSendingReply}
       />
     </div>
   );
