@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Check, Lock, RotateCcw, X } from "lucide-react";
@@ -9,6 +10,7 @@ import {
   changePasswordSchema,
   type ChangePasswordFormValues,
 } from "@/src/lib/validations/change-password";
+import ConfirmDialog from "@/src/components/shared/ConfirmDialog";
 
 const PASSWORD_RULES: { label: string; test: (value: string) => boolean }[] = [
   { label: "Ít nhất 8 ký tự", test: (v) => v.length >= 8 },
@@ -20,6 +22,8 @@ const PASSWORD_RULES: { label: string; test: (value: string) => boolean }[] = [
 
 export default function ChangePasswordCard() {
   const changePasswordMutation = useChangePassword();
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [pendingValues, setPendingValues] = useState<ChangePasswordFormValues | null>(null);
 
   const {
     register,
@@ -39,10 +43,23 @@ export default function ChangePasswordCard() {
   const newPasswordValue = watch("newPassword");
 
   const onSubmit = handleSubmit((values) => {
-    changePasswordMutation.mutate(values, {
-      onSuccess: () => reset(),
-    });
+    setPendingValues(values);
+    setIsConfirmOpen(true);
   });
+
+  const handleConfirm = () => {
+    if (!pendingValues) return;
+    changePasswordMutation.mutate(pendingValues, {
+      onSuccess: () => {
+        reset();
+        setPendingValues(null);
+        setIsConfirmOpen(false);
+      },
+      onError: () => {
+        setIsConfirmOpen(false);
+      },
+    });
+  };
 
   return (
     <div className="rounded-xl border border-[#E2E8F0] bg-white shadow-sm">
@@ -123,12 +140,23 @@ export default function ChangePasswordCard() {
         <button
           type="submit"
           disabled={changePasswordMutation.isPending}
-          className="flex items-center justify-center gap-2 rounded-lg bg-[#1A56DB] py-3 text-sm font-semibold text-white shadow-sm hover:bg-[#1A56DB]/90 disabled:cursor-not-allowed disabled:opacity-50"
+          className="cursor-pointer flex items-center justify-center gap-2 rounded-lg bg-[#1A56DB] py-3 text-sm font-semibold text-white shadow-sm hover:bg-[#1A56DB]/90 disabled:cursor-not-allowed disabled:opacity-50"
         >
           <RotateCcw className="size-4" />
           {changePasswordMutation.isPending ? "Đang đổi..." : "Đổi mật khẩu"}
         </button>
       </form>
+
+      <ConfirmDialog
+        open={isConfirmOpen}
+        onOpenChange={setIsConfirmOpen}
+        title="Xác nhận đổi mật khẩu"
+        description="Bạn có chắc chắn muốn thay đổi mật khẩu không? Sau khi đổi thành công, bạn cần sử dụng mật khẩu mới cho các lần đăng nhập tiếp theo."
+        cancelLabel="Hủy"
+        confirmLabel="Xác nhận đổi"
+        onConfirm={handleConfirm}
+        isConfirming={changePasswordMutation.isPending}
+      />
     </div>
   );
 }
