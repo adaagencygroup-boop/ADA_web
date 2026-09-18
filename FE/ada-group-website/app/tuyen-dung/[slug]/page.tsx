@@ -11,6 +11,17 @@ interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
+const RICH_TEXT_TYPOGRAPHY_CLASS =
+  "[&_h1]:mt-2 [&_h1]:mb-1 [&_h1]:text-2xl [&_h1]:font-semibold " +
+  "[&_h2]:mt-2 [&_h2]:mb-1 [&_h2]:text-xl [&_h2]:font-semibold " +
+  "[&_h3]:mt-2 [&_h3]:mb-1 [&_h3]:text-lg [&_h3]:font-semibold " +
+  "[&_p]:mb-2 [&_p:last-child]:mb-0 " +
+  "[&_ul]:mb-2 [&_ul]:list-disc [&_ul]:pl-5 " +
+  "[&_ol]:mb-2 [&_ol]:list-decimal [&_ol]:pl-5 " +
+  "[&_li]:mb-1 " +
+  "[&_a]:text-[#316EE9] [&_a]:underline " +
+  "[&_img]:my-2 [&_img]:max-w-full [&_img]:rounded-lg";
+
 export default async function JobDetailsPage({ params }: PageProps) {
   const resolvedParams = await params;
   const { slug } = resolvedParams;
@@ -128,7 +139,7 @@ export default async function JobDetailsPage({ params }: PageProps) {
           <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-(--inner-space) items-start">
             
             {/* Left Column (Job Info) */}
-            <div className="lg:col-span-8 flex flex-col gap-(--inner-space)">
+            <div className={`lg:col-span-8 flex flex-col gap-(--inner-space) ${RICH_TEXT_TYPOGRAPHY_CLASS}`}>
               
               <div className="bg-white rounded-2xl border border-slate-100 p-6 md:p-8 shadow-sm">
                 <h2 className="text-[16px] lg:text-[18px] font-semibold text-black uppercase flex items-center gap-3 mb-6">
