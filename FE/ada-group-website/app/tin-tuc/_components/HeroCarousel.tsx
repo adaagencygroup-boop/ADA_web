@@ -119,7 +119,7 @@ export default function HeroCarousel() {
           {/* Background */}
           <div className="absolute inset-0 bg-linear-to-r from-[#001A40] to-[#003274] opacity-90" />
           <Image
-            src="/images/tin-tuc/news-banner.jpg"
+            src="/images/tin-tuc/news-banner.webp"
             alt=""
             fill
             priority

@@ -69,7 +69,7 @@ export default function MobileEcommerceApps() {
             
             {/* Image (Top on mobile, Bottom on desktop) */}
             <div className="relative w-full min-h-64 lg:min-h-0 lg:aspect-4/3 bg-slate-100 lg:bg-white lg:rounded-4xl overflow-hidden shadow-none lg:shadow-sm border-b lg:border border-slate-100 order-1 lg:order-2 lg:mt-(--inner-space)">
-              <Image src="/images/dich-vu/mobile/AIUseCases3.png" alt="Ứng dụng thương mại" fill loading="lazy" placeholder="blur" blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZTJlOGYwIi8+PC9zdmc+" sizes="(max-width: 768px) 100vw, 50vw" className="object-cover transition-transform duration-500 hover:scale-105" />
+              <Image src="/images/dich-vu/mobile/AIUseCases3.webp" alt="Ứng dụng thương mại" fill loading="lazy" placeholder="blur" blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZTJlOGYwIi8+PC9zdmc+" sizes="(max-width: 768px) 100vw, 50vw" className="object-cover transition-transform duration-500 hover:scale-105" />
             </div>
 
             {/* Text (Bottom on mobile, Top on desktop) */}

@@ -150,7 +150,7 @@ export default function SectorProducts({ products = [] }: SectorProductsProps) {
                         
                         <div className="relative w-full aspect-4/3 sm:aspect-video rounded-lg overflow-hidden bg-slate-100 border border-slate-100">
                           <Image 
-                            src={product.imageSrc || "/images/linh-vuc/y-te/y-te1.jpg"} 
+                            src={product.imageSrc || "/images/linh-vuc/y-te/y-te1.webp"} 
                             alt={product.title}
                             fill 
                             loading="lazy"

@@ -45,7 +45,7 @@ export default function LoadingScreen({
           {/* Logo */}
           <div className="relative flex h-16 w-16 items-center justify-center">
             <Image
-              src="/images/logo/logo.png"
+              src="/images/logo/logo.webp"
               alt="ADA Group Logo"
               width={64}
               height={64}

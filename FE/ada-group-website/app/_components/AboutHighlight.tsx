@@ -15,7 +15,7 @@ const CONTENT = {
 
 const IMAGES = {
   primary: {
-    src: "/images/home_images/AboutHighlight1.png",
+    src: "/images/home_images/AboutHighlight1.webp",
     alt: "Không gian làm việc tại văn phòng ADA Group",
   },
   secondary: {

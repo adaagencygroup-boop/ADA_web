@@ -148,7 +148,7 @@ export default function Footer() {
             <div>
               <Link href="/" className="inline-flex items-center gap-2.5 group">
                 <Image
-                  src="/images/logo/logo.png"
+                  src="/images/logo/logo.webp"
                   alt="ADA Group Logo"
                   width={40}
                   height={40}

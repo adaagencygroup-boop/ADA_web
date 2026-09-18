@@ -4,7 +4,7 @@ import Image from "next/image";
 const reasons = [
   {
     id: "01",
-    image: "/images/tuyen-dung/WhyChooseUs1.png",
+    image: "/images/tuyen-dung/WhyChooseUs1.webp",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
         <path d="M12 21a9 9 0 0 0 9-9H3a9 9 0 0 0 9 9Z" />
@@ -18,7 +18,7 @@ const reasons = [
   },
   {
     id: "02",
-    image: "/images/tuyen-dung/WhyChooseUs2.png",
+    image: "/images/tuyen-dung/WhyChooseUs2.webp",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
         <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
@@ -30,7 +30,7 @@ const reasons = [
   },
   {
     id: "03",
-    image: "/images/tuyen-dung/WhyChooseUs3.png",
+    image: "/images/tuyen-dung/WhyChooseUs3.webp",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
         <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
@@ -43,7 +43,7 @@ const reasons = [
   },
   {
     id: "04",
-    image: "/images/tuyen-dung/WhyChooseUs4.png",
+    image: "/images/tuyen-dung/WhyChooseUs4.webp",
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" />

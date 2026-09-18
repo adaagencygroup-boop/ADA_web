@@ -19,7 +19,7 @@ export default function AIAutomationServicePage() {
         badge="AI & Automation"
         title="Ứng dụng AI và tự động hóa vào những bài toán thực tế"
         desc="ADA Group hỗ trợ doanh nghiệp ứng dụng trí tuệ nhân tạo và tự động hóa để khai thác thông tin, cải thiện quy trình và nâng cao hiệu quả hoạt động. Mỗi dự án bắt đầu từ bài toán thực tế, dữ liệu hiện có và giá trị doanh nghiệp muốn đạt được, sau đó mới lựa chọn công nghệ phù hợp."
-        imagePlaceholder="/images/dich-vu/ai/Hero4.png"
+        imagePlaceholder="/images/dich-vu/ai/Hero4.webp"
       />
       <GsapScrollReveal>
         <AIProblemSolving />

@@ -44,7 +44,7 @@ export default function RecruitmentHero() {
         {/* Mobile Background */}
         <div className="absolute inset-0 lg:hidden">
           <Image 
-            src="/images/tuyen-dung/RecruitmentHero1.png" 
+            src="/images/tuyen-dung/RecruitmentHero1.webp" 
             alt="ADA Group Office" 
             fill
             priority
@@ -62,7 +62,7 @@ export default function RecruitmentHero() {
           <div className="absolute inset-0 bg-[#003274]"></div>
           <div className="absolute top-0 right-0 bottom-0 w-1/2 bg-slate-100 [clip-path:polygon(10%_0,100%_0,100%_100%,0_100%)]">
             <Image 
-              src="/images/tuyen-dung/RecruitmentHero1.png" 
+              src="/images/tuyen-dung/RecruitmentHero1.webp" 
               alt="ADA Group Office" 
               fill
               priority

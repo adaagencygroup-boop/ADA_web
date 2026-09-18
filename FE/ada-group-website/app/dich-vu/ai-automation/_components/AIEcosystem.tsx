@@ -42,7 +42,7 @@ export default function AIEcosystem() {
           <div className="flex-1 w-full lg:w-1/2">
             <div className="relative w-full aspect-video lg:aspect-16/10 bg-[#020e1f] rounded-xl lg:rounded-2xl overflow-hidden shadow-2xl border border-slate-700/50">
               <Image 
-                src="/images/dich-vu/ai/AIEcosystem.png" 
+                src="/images/dich-vu/ai/AIEcosystem.webp" 
                 alt="System Ecosystem Diagram" 
                 fill
                 loading="lazy"

@@ -41,7 +41,7 @@ export default function WebVision() {
             
             {/* Image Container */}
             <div className="relative w-full aspect-4/3 lg:aspect-16/11 bg-white rounded-3xl overflow-hidden shadow-[0_10px_50px_-10px_rgba(0,0,0,0.1)] border border-slate-100 flex items-center justify-center p-4">
-              <Image src="/images/dich-vu/web/WebVision.png" alt="ADA Group Mockup" fill loading="lazy" placeholder="blur" blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZTJlOGYwIi8+PC9zdmc+" sizes="(max-width: 768px) 100vw, 80vw" className="object-cover rounded-2xl transition-transform duration-500 hover:scale-105" />
+              <Image src="/images/dich-vu/web/WebVision.webp" alt="ADA Group Mockup" fill loading="lazy" placeholder="blur" blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZTJlOGYwIi8+PC9zdmc+" sizes="(max-width: 768px) 100vw, 80vw" className="object-cover rounded-2xl transition-transform duration-500 hover:scale-105" />
             </div>
           </div>
           

@@ -21,7 +21,7 @@ export default function WebServicePage() {
         badge="WEB & WEB APPLICATION"
         title="Xây dựng nền tảng web phục vụ hoạt động kinh doanh"
         desc="ADA Group thiết kế và phát triển website, ứng dụng web và các hệ thống trực tuyến theo nhu cầu của doanh nghiệp — từ website giới thiệu thương hiệu đến những nền tảng hỗ trợ quản lý, vận hành."
-        imagePlaceholder="/images/dich-vu/web/Hero1.png"
+        imagePlaceholder="/images/dich-vu/web/Hero1.webp"
       />
       <GsapScrollReveal>
         <WebCoreValues />

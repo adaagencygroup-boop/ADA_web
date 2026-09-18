@@ -276,7 +276,7 @@ export default async function JobDetailsPage({ params }: PageProps) {
                 </h3>
                 <div className="relative w-full h-32 rounded-lg overflow-hidden mb-4">
                   <Image 
-                    src="/images/gioi-thieu/AboutIntro.png" 
+                    src="/images/gioi-thieu/AboutIntro.webp" 
                     alt="ADA Group Office" 
                     fill sizes="(max-width: 768px) 100vw, 30vw"
                     className="object-cover"

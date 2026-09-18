@@ -44,7 +44,7 @@ const CONTENT = {
   description: "Những chuyên gia tâm huyết dẫn dắt ADA Group.",
 };
 
-const AVATAR = "/images/gioi-thieu/BusinessProfile.png";
+const AVATAR = "/images/gioi-thieu/BusinessProfile.webp";
 
 const LEADERS = [
   { name: "Đô Minh Quân", role: "Chủ tịch Hội đồng quản trị", image: AVATAR },

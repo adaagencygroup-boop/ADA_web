@@ -10,7 +10,7 @@ const CONTENT = {
 };
 
 const IMAGE = {
-  src: "/images/gioi-thieu/AboutIntro.png",
+  src: "/images/gioi-thieu/AboutIntro.webp",
   alt: "Giới thiệu về công ty ADA Group",
 };
 

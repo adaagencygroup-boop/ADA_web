@@ -111,7 +111,7 @@ export default function Header() {
       <div className="mx-auto flex h-16 max-w-360 items-center justify-between px-4 sm:px-6 lg:h-20 lg:px-8">
         <Link href="/" className="group flex items-center gap-2">
           <Image
-            src="/images/logo/logo.png"
+            src="/images/logo/logo.webp"
             alt="ADA Group Logo"
             width={40}
             height={40}
@@ -155,7 +155,7 @@ export default function Header() {
         >
           <div className="flex items-center justify-between border-b border-zinc-200 px-4 py-4">
             <div className="flex items-center gap-2">
-              <Image src="/images/logo/logo.png" alt="ADA Group Logo" width={40} height={40} className="h-8 w-auto object-contain" />
+              <Image src="/images/logo/logo.webp" alt="ADA Group Logo" width={40} height={40} className="h-8 w-auto object-contain" />
               <span className="text-lg font-bold text-zinc-900">ADA Group</span>
             </div>
             <button
