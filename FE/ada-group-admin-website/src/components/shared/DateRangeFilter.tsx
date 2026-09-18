@@ -28,13 +28,25 @@ export default function DateRangeFilter({
     value ?? undefined
   );
 
+  const today = new Date();
+  today.setHours(23, 59, 59, 999);
+
   function handleOpenChange(next: boolean) {
     if (next) setDraftRange(value ?? undefined);
     setOpen(next);
   }
 
   function handleApply() {
-    if (draftRange?.from) onChange(draftRange);
+    if (!draftRange?.from) return;
+    if (draftRange.from > today) return;
+
+    const validatedTo =
+      draftRange.to && draftRange.to > today ? today : draftRange.to;
+
+    onChange({
+      from: draftRange.from,
+      to: validatedTo,
+    });
     setOpen(false);
   }
 
@@ -67,6 +79,7 @@ export default function DateRangeFilter({
           numberOfMonths={2}
           locale={vi}
           captionLayout="dropdown"
+          disabled={{ after: today }}
         />
 
         <div className="mt-3 flex justify-end gap-2 border-t border-border pt-3">
