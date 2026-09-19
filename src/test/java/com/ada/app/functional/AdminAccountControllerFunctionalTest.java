@@ -93,7 +93,7 @@ public class AdminAccountControllerFunctionalTest {
   }
   @Test
   public void testGetLoginHistoriesEndpoint() {
-    LoginHistoryDTO history = new LoginHistoryDTO(UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID(), "Firefox on Linux", "127.0.0.1", "Vietnam", "Hanoi", false, "Mozilla/5.0 (X11; Linux x86_64; rv:130.0) Gecko/20100101 Firefox/130.0", LoginStatus.success, null, Instant.now());
+    LoginHistoryDTO history = new LoginHistoryDTO(UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID(), "Firefox on Linux", "127.0.0.1", "Vietnam", "Hanoi", false, "Mozilla/5.0 (X11; Linux x86_64; rv:130.0) Gecko/20100101 Firefox/130.0", LoginStatus.success, null, Instant.now(), true);
     PageResponse<LoginHistoryDTO> pageResponse = new PageResponse<>(List.of(history), new PageResponse.Pagination(1, 10, 1, 1, true, true));
     Mockito.when(userService.getLoginHistories(ArgumentMatchers.anyInt(), ArgumentMatchers.anyInt(), ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any())).thenReturn(pageResponse);
     ResponseEntity<APIResponse<PageResponse<LoginHistoryDTO>>> response = adminAccountController.getLoginHistories(1, 10, null, null, null);

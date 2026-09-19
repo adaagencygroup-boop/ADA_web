@@ -27,8 +27,8 @@ public class AdminDashboardControllerFunctionalTest {
     TopRecruitmentStatDTO topRecruit = new TopRecruitmentStatDTO(UUID.randomUUID(), "Backend Engineer", 150, 60.0);
     TopNewsStatDTO topNews = new TopNewsStatDTO(UUID.randomUUID(), "Annual Report 2026", 300);
     AdminDashboardResponse dashboardData = new AdminDashboardResponse(10, 5, 20, List.of(stat), List.of(topRecruit), List.of(topNews));
-    Mockito.when(dashboardService.getDashboard("7d")).thenReturn(dashboardData);
-    ResponseEntity<APIResponse<AdminDashboardResponse>> response = adminDashboardController.getDashboard("7d");
+    Mockito.when(dashboardService.getDashboard("7d", null, null)).thenReturn(dashboardData);
+    ResponseEntity<APIResponse<AdminDashboardResponse>> response = adminDashboardController.getDashboard("7d", null, null);
     Assertions.assertEquals(200, response.getStatusCode().value());
     Assertions.assertNotNull(response.getBody());
     Assertions.assertTrue(response.getBody().success());
