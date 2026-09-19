@@ -31,9 +31,26 @@ public class DashboardService {
   private static final DateTimeFormatter isoDateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
   @Transactional(readOnly = true)
   public AdminDashboardResponse getDashboard(String range) {
-    int days = parseRangeToDays(range);
+    return getDashboard(range, null, null);
+  }
+  @Transactional(readOnly = true)
+  public AdminDashboardResponse getDashboard(String range, LocalDate fromDate, LocalDate toDate) {
     LocalDate today = LocalDate.now(ZoneOffset.UTC);
-    LocalDate startLocalDate = today.minusDays(days - 1);
+    LocalDate startLocalDate;
+    int days;
+    if (fromDate != null && toDate != null) {
+      if (fromDate.isAfter(toDate)) {
+        throw com.ada.app.common.exception.AppException.badRequest("Ngày bắt đầu không được lớn hơn ngày kết thúc");
+      }
+      if (toDate.isAfter(today)) {
+        throw com.ada.app.common.exception.AppException.badRequest("Ngày kết thúc không được ở trong tương lai");
+      }
+      startLocalDate = fromDate;
+      days = (int) java.time.temporal.ChronoUnit.DAYS.between(fromDate, toDate) + 1;
+    } else {
+      days = parseRangeToDays(range);
+      startLocalDate = today.minusDays(days - 1);
+    }
     var startInstant = startLocalDate.atStartOfDay().toInstant(ZoneOffset.UTC);
     List<Object[]> nativeResults = contactRepository.countDailyContactsNative(startInstant);
     Map<String, Long> countMap = new HashMap<>();

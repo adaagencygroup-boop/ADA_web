@@ -121,6 +121,7 @@ export default function ContactForm() {
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [cooldown, setCooldown] = useState(false);
   const [alertInfo, setAlertInfo] = useState<{
     type: "success" | "error";
     title: string;
@@ -156,18 +157,16 @@ export default function ContactForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isSubmitting || cooldown) return;
     setAlertInfo(null);
-
     setTouched({ name: true, email: true, phone: true, message: true });
     const errors = validateForm(formData);
     setFieldErrors(errors);
-
     if (Object.keys(errors).length > 0) {
       const firstKey = Object.keys(errors)[0];
       document.getElementById(`cf-${firstKey}`)?.focus();
       return;
     }
-
     setIsSubmitting(true);
     try {
       const response = await submitContact({
@@ -176,7 +175,6 @@ export default function ContactForm() {
         customerPhone: formData.phone || null,
         message: formData.message,
       });
-
       if (response.success) {
         setAlertInfo({
           type: "success",
@@ -187,6 +185,8 @@ export default function ContactForm() {
         setFormData({ name: "", email: "", phone: "", message: "" });
         setFieldErrors({});
         setTouched({});
+        setCooldown(true);
+        setTimeout(() => setCooldown(false), 5000);
       } else {
         setAlertInfo({
           type: "error",
@@ -336,10 +336,10 @@ export default function ContactForm() {
               <div className="mt-2">
                 <button
                   type="submit"
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || cooldown}
                   className="bg-[#002A64] hover:bg-[#002A64]/90 text-white font-semibold cursor-pointer text-[14px] leading-none px-8 py-3.5 rounded-lg flex items-center gap-1.5 transition-colors w-fit disabled:opacity-70 disabled:cursor-not-allowed"
                 >
-                  {isSubmitting ? "Đang gửi..." : <span>{CONTENT.submitLabel}</span>}
+                  {isSubmitting ? "Đang gửi..." : cooldown ? "Vui lòng chờ (5s)..." : <span>{CONTENT.submitLabel}</span>}
                 </button>
               </div>
 
@@ -384,4 +384,3 @@ export default function ContactForm() {
     </section>
   );
 }
-

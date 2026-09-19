@@ -211,8 +211,9 @@ export default function NewsForm({
         <div className="flex items-center gap-3">
           <button
             type="button"
+            disabled={isBusy}
             onClick={() => setPreviewOpen(true)}
-            className="flex h-10.5 items-center gap-2 rounded-lg border border-[#CBD5E1] bg-white px-4 text-sm font-medium text-[#334155] hover:bg-[#F8FAFC]"
+            className="flex h-10.5 items-center gap-2 rounded-lg border border-[#CBD5E1] bg-white px-4 text-sm font-medium text-[#334155] hover:bg-[#F8FAFC] disabled:cursor-not-allowed disabled:opacity-50"
           >
             <Eye className="size-4" />
             Xem trước
@@ -228,7 +229,7 @@ export default function NewsForm({
           </button>
           <button
             type="button"
-            disabled={isBusy}
+            disabled={isBusy || (isEdit && article?.status === "published")}
             onClick={requestSubmit("published")}
             className="flex h-10 items-center gap-2 rounded-lg bg-[#2563EB] px-4 text-sm font-medium text-white hover:bg-[#2563EB]/90 disabled:cursor-not-allowed disabled:opacity-50"
           >

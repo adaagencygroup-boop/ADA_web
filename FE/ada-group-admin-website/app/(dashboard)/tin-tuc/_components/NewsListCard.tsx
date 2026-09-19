@@ -41,9 +41,12 @@ const FEATURED_OPTIONS = [
   { value: "featured", label: "Nổi bật" },
   { value: "normal", label: "Không nổi bật" },
 ];
-
+const STATUS_FILTER_OPTIONS = [
+  { value: "all", label: "Tất cả trạng thái" },
+  { value: "published", label: "Đã xuất bản" },
+  { value: "draft", label: "Bản nháp" },
+];
 const PAGE_SIZE_OPTIONS = ["10", "20", "50"];
-
 function formatDateParts(iso: string) {
   const date = new Date(iso);
   return {
@@ -51,34 +54,35 @@ function formatDateParts(iso: string) {
     time: date.toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" }),
   };
 }
-
 export default function NewsListCard() {
+  const todayIso = new Date().toISOString().split("T")[0];
   const [searchInput, setSearchInput] = useState("");
   const [categoryId, setCategoryId] = useState("all");
+  const [status, setStatus] = useState("all");
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
   const [featured, setFeatured] = useState("all");
   const [pageSize, setPageSize] = useState("10");
   const [page, setPage] = useState(1);
   const [deleteTarget, setDeleteTarget] = useState<NewsItem | null>(null);
-
   const deleteMutation = useDeleteNews();
   const toggleFeaturedMutation = useToggleFeatured();
-
   const search = useDebouncedValue(searchInput, 400);
-
   const [prevSearch, setPrevSearch] = useState(search);
   if (search !== prevSearch) {
     setPrevSearch(search);
     setPage(1);
   }
-
   const { data: categories } = useNewsCategories();
-
   const { data, isLoading, isError, error } = useNews({
     page,
     size: Number(pageSize),
     search: search || undefined,
     categoryId: categoryId === "all" ? undefined : categoryId,
+    status: status === "all" ? undefined : (status as NewsStatus),
     isFeatured: featured === "all" ? undefined : featured === "featured",
+    fromDate: fromDate || undefined,
+    toDate: toDate || undefined,
   });
 
   const items = data?.items ?? [];
@@ -158,6 +162,54 @@ export default function NewsListCard() {
             ))}
           </SelectContent>
         </Select>
+        <Select
+          value={status}
+          onValueChange={(next) => {
+            if (!next) return;
+            setStatus(next);
+            setPage(1);
+          }}
+        >
+          <SelectTrigger className="w-44 rounded-lg border-[#D1D5DB] text-sm text-[#374151] data-[size=default]:h-10.5">
+            <SelectValue>
+              {(value: string) =>
+                STATUS_FILTER_OPTIONS.find((option) => option.value === value)?.label
+              }
+            </SelectValue>
+          </SelectTrigger>
+          <SelectContent>
+            {STATUS_FILTER_OPTIONS.map((option) => (
+              <SelectItem key={option.value} value={option.value}>
+                {option.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+        <div className="flex items-center gap-2 text-sm text-[#6B7280]">
+          <span>Từ:</span>
+          <input
+            type="date"
+            max={toDate || todayIso}
+            value={fromDate}
+            onChange={(e) => {
+              setFromDate(e.target.value);
+              setPage(1);
+            }}
+            className="h-10.5 rounded-lg border border-[#D1D5DB] bg-white px-2 py-1 text-sm text-[#111827] outline-none focus:border-[#316EE9]"
+          />
+          <span>Đến:</span>
+          <input
+            type="date"
+            min={fromDate}
+            max={todayIso}
+            value={toDate}
+            onChange={(e) => {
+              setToDate(e.target.value);
+              setPage(1);
+            }}
+            className="h-10.5 rounded-lg border border-[#D1D5DB] bg-white px-2 py-1 text-sm text-[#111827] outline-none focus:border-[#316EE9]"
+          />
+        </div>
       </div>
 
       <div className="overflow-hidden rounded-xl border border-[#E5E7EB] bg-white">

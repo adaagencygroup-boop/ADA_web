@@ -77,8 +77,23 @@ public class AuthService {
       .or(() -> userRepository.findByEmail(request.identifier()))
       .orElse(null);
     if (user == null || !passwordEncoder.matches(request.password(), user.getPasswordHash())) {
-      recordLoginHistory(user, null, null, clientIP, httpRequest, LoginStatus.failed, "Invalid Username Or Password");
-      throw AppException.unauthorized("Invalid Username Or Password");
+      UserDevice failedDevice = null;
+      if (user != null && request.deviceFingerprint() != null && !request.deviceFingerprint().isBlank()) {
+        failedDevice = userDeviceRepository.findByUserIdAndDeviceFingerprint(user.getId(), request.deviceFingerprint())
+          .orElseGet(() -> userDeviceRepository.save(UserDevice.builder()
+            .user(user)
+            .deviceFingerprint(request.deviceFingerprint())
+            .deviceName(request.deviceName() != null && !request.deviceName().isBlank() ? request.deviceName().trim() : DeviceFingerprintUtils.getDeviceName(httpRequest))
+            .deviceType(DeviceFingerprintUtils.getDeviceType(httpRequest))
+            .OS(DeviceFingerprintUtils.getOS(httpRequest))
+            .browser(DeviceFingerprintUtils.getBrowser(httpRequest))
+            .firstSeenAt(Instant.now())
+            .lastSeenAt(Instant.now())
+            .build()
+          ));
+      }
+      recordLoginHistory(user, null, failedDevice, clientIP, httpRequest, LoginStatus.failed, "Mật khẩu không chính xác");
+      throw AppException.unauthorized("Tên đăng nhập hoặc mật khẩu không chính xác");
     }
     DeviceType parsedType = DeviceFingerprintUtils.getDeviceType(httpRequest);
     if (request.deviceType() != null && !request.deviceType().isBlank()) {
@@ -94,7 +109,7 @@ public class AuthService {
       .orElseGet(() -> UserDevice.builder()
         .user(user)
         .deviceFingerprint(request.deviceFingerprint())
-        .deviceName(request.deviceName() != null && !request.deviceName().isBlank() ? request.deviceName().trim() : DeviceFingerprintUtils.getBrowser(httpRequest))
+        .deviceName(request.deviceName() != null && !request.deviceName().isBlank() ? request.deviceName().trim() : DeviceFingerprintUtils.getDeviceName(httpRequest))
         .deviceType(finalDeviceType)
         .OS(DeviceFingerprintUtils.getOS(httpRequest))
         .browser(DeviceFingerprintUtils.getBrowser(httpRequest))

@@ -41,19 +41,19 @@ public class PublicRecruitmentController {
     @RequestParam(required = false) String location,
     @RequestParam(required = false) String search
   ) {
-    return ResponseEntity.ok(APIResponse.ok("Recruitments Retrieved Successfully", recruitmentService.getPublicRecruitments(page, size, departmentId, employmentType, location, search)));
+    return ResponseEntity.ok(APIResponse.ok("Lấy danh sách tuyển dụng thành công", recruitmentService.getPublicRecruitments(page, size, departmentId, employmentType, location, search)));
   }
   @GetMapping("/recruitments/{slug}")
   public ResponseEntity<APIResponse<RecruitmentResponse>> getRecruitmentBySlug(@PathVariable String slug) {
-    return ResponseEntity.ok(APIResponse.ok("Recruitment Retrieved Successfully", recruitmentService.getPublicRecruitmentBySlug(slug)));
+    return ResponseEntity.ok(APIResponse.ok("Lấy thông tin tuyển dụng thành công", recruitmentService.getPublicRecruitmentBySlug(slug)));
   }
   @GetMapping({"/departments", "/recruitments/departments"})
   public ResponseEntity<APIResponse<List<PublicDepartmentResponse>>> getDepartments() {
-    return ResponseEntity.ok(APIResponse.ok("Departments Retrieved Successfully", recruitmentService.getPublicDepartments()));
+    return ResponseEntity.ok(APIResponse.ok("Lấy danh sách phòng ban thành công", recruitmentService.getPublicDepartments()));
   }
   @GetMapping({"/employmentTypes", "/employment-types", "/recruitments/employment-types"})
   public ResponseEntity<APIResponse<List<EmploymentType>>> getEmploymentTypes() {
-    return ResponseEntity.ok(APIResponse.ok("Employment Types Retrieved Successfully", recruitmentService.getEmploymentTypes()));
+    return ResponseEntity.ok(APIResponse.ok("Lấy danh sách hình thức làm việc thành công", recruitmentService.getEmploymentTypes()));
   }
   @PostMapping({"/candidates/uploadResume", "/candidates/upload-resume", "/recruitments/upload-resume"})
   public ResponseEntity<APIResponse<Map<String, Object>>> uploadResume(@RequestParam("file") MultipartFile file) {
@@ -63,20 +63,20 @@ public class PublicRecruitmentController {
       if (mimeType == null || mimeType.isBlank()) {
         mimeType = fileUtils.detectMIMEType(file.getBytes());
       }
-      return ResponseEntity.ok(APIResponse.ok("Resume Uploaded Successfully", Map.of(
+      return ResponseEntity.ok(APIResponse.ok("Tải lên CV thành công", Map.of(
         "resumeURL", resumeURL,
         "fileSizeBytes", file.getSize(),
         "mimeType", mimeType != null ? mimeType : "application/pdf",
         "uploadedAt", Instant.now()
       )));
     } catch (IOException e) {
-      throw AppException.badRequest("Failed To Read Resume File: " + e.getMessage());
+      throw AppException.badRequest("Không thể đọc file CV: " + e.getMessage());
     }
   }
   @PostMapping("/candidates")
   public ResponseEntity<APIResponse<Void>> applyCandidate(@Valid @RequestBody ApplyCandidateRequest request) {
     recruitmentService.applyCandidate(request);
-    return ResponseEntity.status(HttpStatus.CREATED).body(APIResponse.created("Application Submitted Successfully", null));
+    return ResponseEntity.status(HttpStatus.CREATED).body(APIResponse.created("Nộp hồ sơ ứng tuyển thành công", null));
   }
   @PostMapping(value = "/recruitments/{id}/apply", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
   public ResponseEntity<APIResponse<Void>> applyJob(
@@ -88,6 +88,6 @@ public class PublicRecruitmentController {
     @RequestParam("resume") MultipartFile resume
   ) {
     recruitmentService.applyJob(id, fullname, email, phone, message, resume);
-    return ResponseEntity.status(HttpStatus.CREATED).body(APIResponse.created("Application Submitted Successfully", null));
+    return ResponseEntity.status(HttpStatus.CREATED).body(APIResponse.created("Nộp hồ sơ ứng tuyển thành công", null));
   }
 }

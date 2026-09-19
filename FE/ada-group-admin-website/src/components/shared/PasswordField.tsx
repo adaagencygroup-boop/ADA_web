@@ -7,29 +7,29 @@ import { cn } from "@/src/lib/utils";
 
 type PasswordFieldProps = {
   id: string;
-  label: string;
+  label: React.ReactNode;
   placeholder?: string;
   showIcon?: boolean;
+  required?: boolean;
   labelClassName?: string;
   inputClassName?: string;
 } & Omit<React.ComponentProps<"input">, "id" | "type" | "placeholder" | "className">;
-
 export default function PasswordField({
   id,
   label,
   placeholder = "Nhập mật khẩu",
   autoComplete = "current-password",
   showIcon = true,
+  required = false,
   labelClassName = "text-sm font-medium text-[#1E293B]",
   inputClassName = "h-11.5",
   ...inputProps
 }: PasswordFieldProps) {
   const [visible, setVisible] = useState(false);
-
   return (
     <div className="flex flex-col gap-1.5">
       <label htmlFor={id} className={labelClassName}>
-        {label}
+        {label} {required && <span className="text-red-500">*</span>}
       </label>
       <div className="relative">
         {showIcon && (

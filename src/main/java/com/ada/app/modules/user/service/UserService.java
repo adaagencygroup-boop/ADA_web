@@ -2,6 +2,7 @@ package com.ada.app.modules.user.service;
 import com.ada.app.common.exception.AppException;
 import com.ada.app.common.model.PageResponse;
 import com.ada.app.common.security.SecurityUtils;
+import com.ada.app.common.util.DeviceFingerprintUtils;
 import com.ada.app.common.util.ExcelExportService;
 import com.ada.app.common.util.ValidationUtils;
 import com.ada.app.modules.auth.entity.UserSession;
@@ -87,13 +88,16 @@ public class UserService {
   public void changePassword(ChangePasswordRequest request) {
     ValidationUtils.validatePassword(request.newPassword());
     if (!request.newPassword().equals(request.confirmPassword())) {
-      throw AppException.badRequest("Passwords Do Not Match");
+      throw AppException.badRequest("Mật khẩu xác nhận không khớp");
     }
     UUID userId = SecurityUtils.getCurrentUserId();
     User user = userRepository.findById(userId)
-      .orElseThrow(() -> AppException.notFound("User Not Found"));
+      .orElseThrow(() -> AppException.notFound("Không tìm thấy người dùng"));
     if (!passwordEncoder.matches(request.currentPassword(), user.getPasswordHash())) {
-      throw AppException.badRequest("Current Password Is Incorrect");
+      throw AppException.badRequest("Mật khẩu hiện tại không chính xác");
+    }
+    if (passwordEncoder.matches(request.newPassword(), user.getPasswordHash())) {
+      throw AppException.badRequest("Mật khẩu mới không được trùng với mật khẩu hiện tại.");
     }
     user.setPasswordHash(passwordEncoder.encode(request.newPassword()));
     userRepository.save(user);
@@ -174,24 +178,30 @@ public class UserService {
   @Transactional(readOnly = true)
   public PageResponse<LoginHistoryDTO> getLoginHistories(int page, int size, LoginStatus status, Instant fromDate, Instant toDate) {
     UUID userId = SecurityUtils.getCurrentUserId();
+    String currentJTI = SecurityUtils.getCurrentJTI();
     Pageable pageable = PageRequest.of(Math.max(0, page - 1), Math.max(1, size), Sort.by("createdAt").descending());
     Page<LoginHistory> result = loginHistoryRepository.findAll(LoginHistorySpecs.filter(userId, status, fromDate, toDate), pageable);
     List<LoginHistoryDTO> items = result.getContent().stream()
-      .map(h -> new LoginHistoryDTO(
-        h.getId(),
-        h.getUser().getId(),
-        h.getSession() != null ? h.getSession().getId() : null,
-        h.getDevice() != null ? h.getDevice().getId() : null,
-        h.getDevice() != null ? h.getDevice().getDeviceName() : null,
-        h.getIPAddress(),
-        h.getGeoCountry(),
-        h.getGeoCity(),
-        h.getIsNewIP(),
-        h.getUserAgent(),
-        h.getStatus(),
-        h.getFailureReason(),
-        h.getCreatedAt()
-      ))
+      .map(h -> {
+        String deviceName = h.getDevice() != null && h.getDevice().getDeviceName() != null ? h.getDevice().getDeviceName() : (h.getUserAgent() != null && !h.getUserAgent().isBlank() ? DeviceFingerprintUtils.getDeviceName(h.getUserAgent()) : "Không xác định");
+        boolean isCurrent = h.getSession() != null && currentJTI != null && currentJTI.equals(h.getSession().getAccessTokenJTI());
+        return new LoginHistoryDTO(
+          h.getId(),
+          h.getUser().getId(),
+          h.getSession() != null ? h.getSession().getId() : null,
+          h.getDevice() != null ? h.getDevice().getId() : null,
+          deviceName,
+          h.getIPAddress(),
+          h.getGeoCountry(),
+          h.getGeoCity(),
+          h.getIsNewIP(),
+          h.getUserAgent(),
+          h.getStatus(),
+          h.getFailureReason(),
+          h.getCreatedAt(),
+          isCurrent
+        );
+      })
       .toList();
     return new PageResponse<>(items, PageResponse.Pagination.from(result));
   }
@@ -204,7 +214,7 @@ public class UserService {
     for (LoginHistory h : list) {
       rows.add(List.of(
         h.getId().toString(),
-        h.getDevice() != null ? h.getDevice().getDeviceName() : "",
+        h.getDevice() != null && h.getDevice().getDeviceName() != null ? h.getDevice().getDeviceName() : (h.getUserAgent() != null && !h.getUserAgent().isBlank() ? DeviceFingerprintUtils.getDeviceName(h.getUserAgent()) : ""),
         h.getIPAddress() != null ? h.getIPAddress() : "",
         h.getGeoCountry() != null ? h.getGeoCountry() : "",
         h.getGeoCity() != null ? h.getGeoCity() : "",

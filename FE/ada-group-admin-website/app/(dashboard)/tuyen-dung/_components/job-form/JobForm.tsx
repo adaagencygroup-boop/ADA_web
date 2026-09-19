@@ -93,7 +93,7 @@ export default function JobForm({
     watch,
     setValue,
     trigger,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm<RecruitmentFormValues>({
     resolver: zodResolver(recruitmentSchema),
     defaultValues: {
@@ -144,6 +144,8 @@ export default function JobForm({
     DEFAULT_WORK_SCHEDULE
   );
   const [addDepartmentOpen, setAddDepartmentOpen] = useState(false);
+  const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
+  const statusOptions = isEdit ? STATUS_OPTIONS : STATUS_OPTIONS.filter((o) => o.value !== "closed");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -198,25 +200,30 @@ export default function JobForm({
   const isBusy = isSaving || uploadMutation.isPending;
 
   const cancelHref = isEdit ? `/tuyen-dung/${jobId}` : "/tuyen-dung";
-
+  function handleCancelClick() {
+    if (isDirty) {
+      setCancelDialogOpen(true);
+    } else {
+      router.push(cancelHref);
+    }
+  }
   const [pendingSubmit, setPendingSubmit] = useState<RecruitmentPayload | null>(
     null
   );
-
   const requestSubmit = handleSubmit((values) => {
     const payload: RecruitmentPayload = {
-      jobTitle: values.jobTitle,
+      jobTitle: values.jobTitle.trim(),
       departmentId: values.departmentId || null,
-      location: values.location || null,
+      location: values.location?.trim() || null,
       employmentType: values.employmentType,
-      workingHours: values.workingHours || null,
-      description: values.description,
-      requirements: values.requirements,
-      benefits: values.benefits,
+      workingHours: values.workingHours?.trim() || null,
+      description: values.description.trim(),
+      requirements: values.requirements.trim(),
+      benefits: values.benefits.trim(),
       coverImageURL: values.coverImageURL || null,
       status: values.status,
-      minSalary: values.minSalary ? Number(values.minSalary) : null,
-      maxSalary: values.maxSalary ? Number(values.maxSalary) : null,
+      minSalary: values.minSalary ? Number(values.minSalary.replace(/,/g, "")) : null,
+      maxSalary: values.maxSalary ? Number(values.maxSalary.replace(/,/g, "")) : null,
       isNegotiable: values.isNegotiable ?? false,
       requiredCandidateNum: values.requiredCandidateNum
         ? Number(values.requiredCandidateNum)
@@ -227,7 +234,6 @@ export default function JobForm({
         return d.toISOString();
       })(),
     };
-
     setPendingSubmit(payload);
   });
 
@@ -285,13 +291,14 @@ export default function JobForm({
         </div>
 
         <div className="flex items-center gap-3">
-          <Link
-            href={cancelHref}
+          <button
+            type="button"
+            onClick={handleCancelClick}
             className="flex h-8.5 items-center gap-2 rounded-lg border border-[#C4C6D2] px-4 text-sm font-medium text-[#1C1B1B] hover:bg-[#F8FAFC]"
           >
             <X className="size-3.5" />
             Hủy bỏ
-          </Link>
+          </button>
           {isEdit && (
             <Link
               href={`/tuyen-dung/${jobId}`}
@@ -480,12 +487,12 @@ export default function JobForm({
                       <SelectTrigger className="w-full rounded-lg border-[#C4C6D2] bg-[#FCF9F8] text-sm data-[size=default]:h-9.5">
                         <SelectValue>
                           {(value: RecruitmentStatus) =>
-                            STATUS_OPTIONS.find((o) => o.value === value)?.label
+                            statusOptions.find((o) => o.value === value)?.label
                           }
                         </SelectValue>
                       </SelectTrigger>
                       <SelectContent>
-                        {STATUS_OPTIONS.map((option) => (
+                        {statusOptions.map((option) => (
                           <SelectItem key={option.value} value={option.value}>
                             {option.label}
                           </SelectItem>
@@ -495,14 +502,14 @@ export default function JobForm({
                   )}
                 />
               </div>
-
               <div className="flex flex-col gap-1.5">
                 <label className="text-sm font-medium text-[#1C1B1B]">
                   Số lượng cần tuyển <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="number"
-                  min={0}
+                  min={1}
+                  step={1}
                   placeholder="Ví dụ: 2"
                   className="h-9.5 w-full rounded-lg border border-[#C4C6D2] bg-[#FCF9F8] px-4 text-sm text-[#1C1B1B] outline-none placeholder:text-[#9CA3AF] focus-visible:border-[#316EE9]"
                   {...register("requiredCandidateNum")}
@@ -760,6 +767,18 @@ export default function JobForm({
         confirmLabel={isEdit ? "Lưu ngay" : "Đăng tin ngay"}
         onConfirm={handleConfirmSubmit}
         isConfirming={isSaving}
+      />
+      <ConfirmDialog
+        open={cancelDialogOpen}
+        onOpenChange={setCancelDialogOpen}
+        title="Xác nhận hủy bỏ"
+        description="Bạn có chắc chắn muốn hủy? Mọi thay đổi chưa được lưu sẽ bị mất."
+        cancelLabel="Tiếp tục chỉnh sửa"
+        confirmLabel="Rời khỏi"
+        onConfirm={() => {
+          setCancelDialogOpen(false);
+          router.push(cancelHref);
+        }}
       />
     </form>
   );

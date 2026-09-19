@@ -177,10 +177,17 @@ export default function LoginHistoryTable() {
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
                         <DeviceIcon className="size-5 shrink-0 text-[#6B7280]" />
-                        <div className="flex flex-col">
-                          <span className="text-sm font-medium text-[#111827]">
-                            {item.deviceName ?? "Không xác định"}
-                          </span>
+                        <div className="flex flex-col gap-0.5">
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm font-medium text-[#111827]">
+                              {item.deviceName ?? "Không xác định"}
+                            </span>
+                            {item.isCurrentSession && (
+                              <span className="rounded-full bg-[#DBEAFE] px-2 py-0.5 text-[10px] font-medium text-[#1E40AF]">
+                                Phiên hiện tại
+                              </span>
+                            )}
+                          </div>
                           {item.isNewIP && (
                             <span className="w-fit rounded bg-[#FEF3C7] px-1.5 py-0.5 text-[10px] font-medium text-[#92400E]">
                               IP mới

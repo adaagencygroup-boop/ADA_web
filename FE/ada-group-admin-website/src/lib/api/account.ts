@@ -73,6 +73,7 @@ export type LoginHistory = {
   userAgent: string | null;
   status: LoginStatus;
   failureReason: string | null;
+  isCurrentSession?: boolean | null;
   createdAt: string;
 };
 

@@ -33,11 +33,19 @@ function formatAxisDate(dateStr: string) {
 }
 
 export default function DashboardOverview() {
-  const [range, setRange] = useState<DashboardRange>("7d");
+  const [range, setRange] = useState<DashboardRange | "custom">("7d");
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
   const { data: profile } = useProfile();
-  const { data, isLoading, isError, error } = useDashboard(range);
+  const isCustomActive = range === "custom" && !!fromDate && !!toDate;
+  const { data, isLoading, isError, error } = useDashboard(
+    isCustomActive ? undefined : (range === "custom" ? "7d" : range),
+    isCustomActive ? fromDate : undefined,
+    isCustomActive ? toDate : undefined
+  );
 
   const today = new Date().toLocaleDateString("vi-VN");
+  const todayIso = new Date().toISOString().split("T")[0];
   const contactStats = data?.contactStats ?? [];
   const topRecruitments = data?.topRecruitments ?? [];
   const topNews = data?.topNews ?? [];
@@ -115,21 +123,52 @@ export default function DashboardOverview() {
               <BarChart3 className="size-5" />
               Thống kê liên hệ
             </h2>
-            <div className="flex items-center gap-1 rounded-lg border border-[#E5E7EB] bg-[#F9FAFB] p-1">
-              {RANGE_OPTIONS.map((option) => (
-                <button
-                  key={option.value}
-                  type="button"
-                  onClick={() => setRange(option.value)}
-                  className={`rounded-md px-3 py-1.5 text-sm font-medium ${
-                    range === option.value
-                      ? "bg-white text-[#1C1B1B] shadow-xs"
-                      : "text-[#6B7280] hover:text-[#1C1B1B]"
-                  }`}
-                >
-                  {option.label}
-                </button>
-              ))}
+            <div className="flex flex-wrap items-center gap-2">
+              <div className="flex items-center gap-1 rounded-lg border border-[#E5E7EB] bg-[#F9FAFB] p-1">
+                {RANGE_OPTIONS.map((option) => (
+                  <button
+                    key={option.value}
+                    type="button"
+                    onClick={() => {
+                      setRange(option.value);
+                      setFromDate("");
+                      setToDate("");
+                    }}
+                    className={`rounded-md px-3 py-1.5 text-sm font-medium ${
+                      range === option.value
+                        ? "bg-white text-[#1C1B1B] shadow-xs"
+                        : "text-[#6B7280] hover:text-[#1C1B1B]"
+                    }`}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+              <div className="flex items-center gap-2 text-sm text-[#6B7280]">
+                <span>Từ:</span>
+                <input
+                  type="date"
+                  max={toDate || todayIso}
+                  value={fromDate}
+                  onChange={(e) => {
+                    setFromDate(e.target.value);
+                    setRange("custom");
+                  }}
+                  className="rounded-lg border border-[#E5E7EB] bg-white px-2 py-1 text-sm text-[#1C1B1B] shadow-xs outline-none focus:border-[#316EE9]"
+                />
+                <span>Đến:</span>
+                <input
+                  type="date"
+                  min={fromDate}
+                  max={todayIso}
+                  value={toDate}
+                  onChange={(e) => {
+                    setToDate(e.target.value);
+                    setRange("custom");
+                  }}
+                  className="rounded-lg border border-[#E5E7EB] bg-white px-2 py-1 text-sm text-[#1C1B1B] shadow-xs outline-none focus:border-[#316EE9]"
+                />
+              </div>
             </div>
           </div>
 

@@ -153,11 +153,40 @@ public class RecruitmentService {
   @Transactional
   public RecruitmentResponse getAdminRecruitmentById(UUID id) {
     autoCloseExpiredRecruitments();
-    Recruitment r = recruitmentRepository.findById(id).orElseThrow(() -> AppException.notFound("Recruitment Not Found"));
+    Recruitment r = recruitmentRepository.findById(id).orElseThrow(() -> AppException.notFound("Không tìm thấy tin tuyển dụng"));
     return mapToResponse(r);
+  }
+  private void validateWorkingHours(String workingHours) {
+    if (workingHours == null || workingHours.isBlank()) {
+      return;
+    }
+    var matcher = java.util.regex.Pattern.compile("\\((\\d{2}:\\d{2})\\s*-\\s*(\\d{2}:\\d{2})\\)").matcher(workingHours);
+    if (matcher.find()) {
+      String start = matcher.group(1);
+      String end = matcher.group(2);
+      if (start.compareTo(end) >= 0) {
+        throw AppException.badRequest("Thời gian kết thúc phải lớn hơn thời gian bắt đầu");
+      }
+    }
   }
   @Transactional
   public RecruitmentResponse createRecruitment(CreateRecruitmentRequest request) {
+    if (request.status() == RecruitmentStatus.closed) {
+      throw AppException.badRequest("Không thể tạo mới tin tuyển dụng với trạng thái Đã đóng");
+    }
+    validateWorkingHours(request.workingHours());
+    if (request.location() == null || request.location().trim().isBlank()) {
+      throw AppException.badRequest("Vui lòng nhập địa điểm làm việc");
+    }
+    if (request.description() == null || request.description().trim().isBlank()) {
+      throw AppException.badRequest("Vui lòng nhập mô tả công việc");
+    }
+    if (request.requirements() == null || request.requirements().trim().isBlank()) {
+      throw AppException.badRequest("Vui lòng nhập yêu cầu ứng viên");
+    }
+    if (request.benefits() == null || request.benefits().trim().isBlank()) {
+      throw AppException.badRequest("Vui lòng nhập quyền lợi được hưởng");
+    }
     if (request.minSalary() != null && request.minSalary().compareTo(BigDecimal.ZERO) <= 0) {
       throw AppException.badRequest("Mức lương tối thiểu phải lớn hơn 0");
     }
@@ -172,23 +201,23 @@ public class RecruitmentService {
       }
     }
     UUID userId = SecurityUtils.getCurrentUserId();
-    User recruiter = userRepository.findById(userId).orElseThrow(() -> AppException.notFound("Recruiter User Not Found"));
+    User recruiter = userRepository.findById(userId).orElseThrow(() -> AppException.notFound("Không tìm thấy người tuyển dụng"));
     Department dept = null;
     if (request.departmentId() != null) {
-      dept = departmentRepository.findById(request.departmentId()).orElseThrow(() -> AppException.notFound("Department Not Found"));
+      dept = departmentRepository.findById(request.departmentId()).orElseThrow(() -> AppException.notFound("Không tìm thấy phòng ban"));
     }
     String slug = generateSlug(request.jobTitle());
     Recruitment r = Recruitment.builder()
       .recruiter(recruiter)
       .department(dept)
-      .jobTitle(request.jobTitle())
+      .jobTitle(request.jobTitle().trim())
       .slug(slug)
-      .location(request.location())
+      .location(request.location().trim())
       .employmentType(request.employmentType())
-      .workingHours(request.workingHours())
-      .description(request.description())
-      .requirements(request.requirements())
-      .benefits(request.benefits())
+      .workingHours(request.workingHours().trim())
+      .description(request.description().trim())
+      .requirements(request.requirements().trim())
+      .benefits(request.benefits().trim())
       .coverImageURL(request.coverImageURL())
       .status(request.status() != null ? request.status() : RecruitmentStatus.draft)
       .minSalary(request.minSalary())
@@ -215,30 +244,49 @@ public class RecruitmentService {
         throw AppException.badRequest("Hạn ứng tuyển phải lớn hơn ngày hiện tại");
       }
     }
-    Recruitment r = recruitmentRepository.findById(id).orElseThrow(() -> AppException.notFound("Recruitment Not Found"));
+    Recruitment r = recruitmentRepository.findById(id).orElseThrow(() -> AppException.notFound("Không tìm thấy tin tuyển dụng"));
     if (request.departmentId() != null) {
-      Department dept = departmentRepository.findById(request.departmentId()).orElseThrow(() -> AppException.notFound("Department Not Found"));
+      Department dept = departmentRepository.findById(request.departmentId()).orElseThrow(() -> AppException.notFound("Không tìm thấy phòng ban"));
       r.setDepartment(dept);
     }
-    if (request.jobTitle() != null && !request.jobTitle().isBlank()) {
+    if (request.jobTitle() != null) {
+      if (request.jobTitle().trim().isBlank()) {
+        throw AppException.badRequest("Vui lòng nhập vị trí tuyển dụng");
+      }
       r.setJobTitle(request.jobTitle().trim());
     }
-    if (request.location() != null && !request.location().isBlank()) {
+    if (request.location() != null) {
+      if (request.location().trim().isBlank()) {
+        throw AppException.badRequest("Vui lòng nhập địa điểm làm việc");
+      }
       r.setLocation(request.location().trim());
     }
     if (request.employmentType() != null) {
       r.setEmploymentType(request.employmentType());
     }
-    if (request.workingHours() != null && !request.workingHours().isBlank()) {
+    if (request.workingHours() != null) {
+      validateWorkingHours(request.workingHours());
+      if (request.workingHours().trim().isBlank()) {
+        throw AppException.badRequest("Vui lòng chọn thời gian làm việc");
+      }
       r.setWorkingHours(request.workingHours().trim());
     }
-    if (request.description() != null && !request.description().isBlank()) {
+    if (request.description() != null) {
+      if (request.description().trim().isBlank()) {
+        throw AppException.badRequest("Vui lòng nhập mô tả công việc");
+      }
       r.setDescription(request.description().trim());
     }
-    if (request.requirements() != null && !request.requirements().isBlank()) {
+    if (request.requirements() != null) {
+      if (request.requirements().trim().isBlank()) {
+        throw AppException.badRequest("Vui lòng nhập yêu cầu ứng viên");
+      }
       r.setRequirements(request.requirements().trim());
     }
-    if (request.benefits() != null && !request.benefits().isBlank()) {
+    if (request.benefits() != null) {
+      if (request.benefits().trim().isBlank()) {
+        throw AppException.badRequest("Vui lòng nhập quyền lợi được hưởng");
+      }
       r.setBenefits(request.benefits().trim());
     }
     if (request.coverImageURL() != null && !request.coverImageURL().isBlank()) {
@@ -278,7 +326,7 @@ public class RecruitmentService {
   }
   @Transactional
   public void deleteRecruitment(UUID id) {
-    Recruitment r = recruitmentRepository.findById(id).orElseThrow(() -> AppException.notFound("Recruitment Not Found"));
+    Recruitment r = recruitmentRepository.findById(id).orElseThrow(() -> AppException.notFound("Không tìm thấy tin tuyển dụng"));
     candidateRepository.deleteByRecruitmentId(id);
     recruitmentRepository.delete(r);
   }
@@ -351,7 +399,7 @@ public class RecruitmentService {
   @Transactional
   public DepartmentResponse createDepartment(DepartmentRequest request) {
     if (departmentRepository.findByName(request.name()).isPresent()) {
-      throw AppException.conflict("Department Name Already Exists");
+      throw AppException.conflict("Tên phòng ban đã tồn tại");
     }
     Department d = Department.builder().name(request.name()).build();
     d = departmentRepository.save(d);
@@ -359,7 +407,7 @@ public class RecruitmentService {
   }
   @Transactional
   public DepartmentResponse updateDepartment(UUID id, DepartmentRequest request) {
-    Department d = departmentRepository.findById(id).orElseThrow(() -> AppException.notFound("Department Not Found"));
+    Department d = departmentRepository.findById(id).orElseThrow(() -> AppException.notFound("Không tìm thấy phòng ban"));
     if (request.name() != null && !request.name().isBlank()) {
       d.setName(request.name().trim());
     }
@@ -368,7 +416,7 @@ public class RecruitmentService {
   }
   @Transactional
   public void deleteDepartment(UUID id) {
-    Department d = departmentRepository.findById(id).orElseThrow(() -> AppException.notFound("Department Not Found"));
+    Department d = departmentRepository.findById(id).orElseThrow(() -> AppException.notFound("Không tìm thấy phòng ban"));
     if (recruitmentRepository.existsByDepartmentId(id)) {
       throw AppException.conflict("Phòng ban này đang được sử dụng bởi tin tuyển dụng, không thể xóa!");
     }
@@ -383,14 +431,28 @@ public class RecruitmentService {
   }
   @Transactional(readOnly = true)
   public CandidateDTO getCandidateById(UUID id) {
-    Candidate c = candidateRepository.findById(id).orElseThrow(() -> AppException.notFound("Candidate Not Found"));
+    Candidate c = candidateRepository.findById(id).orElseThrow(() -> AppException.notFound("Không tìm thấy ứng viên"));
     return mapToCandidateDTO(c);
   }
   @Transactional
   public CandidateDTO respondCandidate(UUID id, CandidateRespondAdminRequest request) {
     Candidate c = candidateRepository.findById(id)
-      .orElseThrow(() -> AppException.notFound("Candidate Not Found"));
-    
+      .orElseThrow(() -> AppException.notFound("Không tìm thấy ứng viên"));
+    if (c.getStatus() == request.status()) {
+      throw AppException.badRequest("Ứng viên hiện đã ở trạng thái này");
+    }
+    if (c.getStatus() == CandidateStatus.interview_passed) {
+      throw AppException.badRequest("Ứng viên đã trúng tuyển, quy trình tuyển dụng đã hoàn tất");
+    }
+    if (c.getStatus() == CandidateStatus.failed) {
+      throw AppException.badRequest("Ứng viên đã bị từ chối, quy trình tuyển dụng đã kết thúc");
+    }
+    if (c.getStatus() == CandidateStatus.pending && request.status() == CandidateStatus.interview_passed) {
+      throw AppException.badRequest("Ứng viên đang ở trạng thái chờ duyệt, phải đạt vòng hồ sơ trước khi trúng tuyển");
+    }
+    if (c.getStatus() == CandidateStatus.passed && request.status() == CandidateStatus.pending) {
+      throw AppException.badRequest("Không thể chuyển lùi trạng thái ứng viên về chờ duyệt");
+    }
     c.setStatus(request.status());
     c.setFeedbackContent(request.feedbackContent());
     c.setFeedbackAttachmentURL(request.feedbackAttachmentURL());
@@ -436,7 +498,7 @@ public class RecruitmentService {
   }
   @Transactional
   public CandidateNoteResponse updateCandidateNote(UUID id, CandidateNoteRequest request) {
-    Candidate c = candidateRepository.findById(id).orElseThrow(() -> AppException.notFound("Candidate Not Found"));
+    Candidate c = candidateRepository.findById(id).orElseThrow(() -> AppException.notFound("Không tìm thấy ứng viên"));
     c.setNote(request.note());
     c.setUpdatedAt(Instant.now());
     c = candidateRepository.save(c);
@@ -447,9 +509,9 @@ public class RecruitmentService {
 
   @Transactional(readOnly = true)
   public CandidateCvResource getCandidateCv(UUID id) {
-    Candidate c = candidateRepository.findById(id).orElseThrow(() -> AppException.notFound("Candidate Not Found"));
+    Candidate c = candidateRepository.findById(id).orElseThrow(() -> AppException.notFound("Không tìm thấy ứng viên"));
     if (c.getResumeURL() == null || c.getResumeURL().isBlank()) {
-      throw AppException.notFound("Candidate Has No Resume");
+      throw AppException.notFound("Ứng viên chưa có file CV đính kèm");
     }
     String resumeUrl = c.getResumeURL();
     String rawFilename = resumeUrl.substring(resumeUrl.lastIndexOf('/') + 1);
@@ -463,7 +525,7 @@ public class RecruitmentService {
       } catch (IOException ignored) {}
     }
     if (!Files.exists(filePath)) {
-      throw AppException.notFound("Resume File Not Found On Server");
+      throw AppException.notFound("Không tìm thấy file CV trên hệ thống");
     }
     Resource resource = new FileSystemResource(filePath.toFile());
     String mimeType = "application/pdf";
@@ -501,9 +563,9 @@ public class RecruitmentService {
   public RecruitmentResponse getPublicRecruitmentBySlug(String slug) {
     autoCloseExpiredRecruitments();
     Recruitment r = recruitmentRepository.findBySlug(slug)
-      .orElseThrow(() -> AppException.notFound("Recruitment Not Found"));
+      .orElseThrow(() -> AppException.notFound("Không tìm thấy tin tuyển dụng"));
     if (r.getStatus() == RecruitmentStatus.draft) {
-      throw AppException.notFound("Recruitment Not Found");
+      throw AppException.notFound("Không tìm thấy tin tuyển dụng");
     }
     redisTemplate.opsForValue().increment("viewCount:recruitment:" + r.getId());
     return mapToPublicDetailResponse(r);
@@ -512,7 +574,7 @@ public class RecruitmentService {
   public void applyCandidate(ApplyCandidateRequest request) {
     autoCloseExpiredRecruitments();
     Recruitment r = recruitmentRepository.findById(request.recruitmentId())
-      .orElseThrow(() -> AppException.notFound("Recruitment Not Found"));
+      .orElseThrow(() -> AppException.notFound("Không tìm thấy tin tuyển dụng"));
     if (r.getStatus() == RecruitmentStatus.closed || (r.getExpiresAt() != null && r.getExpiresAt().isBefore(Instant.now()))) {
       if (r.getStatus() != RecruitmentStatus.closed) {
         r.setStatus(RecruitmentStatus.closed);
@@ -523,14 +585,23 @@ public class RecruitmentService {
     if (r.getStatus() != RecruitmentStatus.hiring) {
       throw AppException.badRequest("Tin tuyển dụng này không ở trạng thái nhận hồ sơ.");
     }
-    if (candidateRepository.existsByRecruitmentIdAndEmail(r.getId(), request.email())) {
+    if (request.fullname() == null || !request.fullname().trim().matches("^[\\p{L}\\s]+$")) {
+      throw AppException.badRequest("Họ và tên chỉ được chứa chữ cái và khoảng trắng");
+    }
+    if (request.email() == null || !request.email().trim().matches("^(?!\\.)(?!.*\\.\\.)[a-zA-Z0-9._%+-]+@(?i)[a-z0-9-]+(\\.[a-z0-9-]+)*\\.[a-z]{2,}$")) {
+      throw AppException.badRequest("Địa chỉ email không hợp lệ");
+    }
+    if (request.phone() != null && !request.phone().trim().matches("^(?!0{10})\\d{10}$")) {
+      throw AppException.badRequest("Số điện thoại phải gồm đúng 10 chữ số hợp lệ");
+    }
+    if (candidateRepository.existsByRecruitmentIdAndEmail(r.getId(), request.email().trim()) || (request.phone() != null && candidateRepository.existsByRecruitmentIdAndPhone(r.getId(), request.phone().trim()))) {
       throw AppException.badRequest("Bạn đã ứng tuyển công việc này trước đó rồi. Vui lòng gửi lại CV qua email ada.agency.group@gmail.com nếu cần cập nhật!");
     }
     Candidate candidate = Candidate.builder()
       .recruitment(r)
-      .fullname(request.fullname())
-      .email(request.email())
-      .phone(request.phone())
+      .fullname(request.fullname().trim())
+      .email(request.email().trim())
+      .phone(request.phone() != null ? request.phone().trim() : null)
       .resumeURL(request.resumeURL())
       .message(request.message())
       .build();
@@ -549,7 +620,7 @@ public class RecruitmentService {
   public void applyJob(UUID recruitmentId, String fullname, String email, String phone, String message, MultipartFile resume) {
     autoCloseExpiredRecruitments();
     Recruitment r = recruitmentRepository.findById(recruitmentId)
-      .orElseThrow(() -> AppException.notFound("Recruitment Not Found"));
+      .orElseThrow(() -> AppException.notFound("Không tìm thấy tin tuyển dụng"));
     if (r.getStatus() == RecruitmentStatus.closed || (r.getExpiresAt() != null && r.getExpiresAt().isBefore(Instant.now()))) {
       if (r.getStatus() != RecruitmentStatus.closed) {
         r.setStatus(RecruitmentStatus.closed);
@@ -560,15 +631,24 @@ public class RecruitmentService {
     if (r.getStatus() != RecruitmentStatus.hiring) {
       throw AppException.badRequest("Tin tuyển dụng này không ở trạng thái nhận hồ sơ.");
     }
-    if (candidateRepository.existsByRecruitmentIdAndEmail(recruitmentId, email)) {
+    if (fullname == null || !fullname.trim().matches("^[\\p{L}\\s]+$")) {
+      throw AppException.badRequest("Họ và tên chỉ được chứa chữ cái và khoảng trắng");
+    }
+    if (email == null || !email.trim().matches("^(?!\\.)(?!.*\\.\\.)[a-zA-Z0-9._%+-]+@(?i)[a-z0-9-]+(\\.[a-z0-9-]+)*\\.[a-z]{2,}$")) {
+      throw AppException.badRequest("Địa chỉ email không hợp lệ");
+    }
+    if (phone == null || !phone.trim().matches("^(?!0{10})\\d{10}$")) {
+      throw AppException.badRequest("Số điện thoại phải gồm đúng 10 chữ số hợp lệ");
+    }
+    if (candidateRepository.existsByRecruitmentIdAndEmail(recruitmentId, email.trim()) || candidateRepository.existsByRecruitmentIdAndPhone(recruitmentId, phone.trim())) {
       throw AppException.badRequest("Bạn đã ứng tuyển công việc này trước đó rồi. Vui lòng gửi lại CV qua email ada.agency.group@gmail.com nếu cần cập nhật!");
     }
     String resumeURL = fileUtils.uploadFile(resume, "resumes");
     Candidate candidate = Candidate.builder()
       .recruitment(r)
-      .fullname(fullname)
-      .email(email)
-      .phone(phone)
+      .fullname(fullname.trim())
+      .email(email.trim())
+      .phone(phone.trim())
       .resumeURL(resumeURL)
       .message(message)
       .build();

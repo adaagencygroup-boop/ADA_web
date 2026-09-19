@@ -11,7 +11,7 @@ const CONTENT = {
 const SERVICES = [
   {
     Icon: Service1Icon,
-    title: "Web & Web Application",
+    title: "Web Application",
     description:
       "Phát triển website và ứng dụng web hiện đại, tối ưu cho nhu cầu vận hành và kinh doanh.",
     href: "/dich-vu/web",

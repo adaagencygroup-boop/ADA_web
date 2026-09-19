@@ -39,7 +39,7 @@ public class AdminRecruitmentController {
   private final RecruitmentService recruitmentService;
   @GetMapping("/recruitments/dashboardMetrics")
   public ResponseEntity<APIResponse<DashboardMetricsResponse>> getDashboardMetrics() {
-    return ResponseEntity.ok(APIResponse.ok("Metrics Retrieved Successfully", recruitmentService.getDashboardMetrics()));
+    return ResponseEntity.ok(APIResponse.ok("Lấy chỉ số thành công", recruitmentService.getDashboardMetrics()));
   }
   @GetMapping("/recruitments")
   public ResponseEntity<APIResponse<PageResponse<RecruitmentResponse>>> getRecruitments(
@@ -52,7 +52,7 @@ public class AdminRecruitmentController {
     @RequestParam(required = false) Instant fromDate,
     @RequestParam(required = false) Instant toDate
   ) {
-    return ResponseEntity.ok(APIResponse.ok("Recruitments Retrieved Successfully", recruitmentService.getAdminRecruitments(page, size, status, departmentId, employmentType, null, null, null, search, fromDate, toDate)));
+    return ResponseEntity.ok(APIResponse.ok("Lấy danh sách tin tuyển dụng thành công", recruitmentService.getAdminRecruitments(page, size, status, departmentId, employmentType, null, null, null, search, fromDate, toDate)));
   }
   @GetMapping("/recruitments/exportExcel")
   public ResponseEntity<byte[]> exportRecruitmentsExcel(
@@ -71,37 +71,37 @@ public class AdminRecruitmentController {
   }
   @GetMapping("/recruitments/{id}")
   public ResponseEntity<APIResponse<RecruitmentResponse>> getRecruitmentById(@PathVariable UUID id) {
-    return ResponseEntity.ok(APIResponse.ok("Recruitment Retrieved Successfully", recruitmentService.getAdminRecruitmentById(id)));
+    return ResponseEntity.ok(APIResponse.ok("Lấy thông tin tin tuyển dụng thành công", recruitmentService.getAdminRecruitmentById(id)));
   }
   @PostMapping("/recruitments")
   public ResponseEntity<APIResponse<RecruitmentResponse>> createRecruitment(@Valid @RequestBody CreateRecruitmentRequest request) {
-    return ResponseEntity.status(HttpStatus.CREATED).body(APIResponse.created("Recruitment Created Successfully", recruitmentService.createRecruitment(request)));
+    return ResponseEntity.status(HttpStatus.CREATED).body(APIResponse.created("Tạo tin tuyển dụng thành công", recruitmentService.createRecruitment(request)));
   }
   @PutMapping("/recruitments/{id}")
   public ResponseEntity<APIResponse<RecruitmentResponse>> updateRecruitment(@PathVariable UUID id, @Valid @RequestBody UpdateRecruitmentRequest request) {
-    return ResponseEntity.ok(APIResponse.ok("Recruitment Updated Successfully", recruitmentService.updateRecruitment(id, request)));
+    return ResponseEntity.ok(APIResponse.ok("Cập nhật tin tuyển dụng thành công", recruitmentService.updateRecruitment(id, request)));
   }
   @DeleteMapping("/recruitments/{id}")
   public ResponseEntity<APIResponse<Void>> deleteRecruitment(@PathVariable UUID id) {
     recruitmentService.deleteRecruitment(id);
-    return ResponseEntity.ok(APIResponse.ok("Recruitment Deleted Successfully", null));
+    return ResponseEntity.ok(APIResponse.ok("Xóa tin tuyển dụng thành công", null));
   }
   @GetMapping({"/departments", "/recruitments/departments"})
   public ResponseEntity<APIResponse<List<DepartmentResponse>>> getDepartments(@RequestParam(required = false) String search) {
-    return ResponseEntity.ok(APIResponse.ok("Departments Retrieved Successfully", recruitmentService.getDepartments(search)));
+    return ResponseEntity.ok(APIResponse.ok("Lấy danh sách phòng ban thành công", recruitmentService.getDepartments(search)));
   }
   @PostMapping({"/departments", "/recruitments/departments"})
   public ResponseEntity<APIResponse<DepartmentResponse>> createDepartment(@Valid @RequestBody DepartmentRequest request) {
-    return ResponseEntity.status(HttpStatus.CREATED).body(APIResponse.created("Department Created Successfully", recruitmentService.createDepartment(request)));
+    return ResponseEntity.status(HttpStatus.CREATED).body(APIResponse.created("Thêm phòng ban thành công", recruitmentService.createDepartment(request)));
   }
   @PutMapping({"/departments/{id}", "/recruitments/departments/{id}"})
   public ResponseEntity<APIResponse<DepartmentResponse>> updateDepartment(@PathVariable UUID id, @Valid @RequestBody DepartmentRequest request) {
-    return ResponseEntity.ok(APIResponse.ok("Department Updated Successfully", recruitmentService.updateDepartment(id, request)));
+    return ResponseEntity.ok(APIResponse.ok("Cập nhật phòng ban thành công", recruitmentService.updateDepartment(id, request)));
   }
   @DeleteMapping({"/departments/{id}", "/recruitments/departments/{id}"})
   public ResponseEntity<APIResponse<Void>> deleteDepartment(@PathVariable UUID id) {
     recruitmentService.deleteDepartment(id);
-    return ResponseEntity.ok(APIResponse.ok("Department Deleted Successfully", null));
+    return ResponseEntity.ok(APIResponse.ok("Xóa phòng ban thành công", null));
   }
   @GetMapping("/candidates")
   public ResponseEntity<APIResponse<PageResponse<CandidateDTO>>> getCandidates(
@@ -113,7 +113,7 @@ public class AdminRecruitmentController {
     @RequestParam(required = false) Instant fromDate,
     @RequestParam(required = false) Instant toDate
   ) {
-    return ResponseEntity.ok(APIResponse.ok("Candidates Retrieved Successfully", recruitmentService.getCandidates(page, size, recruitmentId, status, search, fromDate, toDate)));
+    return ResponseEntity.ok(APIResponse.ok("Lấy danh sách ứng viên thành công", recruitmentService.getCandidates(page, size, recruitmentId, status, search, fromDate, toDate)));
   }
   @GetMapping("/candidates/exportExcel")
   public ResponseEntity<byte[]> exportCandidatesExcel(
@@ -130,15 +130,15 @@ public class AdminRecruitmentController {
   }
   @GetMapping("/candidates/{id}")
   public ResponseEntity<APIResponse<CandidateDTO>> getCandidateById(@PathVariable UUID id) {
-    return ResponseEntity.ok(APIResponse.ok("Candidate Retrieved Successfully", recruitmentService.getCandidateById(id)));
+    return ResponseEntity.ok(APIResponse.ok("Lấy thông tin ứng viên thành công", recruitmentService.getCandidateById(id)));
   }
   @PostMapping("/candidates/{id}/respond")
   public ResponseEntity<APIResponse<CandidateDTO>> respondCandidate(@PathVariable UUID id, @Valid @RequestBody com.ada.app.modules.recruitment.dto.CandidateRespondAdminRequest request) {
-    return ResponseEntity.ok(APIResponse.ok("Candidate Responded Successfully", recruitmentService.respondCandidate(id, request)));
+    return ResponseEntity.ok(APIResponse.ok("Phản hồi ứng viên thành công", recruitmentService.respondCandidate(id, request)));
   }
   @PatchMapping("/candidates/{id}/note")
   public ResponseEntity<APIResponse<CandidateNoteResponse>> updateCandidateNote(@PathVariable UUID id, @Valid @RequestBody CandidateNoteRequest request) {
-    return ResponseEntity.ok(APIResponse.ok("Candidate Note Updated Successfully", recruitmentService.updateCandidateNote(id, request)));
+    return ResponseEntity.ok(APIResponse.ok("Cập nhật ghi chú ứng viên thành công", recruitmentService.updateCandidateNote(id, request)));
   }
   @GetMapping("/candidates/{id}/cv")
   public ResponseEntity<org.springframework.core.io.Resource> getCandidateCv(@PathVariable UUID id) {

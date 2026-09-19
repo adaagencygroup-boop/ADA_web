@@ -66,48 +66,49 @@ public class BackupService {
   private String dbPassword;
   @Transactional(readOnly = true)
   public BackupScheduleResponse getSchedule() {
-    BackupSchedule s = scheduleRepository.findFirstByOrderByIdAsc()
-      .orElseThrow(() -> AppException.notFound("Backup Schedule Not Found"));
+    BackupSchedule s = scheduleRepository.findFirstByOrderByIdAsc().orElseGet(() -> {
+      BackupSchedule def = BackupSchedule.builder().isEnabled(true).frequency(BackupFrequency.daily).timeOfDay(LocalTime.of(2, 0)).build();
+      return scheduleRepository.save(def);
+    });
     return new BackupScheduleResponse(s.getId(), s.getIsEnabled(), s.getFrequency(), s.getTimeOfDay(), s.getDayOfWeek(), s.getDayOfMonth());
   }
   @Transactional
   public BackupScheduleResponse updateSchedule(UpdateBackupScheduleRequest request) {
     if (request.frequency() == null || request.frequency().isBlank()) {
-      throw AppException.badRequest("Backup Frequency Is Required");
+      throw AppException.badRequest("Tần suất sao lưu là bắt buộc");
     }
     BackupFrequency freq;
     try {
       freq = BackupFrequency.valueOf(request.frequency().trim().toLowerCase());
     } catch (IllegalArgumentException e) {
-      throw AppException.badRequest("Invalid Backup Frequency: Must Be Daily, Weekly Or Monthly");
+      throw AppException.badRequest("Tần suất sao lưu không hợp lệ: Phải là daily, weekly hoặc monthly");
     }
     LocalTime parsedTime;
     try {
       parsedTime = LocalTime.parse(request.timeOfDay().trim());
     } catch (DateTimeParseException e) {
-      throw AppException.badRequest("Invalid Time Format (Must Be HH:mm:ss): " + request.timeOfDay());
+      throw AppException.badRequest("Định dạng giờ không hợp lệ (HH:mm:ss): " + request.timeOfDay());
     }
     if (freq == BackupFrequency.daily) {
       if (request.dayOfWeek() != null || request.dayOfMonth() != null) {
-        throw AppException.badRequest("Daily Backup Schedule Must Not Specify Day Of Week Or Day Of Month");
+        throw AppException.badRequest("Lịch sao lưu hàng ngày không được chỉ định ngày trong tuần hoặc ngày trong tháng");
       }
     } else if (freq == BackupFrequency.weekly) {
       if (request.dayOfWeek() == null || request.dayOfWeek() < 0 || request.dayOfWeek() > 6) {
-        throw AppException.badRequest("Weekly Backup Schedule Requires Day Of Week Between Sunday And Saturday");
+        throw AppException.badRequest("Lịch sao lưu hàng tuần yêu cầu ngày trong tuần từ 0 (Chủ nhật) đến 6 (Thứ 7)");
       }
       if (request.dayOfMonth() != null) {
-        throw AppException.badRequest("Weekly Backup Schedule Must Not Specify Day Of Month");
+        throw AppException.badRequest("Lịch sao lưu hàng tuần không được chỉ định ngày trong tháng");
       }
     } else if (freq == BackupFrequency.monthly) {
       if (request.dayOfMonth() == null || request.dayOfMonth() < 1 || request.dayOfMonth() > 31) {
-        throw AppException.badRequest("Monthly Backup Schedule Requires Day Of Month Between 1 And 31");
+        throw AppException.badRequest("Lịch sao lưu hàng tháng yêu cầu ngày trong tháng từ 1 đến 31");
       }
       if (request.dayOfWeek() != null) {
-        throw AppException.badRequest("Monthly Backup Schedule Must Not Specify Day Of Week");
+        throw AppException.badRequest("Lịch sao lưu hàng tháng không được chỉ định ngày trong tuần");
       }
     }
-    BackupSchedule s = scheduleRepository.findFirstByOrderByIdAsc()
-      .orElseGet(() -> BackupSchedule.builder().build());
+    BackupSchedule s = scheduleRepository.findFirstByOrderByIdAsc().orElseGet(() -> BackupSchedule.builder().build());
     if (request.isEnabled() != null) {
       s.setIsEnabled(request.isEnabled());
     }
@@ -233,11 +234,13 @@ public class BackupService {
         }
         updateBackupStatus(historyId, BackupStatus.success, zipFile.length(), null);
       } else {
-        updateBackupStatus(historyId, BackupStatus.failed, 0L, "pg_dump Failed With Exit Code " + exitCode);
+        String errOutput = new String(process.getErrorStream().readAllBytes()).trim();
+        String errMsg = errOutput.isEmpty() ? ("pg_dump thất bại với mã lỗi " + exitCode) : ("pg_dump thất bại: " + errOutput);
+        updateBackupStatus(historyId, BackupStatus.failed, 0L, errMsg);
       }
       purgeOldBackups();
     } catch (Exception e) {
-      updateBackupStatus(historyId, BackupStatus.failed, 0L, "Error: " + e.getMessage());
+      updateBackupStatus(historyId, BackupStatus.failed, 0L, "Lỗi: " + e.getMessage());
     }
   }
   private void addFileToZip(File file, String entryName, ZipOutputStream zos) throws IOException {

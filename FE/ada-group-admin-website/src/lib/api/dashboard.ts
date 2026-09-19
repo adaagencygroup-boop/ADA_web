@@ -29,8 +29,15 @@ export type AdminDashboard = {
   topNews: TopNewsStat[];
 };
 
-export function getDashboard(range: DashboardRange, signal?: AbortSignal) {
+export function getDashboard(range?: DashboardRange, fromDate?: string, toDate?: string, signal?: AbortSignal) {
+  const params: Record<string, string | undefined> = {};
+  if (fromDate && toDate) {
+    params.fromDate = fromDate;
+    params.toDate = toDate;
+  } else if (range) {
+    params.range = range;
+  }
   return unwrap<AdminDashboard>(
-    apiClient.get("/admin/dashboard", { params: { range }, signal })
+    apiClient.get("/admin/dashboard", { params, signal })
   );
 }

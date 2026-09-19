@@ -7,41 +7,42 @@ import { applyToJob, formatDate, formatDeadlineDate, formatEmploymentType } from
 import type { Recruitment } from "@/src/types/recruitments";
 import Alert from "@/src/components/common/Alert";
 
-const PHONE_REGEX = /^\+?[0-9]{1,4}[\s\-.]?\(?[0-9]{1,4}\)?[\s\-.]?[0-9]{1,4}[\s\-.]?[0-9]{1,9}$/;
-const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
+const NAME_REGEX = /^[\p{L}\s]+$/u;
+const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+const PHONE_REGEX = /^(?!0{10})\d{10}$/;
 interface FieldErrors {
   fullname?: string;
   email?: string;
   phone?: string;
 }
-
 function validateForm(data: { fullname: string; email: string; phone: string }): FieldErrors {
   const errors: FieldErrors = {};
-
   if (!data.fullname.trim()) {
     errors.fullname = "Vui lòng nhập họ và tên.";
   } else if (data.fullname.trim().length < 2) {
     errors.fullname = "Họ và tên phải có ít nhất 2 ký tự.";
   } else if (data.fullname.trim().length > 100) {
     errors.fullname = "Họ và tên không được vượt quá 100 ký tự.";
+  } else if (!NAME_REGEX.test(data.fullname.trim())) {
+    errors.fullname = "Họ và tên chỉ được chứa chữ cái và khoảng trắng.";
   }
-
   if (!data.email.trim()) {
     errors.email = "Vui lòng nhập địa chỉ email.";
   } else if (!EMAIL_REGEX.test(data.email.trim())) {
     errors.email = "Địa chỉ email không hợp lệ (ví dụ: example@domain.com).";
   }
-
   if (!data.phone.trim()) {
     errors.phone = "Vui lòng nhập số điện thoại.";
   } else {
-    const phoneDigits = data.phone.trim().replace(/[\s\-.()+]/g, "");
-    if (!PHONE_REGEX.test(data.phone.trim()) || phoneDigits.length < 7 || phoneDigits.length > 15) {
-      errors.phone = "Số điện thoại không hợp lệ. (ví dụ: 0912345678 hoặc +84912345678).";
+    const rawPhone = data.phone.trim();
+    if (!PHONE_REGEX.test(rawPhone)) {
+      if (rawPhone === "0000000000") {
+        errors.phone = "Số điện thoại không hợp lệ (không được toàn chữ số 0).";
+      } else {
+        errors.phone = "Số điện thoại phải gồm đúng 10 chữ số.";
+      }
     }
   }
-
   return errors;
 }
 
@@ -193,10 +194,10 @@ export default function ApplyForm({ job, slug }: { job: Recruitment; slug: strin
     setIsSubmitting(true);
     try {
       await applyToJob(job.id, {
-        fullname: formData.fullname,
-        email: formData.email,
-        phone: formData.phone || undefined,
-        message: formData.message || undefined,
+        fullname: formData.fullname.trim(),
+        email: formData.email.trim(),
+        phone: formData.phone.trim() || undefined,
+        message: formData.message.trim() || undefined,
         resume: file,
       });
 

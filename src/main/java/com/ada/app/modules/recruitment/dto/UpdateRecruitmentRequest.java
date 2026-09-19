@@ -8,13 +8,13 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
 public record UpdateRecruitmentRequest(
-  @Size(max = 150, message = "Job Title Cannot Exceed 150 Chars")
+  @Size(max = 150, message = "Vị trí tuyển dụng không được vượt quá 150 ký tự")
   String jobTitle,
   UUID departmentId,
-  @Size(max = 100, message = "Location Cannot Exceed 100 Chars")
+  @Size(max = 100, message = "Địa điểm không được vượt quá 100 ký tự")
   String location,
   EmploymentType employmentType,
-  @Size(max = 100, message = "Working Hours Cannot Exceed 100 Chars")
+  @Size(max = 100, message = "Thời gian làm việc không được vượt quá 100 ký tự")
   String workingHours,
   String description,
   String requirements,
@@ -24,7 +24,7 @@ public record UpdateRecruitmentRequest(
   BigDecimal minSalary,
   BigDecimal maxSalary,
   Boolean isNegotiable,
-  @Positive(message = "Số lượng tuyển dụng phải lớn hơn 0")
+  @Positive(message = "Số lượng tuyển dụng phải là số nguyên lớn hơn 0")
   Integer requiredCandidateNum,
   @FutureOrPresent(message = "Ngày hết hạn không được ở trong quá khứ")
   Instant expiresAt

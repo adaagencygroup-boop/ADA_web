@@ -104,6 +104,7 @@ export default function ContactSection() {
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [cooldown, setCooldown] = useState(false);
   const [alertInfo, setAlertInfo] = useState<{
     type: "success" | "error";
     title: string;
@@ -140,20 +141,16 @@ export default function ContactSection() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isSubmitting || cooldown) return;
     setAlertInfo(null);
-
-    // Mark all fields touched & run full validation
     setTouched({ name: true, email: true, phone: true, message: true });
     const errors = validateForm(formData);
     setFieldErrors(errors);
-
     if (Object.keys(errors).length > 0) {
-      // Focus the first invalid field
       const firstKey = Object.keys(errors)[0];
       document.getElementById(`cs-${firstKey}`)?.focus();
       return;
     }
-
     setIsSubmitting(true);
     try {
       const response = await submitContact({
@@ -162,7 +159,6 @@ export default function ContactSection() {
         customerPhone: formData.phone || null,
         message: formData.message,
       });
-
       if (response.success) {
         setAlertInfo({
           type: "success",
@@ -173,6 +169,8 @@ export default function ContactSection() {
         setFormData({ name: "", email: "", phone: "", message: "" });
         setFieldErrors({});
         setTouched({});
+        setCooldown(true);
+        setTimeout(() => setCooldown(false), 5000);
       } else {
         setAlertInfo({
           type: "error",
@@ -342,10 +340,10 @@ export default function ContactSection() {
               <div className="mt-2">
                 <button
                   type="submit"
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || cooldown}
                   className="cursor-pointer bg-[#002A64] hover:bg-[#002A64]/90 text-white font-semibold text-[14px] leading-none px-8 py-3.5 rounded-lg flex items-center gap-1.5 transition-colors w-fit disabled:opacity-70 disabled:cursor-not-allowed"
                 >
-                  {isSubmitting ? "Đang gửi..." : <span>Gửi liên hệ</span>}
+                  {isSubmitting ? "Đang gửi..." : cooldown ? "Vui lòng chờ (5s)..." : <span>Gửi liên hệ</span>}
                 </button>
               </div>
 

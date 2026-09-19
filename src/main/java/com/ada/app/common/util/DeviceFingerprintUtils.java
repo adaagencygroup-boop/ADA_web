@@ -60,7 +60,7 @@ public final class DeviceFingerprintUtils {
   }
   public static String getBrowser(HttpServletRequest request) {
     if (request == null) {
-      return "Unknown";
+      return "Không xác định";
     }
     for (String header : browserHeaders) {
       String val = request.getHeader(header);
@@ -73,11 +73,11 @@ public final class DeviceFingerprintUtils {
     if (browser != null && !browser.isBlank() && !"Unknown".equalsIgnoreCase(browser)) {
       return browser;
     }
-    return "Other";
+    return "Khác";
   }
   public static String getOS(HttpServletRequest request) {
     if (request == null) {
-      return "Unknown";
+      return "Không xác định";
     }
     for (String header : osHeaders) {
       String val = request.getHeader(header);
@@ -93,7 +93,7 @@ public final class DeviceFingerprintUtils {
     if (os != null && !os.isBlank() && !"Unknown".equalsIgnoreCase(os)) {
       return os;
     }
-    return "Other";
+    return "Khác";
   }
   public static DeviceType getDeviceType(HttpServletRequest request) {
     if (request == null) {
@@ -122,7 +122,7 @@ public final class DeviceFingerprintUtils {
   }
   public static String getDeviceName(HttpServletRequest request) {
     if (request == null) {
-      return "Unknown Device";
+      return "Không xác định";
     }
     for (String header : deviceNameHeaders) {
       String val = request.getHeader(header);
@@ -132,9 +132,75 @@ public final class DeviceFingerprintUtils {
     }
     UserAgent parsed = parseUserAgent(request);
     String devName = parsed.getValue(UserAgent.DEVICE_NAME);
-    if (devName != null && !devName.isBlank() && !"Unknown".equalsIgnoreCase(devName)) {
+    if (devName != null && !devName.isBlank() && !"Unknown".equalsIgnoreCase(devName) && !"Desktop".equalsIgnoreCase(devName)) {
       return devName;
     }
-    return getBrowser(request) + " on " + getOS(request);
+    String browser = getBrowser(request);
+    String os = getOS(request);
+    if (("Khác".equalsIgnoreCase(browser) || "Không xác định".equalsIgnoreCase(browser)) && ("Khác".equalsIgnoreCase(os) || "Không xác định".equalsIgnoreCase(os))) {
+      return "Không xác định";
+    }
+    return browser + " trên " + os;
+  }
+  public static UserAgent parseUserAgent(String userAgent) {
+    if (userAgent == null || userAgent.isBlank()) {
+      return analyzer.parse("");
+    }
+    return analyzer.parse(userAgent);
+  }
+  public static String getBrowser(String userAgent) {
+    if (userAgent == null || userAgent.isBlank()) {
+      return "Không xác định";
+    }
+    UserAgent parsed = parseUserAgent(userAgent);
+    String browser = parsed.getValue(UserAgent.AGENT_NAME);
+    if (browser != null && !browser.isBlank() && !"Unknown".equalsIgnoreCase(browser)) {
+      return browser;
+    }
+    return "Khác";
+  }
+  public static String getOS(String userAgent) {
+    if (userAgent == null || userAgent.isBlank()) {
+      return "Không xác định";
+    }
+    UserAgent parsed = parseUserAgent(userAgent);
+    String os = parsed.getValue(UserAgent.OPERATING_SYSTEM_NAME);
+    if (os != null && !os.isBlank() && !"Unknown".equalsIgnoreCase(os)) {
+      return os;
+    }
+    return "Khác";
+  }
+  public static DeviceType getDeviceType(String userAgent) {
+    if (userAgent == null || userAgent.isBlank()) {
+      return DeviceType.desktop;
+    }
+    UserAgent parsed = parseUserAgent(userAgent);
+    String deviceClass = parsed.getValue(UserAgent.DEVICE_CLASS);
+    if (deviceClass != null) {
+      String dc = deviceClass.toLowerCase();
+      if (dc.contains("phone") || dc.contains("mobile") || dc.contains("watch") || dc.contains("handheld")) {
+        return DeviceType.mobile;
+      }
+      if (dc.contains("tablet") || dc.contains("ereader")) {
+        return DeviceType.tablet;
+      }
+    }
+    return DeviceType.desktop;
+  }
+  public static String getDeviceName(String userAgent) {
+    if (userAgent == null || userAgent.isBlank()) {
+      return "Không xác định";
+    }
+    UserAgent parsed = parseUserAgent(userAgent);
+    String devName = parsed.getValue(UserAgent.DEVICE_NAME);
+    if (devName != null && !devName.isBlank() && !"Unknown".equalsIgnoreCase(devName) && !"Desktop".equalsIgnoreCase(devName)) {
+      return devName;
+    }
+    String browser = getBrowser(userAgent);
+    String os = getOS(userAgent);
+    if (("Khác".equalsIgnoreCase(browser) || "Không xác định".equalsIgnoreCase(browser)) && ("Khác".equalsIgnoreCase(os) || "Không xác định".equalsIgnoreCase(os))) {
+      return "Không xác định";
+    }
+    return browser + " trên " + os;
   }
 }

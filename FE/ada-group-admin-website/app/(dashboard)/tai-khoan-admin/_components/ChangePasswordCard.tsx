@@ -75,6 +75,7 @@ export default function ChangePasswordCard() {
             label="Mật khẩu hiện tại"
             placeholder="Nhập mật khẩu hiện tại"
             showIcon={false}
+            required
             labelClassName="text-sm font-medium text-[#334155]"
             inputClassName="h-11"
             {...register("currentPassword")}
@@ -93,6 +94,7 @@ export default function ChangePasswordCard() {
             placeholder="Nhập mật khẩu mới"
             autoComplete="new-password"
             showIcon={false}
+            required
             labelClassName="text-sm font-medium text-[#334155]"
             inputClassName="h-11"
             {...register("newPassword")}
@@ -126,6 +128,7 @@ export default function ChangePasswordCard() {
             placeholder="Nhập lại mật khẩu mới"
             autoComplete="new-password"
             showIcon={false}
+            required
             labelClassName="text-sm font-medium text-[#334155]"
             inputClassName="h-11"
             {...register("confirmPassword")}

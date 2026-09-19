@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { useUploadMedia } from "@/src/hooks/useNews";
 import { useRespondCandidate } from "@/src/hooks/useCandidates";
+import ConfirmDialog from "@/src/components/shared/ConfirmDialog";
 import type { Candidate, CandidateStatus } from "@/src/lib/api/candidate";
 
 const ALLOWED_EXTENSIONS = ["pdf", "doc", "docx", "jpg", "jpeg", "png"];
@@ -111,9 +112,13 @@ export default function CandidateRespondSection({
 }: {
   candidate: Candidate;
 }) {
-  const [responseType, setResponseType] = useState<CandidateStatus>(
-    candidate.status === "passed" ? "interview_passed" : "passed"
-  );
+  const isTerminal = candidate.status === "interview_passed" || candidate.status === "failed";
+  const [responseType, setResponseType] = useState<CandidateStatus>(() => {
+    if (candidate.status === "passed") return "interview_passed";
+    if (candidate.status === "interview_passed") return "interview_passed";
+    if (candidate.status === "failed") return "failed";
+    return "passed";
+  });
 
   // Form 1: Passed (Resume / Interview invitation)
   const [passedCandidateName, setPassedCandidateName] = useState(candidate.fullname);
@@ -143,8 +148,8 @@ export default function CandidateRespondSection({
   const [emailContent, setEmailContent] = useState("");
   const [isManualEdit, setIsManualEdit] = useState(false);
 
-  // File attachment
   const [attachment, setAttachment] = useState<File | null>(null);
+  const [confirmOpen, setConfirmOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const uploadMutation = useUploadMedia();
@@ -246,35 +251,66 @@ export default function CandidateRespondSection({
     setAttachment(file);
   }
 
-  function handleSend() {
+  function handleSendClick() {
+    if (isTerminal) {
+      toast.error(
+        candidate.status === "interview_passed"
+          ? "Ứng viên đã trúng tuyển, quy trình tuyển dụng đã hoàn tất."
+          : "Ứng viên đã bị từ chối, quy trình tuyển dụng đã kết thúc."
+      );
+      return;
+    }
+    if (candidate.status === "passed" && responseType === "passed") {
+      toast.error("Ứng viên đã ở trạng thái Đạt vòng hồ sơ rồi.");
+      return;
+    }
+    if (responseType === candidate.status) {
+      toast.error("Ứng viên đã ở trạng thái này rồi.");
+      return;
+    }
+    if (candidate.status === "pending" && responseType === "interview_passed") {
+      toast.error("Không thể chuyển trực tiếp từ Chờ duyệt sang Đã trúng tuyển. Vui lòng mời phỏng vấn trước.");
+      return;
+    }
     if (!emailContent.trim()) {
       toast.error("Vui lòng nhập nội dung thư thông báo.");
       return;
     }
-
+    setConfirmOpen(true);
+  }
+  function handleActualSend() {
     if (attachment) {
       uploadMutation.mutate(attachment, {
         onSuccess: (uploadRes) => {
-          respondMutation.mutate({
-            id: candidate.id,
-            payload: {
-              status: responseType,
-              feedbackContent: emailContent,
-              feedbackAttachmentURL: uploadRes.fileURL,
+          respondMutation.mutate(
+            {
+              id: candidate.id,
+              payload: {
+                status: responseType,
+                feedbackContent: emailContent,
+                feedbackAttachmentURL: uploadRes.fileURL,
+              },
             },
-          });
+            {
+              onSuccess: () => setConfirmOpen(false),
+            }
+          );
         },
       });
       return;
     }
-
-    respondMutation.mutate({
-      id: candidate.id,
-      payload: {
-        status: responseType,
-        feedbackContent: emailContent,
+    respondMutation.mutate(
+      {
+        id: candidate.id,
+        payload: {
+          status: responseType,
+          feedbackContent: emailContent,
+        },
       },
-    });
+      {
+        onSuccess: () => setConfirmOpen(false),
+      }
+    );
   }
 
   const isSending = uploadMutation.isPending || respondMutation.isPending;
@@ -345,15 +381,23 @@ export default function CandidateRespondSection({
           </span>
         </div>
 
-        {/* Tab Selection: Phase 1 vs Phase 2 vs Failed */}
+        {isTerminal && (
+          <div className="rounded-lg border border-[#E5E7EB] bg-[#F9FAFB] p-4 text-xs font-medium text-[#4B5563]">
+            {candidate.status === "interview_passed"
+              ? "Ứng viên đã đạt trạng thái Trúng tuyển (Vòng 2). Quy trình tuyển dụng đã hoàn tất và được khóa theo luồng một chiều."
+              : "Ứng viên đã ở trạng thái Từ chối. Quy trình tuyển dụng đã kết thúc và được khóa theo luồng một chiều."}
+          </div>
+        )}
         <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
           <button
             type="button"
+            disabled={candidate.status === "passed" || isTerminal}
             onClick={() => {
+              if (candidate.status === "passed" || isTerminal) return;
               setResponseType("passed");
               setIsManualEdit(false);
             }}
-            className={`flex items-center justify-center gap-2 rounded-lg border py-3 px-2 text-xs font-semibold transition-all md:text-sm ${
+            className={`flex items-center justify-center gap-2 rounded-lg border py-3 px-2 text-xs font-semibold transition-all md:text-sm disabled:cursor-not-allowed disabled:opacity-40 ${
               responseType === "passed"
                 ? "border-[#16A34A] bg-[#F0FDF4] text-[#16A34A] shadow-xs"
                 : "border-[#E5E7EB] bg-white text-[#6B7280] hover:bg-[#F9FAFB]"
@@ -362,14 +406,15 @@ export default function CandidateRespondSection({
             <CheckCircle2 className="size-4 shrink-0" />
             1. Mời phỏng vấn (Vòng 1)
           </button>
-
           <button
             type="button"
+            disabled={candidate.status === "pending" || isTerminal}
             onClick={() => {
+              if (candidate.status === "pending" || isTerminal) return;
               setResponseType("interview_passed");
               setIsManualEdit(false);
             }}
-            className={`flex items-center justify-center gap-2 rounded-lg border py-3 px-2 text-xs font-semibold transition-all md:text-sm ${
+            className={`flex items-center justify-center gap-2 rounded-lg border py-3 px-2 text-xs font-semibold transition-all md:text-sm disabled:cursor-not-allowed disabled:opacity-40 ${
               responseType === "interview_passed"
                 ? "border-[#2563EB] bg-[#EFF6FF] text-[#2563EB] shadow-xs"
                 : "border-[#E5E7EB] bg-white text-[#6B7280] hover:bg-[#F9FAFB]"
@@ -378,14 +423,15 @@ export default function CandidateRespondSection({
             <Award className="size-4 shrink-0" />
             2. Trúng tuyển / Job Offer (Vòng 2)
           </button>
-
           <button
             type="button"
+            disabled={isTerminal}
             onClick={() => {
+              if (isTerminal) return;
               setResponseType("failed");
               setIsManualEdit(false);
             }}
-            className={`flex items-center justify-center gap-2 rounded-lg border py-3 px-2 text-xs font-semibold transition-all md:text-sm ${
+            className={`flex items-center justify-center gap-2 rounded-lg border py-3 px-2 text-xs font-semibold transition-all md:text-sm disabled:cursor-not-allowed disabled:opacity-40 ${
               responseType === "failed"
                 ? "border-[#DC2626] bg-[#FEF2F2] text-[#DC2626] shadow-xs"
                 : "border-[#E5E7EB] bg-white text-[#6B7280] hover:bg-[#F9FAFB]"
@@ -653,8 +699,8 @@ export default function CandidateRespondSection({
 
           <button
             type="button"
-            onClick={handleSend}
-            disabled={isSending || !emailContent.trim()}
+            onClick={handleSendClick}
+            disabled={isSending || isTerminal || !emailContent.trim() || responseType === candidate.status}
             className={`flex items-center gap-2 rounded-lg px-6 py-2.5 text-sm font-semibold text-white transition-all disabled:cursor-not-allowed disabled:opacity-50 ${
               responseType === "passed"
                 ? "bg-[#16A34A] hover:bg-[#15803D]"
@@ -664,10 +710,26 @@ export default function CandidateRespondSection({
             }`}
           >
             <Send className="size-4" />
-            {isSending ? "Đang gửi email..." : "Gửi phản hồi qua Email"}
+            {isTerminal
+              ? (candidate.status === "interview_passed" ? "Quy trình đã hoàn tất (Trúng tuyển)" : "Quy trình đã kết thúc (Từ chối)")
+              : responseType === candidate.status
+                ? "Đang ở trạng thái này"
+                : isSending
+                  ? "Đang gửi email..."
+                  : "Gửi phản hồi qua Email"}
           </button>
         </div>
       </div>
+      <ConfirmDialog
+        open={confirmOpen}
+        onOpenChange={setConfirmOpen}
+        title="Xác nhận gửi email phản hồi"
+        description={`Bạn có chắc chắn muốn gửi email phản hồi cho ứng viên "${candidate.fullname}" (${candidate.email})? Email thật sẽ được gửi đi ngay lập tức.`}
+        cancelLabel="Hủy bỏ"
+        confirmLabel="Gửi email ngay"
+        onConfirm={handleActualSend}
+        isConfirming={isSending}
+      />
     </div>
   );
 }

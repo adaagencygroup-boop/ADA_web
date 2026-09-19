@@ -17,7 +17,7 @@ export default function PersonalInfoCard() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm<ProfileFormValues>({
     resolver: zodResolver(profileSchema),
     defaultValues: { fullname: "", phone: "" },
@@ -46,7 +46,7 @@ export default function PersonalInfoCard() {
               htmlFor="fullName"
               className="text-sm font-medium text-[#334155]"
             >
-              Họ và tên
+              Họ và tên <span className="text-red-500">*</span>
             </label>
             <Input
               id="fullName"
@@ -111,7 +111,7 @@ export default function PersonalInfoCard() {
         <div className="flex justify-end">
           <button
             type="submit"
-            disabled={updateMutation.isPending}
+            disabled={!isDirty || updateMutation.isPending}
             className="flex items-center gap-2 rounded-lg bg-[#0B1B3A] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#0B1B3A]/90 disabled:cursor-not-allowed disabled:opacity-50"
           >
             <Save className="size-4" />

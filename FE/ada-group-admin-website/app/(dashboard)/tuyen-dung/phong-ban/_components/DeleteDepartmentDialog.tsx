@@ -12,11 +12,13 @@ export default function DeleteDepartmentDialog({
   onOpenChange,
   departmentName,
   onConfirm,
+  isDeleting = false,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   departmentName: string;
   onConfirm: () => void;
+  isDeleting?: boolean;
 }) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -51,16 +53,18 @@ export default function DeleteDepartmentDialog({
           <button
             type="button"
             onClick={() => onOpenChange(false)}
-            className="flex h-9 items-center justify-center rounded-lg border border-[#747782] px-4 text-sm font-semibold tracking-wide text-[#1C1B1B] hover:bg-white"
+            disabled={isDeleting}
+            className="flex h-9 items-center justify-center rounded-lg border border-[#747782] px-4 text-sm font-semibold tracking-wide text-[#1C1B1B] hover:bg-white disabled:cursor-not-allowed disabled:opacity-50"
           >
             Hủy
           </button>
           <button
             type="button"
             onClick={onConfirm}
-            className="flex h-9 items-center justify-center rounded-lg bg-[#BA1A1A] px-4 text-sm font-semibold tracking-wide text-white hover:bg-[#BA1A1A]/90"
+            disabled={isDeleting}
+            className="flex h-9 items-center justify-center rounded-lg bg-[#BA1A1A] px-4 text-sm font-semibold tracking-wide text-white hover:bg-[#BA1A1A]/90 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            Xóa phòng ban
+            {isDeleting ? "Đang xóa..." : "Xóa phòng ban"}
           </button>
         </div>
       </DialogContent>

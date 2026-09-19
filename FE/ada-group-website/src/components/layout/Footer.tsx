@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 const SERVICE_LINKS = [
-  { label: "Web & Web Application", href: "/dich-vu/web" },
+  { label: "Web Application", href: "/dich-vu/web" },
   { label: "Mobile Application", href: "/dich-vu/mobile" },
   { label: "Hệ thống doanh nghiệp", href: "/dich-vu/he-thong-doanh-nghiep" },
   { label: "AI & Automation", href: "/dich-vu/ai-automation" },

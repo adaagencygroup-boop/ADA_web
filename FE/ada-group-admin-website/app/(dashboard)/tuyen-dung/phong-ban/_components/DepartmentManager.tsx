@@ -26,6 +26,7 @@ export default function DepartmentManager() {
   const [page, setPage] = useState(1);
   const [deleteTarget, setDeleteTarget] = useState<Department | null>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const search = useDebouncedValue(searchInput, 400);
 
@@ -65,22 +66,28 @@ export default function DepartmentManager() {
   });
 
   async function handleConfirmDelete() {
-    if (!deleteTarget) return;
-
+    if (!deleteTarget || isDeleting) return;
+    setIsDeleting(true);
     try {
       const checkRes = await getRecruitments({ page: 1, size: 100 });
       const count = checkRes?.items?.filter((j) => j.departmentId === deleteTarget.id || j.departmentName === deleteTarget.name).length ?? 0;
       if (count > 0) {
         toast.error(`Phòng ban "${deleteTarget.name}" đang có ${count} tin tuyển dụng sử dụng, không thể xóa!`);
         setDeleteTarget(null);
+        setIsDeleting(false);
         return;
       }
     } catch (err) {
       console.error("Check department in use error:", err);
     }
-
     deleteMutation.mutate(deleteTarget.id, {
-      onSuccess: () => setDeleteTarget(null),
+      onSuccess: () => {
+        setDeleteTarget(null);
+        setIsDeleting(false);
+      },
+      onError: () => {
+        setIsDeleting(false);
+      },
     });
   }
 
@@ -331,10 +338,11 @@ export default function DepartmentManager() {
       <DeleteDepartmentDialog
         open={!!deleteTarget}
         onOpenChange={(open) => {
-          if (!open) setDeleteTarget(null);
+          if (!open && !isDeleting) setDeleteTarget(null);
         }}
         departmentName={deleteTarget?.name ?? ""}
         onConfirm={handleConfirmDelete}
+        isDeleting={isDeleting || deleteMutation.isPending}
       />
     </div>
   );

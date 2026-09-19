@@ -92,9 +92,9 @@ public class NewsService {
   }
   @Transactional
   public NewsResponse updateNews(UUID id, UpdateNewsRequest request) {
-    News news = newsRepository.findById(id).orElseThrow(() -> AppException.notFound("News Article Not Found"));
+    News news = newsRepository.findById(id).orElseThrow(() -> AppException.notFound("Không tìm thấy bài viết"));
     if (request.categoryId() != null) {
-      NewsCategory category = categoryRepository.findById(request.categoryId()).orElseThrow(() -> AppException.notFound("Category Not Found"));
+      NewsCategory category = categoryRepository.findById(request.categoryId()).orElseThrow(() -> AppException.notFound("Không tìm thấy danh mục"));
       news.setCategory(category);
     }
     if (request.title() != null && !request.title().isBlank()) {
@@ -107,6 +107,9 @@ public class NewsService {
       news.setCoverImageURL(request.coverImageURL().trim());
     }
     if (request.status() != null) {
+      if (request.status() == news.getStatus()) {
+        throw AppException.badRequest("Bài viết đã ở trạng thái " + (news.getStatus() == NewsStatus.published ? "xuất bản" : "bản nháp"));
+      }
       boolean isNewlyPublished = news.getStatus() != NewsStatus.published && request.status() == NewsStatus.published;
       news.setStatus(request.status());
       if (isNewlyPublished) {
@@ -121,7 +124,7 @@ public class NewsService {
   }
   @Transactional
   public void deleteNews(UUID id) {
-    News news = newsRepository.findById(id).orElseThrow(() -> AppException.notFound("News Article Not Found"));
+    News news = newsRepository.findById(id).orElseThrow(() -> AppException.notFound("Không tìm thấy bài viết"));
     newsRepository.delete(news);
   }
   @Transactional(readOnly = true)

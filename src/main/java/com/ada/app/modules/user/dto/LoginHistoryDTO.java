@@ -15,5 +15,6 @@ public record LoginHistoryDTO(
   String userAgent,
   LoginStatus status,
   String failureReason,
-  Instant createdAt
+  Instant createdAt,
+  Boolean isCurrentSession
 ) {}

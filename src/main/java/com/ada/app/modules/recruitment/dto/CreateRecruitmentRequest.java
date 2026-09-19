@@ -10,25 +10,32 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
 public record CreateRecruitmentRequest(
-  @NotBlank(message = "Job Title Is Required")
-  @Size(max = 150, message = "Job Title Cannot Exceed 150 Chars")
+  @NotBlank(message = "Vui lòng nhập vị trí tuyển dụng")
+  @Size(max = 150, message = "Vị trí tuyển dụng không được vượt quá 150 ký tự")
   String jobTitle,
+  @NotNull(message = "Vui lòng chọn phòng ban")
   UUID departmentId,
-  @Size(max = 100, message = "Location Cannot Exceed 100 Chars")
+  @NotBlank(message = "Vui lòng nhập địa điểm làm việc")
+  @Size(max = 100, message = "Địa điểm không được vượt quá 100 ký tự")
   String location,
-  @NotNull(message = "Employment Type Is Required")
+  @NotNull(message = "Vui lòng chọn hình thức làm việc")
   EmploymentType employmentType,
-  @Size(max = 100, message = "Working Hours Cannot Exceed 100 Chars")
+  @NotBlank(message = "Vui lòng chọn thời gian làm việc")
+  @Size(max = 100, message = "Thời gian làm việc không được vượt quá 100 ký tự")
   String workingHours,
+  @NotBlank(message = "Vui lòng nhập mô tả công việc")
   String description,
+  @NotBlank(message = "Vui lòng nhập yêu cầu ứng viên")
   String requirements,
+  @NotBlank(message = "Vui lòng nhập quyền lợi được hưởng")
   String benefits,
   String coverImageURL,
   RecruitmentStatus status,
   BigDecimal minSalary,
   BigDecimal maxSalary,
   Boolean isNegotiable,
-  @Positive(message = "Số lượng tuyển dụng phải lớn hơn 0")
+  @NotNull(message = "Vui lòng nhập số lượng cần tuyển")
+  @Positive(message = "Số lượng tuyển dụng phải là số nguyên lớn hơn 0")
   Integer requiredCandidateNum,
   @FutureOrPresent(message = "Ngày hết hạn không được ở trong quá khứ")
   Instant expiresAt

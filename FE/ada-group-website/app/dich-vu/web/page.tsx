@@ -9,7 +9,7 @@ import WebCTA from "./_components/WebCTA";
 import WebIntro from "./_components/WebIntro";
 
 export const metadata: Metadata = {
-  title: "Web & Web Application | Dịch vụ | ADA Group",
+  title: "Web Application | Dịch vụ | ADA Group",
   description:
     "ADA Group thiết kế và phát triển website, ứng dụng web và các hệ thống trực tuyến theo nhu cầu của doanh nghiệp.",
 };
@@ -18,7 +18,7 @@ export default function WebServicePage() {
   return (
     <div className="flex flex-col">
       <Hero
-        badge="WEB & WEB APPLICATION"
+        badge="WEB APPLICATION"
         title="Xây dựng nền tảng web phục vụ hoạt động kinh doanh"
         desc="ADA Group thiết kế và phát triển website, ứng dụng web và các hệ thống trực tuyến theo nhu cầu của doanh nghiệp — từ website giới thiệu thương hiệu đến những nền tảng hỗ trợ quản lý, vận hành."
         imagePlaceholder="/images/dich-vu/web/Hero1.webp"
