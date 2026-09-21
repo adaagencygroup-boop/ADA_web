@@ -62,23 +62,13 @@ export function useUpdateNews() {
 export function useToggleFeatured() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async ({
+    mutationFn: ({
       id,
       isFeatured,
     }: {
       id: string;
       isFeatured: boolean;
-    }) => {
-      const detail = await getNewsById(id);
-      return updateNews(id, {
-        title: detail.title,
-        categoryId: detail.categoryId,
-        content: detail.content,
-        coverImageURL: detail.coverImageURL,
-        status: detail.status,
-        isFeatured,
-      });
-    },
+    }) => updateNews(id, { isFeatured }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: NEWS_QUERY_KEY });
       toast.success("Đã cập nhật trạng thái nổi bật");

@@ -205,6 +205,10 @@ export default function CandidateRespondSection({
   // Auto-generate template text when fields change (unless manually edited)
   useEffect(() => {
     if (isManualEdit) return;
+    if (candidate.feedbackContent && (isTerminal || responseType === candidate.status)) {
+      setEmailContent(candidate.feedbackContent);
+      return;
+    }
     if (responseType === "passed") {
       setEmailContent(
         buildPassedTemplate(
@@ -235,6 +239,9 @@ export default function CandidateRespondSection({
     responseType,
     candidate.fullname,
     candidate.recruitmentTitle,
+    candidate.feedbackContent,
+    candidate.status,
+    isTerminal,
     interviewTime,
     interviewLocation,
     contactInfo,
@@ -356,6 +363,7 @@ export default function CandidateRespondSection({
   }
 
   const isSending = uploadMutation.isPending || respondMutation.isPending;
+  const isFormDisabled = isTerminal || isSending || responseType === candidate.status;
   const historyStyle = HISTORY_STATUS_STYLES[candidate.status ?? "pending"];
 
   return (
@@ -363,9 +371,9 @@ export default function CandidateRespondSection({
       {/* Existing Response History */}
       {candidate.status !== "pending" && candidate.feedbackContent && (
         <div className="rounded-xl border border-[#C4C6D2] bg-white p-6 shadow-xs">
-          <div className="flex items-center justify-between gap-4">
-            <h2 className="flex items-center gap-2 text-lg font-semibold text-[#111827]">
-              <Mail className="size-5 text-[#316EE9]" />
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <h2 className="flex items-center gap-2 text-lg font-semibold text-[#111827] whitespace-nowrap shrink-0">
+              <Mail className="size-5 text-[#316EE9] shrink-0" />
               LỊCH SỬ PHẢN HỒI ĐÃ GỬI
             </h2>
             <span
@@ -412,9 +420,9 @@ export default function CandidateRespondSection({
 
       {/* Response Form Box */}
       <div className="flex flex-col gap-6 rounded-xl border border-[#C4C6D2] bg-white p-6 shadow-xs">
-        <div className="flex items-center justify-between gap-4">
-          <h2 className="flex items-center gap-2 text-lg font-semibold text-[#1D4ED8]">
-            <Mail className="size-5" />
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h2 className="flex items-center gap-2 text-lg font-semibold text-[#1D4ED8] whitespace-nowrap shrink-0">
+            <Mail className="size-5 shrink-0" />
             PHẢN HỒI ỨNG VIÊN
           </h2>
           <span className="text-xs text-[#6B7280]">
@@ -521,6 +529,7 @@ export default function CandidateRespondSection({
                 placeholder="Ví dụ: 09:30 - Ngày 20/09/2026..."
                 showTime={true}
                 formatMode="interview"
+                disabled={isFormDisabled}
                 error={formErrors.interviewTime}
               />
             </div>
@@ -536,8 +545,13 @@ export default function CandidateRespondSection({
                   setInterviewLocation(e.target.value);
                   clearError("interviewLocation");
                 }}
+                disabled={isFormDisabled}
                 placeholder="Ví dụ: Tầng 5, Tòa nhà ADA Group..."
                 className={`h-10 rounded-lg border px-3 text-sm outline-none transition-colors ${
+                  isFormDisabled
+                    ? "cursor-not-allowed bg-[#F9FAFB] text-[#6B7280]"
+                    : "bg-white text-[#111827]"
+                } ${
                   formErrors.interviewLocation
                     ? "border-red-500 focus:border-red-500"
                     : "border-[#D1D5DB] focus:border-[#316EE9]"
@@ -559,8 +573,13 @@ export default function CandidateRespondSection({
                   setContactInfo(e.target.value);
                   clearError("contactInfo");
                 }}
+                disabled={isFormDisabled}
                 placeholder="Ví dụ: Mr.Alexander - 09232323232"
                 className={`h-10 rounded-lg border px-3 text-sm outline-none transition-colors ${
+                  isFormDisabled
+                    ? "cursor-not-allowed bg-[#F9FAFB] text-[#6B7280]"
+                    : "bg-white text-[#111827]"
+                } ${
                   formErrors.contactInfo
                     ? "border-red-500 focus:border-red-500"
                     : "border-[#D1D5DB] focus:border-[#316EE9]"
@@ -606,6 +625,7 @@ export default function CandidateRespondSection({
                 placeholder="Ví dụ: 01/10/2026..."
                 showTime={false}
                 formatMode="dateOnly"
+                disabled={isFormDisabled}
                 error={formErrors.startDate}
               />
             </div>
@@ -621,8 +641,13 @@ export default function CandidateRespondSection({
                   setWorkLocation(e.target.value);
                   clearError("workLocation");
                 }}
+                disabled={isFormDisabled}
                 placeholder="Ví dụ: Tầng 5, Tòa nhà ADA Group..."
                 className={`h-10 rounded-lg border px-3 text-sm outline-none transition-colors ${
+                  isFormDisabled
+                    ? "cursor-not-allowed bg-[#F9FAFB] text-[#6B7280]"
+                    : "bg-white text-[#111827]"
+                } ${
                   formErrors.workLocation
                     ? "border-red-500 focus:border-red-500"
                     : "border-[#D1D5DB] focus:border-[#316EE9]"
@@ -644,8 +669,13 @@ export default function CandidateRespondSection({
                   setOfferedSalary(e.target.value);
                   clearError("offeredSalary");
                 }}
+                disabled={isFormDisabled}
                 placeholder="Ví dụ: Thử việc 2 tháng - 85% lương..."
                 className={`h-10 rounded-lg border px-3 text-sm outline-none transition-colors ${
+                  isFormDisabled
+                    ? "cursor-not-allowed bg-[#F9FAFB] text-[#6B7280]"
+                    : "bg-white text-[#111827]"
+                } ${
                   formErrors.offeredSalary
                     ? "border-red-500 focus:border-red-500"
                     : "border-[#D1D5DB] focus:border-[#316EE9]"
@@ -667,8 +697,13 @@ export default function CandidateRespondSection({
                   setOfferContactInfo(e.target.value);
                   clearError("offerContactInfo");
                 }}
+                disabled={isFormDisabled}
                 placeholder="Ví dụ: Mr.Alexander - 09232323232"
                 className={`h-10 rounded-lg border px-3 text-sm outline-none transition-colors ${
+                  isFormDisabled
+                    ? "cursor-not-allowed bg-[#F9FAFB] text-[#6B7280]"
+                    : "bg-white text-[#111827]"
+                } ${
                   formErrors.offerContactInfo
                     ? "border-red-500 focus:border-red-500"
                     : "border-[#D1D5DB] focus:border-[#316EE9]"
@@ -709,8 +744,13 @@ export default function CandidateRespondSection({
                 type="text"
                 value={failedReason}
                 onChange={(e) => setFailedReason(e.target.value)}
+                disabled={isFormDisabled}
                 placeholder="Ví dụ: Kinh nghiệm chuyên môn chưa đáp ứng yêu cầu dự án..."
-                className="h-10 rounded-lg border border-[#D1D5DB] px-3 text-sm outline-none focus:border-[#316EE9]"
+                className={`h-10 rounded-lg border px-3 text-sm outline-none transition-colors ${
+                  isFormDisabled
+                    ? "cursor-not-allowed bg-[#F9FAFB] text-[#6B7280]"
+                    : "bg-white text-[#111827]"
+                } border-[#D1D5DB] focus:border-[#316EE9]`}
               />
             </div>
           </div>
@@ -725,7 +765,8 @@ export default function CandidateRespondSection({
             <button
               type="button"
               onClick={handleResetTemplate}
-              className="flex items-center gap-1 text-xs text-[#316EE9] hover:underline"
+              disabled={isFormDisabled}
+              className="flex items-center gap-1 text-xs text-[#316EE9] hover:underline disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:no-underline"
             >
               <RotateCcw className="size-3" />
               Khôi phục mẫu chuẩn
@@ -738,8 +779,13 @@ export default function CandidateRespondSection({
               setEmailContent(e.target.value);
               clearError("emailContent");
             }}
+            disabled={isFormDisabled}
             rows={10}
-            className={`w-full resize-y rounded-lg border p-3 text-sm text-[#111827] outline-none transition-colors ${
+            className={`w-full resize-y rounded-lg border p-3 text-sm outline-none transition-colors ${
+              isFormDisabled
+                ? "cursor-not-allowed bg-[#F9FAFB] text-[#6B7280]"
+                : "bg-white text-[#111827]"
+            } ${
               formErrors.emailContent
                 ? "border-red-500 focus:border-red-500"
                 : "border-[#D1D5DB] focus:border-[#316EE9]"
@@ -757,13 +803,15 @@ export default function CandidateRespondSection({
               ref={fileInputRef}
               type="file"
               onChange={handleFileChange}
+              disabled={isFormDisabled}
               accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
               className="hidden"
             />
             <button
               type="button"
+              disabled={isFormDisabled}
               onClick={() => fileInputRef.current?.click()}
-              className="flex items-center gap-1.5 rounded-lg border border-[#D1D5DB] bg-white px-3 py-2 text-xs font-medium text-[#374151] hover:bg-[#F9FAFB]"
+              className="flex items-center gap-1.5 rounded-lg border border-[#D1D5DB] bg-white px-3 py-2 text-xs font-medium text-[#374151] hover:bg-[#F9FAFB] disabled:cursor-not-allowed disabled:opacity-40"
             >
               <Paperclip className="size-4 text-[#6B7280]" />
               Đính kèm Thư mời / Tệp hợp đồng
@@ -775,8 +823,9 @@ export default function CandidateRespondSection({
                 <span className="max-w-40 truncate">{attachment.name}</span>
                 <button
                   type="button"
+                  disabled={isFormDisabled}
                   onClick={() => setAttachment(null)}
-                  className="text-[#9CA3AF] hover:text-[#EF4444]"
+                  className="text-[#9CA3AF] hover:text-[#EF4444] disabled:cursor-not-allowed disabled:opacity-40"
                 >
                   <X className="size-3.5" />
                 </button>
@@ -787,7 +836,7 @@ export default function CandidateRespondSection({
           <button
             type="button"
             onClick={handleSendClick}
-            disabled={isSending || isTerminal || !emailContent.trim() || responseType === candidate.status}
+            disabled={isFormDisabled || !emailContent.trim()}
             className={`flex items-center gap-2 rounded-lg px-6 py-2.5 text-sm font-semibold text-white transition-all disabled:cursor-not-allowed disabled:opacity-50 ${
               responseType === "passed"
                 ? "bg-[#16A34A] hover:bg-[#15803D]"
@@ -800,7 +849,7 @@ export default function CandidateRespondSection({
             {isTerminal
               ? (candidate.status === "interview_passed" ? "Quy trình đã hoàn tất (Trúng tuyển)" : "Quy trình đã kết thúc (Từ chối)")
               : responseType === candidate.status
-                ? "Đang ở trạng thái này"
+                ? "Đã gửi phản hồi ở trạng thái này"
                 : isSending
                   ? "Đang gửi email..."
                   : "Gửi phản hồi qua Email"}

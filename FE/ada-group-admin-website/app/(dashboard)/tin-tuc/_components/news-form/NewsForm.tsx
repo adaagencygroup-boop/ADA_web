@@ -225,7 +225,9 @@ export default function NewsForm({
             className="flex h-10.5 items-center gap-2 rounded-lg border border-[#BFDBFE] bg-[#EFF6FF] px-4 text-sm font-medium text-[#2563EB] hover:bg-[#DBEAFE] disabled:cursor-not-allowed disabled:opacity-50"
           >
             <Save className="size-4" />
-            Lưu nháp
+            {isSaving && pendingSubmit?.status === "draft"
+              ? "Đang lưu..."
+              : "Lưu nháp"}
           </button>
           <button
             type="button"
@@ -234,7 +236,9 @@ export default function NewsForm({
             className="flex h-10 items-center gap-2 rounded-lg bg-[#2563EB] px-4 text-sm font-medium text-white hover:bg-[#2563EB]/90 disabled:cursor-not-allowed disabled:opacity-50"
           >
             <UploadCloud className="size-4" />
-            {isSaving ? "Đang lưu..." : "Xuất bản"}
+            {isSaving && pendingSubmit?.status === "published"
+              ? "Đang xuất bản..."
+              : "Xuất bản"}
           </button>
         </div>
       </div>
@@ -449,15 +453,25 @@ export default function NewsForm({
         }}
         title={
           pendingSubmit?.status === "draft"
-            ? "Xác nhận lưu nháp"
+            ? isEdit && article?.status === "published"
+              ? "Xác nhận chuyển về bản nháp"
+              : "Xác nhận lưu nháp"
             : "Xác nhận xuất bản"
         }
         description={
           pendingSubmit?.status === "draft"
-            ? "Bạn có chắc chắn muốn nháp bài viết này không? Thông tin mới sẽ được cập nhật ngay lập tức trên hệ thống."
-            : "Bạn có chắc chắn muốn xuất bản bài viết này không? Thông tin mới sẽ được cập nhật ngay lập tức trên hệ thống."
+            ? isEdit && article?.status === "published"
+              ? "Bạn có chắc chắn muốn chuyển bài viết này về bản nháp không? Bài viết sẽ không còn hiển thị công khai."
+              : "Bạn có chắc chắn muốn lưu bài viết dưới dạng bản nháp không?"
+            : "Bạn có chắc chắn muốn xuất bản bài viết này không? Thông tin mới sẽ được hiển thị công khai ngay lập tức."
         }
-        confirmLabel={pendingSubmit?.status === "draft" ? "Lưu nháp" : "Xuất bản"}
+        confirmLabel={
+          pendingSubmit?.status === "draft"
+            ? isEdit && article?.status === "published"
+              ? "Chuyển về nháp"
+              : "Lưu nháp"
+            : "Xuất bản"
+        }
         onConfirm={handleConfirmSubmit}
         isConfirming={isSaving}
       />

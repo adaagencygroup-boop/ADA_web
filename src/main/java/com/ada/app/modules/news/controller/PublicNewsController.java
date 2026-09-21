@@ -24,9 +24,19 @@ public class PublicNewsController {
     @RequestParam(defaultValue = "10") int size,
     @RequestParam(required = false) UUID categoryId,
     @RequestParam(required = false) Boolean isFeatured,
-    @RequestParam(required = false) String search
+    @RequestParam(required = false) String search,
+    @RequestParam(defaultValue = "desc") String sort
   ) {
-    return ResponseEntity.ok(APIResponse.ok("News Articles Retrieved Successfully", newsService.getPublicNews(page, size, categoryId, isFeatured, search)));
+    return ResponseEntity.ok(APIResponse.ok("News Articles Retrieved Successfully", newsService.getPublicNews(page, size, categoryId, isFeatured, search, sort)));
+  }
+  public ResponseEntity<APIResponse<PageResponse<NewsResponse>>> getPublicNews(
+    int page,
+    int size,
+    UUID categoryId,
+    Boolean isFeatured,
+    String search
+  ) {
+    return getPublicNews(page, size, categoryId, isFeatured, search, "desc");
   }
   @GetMapping("/news/featured")
   public ResponseEntity<APIResponse<List<NewsResponse>>> getFeaturedNews(@RequestParam(defaultValue = "3") int limit) {

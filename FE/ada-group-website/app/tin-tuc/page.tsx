@@ -16,11 +16,17 @@ export const metadata: Metadata = {
 };
 
 type TinTucPageProps = {
-  searchParams: Promise<{ category?: string; page?: string; search?: string; isFeatured?: string }>;
+  searchParams: Promise<{
+    category?: string;
+    page?: string;
+    search?: string;
+    isFeatured?: string;
+    sort?: string;
+  }>;
 };
 
 export default async function TinTucPage({ searchParams }: TinTucPageProps) {
-  const { category, page, search, isFeatured } = await searchParams;
+  const { category, page, search, isFeatured, sort } = await searchParams;
   const categories = await getCategories();
 
   return (
@@ -34,7 +40,13 @@ export default async function TinTucPage({ searchParams }: TinTucPageProps) {
         isFeatured={isFeatured}
       />
       <Breadcrumb />
-      <NewsListing category={category} page={page} search={search} isFeatured={isFeatured} />
+      <NewsListing
+        category={category}
+        page={page}
+        search={search}
+        isFeatured={isFeatured}
+        sort={sort}
+      />
       <GsapScrollReveal>
         <CallToAction />
       </GsapScrollReveal>

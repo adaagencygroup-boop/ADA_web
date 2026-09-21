@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { ALL_CATEGORY, buildNewsHref } from "@/src/lib/api/news";
 import type { NewsCategory } from "@/src/types/news";
 import NewsCategories from "@/app/tin-tuc/_components/NewsCategories";
@@ -58,6 +58,8 @@ export default function SearchBar({
   isFeatured?: string;
 }) {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const sort = searchParams?.get("sort") || undefined;
   const [keyword, setKeyword] = useState(search ?? "");
 
   useEffect(() => {
@@ -66,7 +68,7 @@ export default function SearchBar({
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    router.push(buildNewsHref(category ?? ALL_CATEGORY, 1, keyword.trim() || undefined, isFeatured));
+    router.push(buildNewsHref(category ?? ALL_CATEGORY, 1, keyword.trim() || undefined, isFeatured, sort));
   }
 
   function handleReset() {

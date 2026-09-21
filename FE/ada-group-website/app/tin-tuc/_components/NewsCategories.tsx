@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { ALL_CATEGORY, buildNewsHref } from "@/src/lib/api/news";
 import type { NewsCategory } from "@/src/types/news";
 
@@ -68,6 +68,8 @@ export default function NewsCategories({
   isFeatured?: string | boolean;
 }) {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const sort = searchParams?.get("sort") || undefined;
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -90,7 +92,7 @@ export default function NewsCategories({
 
   function handleSelect(key: string) {
     setIsOpen(false);
-    const href = buildNewsHref(key, 1, search, isFeatured);
+    const href = buildNewsHref(key, 1, search, isFeatured, sort);
     router.push(href);
   }
 
@@ -149,7 +151,7 @@ export default function NewsCategories({
             type="checkbox"
             checked={isChecked}
             onChange={(e) => {
-              const href = buildNewsHref(activeCategory, 1, search, e.target.checked);
+              const href = buildNewsHref(activeCategory, 1, search, e.target.checked, sort);
               router.push(href);
             }}
             className="h-4 w-4 cursor-pointer rounded border-zinc-300 accent-blue-600 text-blue-600 focus:ring-blue-500/20"

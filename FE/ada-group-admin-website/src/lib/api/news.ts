@@ -41,11 +41,11 @@ export type NewsDetail = NewsItem & {
 };
 
 export type NewsPayload = {
-  title: string;
+  title?: string;
   categoryId?: string | null;
-  content: string;
+  content?: string;
   coverImageURL?: string | null;
-  status: NewsStatus;
+  status?: NewsStatus;
   isFeatured?: boolean;
 };
 

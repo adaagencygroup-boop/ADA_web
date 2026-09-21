@@ -59,6 +59,7 @@ export async function getArticles(options: {
   page?: number;
   search?: string;
   isFeatured?: boolean | string;
+  sort?: string;
 }) {
   const categories = await getCategories();
   const activeCategory =
@@ -73,6 +74,7 @@ export async function getArticles(options: {
   const page = Math.max(1, options.page ?? 1);
   const isFeaturedParam =
     options.isFeatured === true || options.isFeatured === "true" ? true : undefined;
+  const sort = options.sort === "asc" || options.sort === "oldest" ? "asc" : "desc";
 
   const result = await apiGet<PageResponse<NewsResponseDTO>>(
     "/public/news",
@@ -82,6 +84,7 @@ export async function getArticles(options: {
       categoryId,
       isFeatured: isFeaturedParam,
       search: options.search || undefined,
+      sort,
     },
     REVALIDATE_SECONDS
   );
@@ -129,13 +132,15 @@ export function buildNewsHref(
   category: string,
   page: number,
   search?: string,
-  isFeatured?: boolean | string
+  isFeatured?: boolean | string,
+  sort?: string
 ) {
   const params = new URLSearchParams();
   if (category !== ALL_CATEGORY) params.set("category", category);
   if (page > 1) params.set("page", String(page));
   if (search) params.set("search", search);
   if (isFeatured === true || isFeatured === "true") params.set("isFeatured", "true");
+  if (sort && sort !== "desc") params.set("sort", sort);
   const query = params.toString();
   return `${NEWS_BASE_PATH}${query ? `?${query}` : ""}#${NEWS_LISTING_ANCHOR}`;
 }

@@ -106,10 +106,7 @@ public class NewsService {
     if (request.coverImageURL() != null && !request.coverImageURL().isBlank()) {
       news.setCoverImageURL(request.coverImageURL().trim());
     }
-    if (request.status() != null) {
-      if (request.status() == news.getStatus()) {
-        throw AppException.badRequest("Bài viết đã ở trạng thái " + (news.getStatus() == NewsStatus.published ? "xuất bản" : "bản nháp"));
-      }
+    if (request.status() != null && request.status() != news.getStatus()) {
       boolean isNewlyPublished = news.getStatus() != NewsStatus.published && request.status() == NewsStatus.published;
       news.setStatus(request.status());
       if (isNewlyPublished) {
@@ -167,11 +164,18 @@ public class NewsService {
     categoryRepository.delete(category);
   }
   @Transactional(readOnly = true)
-  public PageResponse<NewsResponse> getPublicNews(int page, int size, UUID categoryId, Boolean isFeatured, String search) {
-    Pageable pageable = PageRequest.of(Math.max(0, page - 1), Math.max(1, size), Sort.by("createdAt").descending());
+  public PageResponse<NewsResponse> getPublicNews(int page, int size, UUID categoryId, Boolean isFeatured, String search, String sort) {
+    Sort sortOrder = "asc".equalsIgnoreCase(sort) || "oldest".equalsIgnoreCase(sort)
+      ? Sort.by("createdAt").ascending()
+      : Sort.by("createdAt").descending();
+    Pageable pageable = PageRequest.of(Math.max(0, page - 1), Math.max(1, size), sortOrder);
     Page<News> result = newsRepository.findAll(NewsSpecs.publicFilter(categoryId, isFeatured, search), pageable);
     List<NewsResponse> items = result.getContent().stream().map(this::mapToPublicItemResponse).toList();
     return new PageResponse<>(items, PageResponse.Pagination.from(result));
+  }
+  @Transactional(readOnly = true)
+  public PageResponse<NewsResponse> getPublicNews(int page, int size, UUID categoryId, Boolean isFeatured, String search) {
+    return getPublicNews(page, size, categoryId, isFeatured, search, "desc");
   }
   @Transactional(readOnly = true)
   public List<NewsResponse> getFeaturedNews(int limit) {

@@ -9,12 +9,14 @@ import FeaturedPosts from "@/app/tin-tuc/_components/FeaturedPosts";
 import NewsCard from "@/app/tin-tuc/_components/NewsCard";
 import NewsCategories from "@/app/tin-tuc/_components/NewsCategories";
 import NewsPagination from "@/app/tin-tuc/_components/NewsPagination";
+import NewsSortSelect from "@/app/tin-tuc/_components/NewsSortSelect";
 
 type NewsListingProps = {
   category?: string;
   page?: string;
   search?: string;
   isFeatured?: string;
+  sort?: string;
 };
 
 export default async function NewsListing({
@@ -22,9 +24,10 @@ export default async function NewsListing({
   page,
   search,
   isFeatured,
+  sort,
 }: NewsListingProps) {
   const { articles, activeCategory, currentPage, totalPages } =
-    await getArticles({ category, page: Number(page) || 1, search, isFeatured });
+    await getArticles({ category, page: Number(page) || 1, search, isFeatured, sort });
   const [featuredPosts, categories] = await Promise.all([
     getFeaturedArticles(),
     getCategories(),
@@ -37,17 +40,26 @@ export default async function NewsListing({
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:gap-8">
           <div className="flex min-w-0 flex-1 flex-col items-start gap-2.5 lg:gap-3">
-            <h1 className="text-[24px] sm:text-[28px] lg:text-[32px] font-semibold tracking-wide text-black uppercase">
-              {search
-                ? `Kết quả tìm kiếm cho "${search}"`
-                : isFeaturedFilterActive
-                  ? activeCategory === ALL_CATEGORY
-                    ? "Tin nổi bật"
-                    : `${activeCategory} (Tin nổi bật)`
-                  : activeCategory === ALL_CATEGORY
-                    ? "Tin tức"
-                    : activeCategory}
-            </h1>
+            <div className="flex w-full flex-wrap items-center justify-between gap-3 pb-1">
+              <h1 className="text-[24px] sm:text-[28px] lg:text-[32px] font-semibold tracking-wide text-black uppercase">
+                {search
+                  ? `Kết quả tìm kiếm cho "${search}"`
+                  : isFeaturedFilterActive
+                    ? activeCategory === ALL_CATEGORY
+                      ? "Tin nổi bật"
+                      : `${activeCategory} (Tin nổi bật)`
+                    : activeCategory === ALL_CATEGORY
+                      ? "Tin tức"
+                      : activeCategory}
+              </h1>
+
+              <NewsSortSelect
+                currentSort={sort}
+                activeCategory={activeCategory}
+                search={search}
+                isFeatured={isFeatured}
+              />
+            </div>
 
             <div className="flex w-full flex-col gap-4 lg:gap-6">
               {articles.length > 0 ? (
@@ -69,6 +81,7 @@ export default async function NewsListing({
               totalPages={totalPages}
               search={search}
               isFeatured={isFeatured}
+              sort={sort}
             />
           </div>
 
