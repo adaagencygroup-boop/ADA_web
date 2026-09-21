@@ -47,9 +47,7 @@ export default async function TinTucPage({ searchParams }: TinTucPageProps) {
         isFeatured={isFeatured}
         sort={sort}
       />
-      <GsapScrollReveal>
         <CallToAction />
-      </GsapScrollReveal>
     </>
   );
 }
