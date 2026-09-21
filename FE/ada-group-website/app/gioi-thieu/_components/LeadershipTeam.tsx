@@ -47,9 +47,9 @@ const CONTENT = {
 const AVATAR = "/images/gioi-thieu/BusinessProfile.webp";
 
 const LEADERS = [
-  { name: "Đô Minh Quân", role: "Chủ tịch Hội đồng quản trị", image: AVATAR },
+  { name: "Nguyễn Văn Thuần", role: "Chủ tịch Hội đồng quản trị", image: AVATAR },
   { name: "Đinh Đức Kiên", role: "Giám đốc Điều hành", image: AVATAR },
-  { name: "Nguyễn Văn Thuân", role: "Giám đốc Công nghệ", image: AVATAR },
+  { name: "Đỗ Minh Quân", role: "Giám đốc Công nghệ", image: AVATAR },
   { name: "Trương Tấn Nghĩa", role: "Giám đốc Vận hành", image: AVATAR },
   { name: "Nguyễn Văn Đạt", role: "Trưởng phòng Phát triển", image: AVATAR },
   { name: "Mai Văn Đạt", role: "Trưởng phòng Kinh doanh", image: AVATAR },
