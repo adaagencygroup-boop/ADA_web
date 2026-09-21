@@ -48,7 +48,7 @@ public class UserService {
   public UserProfileResponse getProfile() {
     UUID userId = SecurityUtils.getCurrentUserId();
     User user = userRepository.findById(userId)
-      .orElseThrow(() -> AppException.notFound("User Not Found"));
+      .orElseThrow(() -> AppException.notFound("Không tìm thấy người dùng"));
     return new UserProfileResponse(
       user.getId(),
       user.getUsername(),
@@ -64,7 +64,7 @@ public class UserService {
   public UserProfileResponse updateProfile(UpdateProfileRequest request) {
     UUID userId = SecurityUtils.getCurrentUserId();
     User user = userRepository.findById(userId)
-      .orElseThrow(() -> AppException.notFound("User Not Found"));
+      .orElseThrow(() -> AppException.notFound("Không tìm thấy người dùng"));
     if (request.fullname() != null && !request.fullname().isBlank()) {
       user.setFullname(request.fullname().trim());
     }
@@ -86,6 +86,9 @@ public class UserService {
   }
   @Transactional
   public void changePassword(ChangePasswordRequest request) {
+    if (request.currentPassword() != null && request.currentPassword().equals(request.newPassword())) {
+      throw AppException.badRequest("Mật khẩu mới không được trùng với mật khẩu hiện tại");
+    }
     ValidationUtils.validatePassword(request.newPassword());
     if (!request.newPassword().equals(request.confirmPassword())) {
       throw AppException.badRequest("Mật khẩu xác nhận không khớp");
@@ -143,9 +146,9 @@ public class UserService {
   public void revokeSession(UUID sessionId) {
     UUID userId = SecurityUtils.getCurrentUserId();
     UserSession session = userSessionRepository.findById(sessionId)
-      .orElseThrow(() -> AppException.notFound("Session Not Found"));
+      .orElseThrow(() -> AppException.notFound("Không tìm thấy phiên đăng nhập"));
     if (!session.getUser().getId().equals(userId)) {
-      throw AppException.forbidden("Access Denied");
+      throw AppException.forbidden("Truy cập bị từ chối");
     }
     String currentJTI = SecurityUtils.getCurrentJTI();
     boolean isCurrent = currentJTI != null && currentJTI.equals(session.getAccessTokenJTI());

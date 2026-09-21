@@ -43,7 +43,7 @@ public class ExcelExportService {
       workbook.write(out);
       return out.toByteArray();
     } catch (IOException e) {
-      throw com.ada.app.common.exception.AppException.internal("Failed To Generate Excel Report: " + e.getMessage());
+      throw com.ada.app.common.exception.AppException.internal("Tạo báo cáo xuất file Excel thất bại: " + e.getMessage());
     }
   }
 }

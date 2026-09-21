@@ -12,8 +12,10 @@ import com.ada.app.modules.recruitment.entity.Recruitment;
 import com.ada.app.modules.recruitment.enums.RecruitmentStatus;
 import com.ada.app.modules.recruitment.repository.RecruitmentRepository;
 import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,25 +36,32 @@ public class DashboardService {
     return getDashboard(range, null, null);
   }
   @Transactional(readOnly = true)
-  public AdminDashboardResponse getDashboard(String range, LocalDate fromDate, LocalDate toDate) {
-    LocalDate today = LocalDate.now(ZoneOffset.UTC);
+  public AdminDashboardResponse getDashboard(String range, String fromDate, String toDate) {
     LocalDate startLocalDate;
+    LocalDate endLocalDate;
     int days;
-    if (fromDate != null && toDate != null) {
-      if (fromDate.isAfter(toDate)) {
-        throw com.ada.app.common.exception.AppException.badRequest("Ngày bắt đầu không được lớn hơn ngày kết thúc");
+
+    boolean isCustomDateRange = (fromDate != null && !fromDate.isBlank() && toDate != null && !toDate.isBlank());
+
+    if (isCustomDateRange) {
+      startLocalDate = parseLocalDate(fromDate);
+      endLocalDate = parseLocalDate(toDate);
+      if (startLocalDate.isAfter(endLocalDate)) {
+        LocalDate tmp = startLocalDate;
+        startLocalDate = endLocalDate;
+        endLocalDate = tmp;
       }
-      if (toDate.isAfter(today)) {
-        throw com.ada.app.common.exception.AppException.badRequest("Ngày kết thúc không được ở trong tương lai");
-      }
-      startLocalDate = fromDate;
-      days = (int) java.time.temporal.ChronoUnit.DAYS.between(fromDate, toDate) + 1;
+      days = (int) ChronoUnit.DAYS.between(startLocalDate, endLocalDate) + 1;
     } else {
       days = parseRangeToDays(range);
-      startLocalDate = today.minusDays(days - 1);
+      endLocalDate = LocalDate.now(ZoneOffset.UTC);
+      startLocalDate = endLocalDate.minusDays(days - 1);
     }
+
     var startInstant = startLocalDate.atStartOfDay().toInstant(ZoneOffset.UTC);
-    List<Object[]> nativeResults = contactRepository.countDailyContactsNative(startInstant);
+    var endInstant = endLocalDate.plusDays(1).atStartOfDay().toInstant(ZoneOffset.UTC);
+
+    List<Object[]> nativeResults = contactRepository.countDailyContactsBetweenNative(startInstant, endInstant);
     Map<String, Long> countMap = new HashMap<>();
     if (nativeResults != null) {
       for (Object[] row : nativeResults) {
@@ -70,16 +79,32 @@ public class DashboardService {
       long count = countMap.getOrDefault(dateKey, 0L);
       contactStats.add(new ContactStatDTO(dateKey, count));
     }
-    long totalNews = newsRepository.countByStatus(NewsStatus.published);
-    long totalRecruitments = recruitmentRepository.countByStatus(RecruitmentStatus.hiring);
-    long totalContacts = contactRepository.countByDeletedAtIsNull();
-    List<Recruitment> topRecruitList = recruitmentRepository.findByStatusOrderByViewCountDesc(RecruitmentStatus.hiring, PageRequest.of(0, 5));
+
+    long totalNews;
+    long totalRecruitments;
+    long totalContacts;
+    List<Recruitment> topRecruitList;
+    List<News> topNewsList;
+
+    if (isCustomDateRange) {
+      totalNews = newsRepository.countByStatusAndCreatedAtBetween(NewsStatus.published, startInstant, endInstant);
+      totalRecruitments = recruitmentRepository.countByStatusAndCreatedAtBetween(RecruitmentStatus.hiring, startInstant, endInstant);
+      totalContacts = contactRepository.countByDeletedAtIsNullAndCreatedAtBetween(startInstant, endInstant);
+      topRecruitList = recruitmentRepository.findByStatusAndCreatedAtBetweenOrderByViewCountDesc(RecruitmentStatus.hiring, startInstant, endInstant, PageRequest.of(0, 5));
+      topNewsList = newsRepository.findByStatusAndCreatedAtBetweenOrderByViewCountDesc(NewsStatus.published, startInstant, endInstant, PageRequest.of(0, 5));
+    } else {
+      totalNews = newsRepository.countByStatus(NewsStatus.published);
+      totalRecruitments = recruitmentRepository.countByStatus(RecruitmentStatus.hiring);
+      totalContacts = contactRepository.countByDeletedAtIsNull();
+      topRecruitList = recruitmentRepository.findByStatusOrderByViewCountDesc(RecruitmentStatus.hiring, PageRequest.of(0, 5));
+      topNewsList = newsRepository.findByStatusOrderByViewCountDesc(NewsStatus.published, PageRequest.of(0, 5));
+    }
+
     long totalRecruitViews = topRecruitList.stream().mapToLong(Recruitment::getViewCount).sum();
     List<TopRecruitmentStatDTO> topRecruitments = topRecruitList.stream().map(r -> {
       double percentage = totalRecruitViews > 0 ? Math.round((r.getViewCount() * 1000.0) / totalRecruitViews) / 10.0 : 0.0;
       return new TopRecruitmentStatDTO(r.getId(), r.getJobTitle(), r.getViewCount(), percentage);
     }).toList();
-    List<News> topNewsList = newsRepository.findByStatusOrderByViewCountDesc(NewsStatus.published, PageRequest.of(0, 5));
     List<TopNewsStatDTO> topNews = topNewsList.stream().map(n -> new TopNewsStatDTO(n.getId(), n.getTitle(), n.getViewCount())).toList();
     return new AdminDashboardResponse(
       totalNews,
@@ -89,6 +114,16 @@ public class DashboardService {
       topRecruitments,
       topNews
     );
+  }
+  private LocalDate parseLocalDate(String str) {
+    try {
+      if (str.contains("T")) {
+        return OffsetDateTime.parse(str).toLocalDate();
+      }
+      return LocalDate.parse(str.substring(0, 10));
+    } catch (Exception e) {
+      return LocalDate.now(ZoneOffset.UTC);
+    }
   }
   private int parseRangeToDays(String range) {
     if (range == null) {

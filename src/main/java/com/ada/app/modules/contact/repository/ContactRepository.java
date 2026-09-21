@@ -15,6 +15,12 @@ public interface ContactRepository extends JpaRepository<Contact, UUID>, JpaSpec
   Optional<Contact> findByIdAndDeletedAtIsNull(UUID id);
   long countByDeletedAtIsNull();
   long countByStatusAndDeletedAtIsNull(ContactStatus status);
+  @Query("SELECT COUNT(c) FROM Contact c WHERE c.deletedAt IS NULL AND c.createdAt >= :startDate AND c.createdAt < :endDate")
+  long countByDeletedAtIsNullAndCreatedAtBetween(@Param("startDate") Instant startDate, @Param("endDate") Instant endDate);
+
   @Query(value = "SELECT to_char(\"createdAt\", 'YYYY-MM-DD') AS day, count(*) AS cnt FROM \"contacts\" WHERE \"deletedAt\" IS NULL AND \"createdAt\" >= :startDate GROUP BY day ORDER BY day ASC", nativeQuery = true)
   List<Object[]> countDailyContactsNative(@Param("startDate") Instant startDate);
+
+  @Query(value = "SELECT to_char(\"createdAt\", 'YYYY-MM-DD') AS day, count(*) AS cnt FROM \"contacts\" WHERE \"deletedAt\" IS NULL AND \"createdAt\" >= :startDate AND \"createdAt\" < :endDate GROUP BY day ORDER BY day ASC", nativeQuery = true)
+  List<Object[]> countDailyContactsBetweenNative(@Param("startDate") Instant startDate, @Param("endDate") Instant endDate);
 }

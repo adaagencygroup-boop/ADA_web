@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
 import {
   ChevronRight,
   Eye,
@@ -96,6 +97,7 @@ export default function JobForm({
     formState: { errors, isDirty },
   } = useForm<RecruitmentFormValues>({
     resolver: zodResolver(recruitmentSchema),
+    mode: "onChange",
     defaultValues: {
       jobTitle: "",
       departmentId: "",
@@ -210,32 +212,37 @@ export default function JobForm({
   const [pendingSubmit, setPendingSubmit] = useState<RecruitmentPayload | null>(
     null
   );
-  const requestSubmit = handleSubmit((values) => {
-    const payload: RecruitmentPayload = {
-      jobTitle: values.jobTitle.trim(),
-      departmentId: values.departmentId || null,
-      location: values.location?.trim() || null,
-      employmentType: values.employmentType,
-      workingHours: values.workingHours?.trim() || null,
-      description: values.description.trim(),
-      requirements: values.requirements.trim(),
-      benefits: values.benefits.trim(),
-      coverImageURL: values.coverImageURL || null,
-      status: values.status,
-      minSalary: values.minSalary ? Number(values.minSalary.replace(/,/g, "")) : null,
-      maxSalary: values.maxSalary ? Number(values.maxSalary.replace(/,/g, "")) : null,
-      isNegotiable: values.isNegotiable ?? false,
-      requiredCandidateNum: values.requiredCandidateNum
-        ? Number(values.requiredCandidateNum)
-        : null,
-      expiresAt: (() => {
-        const d = new Date(values.expiresAt);
-        d.setHours(23, 59, 59, 999);
-        return d.toISOString();
-      })(),
-    };
-    setPendingSubmit(payload);
-  });
+  const requestSubmit = handleSubmit(
+    (values) => {
+      const payload: RecruitmentPayload = {
+        jobTitle: values.jobTitle.trim(),
+        departmentId: values.departmentId || null,
+        location: values.location?.trim() || null,
+        employmentType: values.employmentType,
+        workingHours: values.workingHours?.trim() || null,
+        description: values.description.trim(),
+        requirements: values.requirements.trim(),
+        benefits: values.benefits.trim(),
+        coverImageURL: values.coverImageURL || null,
+        status: values.status,
+        minSalary: values.minSalary ? Number(values.minSalary.replace(/,/g, "")) : null,
+        maxSalary: values.maxSalary ? Number(values.maxSalary.replace(/,/g, "")) : null,
+        isNegotiable: values.isNegotiable ?? false,
+        requiredCandidateNum: values.requiredCandidateNum
+          ? Number(values.requiredCandidateNum)
+          : null,
+        expiresAt: (() => {
+          const d = new Date(values.expiresAt);
+          d.setHours(23, 59, 59, 999);
+          return d.toISOString();
+        })(),
+      };
+      setPendingSubmit(payload);
+    },
+    () => {
+      toast.error("Vui lòng kiểm tra các ô thông tin và không nhập chỉ toàn khoảng trắng.");
+    }
+  );
 
   function handleConfirmSubmit() {
     if (!pendingSubmit) return;

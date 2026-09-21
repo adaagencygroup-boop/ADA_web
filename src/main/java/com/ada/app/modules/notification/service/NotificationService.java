@@ -110,7 +110,7 @@ public class NotificationService {
   public NotificationDTO getNotificationDetail(UUID id) {
     UUID userId = SecurityUtils.getCurrentUserId();
     NotificationRecipient nr = recipientRepository.findByNotificationIdAndUserId(id, userId)
-      .orElseThrow(() -> AppException.notFound("Notification Not Found"));
+      .orElseThrow(() -> AppException.notFound("Không tìm thấy thông báo"));
     if (!Boolean.TRUE.equals(nr.getIsRead())) {
       nr.setIsRead(true);
       nr.setReadAt(Instant.now());
@@ -131,7 +131,7 @@ public class NotificationService {
   public NotificationReadResponse markAsRead(UUID id) {
     UUID userId = SecurityUtils.getCurrentUserId();
     NotificationRecipient nr = recipientRepository.findByNotificationIdAndUserId(id, userId)
-      .orElseThrow(() -> AppException.notFound("Notification Not Found"));
+      .orElseThrow(() -> AppException.notFound("Không tìm thấy thông báo"));
     nr.setIsRead(true);
     nr.setReadAt(Instant.now());
     recipientRepository.save(nr);

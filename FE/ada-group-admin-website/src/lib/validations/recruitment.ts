@@ -1,31 +1,43 @@
 import { z } from "zod";
 
+function createCleanTextSchema(fieldName: string, maxLength?: number) {
+  let schema = z
+    .string()
+    .refine(
+      (val) => !!val && val.replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ").trim().length > 0,
+      { message: `${fieldName} không được để trống hoặc chỉ chứa khoảng trắng/tab` }
+    )
+    .refine((val) => !/\t/.test(val || ""), {
+      message: `${fieldName} không được chứa phím Tab`,
+    })
+    .refine(
+      (val) => !/\s{2,}/.test(val ? val.replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ") : ""),
+      { message: `${fieldName} không được chứa nhiều dấu cách liên tiếp` }
+    );
+
+  if (maxLength) {
+    schema = schema.refine((val) => val.trim().length <= maxLength, {
+      message: `${fieldName} không được vượt quá ${maxLength} ký tự`,
+    });
+  }
+
+  return schema;
+}
+
 export const recruitmentSchema = z.object({
-  jobTitle: z
-    .string()
-    .trim()
-    .min(1, "Vui lòng nhập vị trí tuyển dụng")
-    .max(150, "Vị trí tuyển dụng không được vượt quá 150 ký tự"),
+  jobTitle: createCleanTextSchema("Vị trí tuyển dụng", 150),
   departmentId: z.string().min(1, "Vui lòng chọn phòng ban"),
-  location: z
-    .string()
-    .trim()
-    .min(1, "Vui lòng nhập địa điểm làm việc")
-    .max(100, "Địa điểm không được vượt quá 100 ký tự"),
+  location: createCleanTextSchema("Địa điểm làm việc", 100),
   employmentType: z.enum(["fulltime", "parttime", "remote", "hybrid"], {
     message: "Vui lòng chọn hình thức làm việc",
   }),
   status: z.enum(["draft", "hiring", "closed"], {
     message: "Vui lòng chọn trạng thái",
   }),
-  workingHours: z
-    .string()
-    .trim()
-    .min(1, "Vui lòng chọn thời gian làm việc")
-    .max(100, "Thời gian làm việc không được vượt quá 100 ký tự"),
-  description: z.string().trim().min(1, "Vui lòng nhập mô tả công việc"),
-  requirements: z.string().trim().min(1, "Vui lòng nhập yêu cầu ứng viên"),
-  benefits: z.string().trim().min(1, "Vui lòng nhập quyền lợi được hưởng"),
+  workingHours: createCleanTextSchema("Thời gian làm việc", 100),
+  description: createCleanTextSchema("Mô tả công việc"),
+  requirements: createCleanTextSchema("Yêu cầu ứng viên"),
+  benefits: createCleanTextSchema("Quyền lợi được hưởng"),
   coverImageURL: z.string().min(1, "Vui lòng tải ảnh đại diện"),
   minSalary: z.string().optional(),
   maxSalary: z.string().optional(),

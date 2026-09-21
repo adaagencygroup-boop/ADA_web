@@ -16,6 +16,7 @@ import {
 import { useUploadMedia } from "@/src/hooks/useNews";
 import { useRespondCandidate } from "@/src/hooks/useCandidates";
 import ConfirmDialog from "@/src/components/shared/ConfirmDialog";
+import DateTimePicker from "@/src/components/shared/DateTimePicker";
 import type { Candidate, CandidateStatus } from "@/src/lib/api/candidate";
 
 const ALLOWED_EXTENSIONS = ["pdf", "doc", "docx", "jpg", "jpeg", "png"];
@@ -121,8 +122,6 @@ export default function CandidateRespondSection({
   });
 
   // Form 1: Passed (Resume / Interview invitation)
-  const [passedCandidateName, setPassedCandidateName] = useState(candidate.fullname);
-  const [passedPosition, setPassedPosition] = useState(candidate.recruitmentTitle);
   const [interviewTime, setInterviewTime] = useState("");
   const [interviewLocation, setInterviewLocation] = useState(
     candidate.location || "Tầng 5, Tòa nhà ADA Group"
@@ -130,8 +129,6 @@ export default function CandidateRespondSection({
   const [contactInfo, setContactInfo] = useState("Mr.Alexander - 09232323232");
 
   // Form 2: Interview Passed (Job Offer)
-  const [offerCandidateName, setOfferCandidateName] = useState(candidate.fullname);
-  const [offerPosition, setOfferPosition] = useState(candidate.recruitmentTitle);
   const [startDate, setStartDate] = useState("");
   const [workLocation, setWorkLocation] = useState(
     candidate.location || "Tầng 5, Tòa nhà ADA Group"
@@ -140,8 +137,6 @@ export default function CandidateRespondSection({
   const [offerContactInfo, setOfferContactInfo] = useState("Mr.Alexander - 09232323232");
 
   // Form 3: Failed
-  const [failedCandidateName, setFailedCandidateName] = useState(candidate.fullname);
-  const [failedPosition, setFailedPosition] = useState(candidate.recruitmentTitle);
   const [failedReason, setFailedReason] = useState("");
 
   // Email content text
@@ -150,7 +145,59 @@ export default function CandidateRespondSection({
 
   const [attachment, setAttachment] = useState<File | null>(null);
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  function clearError(field: string) {
+    setFormErrors((prev) => {
+      if (!prev[field]) return prev;
+      const next = { ...prev };
+      delete next[field];
+      return next;
+    });
+  }
+
+  function validateForm(): boolean {
+    const newErrors: Record<string, string> = {};
+
+    if (responseType === "passed") {
+      if (!interviewTime.trim()) {
+        newErrors.interviewTime = "Vui lòng nhập thời gian phỏng vấn.";
+      }
+      if (!interviewLocation.trim()) {
+        newErrors.interviewLocation = "Vui lòng nhập địa điểm phỏng vấn.";
+      }
+      if (!contactInfo.trim()) {
+        newErrors.contactInfo = "Vui lòng nhập thông tin người liên hệ.";
+      }
+    } else if (responseType === "interview_passed") {
+      if (!startDate.trim()) {
+        newErrors.startDate = "Vui lòng nhập ngày bắt đầu làm việc.";
+      }
+      if (!workLocation.trim()) {
+        newErrors.workLocation = "Vui lòng nhập địa điểm làm việc.";
+      }
+      if (!offeredSalary.trim()) {
+        newErrors.offeredSalary = "Vui lòng nhập mức lương & thử việc.";
+      }
+      if (!offerContactInfo.trim()) {
+        newErrors.offerContactInfo = "Vui lòng nhập người liên hệ HR.";
+      }
+    }
+
+    if (!emailContent.trim()) {
+      newErrors.emailContent = "Vui lòng nhập nội dung thư thông báo.";
+    }
+
+    setFormErrors(newErrors);
+
+    if (Object.keys(newErrors).length > 0) {
+      toast.error("Vui lòng điền đầy đủ các thông tin bắt buộc.");
+      return false;
+    }
+
+    return true;
+  }
 
   const uploadMutation = useUploadMedia();
   const respondMutation = useRespondCandidate();
@@ -161,8 +208,8 @@ export default function CandidateRespondSection({
     if (responseType === "passed") {
       setEmailContent(
         buildPassedTemplate(
-          passedCandidateName,
-          passedPosition,
+          candidate.fullname,
+          candidate.recruitmentTitle,
           interviewTime,
           interviewLocation,
           contactInfo
@@ -171,8 +218,8 @@ export default function CandidateRespondSection({
     } else if (responseType === "interview_passed") {
       setEmailContent(
         buildOfferTemplate(
-          offerCandidateName,
-          offerPosition,
+          candidate.fullname,
+          candidate.recruitmentTitle,
           startDate,
           workLocation,
           offeredSalary,
@@ -181,24 +228,20 @@ export default function CandidateRespondSection({
       );
     } else {
       setEmailContent(
-        buildFailedTemplate(failedCandidateName, failedPosition, failedReason)
+        buildFailedTemplate(candidate.fullname, candidate.recruitmentTitle, failedReason)
       );
     }
   }, [
     responseType,
-    passedCandidateName,
-    passedPosition,
+    candidate.fullname,
+    candidate.recruitmentTitle,
     interviewTime,
     interviewLocation,
     contactInfo,
-    offerCandidateName,
-    offerPosition,
     startDate,
     workLocation,
     offeredSalary,
     offerContactInfo,
-    failedCandidateName,
-    failedPosition,
     failedReason,
     isManualEdit,
   ]);
@@ -208,8 +251,8 @@ export default function CandidateRespondSection({
     if (responseType === "passed") {
       setEmailContent(
         buildPassedTemplate(
-          passedCandidateName,
-          passedPosition,
+          candidate.fullname,
+          candidate.recruitmentTitle,
           interviewTime,
           interviewLocation,
           contactInfo
@@ -218,8 +261,8 @@ export default function CandidateRespondSection({
     } else if (responseType === "interview_passed") {
       setEmailContent(
         buildOfferTemplate(
-          offerCandidateName,
-          offerPosition,
+          candidate.fullname,
+          candidate.recruitmentTitle,
           startDate,
           workLocation,
           offeredSalary,
@@ -228,7 +271,7 @@ export default function CandidateRespondSection({
       );
     } else {
       setEmailContent(
-        buildFailedTemplate(failedCandidateName, failedPosition, failedReason)
+        buildFailedTemplate(candidate.fullname, candidate.recruitmentTitle, failedReason)
       );
     }
   }
@@ -272,10 +315,9 @@ export default function CandidateRespondSection({
       toast.error("Không thể chuyển trực tiếp từ Chờ duyệt sang Đã trúng tuyển. Vui lòng mời phỏng vấn trước.");
       return;
     }
-    if (!emailContent.trim()) {
-      toast.error("Vui lòng nhập nội dung thư thông báo.");
-      return;
-    }
+
+    if (!validateForm()) return;
+
     setConfirmOpen(true);
   }
   function handleActualSend() {
@@ -395,6 +437,7 @@ export default function CandidateRespondSection({
             onClick={() => {
               if (candidate.status === "passed" || isTerminal) return;
               setResponseType("passed");
+              setFormErrors({});
               setIsManualEdit(false);
             }}
             className={`flex items-center justify-center gap-2 rounded-lg border py-3 px-2 text-xs font-semibold transition-all md:text-sm disabled:cursor-not-allowed disabled:opacity-40 ${
@@ -412,6 +455,7 @@ export default function CandidateRespondSection({
             onClick={() => {
               if (candidate.status === "pending" || isTerminal) return;
               setResponseType("interview_passed");
+              setFormErrors({});
               setIsManualEdit(false);
             }}
             className={`flex items-center justify-center gap-2 rounded-lg border py-3 px-2 text-xs font-semibold transition-all md:text-sm disabled:cursor-not-allowed disabled:opacity-40 ${
@@ -429,6 +473,7 @@ export default function CandidateRespondSection({
             onClick={() => {
               if (isTerminal) return;
               setResponseType("failed");
+              setFormErrors({});
               setIsManualEdit(false);
             }}
             className={`flex items-center justify-center gap-2 rounded-lg border py-3 px-2 text-xs font-semibold transition-all md:text-sm disabled:cursor-not-allowed disabled:opacity-40 ${
@@ -447,40 +492,36 @@ export default function CandidateRespondSection({
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div className="flex flex-col gap-1.5">
               <label className="text-xs font-medium text-[#374151]">
-                Họ và tên ứng viên <span className="text-red-500">*</span>
+                Họ và tên ứng viên
               </label>
-              <input
-                type="text"
-                value={passedCandidateName}
-                onChange={(e) => setPassedCandidateName(e.target.value)}
-                placeholder="Nhập tên ứng viên..."
-                className="h-10 rounded-lg border border-[#D1D5DB] px-3 text-sm outline-none focus:border-[#316EE9]"
-              />
+              <div className="flex h-10 items-center rounded-lg border border-[#E5E7EB] bg-[#F9FAFB] px-3 text-sm font-medium text-[#111827]">
+                {candidate.fullname}
+              </div>
             </div>
 
             <div className="flex flex-col gap-1.5">
               <label className="text-xs font-medium text-[#374151]">
-                Vị trí ứng tuyển <span className="text-red-500">*</span>
+                Vị trí ứng tuyển
               </label>
-              <input
-                type="text"
-                value={passedPosition}
-                onChange={(e) => setPassedPosition(e.target.value)}
-                placeholder="Ví dụ: Lập trình viên ReactJS..."
-                className="h-10 rounded-lg border border-[#D1D5DB] px-3 text-sm outline-none focus:border-[#316EE9]"
-              />
+              <div className="flex h-10 items-center rounded-lg border border-[#E5E7EB] bg-[#F9FAFB] px-3 text-sm font-medium text-[#111827]">
+                {candidate.recruitmentTitle || "N/A"}
+              </div>
             </div>
 
             <div className="flex flex-col gap-1.5">
               <label className="text-xs font-medium text-[#374151]">
                 Thời gian phỏng vấn <span className="text-red-500">*</span>
               </label>
-              <input
-                type="text"
+              <DateTimePicker
                 value={interviewTime}
-                onChange={(e) => setInterviewTime(e.target.value)}
+                onChange={(val) => {
+                  setInterviewTime(val);
+                  clearError("interviewTime");
+                }}
                 placeholder="Ví dụ: 09:30 - Ngày 20/09/2026..."
-                className="h-10 rounded-lg border border-[#D1D5DB] px-3 text-sm outline-none focus:border-[#316EE9]"
+                showTime={true}
+                formatMode="interview"
+                error={formErrors.interviewTime}
               />
             </div>
 
@@ -491,10 +532,20 @@ export default function CandidateRespondSection({
               <input
                 type="text"
                 value={interviewLocation}
-                onChange={(e) => setInterviewLocation(e.target.value)}
+                onChange={(e) => {
+                  setInterviewLocation(e.target.value);
+                  clearError("interviewLocation");
+                }}
                 placeholder="Ví dụ: Tầng 5, Tòa nhà ADA Group..."
-                className="h-10 rounded-lg border border-[#D1D5DB] px-3 text-sm outline-none focus:border-[#316EE9]"
+                className={`h-10 rounded-lg border px-3 text-sm outline-none transition-colors ${
+                  formErrors.interviewLocation
+                    ? "border-red-500 focus:border-red-500"
+                    : "border-[#D1D5DB] focus:border-[#316EE9]"
+                }`}
               />
+              {formErrors.interviewLocation && (
+                <p className="text-xs text-red-600">{formErrors.interviewLocation}</p>
+              )}
             </div>
 
             <div className="flex flex-col gap-1.5 md:col-span-2">
@@ -504,10 +555,20 @@ export default function CandidateRespondSection({
               <input
                 type="text"
                 value={contactInfo}
-                onChange={(e) => setContactInfo(e.target.value)}
+                onChange={(e) => {
+                  setContactInfo(e.target.value);
+                  clearError("contactInfo");
+                }}
                 placeholder="Ví dụ: Mr.Alexander - 09232323232"
-                className="h-10 rounded-lg border border-[#D1D5DB] px-3 text-sm outline-none focus:border-[#316EE9]"
+                className={`h-10 rounded-lg border px-3 text-sm outline-none transition-colors ${
+                  formErrors.contactInfo
+                    ? "border-red-500 focus:border-red-500"
+                    : "border-[#D1D5DB] focus:border-[#316EE9]"
+                }`}
               />
+              {formErrors.contactInfo && (
+                <p className="text-xs text-red-600">{formErrors.contactInfo}</p>
+              )}
             </div>
           </div>
         )}
@@ -516,40 +577,36 @@ export default function CandidateRespondSection({
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div className="flex flex-col gap-1.5">
               <label className="text-xs font-medium text-[#374151]">
-                Họ và tên ứng viên <span className="text-red-500">*</span>
+                Họ và tên ứng viên
               </label>
-              <input
-                type="text"
-                value={offerCandidateName}
-                onChange={(e) => setOfferCandidateName(e.target.value)}
-                placeholder="Nhập tên ứng viên..."
-                className="h-10 rounded-lg border border-[#D1D5DB] px-3 text-sm outline-none focus:border-[#316EE9]"
-              />
+              <div className="flex h-10 items-center rounded-lg border border-[#E5E7EB] bg-[#F9FAFB] px-3 text-sm font-medium text-[#111827]">
+                {candidate.fullname}
+              </div>
             </div>
 
             <div className="flex flex-col gap-1.5">
               <label className="text-xs font-medium text-[#374151]">
-                Vị trí công tác <span className="text-red-500">*</span>
+                Vị trí công tác
               </label>
-              <input
-                type="text"
-                value={offerPosition}
-                onChange={(e) => setOfferPosition(e.target.value)}
-                placeholder="Ví dụ: Lập trình viên ReactJS..."
-                className="h-10 rounded-lg border border-[#D1D5DB] px-3 text-sm outline-none focus:border-[#316EE9]"
-              />
+              <div className="flex h-10 items-center rounded-lg border border-[#E5E7EB] bg-[#F9FAFB] px-3 text-sm font-medium text-[#111827]">
+                {candidate.recruitmentTitle || "N/A"}
+              </div>
             </div>
 
             <div className="flex flex-col gap-1.5">
               <label className="text-xs font-medium text-[#374151]">
                 Ngày bắt đầu làm việc <span className="text-red-500">*</span>
               </label>
-              <input
-                type="text"
+              <DateTimePicker
                 value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
+                onChange={(val) => {
+                  setStartDate(val);
+                  clearError("startDate");
+                }}
                 placeholder="Ví dụ: 01/10/2026..."
-                className="h-10 rounded-lg border border-[#D1D5DB] px-3 text-sm outline-none focus:border-[#316EE9]"
+                showTime={false}
+                formatMode="dateOnly"
+                error={formErrors.startDate}
               />
             </div>
 
@@ -560,10 +617,20 @@ export default function CandidateRespondSection({
               <input
                 type="text"
                 value={workLocation}
-                onChange={(e) => setWorkLocation(e.target.value)}
+                onChange={(e) => {
+                  setWorkLocation(e.target.value);
+                  clearError("workLocation");
+                }}
                 placeholder="Ví dụ: Tầng 5, Tòa nhà ADA Group..."
-                className="h-10 rounded-lg border border-[#D1D5DB] px-3 text-sm outline-none focus:border-[#316EE9]"
+                className={`h-10 rounded-lg border px-3 text-sm outline-none transition-colors ${
+                  formErrors.workLocation
+                    ? "border-red-500 focus:border-red-500"
+                    : "border-[#D1D5DB] focus:border-[#316EE9]"
+                }`}
               />
+              {formErrors.workLocation && (
+                <p className="text-xs text-red-600">{formErrors.workLocation}</p>
+              )}
             </div>
 
             <div className="flex flex-col gap-1.5">
@@ -573,10 +640,20 @@ export default function CandidateRespondSection({
               <input
                 type="text"
                 value={offeredSalary}
-                onChange={(e) => setOfferedSalary(e.target.value)}
+                onChange={(e) => {
+                  setOfferedSalary(e.target.value);
+                  clearError("offeredSalary");
+                }}
                 placeholder="Ví dụ: Thử việc 2 tháng - 85% lương..."
-                className="h-10 rounded-lg border border-[#D1D5DB] px-3 text-sm outline-none focus:border-[#316EE9]"
+                className={`h-10 rounded-lg border px-3 text-sm outline-none transition-colors ${
+                  formErrors.offeredSalary
+                    ? "border-red-500 focus:border-red-500"
+                    : "border-[#D1D5DB] focus:border-[#316EE9]"
+                }`}
               />
+              {formErrors.offeredSalary && (
+                <p className="text-xs text-red-600">{formErrors.offeredSalary}</p>
+              )}
             </div>
 
             <div className="flex flex-col gap-1.5">
@@ -586,10 +663,20 @@ export default function CandidateRespondSection({
               <input
                 type="text"
                 value={offerContactInfo}
-                onChange={(e) => setOfferContactInfo(e.target.value)}
+                onChange={(e) => {
+                  setOfferContactInfo(e.target.value);
+                  clearError("offerContactInfo");
+                }}
                 placeholder="Ví dụ: Mr.Alexander - 09232323232"
-                className="h-10 rounded-lg border border-[#D1D5DB] px-3 text-sm outline-none focus:border-[#316EE9]"
+                className={`h-10 rounded-lg border px-3 text-sm outline-none transition-colors ${
+                  formErrors.offerContactInfo
+                    ? "border-red-500 focus:border-red-500"
+                    : "border-[#D1D5DB] focus:border-[#316EE9]"
+                }`}
               />
+              {formErrors.offerContactInfo && (
+                <p className="text-xs text-red-600">{formErrors.offerContactInfo}</p>
+              )}
             </div>
           </div>
         )}
@@ -598,28 +685,20 @@ export default function CandidateRespondSection({
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <div className="flex flex-col gap-1.5">
               <label className="text-xs font-medium text-[#374151]">
-                Họ và tên ứng viên <span className="text-red-500">*</span>
+                Họ và tên ứng viên
               </label>
-              <input
-                type="text"
-                value={failedCandidateName}
-                onChange={(e) => setFailedCandidateName(e.target.value)}
-                placeholder="Nhập tên ứng viên..."
-                className="h-10 rounded-lg border border-[#D1D5DB] px-3 text-sm outline-none focus:border-[#316EE9]"
-              />
+              <div className="flex h-10 items-center rounded-lg border border-[#E5E7EB] bg-[#F9FAFB] px-3 text-sm font-medium text-[#111827]">
+                {candidate.fullname}
+              </div>
             </div>
 
             <div className="flex flex-col gap-1.5">
               <label className="text-xs font-medium text-[#374151]">
-                Vị trí ứng tuyển <span className="text-red-500">*</span>
+                Vị trí ứng tuyển
               </label>
-              <input
-                type="text"
-                value={failedPosition}
-                onChange={(e) => setFailedPosition(e.target.value)}
-                placeholder="Ví dụ: Lập trình viên ReactJS..."
-                className="h-10 rounded-lg border border-[#D1D5DB] px-3 text-sm outline-none focus:border-[#316EE9]"
-              />
+              <div className="flex h-10 items-center rounded-lg border border-[#E5E7EB] bg-[#F9FAFB] px-3 text-sm font-medium text-[#111827]">
+                {candidate.recruitmentTitle || "N/A"}
+              </div>
             </div>
 
             <div className="flex flex-col gap-1.5 md:col-span-2">
@@ -641,7 +720,7 @@ export default function CandidateRespondSection({
         <div className="flex flex-col gap-2 border-t border-[#E5E7EB] pt-4">
           <div className="flex items-center justify-between">
             <label className="text-xs font-semibold text-[#111827]">
-              Xem trước & Chỉnh sửa thư thông báo Email:
+              Xem trước & Chỉnh sửa thư thông báo Email: <span className="text-red-500">*</span>
             </label>
             <button
               type="button"
@@ -657,10 +736,18 @@ export default function CandidateRespondSection({
             onChange={(e) => {
               setIsManualEdit(true);
               setEmailContent(e.target.value);
+              clearError("emailContent");
             }}
             rows={10}
-            className="w-full resize-y rounded-lg border border-[#D1D5DB] p-3 text-sm text-[#111827] outline-none focus:border-[#316EE9]"
+            className={`w-full resize-y rounded-lg border p-3 text-sm text-[#111827] outline-none transition-colors ${
+              formErrors.emailContent
+                ? "border-red-500 focus:border-red-500"
+                : "border-[#D1D5DB] focus:border-[#316EE9]"
+            }`}
           />
+          {formErrors.emailContent && (
+            <p className="text-xs text-red-600">{formErrors.emailContent}</p>
+          )}
         </div>
 
         {/* File Attachment & Actions */}

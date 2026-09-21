@@ -47,12 +47,12 @@ public class ContactService {
   @Transactional(readOnly = true)
   public ContactResponse getContactById(UUID id) {
     Contact contact = contactRepository.findByIdAndDeletedAtIsNull(id)
-      .orElseThrow(() -> AppException.notFound("Contact Not Found"));
+      .orElseThrow(() -> AppException.notFound("Không tìm thấy thông tin liên hệ"));
     return mapToResponse(contact);
   }
   @Transactional
   public ContactResponse respondContact(UUID id, ContactRespondAdminRequest request) {
-    Contact contact = contactRepository.findByIdAndDeletedAtIsNull(id).orElseThrow(() -> AppException.notFound("Contact Not Found"));
+    Contact contact = contactRepository.findByIdAndDeletedAtIsNull(id).orElseThrow(() -> AppException.notFound("Không tìm thấy thông tin liên hệ"));
     contact.setFeedbackContent(request.feedbackContent());
     contact.setFeedbackAttachmentURL(request.feedbackAttachmentURL());
     contact.setFeedbackSentAt(Instant.now());
@@ -79,14 +79,14 @@ public class ContactService {
   }
   @Transactional
   public ContactResponse updateNote(UUID id, ContactNoteRequest request) {
-    Contact contact = contactRepository.findByIdAndDeletedAtIsNull(id).orElseThrow(() -> AppException.notFound("Contact Not Found"));
+    Contact contact = contactRepository.findByIdAndDeletedAtIsNull(id).orElseThrow(() -> AppException.notFound("Không tìm thấy thông tin liên hệ"));
     contact.setNote(request.note());
     contact = contactRepository.save(contact);
     return mapToResponse(contact);
   }
   @Transactional
   public void deleteContact(UUID id) {
-    Contact contact = contactRepository.findByIdAndDeletedAtIsNull(id).orElseThrow(() -> AppException.notFound("Contact Not Found"));
+    Contact contact = contactRepository.findByIdAndDeletedAtIsNull(id).orElseThrow(() -> AppException.notFound("Không tìm thấy thông tin liên hệ"));
     contact.setDeletedAt(Instant.now());
     contactRepository.save(contact);
   }

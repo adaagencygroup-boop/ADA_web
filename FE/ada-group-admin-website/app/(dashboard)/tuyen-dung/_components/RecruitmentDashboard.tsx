@@ -4,25 +4,20 @@ import { useState } from "react";
 import Link from "next/link";
 import { ChevronRight, Download } from "lucide-react";
 import type { DateRange } from "react-day-picker";
-import DateRangeButton from "@/app/(dashboard)/tuyen-dung/_components/DateRangeButton";
+import DateRangeFilter from "@/src/components/shared/DateRangeFilter";
 import StatsGrid from "@/app/(dashboard)/tuyen-dung/_components/StatsGrid";
 import JobsListCard from "@/app/(dashboard)/tuyen-dung/_components/JobsListCard";
 import { useExportRecruitmentsExcel } from "@/src/hooks/useRecruitments";
 import { endOfDayISO, startOfDayISO } from "@/src/lib/date-range";
 
-const DEFAULT_RANGE: DateRange = {
-  from: undefined,
-  to: undefined,
-};
-
 export default function RecruitmentDashboard() {
-  const [dateRange, setDateRange] = useState<DateRange>(DEFAULT_RANGE);
+  const [dateRange, setDateRange] = useState<DateRange | null>(null);
   const exportMutation = useExportRecruitmentsExcel();
 
-  const fromDate = dateRange.from ? startOfDayISO(dateRange.from) : undefined;
-  const toDate = dateRange.to
+  const fromDate = dateRange?.from ? startOfDayISO(dateRange.from) : undefined;
+  const toDate = dateRange?.to
     ? endOfDayISO(dateRange.to)
-    : dateRange.from
+    : dateRange?.from
       ? endOfDayISO(dateRange.from)
       : undefined;
 
@@ -52,7 +47,7 @@ export default function RecruitmentDashboard() {
         </div>
 
         <div className="flex items-center gap-4">
-          <DateRangeButton value={dateRange} onChange={setDateRange} />
+          <DateRangeFilter value={dateRange} onChange={setDateRange} />
           <button
             type="button"
             onClick={handleExport}

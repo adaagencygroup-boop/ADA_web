@@ -50,12 +50,12 @@ public class AuthController {
   @PostMapping("/verifyOTP")
   public ResponseEntity<APIResponse<Void>> verifyOTP(@Valid @RequestBody VerifyOTPRequest request) {
     authService.verifyOTP(request);
-    return ResponseEntity.ok(APIResponse.ok("OTP Verified Successfully", null));
+    return ResponseEntity.ok(APIResponse.ok("Xác thực OTP thành công", null));
   }
   @PostMapping("/resetPassword")
   public ResponseEntity<APIResponse<Void>> resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
     authService.resetPassword(request);
-    return ResponseEntity.ok(APIResponse.ok("Password Reset Successful", null));
+    return ResponseEntity.ok(APIResponse.ok("Đặt lại mật khẩu thành công", null));
   }
   @PostMapping("/refreshToken")
   public ResponseEntity<APIResponse<TokenResponse>> refreshToken(
@@ -64,12 +64,12 @@ public class AuthController {
     HttpServletResponse httpResponse
   ) {
     if (refreshToken == null || refreshToken.isBlank()) {
-      throw AppException.unauthorized("Refresh Token Is Required");
+      throw AppException.unauthorized("Vui lòng cung cấp Refresh Token");
     }
     TokenResult result = authService.refreshToken(refreshToken, httpRequest);
     setRefreshTokenCookie(httpResponse, result.refreshToken(), refreshExpirationSeconds);
     TokenResponse response = TokenResponse.of(result.accessToken());
-    return ResponseEntity.ok(APIResponse.ok("Token Refreshed Successfully", response));
+    return ResponseEntity.ok(APIResponse.ok("Làm mới token thành công", response));
   }
   @PostMapping("/logout")
   public ResponseEntity<APIResponse<Void>> logout(
@@ -78,11 +78,11 @@ public class AuthController {
     HttpServletResponse httpResponse
   ) {
     if (refreshToken == null || refreshToken.isBlank()) {
-      throw AppException.unauthorized("Refresh Token Is Required");
+      throw AppException.unauthorized("Vui lòng cung cấp Refresh Token");
     }
     authService.logout(httpRequest, refreshToken);
     setRefreshTokenCookie(httpResponse, "", 0);
-    return ResponseEntity.ok(APIResponse.ok("Logout Successful", null));
+    return ResponseEntity.ok(APIResponse.ok("Đăng xuất thành công", null));
   }
   private void setRefreshTokenCookie(HttpServletResponse response, String refreshToken, long maxAge) {
     ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken != null ? refreshToken : "")

@@ -21,6 +21,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/src/components/ui/select";
+import type { DateRange } from "react-day-picker";
+import DateRangeFilter from "@/src/components/shared/DateRangeFilter";
+import { endOfDayISO, startOfDayISO } from "@/src/lib/date-range";
 import { useDeleteNews, useNews, useToggleFeatured } from "@/src/hooks/useNews";
 import { useNewsCategories } from "@/src/hooks/useNewsCategories";
 import type { NewsItem, NewsStatus } from "@/src/lib/api/news";
@@ -55,16 +58,21 @@ function formatDateParts(iso: string) {
   };
 }
 export default function NewsListCard() {
-  const todayIso = new Date().toISOString().split("T")[0];
   const [searchInput, setSearchInput] = useState("");
   const [categoryId, setCategoryId] = useState("all");
   const [status, setStatus] = useState("all");
-  const [fromDate, setFromDate] = useState("");
-  const [toDate, setToDate] = useState("");
+  const [dateRange, setDateRange] = useState<DateRange | null>(null);
   const [featured, setFeatured] = useState("all");
   const [pageSize, setPageSize] = useState("10");
   const [page, setPage] = useState(1);
   const [deleteTarget, setDeleteTarget] = useState<NewsItem | null>(null);
+
+  const fromDate = dateRange?.from ? startOfDayISO(dateRange.from) : undefined;
+  const toDate = dateRange?.to
+    ? endOfDayISO(dateRange.to)
+    : dateRange?.from
+      ? endOfDayISO(dateRange.from)
+      : undefined;
   const deleteMutation = useDeleteNews();
   const toggleFeaturedMutation = useToggleFeatured();
   const search = useDebouncedValue(searchInput, 400);
@@ -185,31 +193,13 @@ export default function NewsListCard() {
             ))}
           </SelectContent>
         </Select>
-        <div className="flex items-center gap-2 text-sm text-[#6B7280]">
-          <span>Từ:</span>
-          <input
-            type="date"
-            max={toDate || todayIso}
-            value={fromDate}
-            onChange={(e) => {
-              setFromDate(e.target.value);
-              setPage(1);
-            }}
-            className="h-10.5 rounded-lg border border-[#D1D5DB] bg-white px-2 py-1 text-sm text-[#111827] outline-none focus:border-[#316EE9]"
-          />
-          <span>Đến:</span>
-          <input
-            type="date"
-            min={fromDate}
-            max={todayIso}
-            value={toDate}
-            onChange={(e) => {
-              setToDate(e.target.value);
-              setPage(1);
-            }}
-            className="h-10.5 rounded-lg border border-[#D1D5DB] bg-white px-2 py-1 text-sm text-[#111827] outline-none focus:border-[#316EE9]"
-          />
-        </div>
+        <DateRangeFilter
+          value={dateRange}
+          onChange={(next) => {
+            setDateRange(next);
+            setPage(1);
+          }}
+        />
       </div>
 
       <div className="overflow-hidden rounded-xl border border-[#E5E7EB] bg-white">

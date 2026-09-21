@@ -156,6 +156,22 @@ public class RecruitmentService {
     Recruitment r = recruitmentRepository.findById(id).orElseThrow(() -> AppException.notFound("Không tìm thấy tin tuyển dụng"));
     return mapToResponse(r);
   }
+  private static void validateCleanText(String val, String fieldName) {
+    if (val == null) {
+      throw AppException.badRequest(fieldName + " không được để trống");
+    }
+    String plainText = val.replaceAll("<[^>]*>", "").replace("&nbsp;", " ");
+    if (plainText.trim().isEmpty()) {
+      throw AppException.badRequest(fieldName + " không được để trống hoặc chỉ chứa khoảng trắng/tab");
+    }
+    if (plainText.contains("\t")) {
+      throw AppException.badRequest(fieldName + " không được chứa phím Tab");
+    }
+    if (java.util.regex.Pattern.compile("\\s{2,}").matcher(plainText).find()) {
+      throw AppException.badRequest(fieldName + " không được chứa nhiều dấu cách liên tiếp");
+    }
+  }
+
   private void validateWorkingHours(String workingHours) {
     if (workingHours == null || workingHours.isBlank()) {
       return;
@@ -175,18 +191,11 @@ public class RecruitmentService {
       throw AppException.badRequest("Không thể tạo mới tin tuyển dụng với trạng thái Đã đóng");
     }
     validateWorkingHours(request.workingHours());
-    if (request.location() == null || request.location().trim().isBlank()) {
-      throw AppException.badRequest("Vui lòng nhập địa điểm làm việc");
-    }
-    if (request.description() == null || request.description().trim().isBlank()) {
-      throw AppException.badRequest("Vui lòng nhập mô tả công việc");
-    }
-    if (request.requirements() == null || request.requirements().trim().isBlank()) {
-      throw AppException.badRequest("Vui lòng nhập yêu cầu ứng viên");
-    }
-    if (request.benefits() == null || request.benefits().trim().isBlank()) {
-      throw AppException.badRequest("Vui lòng nhập quyền lợi được hưởng");
-    }
+    validateCleanText(request.jobTitle(), "Vị trí tuyển dụng");
+    validateCleanText(request.location(), "Địa điểm làm việc");
+    validateCleanText(request.description(), "Mô tả công việc");
+    validateCleanText(request.requirements(), "Yêu cầu ứng viên");
+    validateCleanText(request.benefits(), "Quyền lợi được hưởng");
     if (request.minSalary() != null && request.minSalary().compareTo(BigDecimal.ZERO) <= 0) {
       throw AppException.badRequest("Mức lương tối thiểu phải lớn hơn 0");
     }
@@ -250,15 +259,11 @@ public class RecruitmentService {
       r.setDepartment(dept);
     }
     if (request.jobTitle() != null) {
-      if (request.jobTitle().trim().isBlank()) {
-        throw AppException.badRequest("Vui lòng nhập vị trí tuyển dụng");
-      }
+      validateCleanText(request.jobTitle(), "Vị trí tuyển dụng");
       r.setJobTitle(request.jobTitle().trim());
     }
     if (request.location() != null) {
-      if (request.location().trim().isBlank()) {
-        throw AppException.badRequest("Vui lòng nhập địa điểm làm việc");
-      }
+      validateCleanText(request.location(), "Địa điểm làm việc");
       r.setLocation(request.location().trim());
     }
     if (request.employmentType() != null) {
@@ -266,27 +271,19 @@ public class RecruitmentService {
     }
     if (request.workingHours() != null) {
       validateWorkingHours(request.workingHours());
-      if (request.workingHours().trim().isBlank()) {
-        throw AppException.badRequest("Vui lòng chọn thời gian làm việc");
-      }
+      validateCleanText(request.workingHours(), "Thời gian làm việc");
       r.setWorkingHours(request.workingHours().trim());
     }
     if (request.description() != null) {
-      if (request.description().trim().isBlank()) {
-        throw AppException.badRequest("Vui lòng nhập mô tả công việc");
-      }
+      validateCleanText(request.description(), "Mô tả công việc");
       r.setDescription(request.description().trim());
     }
     if (request.requirements() != null) {
-      if (request.requirements().trim().isBlank()) {
-        throw AppException.badRequest("Vui lòng nhập yêu cầu ứng viên");
-      }
+      validateCleanText(request.requirements(), "Yêu cầu ứng viên");
       r.setRequirements(request.requirements().trim());
     }
     if (request.benefits() != null) {
-      if (request.benefits().trim().isBlank()) {
-        throw AppException.badRequest("Vui lòng nhập quyền lợi được hưởng");
-      }
+      validateCleanText(request.benefits(), "Quyền lợi được hưởng");
       r.setBenefits(request.benefits().trim());
     }
     if (request.coverImageURL() != null && !request.coverImageURL().isBlank()) {

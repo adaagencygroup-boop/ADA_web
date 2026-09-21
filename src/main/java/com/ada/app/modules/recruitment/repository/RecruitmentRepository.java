@@ -33,6 +33,10 @@ public interface RecruitmentRepository extends JpaRepository<Recruitment, UUID>,
   @Query(value = "UPDATE recruitments SET status = 'closed'::\"recruitmentStatus\" WHERE status = 'hiring'::\"recruitmentStatus\" AND \"expiresAt\" IS NOT NULL AND \"expiresAt\" <= :now", nativeQuery = true)
   int closeExpiredRecruitments(@Param("now") Instant now);
   long countByStatus(RecruitmentStatus status);
+
+  @Query("SELECT COUNT(r) FROM Recruitment r WHERE r.status = :status AND r.createdAt >= :startDate AND r.createdAt < :endDate")
+  long countByStatusAndCreatedAtBetween(@Param("status") RecruitmentStatus status, @Param("startDate") Instant startDate, @Param("endDate") Instant endDate);
+
   @Query("SELECT count(r) FROM Recruitment r WHERE r.status = 'hiring' AND r.expiresAt IS NOT NULL AND r.expiresAt BETWEEN :now AND :soon")
   long countExpiringSoon(@Param("now") Instant now, @Param("soon") Instant soon);
   @Query("SELECT DISTINCT r.employmentType FROM Recruitment r WHERE r.status = 'hiring' AND r.employmentType IS NOT NULL")
@@ -42,6 +46,11 @@ public interface RecruitmentRepository extends JpaRepository<Recruitment, UUID>,
   void incrementViewCount(@Param("id") UUID id, @Param("delta") int delta);
   @EntityGraph(attributePaths = {"department", "recruiter"})
   List<Recruitment> findByStatusOrderByViewCountDesc(RecruitmentStatus status, Pageable pageable);
+
+  @EntityGraph(attributePaths = {"department", "recruiter"})
+  @Query("SELECT r FROM Recruitment r WHERE r.status = :status AND r.createdAt >= :startDate AND r.createdAt < :endDate ORDER BY r.viewCount DESC")
+  List<Recruitment> findByStatusAndCreatedAtBetweenOrderByViewCountDesc(@Param("status") RecruitmentStatus status, @Param("startDate") Instant startDate, @Param("endDate") Instant endDate, Pageable pageable);
+
   @Modifying
   @Query("UPDATE Recruitment r SET r.recruiter = :newRecruiter WHERE r.recruiter = :oldRecruiter")
   int reassignRecruiter(@Param("oldRecruiter") com.ada.app.modules.user.entity.User oldRecruiter, @Param("newRecruiter") com.ada.app.modules.user.entity.User newRecruiter);

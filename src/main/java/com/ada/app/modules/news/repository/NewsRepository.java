@@ -1,6 +1,7 @@
 package com.ada.app.modules.news.repository;
 import com.ada.app.modules.news.entity.News;
 import com.ada.app.modules.news.enums.NewsStatus;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -35,8 +36,16 @@ public interface NewsRepository extends JpaRepository<News, UUID>, JpaSpecificat
   @Query("UPDATE News n SET n.viewCount = n.viewCount + :delta WHERE n.id = :id")
   void incrementViewCount(@Param("id") UUID id, @Param("delta") int delta);
   long countByStatus(NewsStatus status);
+  @Query("SELECT COUNT(n) FROM News n WHERE n.status = :status AND n.createdAt >= :startDate AND n.createdAt < :endDate")
+  long countByStatusAndCreatedAtBetween(@Param("status") NewsStatus status, @Param("startDate") Instant startDate, @Param("endDate") Instant endDate);
+
   @EntityGraph(attributePaths = {"author", "category"})
   List<News> findByStatusOrderByViewCountDesc(NewsStatus status, Pageable pageable);
+
+  @EntityGraph(attributePaths = {"author", "category"})
+  @Query("SELECT n FROM News n WHERE n.status = :status AND n.createdAt >= :startDate AND n.createdAt < :endDate ORDER BY n.viewCount DESC")
+  List<News> findByStatusAndCreatedAtBetweenOrderByViewCountDesc(@Param("status") NewsStatus status, @Param("startDate") Instant startDate, @Param("endDate") Instant endDate, Pageable pageable);
+
   @Modifying
   @Query("UPDATE News n SET n.author = :newAuthor WHERE n.author = :oldAuthor")
   int reassignAuthor(@Param("oldAuthor") com.ada.app.modules.user.entity.User oldAuthor, @Param("newAuthor") com.ada.app.modules.user.entity.User newAuthor);

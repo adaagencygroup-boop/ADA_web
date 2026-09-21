@@ -65,14 +65,14 @@ public class NewsService {
   }
   @Transactional(readOnly = true)
   public NewsResponse getAdminNewsById(UUID id) {
-    News news = newsRepository.findById(id).orElseThrow(() -> AppException.notFound("News Article Not Found"));
+    News news = newsRepository.findById(id).orElseThrow(() -> AppException.notFound("Không tìm thấy bài viết tin tức"));
     return mapToResponse(news);
   }
   @Transactional
   public NewsResponse createNews(CreateNewsAdminRequest request) {
     UUID userId = SecurityUtils.getCurrentUserId();
-    User author = userRepository.findById(userId).orElseThrow(() -> AppException.notFound("Author User Not Found"));
-    NewsCategory category = categoryRepository.findById(request.categoryId()).orElseThrow(() -> AppException.notFound("Category Not Found"));
+    User author = userRepository.findById(userId).orElseThrow(() -> AppException.notFound("Không tìm thấy thông tin tác giả"));
+    NewsCategory category = categoryRepository.findById(request.categoryId()).orElseThrow(() -> AppException.notFound("Không tìm thấy danh mục tin tức"));
     String slug = generateSlug(request.title());
     News news = News.builder()
       .author(author)
@@ -137,7 +137,7 @@ public class NewsService {
   @Transactional
   public CategoryResponse createCategory(CreateCategoryRequest request) {
     if (categoryRepository.findByName(request.name()).isPresent()) {
-      throw AppException.conflict("Category Name Already Exists");
+      throw AppException.conflict("Tên danh mục đã tồn tại");
     }
     NewsCategory category = NewsCategory.builder()
       .name(request.name())
@@ -148,7 +148,7 @@ public class NewsService {
   }
   @Transactional
   public CategoryResponse updateCategory(UUID id, UpdateCategoryRequest request) {
-    NewsCategory category = categoryRepository.findById(id).orElseThrow(() -> AppException.notFound("Category Not Found"));
+    NewsCategory category = categoryRepository.findById(id).orElseThrow(() -> AppException.notFound("Không tìm thấy danh mục tin tức"));
     if (request.name() != null && !request.name().isBlank()) {
       category.setName(request.name().trim());
     }
@@ -160,7 +160,7 @@ public class NewsService {
   }
   @Transactional
   public void deleteCategory(UUID id) {
-    NewsCategory category = categoryRepository.findById(id).orElseThrow(() -> AppException.notFound("Category Not Found"));
+    NewsCategory category = categoryRepository.findById(id).orElseThrow(() -> AppException.notFound("Không tìm thấy danh mục tin tức"));
     if (newsRepository.existsByCategoryId(id)) {
       throw AppException.conflict("Lĩnh vực này đang được sử dụng bởi bài viết tin tức, không thể xóa!");
     }
@@ -194,7 +194,7 @@ public class NewsService {
   }
   public NewsResponse getPublicNewsBySlug(String slug) {
     News news = newsRepository.findBySlugAndStatus(slug, NewsStatus.published)
-      .orElseThrow(() -> AppException.notFound("News Article Not Found"));
+      .orElseThrow(() -> AppException.notFound("Không tìm thấy bài viết tin tức"));
     redisTemplate.opsForValue().increment("viewCount:news:" + news.getId());
     return mapToPublicDetailResponse(news);
   }

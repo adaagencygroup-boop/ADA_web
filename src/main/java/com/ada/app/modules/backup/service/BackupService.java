@@ -173,9 +173,9 @@ public class BackupService {
   }
   @Transactional(readOnly = true)
   public File getBackupFile(UUID id) {
-    BackupHistory history = historyRepository.findById(id).orElseThrow(() -> AppException.notFound("Backup Record Not Found"));
+    BackupHistory history = historyRepository.findById(id).orElseThrow(() -> AppException.notFound("Không tìm thấy bản ghi sao lưu"));
     if (history.getFileURL() == null) {
-      throw AppException.notFound("Backup File Location Not Recorded");
+      throw AppException.notFound("Chưa ghi nhận đường dẫn tệp sao lưu");
     }
     String fileURL = history.getFileURL();
     Path path = Paths.get(storagePath, "backups", fileURL);
@@ -187,7 +187,7 @@ public class BackupService {
       }
     }
     if (!file.exists()) {
-      throw AppException.notFound("Backup File Not Found On Disk");
+      throw AppException.notFound("Tệp sao lưu không tồn tại trên hệ thống");
     }
     return file;
   }

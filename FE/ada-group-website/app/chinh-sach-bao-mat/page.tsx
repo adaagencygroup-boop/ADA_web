@@ -10,7 +10,7 @@ const SECTIONS = [
     id: "pham-vi",
     title: "1. Phạm vi và Đối tượng áp dụng",
     content: (
-      <div className="space-y-4 text-zinc-600 leading-[1.7] text-[15px] lg:text-[16px]">
+      <div className="space-y-4 text-zinc-600 leading-[1.7] text-[15px] lg:text-[16px] text-justify">
         <p>
           Chính sách bảo mật này được lập ra nhằm tuân thủ <strong>Nghị định số 13/2023/NĐ-CP</strong> của Chính phủ về Bảo vệ Dữ liệu Cá nhân (sau đây gọi tắt là &quot;Nghị định 13&quot;). Chính sách này áp dụng đối với mọi tổ chức, cá nhân (sau đây gọi là &quot;Chủ thể dữ liệu&quot;) có tương tác, truy cập hoặc sử dụng các sản phẩm, dịch vụ và nền tảng của ADA Group.
         </p>
@@ -21,7 +21,7 @@ const SECTIONS = [
     id: "loai-du-lieu",
     title: "2. Phân loại dữ liệu thu thập",
     content: (
-      <div className="space-y-4 text-zinc-600 leading-[1.7] text-[15px] lg:text-[16px]">
+      <div className="space-y-4 text-zinc-600 leading-[1.7] text-[15px] lg:text-[16px] text-justify">
         <p>Chúng tôi chỉ thu thập các dữ liệu cá nhân cơ bản cần thiết cho mục đích kinh doanh hợp pháp, bao gồm:</p>
         <div className="grid sm:grid-cols-2 gap-4 mt-4">
           <div className="p-5 rounded-xl border border-slate-100 bg-white shadow-sm">
@@ -46,7 +46,7 @@ const SECTIONS = [
     id: "muc-dich",
     title: "3. Mục đích xử lý dữ liệu",
     content: (
-      <div className="space-y-4 text-zinc-600 leading-[1.7] text-[15px] lg:text-[16px]">
+      <div className="space-y-4 text-zinc-600 leading-[1.7] text-[15px] lg:text-[16px] text-justify">
         <p>Tuân thủ Điều 11 Nghị định 13, chúng tôi xử lý dữ liệu của Quý khách theo các mục đích chính đáng sau:</p>
         <ul className="space-y-2.5 mt-2">
           {[
@@ -69,7 +69,7 @@ const SECTIONS = [
     id: "quyen-loi",
     title: "4. Quyền của Chủ thể dữ liệu",
     content: (
-      <div className="space-y-4 text-zinc-600 leading-[1.7] text-[15px] lg:text-[16px]">
+      <div className="space-y-4 text-zinc-600 leading-[1.7] text-[15px] lg:text-[16px] text-justify">
         <p>Căn cứ Điều 9 Nghị định 13/2023/NĐ-CP, Quý khách với tư cách là Chủ thể dữ liệu sở hữu đầy đủ các quyền sau đây:</p>
         <div className="space-y-4 mt-4">
           {[
@@ -96,7 +96,7 @@ const SECTIONS = [
     id: "bao-mat",
     title: "5. Biện pháp bảo vệ dữ liệu",
     content: (
-      <div className="space-y-4 text-zinc-600 leading-[1.7] text-[15px] lg:text-[16px]">
+      <div className="space-y-4 text-zinc-600 leading-[1.7] text-[15px] lg:text-[16px] text-justify">
         <p>
           ADA Group triển khai các giải pháp kỹ thuật, quản lý và tổ chức ở tiêu chuẩn cao nhất nhằm chống lại các hành vi vi phạm an toàn thông tin:
         </p>
@@ -112,7 +112,7 @@ const SECTIONS = [
     id: "chia-se",
     title: "6. Chia sẻ dữ liệu",
     content: (
-      <div className="space-y-4 text-zinc-600 leading-[1.7] text-[15px] lg:text-[16px]">
+      <div className="space-y-4 text-zinc-600 leading-[1.7] text-[15px] lg:text-[16px] text-justify">
         <p>Chúng tôi tuyệt đối <strong>KHÔNG BÁN, TRAO ĐỔI</strong> dữ liệu cá nhân của Quý khách cho mục đích trục lợi. Dữ liệu chỉ được chia sẻ trong các trường hợp thật sự cần thiết và hợp pháp:</p>
         <ul className="list-disc pl-5 space-y-2">
           <li>Chia sẻ với các đối tác cung cấp dịch vụ hạ tầng công nghệ (ví dụ: đối tác Cloud Hosting, hệ thống gửi Email) đã ký kết thỏa thuận bảo mật (NDA) nghiêm ngặt với ADA Group.</li>

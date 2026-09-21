@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { BarChart3, Briefcase, FileText, Mail } from "lucide-react";
+import type { DateRange } from "react-day-picker";
 import {
   Area,
   AreaChart,
@@ -15,9 +16,11 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import DateRangeFilter from "@/src/components/shared/DateRangeFilter";
 import { useProfile } from "@/src/hooks/useAccount";
 import { useDashboard } from "@/src/hooks/useDashboard";
 import type { DashboardRange } from "@/src/lib/api/dashboard";
+import { endOfDayISO, startOfDayISO } from "@/src/lib/date-range";
 
 const RANGE_OPTIONS: { value: DashboardRange; label: string }[] = [
   { value: "7d", label: "7 ngày" },
@@ -33,19 +36,25 @@ function formatAxisDate(dateStr: string) {
 }
 
 export default function DashboardOverview() {
-  const [range, setRange] = useState<DashboardRange | "custom">("7d");
-  const [fromDate, setFromDate] = useState("");
-  const [toDate, setToDate] = useState("");
+  const [range, setRange] = useState<DashboardRange>("7d");
+  const [dateRange, setDateRange] = useState<DateRange | null>(null);
+
   const { data: profile } = useProfile();
-  const isCustomActive = range === "custom" && !!fromDate && !!toDate;
-  const { data, isLoading, isError, error } = useDashboard(
-    isCustomActive ? undefined : (range === "custom" ? "7d" : range),
-    isCustomActive ? fromDate : undefined,
-    isCustomActive ? toDate : undefined
-  );
+
+  const fromDate = dateRange?.from ? startOfDayISO(dateRange.from) : undefined;
+  const toDate = dateRange?.to
+    ? endOfDayISO(dateRange.to)
+    : dateRange?.from
+      ? endOfDayISO(dateRange.from)
+      : undefined;
+
+  const dashboardParams = dateRange
+    ? { fromDate, toDate }
+    : { range };
+
+  const { data, isLoading, isError, error } = useDashboard(dashboardParams);
 
   const today = new Date().toLocaleDateString("vi-VN");
-  const todayIso = new Date().toISOString().split("T")[0];
   const contactStats = data?.contactStats ?? [];
   const topRecruitments = data?.topRecruitments ?? [];
   const topNews = data?.topNews ?? [];
@@ -65,6 +74,15 @@ export default function DashboardOverview() {
         ? [{ name: "Chưa có lượt xem", value: 1 }]
         : [];
 
+  function handleRangeSelect(newRange: DashboardRange) {
+    setDateRange(null);
+    setRange(newRange);
+  }
+
+  function handleDateRangeChange(newDateRange: DateRange | null) {
+    setDateRange(newDateRange);
+  }
+
   return (
     <div className="flex min-w-0 flex-1 flex-col gap-6">
       <div className="flex flex-wrap items-start justify-between gap-4">
@@ -75,8 +93,11 @@ export default function DashboardOverview() {
             việc hiệu quả.
           </p>
         </div>
-        <div className="flex h-11 items-center gap-2 rounded-lg border border-[#E5E7EB] bg-white px-4 text-sm text-[#374151] shadow-xs">
-          Hôm nay: {today}
+        <div className="flex flex-wrap items-center gap-3">
+          <DateRangeFilter value={dateRange} onChange={handleDateRangeChange} />
+          <div className="flex h-11 items-center gap-2 rounded-lg border border-[#E5E7EB] bg-white px-4 text-sm text-[#374151] shadow-xs">
+            Hôm nay: {today}
+          </div>
         </div>
       </div>
 
@@ -129,13 +150,9 @@ export default function DashboardOverview() {
                   <button
                     key={option.value}
                     type="button"
-                    onClick={() => {
-                      setRange(option.value);
-                      setFromDate("");
-                      setToDate("");
-                    }}
+                    onClick={() => handleRangeSelect(option.value)}
                     className={`rounded-md px-3 py-1.5 text-sm font-medium ${
-                      range === option.value
+                      !dateRange && range === option.value
                         ? "bg-white text-[#1C1B1B] shadow-xs"
                         : "text-[#6B7280] hover:text-[#1C1B1B]"
                     }`}
@@ -143,31 +160,6 @@ export default function DashboardOverview() {
                     {option.label}
                   </button>
                 ))}
-              </div>
-              <div className="flex items-center gap-2 text-sm text-[#6B7280]">
-                <span>Từ:</span>
-                <input
-                  type="date"
-                  max={toDate || todayIso}
-                  value={fromDate}
-                  onChange={(e) => {
-                    setFromDate(e.target.value);
-                    setRange("custom");
-                  }}
-                  className="rounded-lg border border-[#E5E7EB] bg-white px-2 py-1 text-sm text-[#1C1B1B] shadow-xs outline-none focus:border-[#316EE9]"
-                />
-                <span>Đến:</span>
-                <input
-                  type="date"
-                  min={fromDate}
-                  max={todayIso}
-                  value={toDate}
-                  onChange={(e) => {
-                    setToDate(e.target.value);
-                    setRange("custom");
-                  }}
-                  className="rounded-lg border border-[#E5E7EB] bg-white px-2 py-1 text-sm text-[#1C1B1B] shadow-xs outline-none focus:border-[#316EE9]"
-                />
               </div>
             </div>
           </div>
@@ -218,111 +210,111 @@ export default function DashboardOverview() {
         </div>
 
         <div className="flex min-w-0 flex-col gap-6">
-        <div className="flex min-w-0 flex-col gap-4 rounded-xl border border-[#E5E7EB] bg-white p-6 shadow-xs">
-          <h2 className="text-lg font-semibold text-[#1C1B1B]">
-            Tin tuyển dụng được xem nhiều nhất
-          </h2>
+          <div className="flex min-w-0 flex-col gap-4 rounded-xl border border-[#E5E7EB] bg-white p-6 shadow-xs">
+            <h2 className="text-lg font-semibold text-[#1C1B1B]">
+              Tin tuyển dụng được xem nhiều nhất
+            </h2>
 
-          {isLoading ? (
-            <div className="flex h-40 items-center justify-center text-sm text-[#6B7280]">
-              Đang tải...
-            </div>
-          ) : donutData.length === 0 ? (
-            <div className="flex h-40 items-center justify-center text-sm text-[#6B7280]">
-              Chưa có dữ liệu.
-            </div>
-          ) : (
-            <div className="flex min-w-0 items-center gap-6">
-              <div className="h-40 w-40 shrink-0">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={donutData}
-                      dataKey="value"
-                      innerRadius={45}
-                      outerRadius={70}
-                      paddingAngle={totalRecruitmentViews > 0 ? 2 : 0}
-                      stroke="none"
-                      isAnimationActive={false}
-                    >
-                      {donutData.map((_, index) => (
-                        <Cell
-                          key={index}
-                          fill={
-                            totalRecruitmentViews > 0
-                              ? DONUT_COLORS[index % DONUT_COLORS.length]
-                              : "#E5E7EB"
-                          }
-                        />
-                      ))}
-                    </Pie>
-                    {totalRecruitmentViews > 0 && (
-                      <Tooltip formatter={(value) => `${value}%`} />
-                    )}
-                  </PieChart>
-                </ResponsiveContainer>
+            {isLoading ? (
+              <div className="flex h-40 items-center justify-center text-sm text-[#6B7280]">
+                Đang tải...
               </div>
-              <ul className="flex min-w-0 flex-1 flex-col gap-2.5">
-                {topRecruitments.map((item, index) => (
+            ) : donutData.length === 0 ? (
+              <div className="flex h-40 items-center justify-center text-sm text-[#6B7280]">
+                Chưa có dữ liệu.
+              </div>
+            ) : (
+              <div className="flex min-w-0 items-center gap-6">
+                <div className="h-40 w-40 shrink-0">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={donutData}
+                        dataKey="value"
+                        innerRadius={45}
+                        outerRadius={70}
+                        paddingAngle={totalRecruitmentViews > 0 ? 2 : 0}
+                        stroke="none"
+                        isAnimationActive={false}
+                      >
+                        {donutData.map((_, index) => (
+                          <Cell
+                            key={index}
+                            fill={
+                              totalRecruitmentViews > 0
+                                ? DONUT_COLORS[index % DONUT_COLORS.length]
+                                : "#E5E7EB"
+                            }
+                          />
+                        ))}
+                      </Pie>
+                      {totalRecruitmentViews > 0 && (
+                        <Tooltip formatter={(value) => `${value}%`} />
+                      )}
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+                <ul className="flex min-w-0 flex-1 flex-col gap-2.5">
+                  {topRecruitments.map((item, index) => (
+                    <li
+                      key={item.id}
+                      className="flex items-center justify-between gap-2 text-sm"
+                    >
+                      <span className="flex min-w-0 items-center gap-2 text-[#374151]">
+                        <span
+                          className="size-2.5 shrink-0 rounded-full"
+                          style={{
+                            backgroundColor:
+                              DONUT_COLORS[index % DONUT_COLORS.length],
+                          }}
+                        />
+                        <span className="truncate">{item.jobTitle}</span>
+                      </span>
+                      <span className="shrink-0 font-semibold text-[#1C1B1B]">
+                        {item.percentage}%
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+
+          <div className="min-w-0 rounded-xl border border-[#E5E7EB] bg-white p-6 shadow-xs">
+            <h2 className="text-lg font-semibold text-[#1C1B1B]">
+              Top tin tức được xem nhiều
+            </h2>
+            <ul className="mt-4 flex flex-col gap-3">
+              {isLoading ? (
+                <li className="text-sm text-[#6B7280]">Đang tải...</li>
+              ) : topNews.length === 0 ? (
+                <li className="text-sm text-[#6B7280]">Chưa có dữ liệu.</li>
+              ) : (
+                topNews.map((item, index) => (
                   <li
                     key={item.id}
-                    className="flex items-center justify-between gap-2 text-sm"
+                    className="flex items-center justify-between gap-3 text-sm"
                   >
                     <span className="flex min-w-0 items-center gap-2 text-[#374151]">
-                      <span
-                        className="size-2.5 shrink-0 rounded-full"
-                        style={{
-                          backgroundColor:
-                            DONUT_COLORS[index % DONUT_COLORS.length],
-                        }}
-                      />
-                      <span className="truncate">{item.jobTitle}</span>
+                      <span className="shrink-0 font-medium text-[#6B7280]">
+                        {index + 1}.
+                      </span>
+                      <span className="truncate">{item.title}</span>
                     </span>
                     <span className="shrink-0 font-semibold text-[#1C1B1B]">
-                      {item.percentage}%
+                      {item.viewCount.toLocaleString("vi-VN")}
                     </span>
                   </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
-
-        <div className="min-w-0 rounded-xl border border-[#E5E7EB] bg-white p-6 shadow-xs">
-          <h2 className="text-lg font-semibold text-[#1C1B1B]">
-            Top tin tức được xem nhiều
-          </h2>
-          <ul className="mt-4 flex flex-col gap-3">
-            {isLoading ? (
-              <li className="text-sm text-[#6B7280]">Đang tải...</li>
-            ) : topNews.length === 0 ? (
-              <li className="text-sm text-[#6B7280]">Chưa có dữ liệu.</li>
-            ) : (
-              topNews.map((item, index) => (
-                <li
-                  key={item.id}
-                  className="flex items-center justify-between gap-3 text-sm"
-                >
-                  <span className="flex min-w-0 items-center gap-2 text-[#374151]">
-                    <span className="shrink-0 font-medium text-[#6B7280]">
-                      {index + 1}.
-                    </span>
-                    <span className="truncate">{item.title}</span>
-                  </span>
-                  <span className="shrink-0 font-semibold text-[#1C1B1B]">
-                    {item.viewCount.toLocaleString("vi-VN")}
-                  </span>
-                </li>
-              ))
-            )}
-          </ul>
-          <Link
-            href="/tin-tuc"
-            className="mt-4 inline-block text-sm font-medium text-[#316EE9] hover:underline"
-          >
-            Xem báo cáo chi tiết →
-          </Link>
-        </div>
+                ))
+              )}
+            </ul>
+            <Link
+              href="/tin-tuc"
+              className="mt-4 inline-block text-sm font-medium text-[#316EE9] hover:underline"
+            >
+              Xem báo cáo chi tiết →
+            </Link>
+          </div>
         </div>
       </div>
     </div>

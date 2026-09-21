@@ -18,9 +18,9 @@ public class AdminDashboardController {
   @GetMapping({"", "/analytics"})
   public ResponseEntity<APIResponse<AdminDashboardResponse>> getDashboard(
     @RequestParam(defaultValue = "7d") String range,
-    @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fromDate,
-    @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate toDate
+    @RequestParam(required = false) String fromDate,
+    @RequestParam(required = false) String toDate
   ) {
-    return ResponseEntity.ok(APIResponse.ok("Lấy dữ liệu bảng điều khiển thành công", dashboardService.getDashboard(range, fromDate, toDate)));
+    return ResponseEntity.ok(APIResponse.ok("Dashboard Data Retrieved Successfully", dashboardService.getDashboard(range, fromDate, toDate)));
   }
 }

@@ -99,6 +99,11 @@ export default function ChangePasswordCard() {
             inputClassName="h-11"
             {...register("newPassword")}
           />
+          {errors.newPassword && (
+            <p className="text-sm text-red-600">
+              {errors.newPassword.message}
+            </p>
+          )}
           <ul className="flex flex-col gap-1 pt-1">
             {PASSWORD_RULES.map((rule) => {
               const met = rule.test(newPasswordValue ?? "");

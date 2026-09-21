@@ -74,9 +74,9 @@ public class AdminUserService {
   @Transactional(readOnly = true)
   public AdminUserResponse getUserById(UUID id) {
     User user = userRepository.findById(id)
-      .orElseThrow(() -> AppException.notFound("User Not Found"));
+      .orElseThrow(() -> AppException.notFound("Không tìm thấy người dùng"));
     if (user.getRole() != UserRole.staff) {
-      throw AppException.notFound("User Not Found");
+      throw AppException.notFound("Không tìm thấy người dùng");
     }
     return mapToResponse(user);
   }
@@ -89,10 +89,10 @@ public class AdminUserService {
     String username = request.username().trim();
     String email = request.email().trim();
     if (userRepository.existsByUsername(username)) {
-      throw AppException.conflict("Username Already Exists");
+      throw AppException.conflict("Tên đăng nhập đã tồn tại");
     }
     if (userRepository.existsByEmail(email)) {
-      throw AppException.conflict("Email Already Exists");
+      throw AppException.conflict("Email đã tồn tại");
     }
     User user = User.builder()
       .username(username)
@@ -108,9 +108,9 @@ public class AdminUserService {
   @Transactional
   public AdminUserResponse updateUser(UUID id, UpdateUserRequest request) {
     User user = userRepository.findById(id)
-      .orElseThrow(() -> AppException.notFound("User Not Found"));
+      .orElseThrow(() -> AppException.notFound("Không tìm thấy người dùng"));
     if (user.getRole() != UserRole.staff) {
-      throw AppException.badRequest("Cannot Modify Non-Staff User");
+      throw AppException.badRequest("Không thể chỉnh sửa người dùng không phải nhân sự");
     }
     if (request.fullname() != null && !request.fullname().isBlank()) {
       user.setFullname(request.fullname().trim());
@@ -119,7 +119,7 @@ public class AdminUserService {
       String email = request.email().trim();
       ValidationUtils.validateEmail(email);
       if (userRepository.existsByEmailAndIdNot(email, id)) {
-        throw AppException.conflict("Email Already Exists");
+        throw AppException.conflict("Email đã tồn tại");
       }
       user.setEmail(email);
     }
@@ -135,12 +135,12 @@ public class AdminUserService {
   public void resetUserPassword(UUID id, AdminResetUserPasswordRequest request) {
     ValidationUtils.validatePassword(request.newPassword());
     if (!request.newPassword().equals(request.confirmPassword())) {
-      throw AppException.badRequest("Passwords Do Not Match");
+      throw AppException.badRequest("Mật khẩu xác nhận không khớp");
     }
     User user = userRepository.findById(id)
-      .orElseThrow(() -> AppException.notFound("User Not Found"));
+      .orElseThrow(() -> AppException.notFound("Không tìm thấy người dùng"));
     if (user.getRole() != UserRole.staff) {
-      throw AppException.badRequest("Cannot Reset Non-Staff Password");
+      throw AppException.badRequest("Không thể đặt lại mật khẩu cho người dùng không phải nhân sự");
     }
     user.setPasswordHash(passwordEncoder.encode(request.newPassword()));
     userRepository.save(user);
@@ -160,15 +160,15 @@ public class AdminUserService {
   public void deleteUser(UUID id) {
     UUID currentAdminId = SecurityUtils.getCurrentUserId();
     if (id.equals(currentAdminId)) {
-      throw AppException.badRequest("Cannot Delete Own Account");
+      throw AppException.badRequest("Không thể tự xóa tài khoản của chính mình");
     }
     User targetUser = userRepository.findById(id)
-      .orElseThrow(() -> AppException.notFound("User Not Found"));
+      .orElseThrow(() -> AppException.notFound("Không tìm thấy người dùng"));
     if (targetUser.getRole() != UserRole.staff) {
-      throw AppException.badRequest("Cannot Delete Non-Staff User");
+      throw AppException.badRequest("Không thể xóa người dùng không phải nhân sự");
     }
     User currentAdmin = userRepository.findById(currentAdminId)
-      .orElseThrow(() -> AppException.notFound("Current Admin Not Found"));
+      .orElseThrow(() -> AppException.notFound("Không tìm thấy thông tin quản trị viên hiện tại"));
     newsRepository.reassignAuthor(targetUser, currentAdmin);
     recruitmentRepository.reassignRecruiter(targetUser, currentAdmin);
     List<UserSession> activeSessions = userSessionRepository.findByUserIdAndStatus(id, SessionStatus.active);

@@ -10,7 +10,7 @@ const SECTIONS = [
     id: "chap-thuan",
     title: "1. Chấp thuận điều khoản",
     content: (
-      <div className="space-y-4 text-zinc-600 leading-[1.7] text-[15px] lg:text-[16px]">
+      <div className="space-y-4 text-zinc-600 leading-[1.7] text-[15px] lg:text-[16px] text-justify">
         <p>
           Chào mừng Quý khách đến với website và các nền tảng dịch vụ của ADA Group. Bằng việc truy cập, duyệt hoặc sử dụng bất kỳ dịch vụ nào trên website này, Quý khách được xem là đã đọc, hiểu rõ và đồng ý chịu sự ràng buộc bởi các Điều khoản sử dụng này, cũng như các quy định của <strong>Pháp luật nước Cộng hòa Xã hội Chủ nghĩa Việt Nam</strong> (bao gồm nhưng không giới hạn ở Bộ luật Dân sự 2015, Luật Giao dịch điện tử 2023).
         </p>
@@ -24,7 +24,7 @@ const SECTIONS = [
     id: "so-huu-tri-tue",
     title: "2. Quyền sở hữu trí tuệ",
     content: (
-      <div className="space-y-4 text-zinc-600 leading-[1.7] text-[15px] lg:text-[16px]">
+      <div className="space-y-4 text-zinc-600 leading-[1.7] text-[15px] lg:text-[16px] text-justify">
         <p>
           Toàn bộ nội dung, thiết kế, đồ họa, giao diện, mã nguồn, cơ sở dữ liệu, logo, nhãn hiệu và các tài sản vô hình khác trên website này đều thuộc quyền sở hữu hợp pháp của ADA Group và được bảo hộ nghiêm ngặt theo <strong>Luật Sở hữu trí tuệ 2005 (sửa đổi, bổ sung 2022)</strong> của Việt Nam và các điều ước quốc tế có liên quan.
         </p>
@@ -42,7 +42,7 @@ const SECTIONS = [
     id: "nghia-vu-nguoi-dung",
     title: "3. Nghĩa vụ của Người dùng",
     content: (
-      <div className="space-y-4 text-zinc-600 leading-[1.7] text-[15px] lg:text-[16px]">
+      <div className="space-y-4 text-zinc-600 leading-[1.7] text-[15px] lg:text-[16px] text-justify">
         <p>Khi sử dụng các nền tảng của ADA Group, Người dùng có trách nhiệm tuân thủ nghiêm ngặt <strong>Luật An toàn thông tin mạng 2015 và Luật An ninh mạng 2018</strong>. Người dùng cam kết <strong>KHÔNG</strong> thực hiện các hành vi sau:</p>
         <ul className="space-y-3 mt-4">
           {[
@@ -66,7 +66,7 @@ const SECTIONS = [
     id: "mien-tru",
     title: "4. Miễn trừ và Giới hạn trách nhiệm",
     content: (
-      <div className="space-y-6 text-zinc-600 leading-[1.7] text-[15px] lg:text-[16px]">
+      <div className="space-y-6 text-zinc-600 leading-[1.7] text-[15px] lg:text-[16px] text-justify">
         <div>
           <strong className="text-zinc-900 block mb-1">A. Từ chối bảo đảm</strong>
           <p>
@@ -86,7 +86,7 @@ const SECTIONS = [
     id: "giai-quyet-tranh-chap",
     title: "5. Giải quyết tranh chấp",
     content: (
-      <div className="space-y-4 text-zinc-600 leading-[1.7] text-[15px] lg:text-[16px]">
+      <div className="space-y-4 text-zinc-600 leading-[1.7] text-[15px] lg:text-[16px] text-justify">
         <p>
           Bản Điều khoản này được điều chỉnh và diễn giải theo hệ thống <strong>Pháp luật của nước Cộng hòa Xã hội Chủ nghĩa Việt Nam</strong>.
         </p>

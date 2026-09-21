@@ -32,7 +32,7 @@ public class FileUtils {
   }
   public String uploadFile(MultipartFile file, String subDirectory) {
     if (file == null || file.isEmpty()) {
-      throw AppException.badRequest("File Cannot Be Empty");
+      throw AppException.badRequest("Tệp tải lên không được để trống");
     }
     try {
       String originalFilename = file.getOriginalFilename();
@@ -56,7 +56,7 @@ public class FileUtils {
       Files.copy(file.getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
       return "/files/" + subDirectory + "/" + filename;
     } catch (IOException e) {
-      throw AppException.internal("Failed To Store File: " + e.getMessage());
+      throw AppException.internal("Lưu tệp thất bại: " + e.getMessage());
     }
   }
   public String detectMIMEType(byte[] data) {

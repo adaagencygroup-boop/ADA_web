@@ -1,4 +1,5 @@
 package com.ada.app.modules.auth.service;
+
 import com.ada.app.common.exception.AppException;
 import com.ada.app.common.security.JWTService;
 import com.ada.app.common.security.RedisRateLimiter;
@@ -49,6 +50,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -66,33 +68,36 @@ public class AuthService {
 
   @org.springframework.beans.factory.annotation.Value("${spring.mail.username}")
   private String senderEmail;
+
   @Transactional
   public AuthResult login(LoginRequest request, HttpServletRequest httpRequest) {
     String clientIP = IPUtils.getClientIP(httpRequest);
     boolean allowed = redisRateLimiter.tryAcquire("RateLimit:Login:" + clientIP, 10, 60000);
     if (!allowed) {
-      throw AppException.tooManyRequests("Too Many Login Requests - Please Try Again Later");
+      throw AppException.tooManyRequests("Quá nhiều yêu cầu đăng nhập - Vui lòng thử lại sau");
     }
     User user = userRepository.findByUsername(request.identifier())
-      .or(() -> userRepository.findByEmail(request.identifier()))
-      .orElse(null);
+        .or(() -> userRepository.findByEmail(request.identifier()))
+        .orElse(null);
     if (user == null || !passwordEncoder.matches(request.password(), user.getPasswordHash())) {
       UserDevice failedDevice = null;
       if (user != null && request.deviceFingerprint() != null && !request.deviceFingerprint().isBlank()) {
         failedDevice = userDeviceRepository.findByUserIdAndDeviceFingerprint(user.getId(), request.deviceFingerprint())
-          .orElseGet(() -> userDeviceRepository.save(UserDevice.builder()
-            .user(user)
-            .deviceFingerprint(request.deviceFingerprint())
-            .deviceName(request.deviceName() != null && !request.deviceName().isBlank() ? request.deviceName().trim() : DeviceFingerprintUtils.getDeviceName(httpRequest))
-            .deviceType(DeviceFingerprintUtils.getDeviceType(httpRequest))
-            .OS(DeviceFingerprintUtils.getOS(httpRequest))
-            .browser(DeviceFingerprintUtils.getBrowser(httpRequest))
-            .firstSeenAt(Instant.now())
-            .lastSeenAt(Instant.now())
-            .build()
-          ));
+            .orElseGet(() -> userDeviceRepository.save(UserDevice.builder()
+                .user(user)
+                .deviceFingerprint(request.deviceFingerprint())
+                .deviceName(
+                    request.deviceName() != null && !request.deviceName().isBlank() ? request.deviceName().trim()
+                        : DeviceFingerprintUtils.getDeviceName(httpRequest))
+                .deviceType(DeviceFingerprintUtils.getDeviceType(httpRequest))
+                .OS(DeviceFingerprintUtils.getOS(httpRequest))
+                .browser(DeviceFingerprintUtils.getBrowser(httpRequest))
+                .firstSeenAt(Instant.now())
+                .lastSeenAt(Instant.now())
+                .build()));
       }
-      recordLoginHistory(user, null, failedDevice, clientIP, httpRequest, LoginStatus.failed, "Mật khẩu không chính xác");
+      recordLoginHistory(user, null, failedDevice, clientIP, httpRequest, LoginStatus.failed,
+          "Mật khẩu không chính xác");
       throw AppException.unauthorized("Tên đăng nhập hoặc mật khẩu không chính xác");
     }
     DeviceType parsedType = DeviceFingerprintUtils.getDeviceType(httpRequest);
@@ -100,26 +105,28 @@ public class AuthService {
       try {
         parsedType = DeviceType.valueOf(request.deviceType().trim().toLowerCase());
       } catch (IllegalArgumentException e) {
-        throw AppException.badRequest("Invalid Device Type: " + request.deviceType() + " (Must Be Mobile, Desktop Or Tablet)");
+        throw AppException.badRequest(
+            "Loại thiết bị không hợp lệ: " + request.deviceType() + " (Phải là mobile, desktop hoặc tablet)");
       }
     }
     final DeviceType finalDeviceType = parsedType;
     Instant now = Instant.now();
     UserDevice device = userDeviceRepository.findByUserIdAndDeviceFingerprint(user.getId(), request.deviceFingerprint())
-      .orElseGet(() -> UserDevice.builder()
-        .user(user)
-        .deviceFingerprint(request.deviceFingerprint())
-        .deviceName(request.deviceName() != null && !request.deviceName().isBlank() ? request.deviceName().trim() : DeviceFingerprintUtils.getDeviceName(httpRequest))
-        .deviceType(finalDeviceType)
-        .OS(DeviceFingerprintUtils.getOS(httpRequest))
-        .browser(DeviceFingerprintUtils.getBrowser(httpRequest))
-        .firstSeenAt(now)
-        .lastSeenAt(now)
-        .build()
-      );
+        .orElseGet(() -> UserDevice.builder()
+            .user(user)
+            .deviceFingerprint(request.deviceFingerprint())
+            .deviceName(request.deviceName() != null && !request.deviceName().isBlank() ? request.deviceName().trim()
+                : DeviceFingerprintUtils.getDeviceName(httpRequest))
+            .deviceType(finalDeviceType)
+            .OS(DeviceFingerprintUtils.getOS(httpRequest))
+            .browser(DeviceFingerprintUtils.getBrowser(httpRequest))
+            .firstSeenAt(now)
+            .lastSeenAt(now)
+            .build());
     device.setLastSeenAt(now);
     device = userDeviceRepository.save(device);
-    List<UserSession> activeSessions = userSessionRepository.findByUserIdAndStatusOrderByIssuedAtAsc(user.getId(), SessionStatus.active);
+    List<UserSession> activeSessions = userSessionRepository.findByUserIdAndStatusOrderByIssuedAtAsc(user.getId(),
+        SessionStatus.active);
     if (activeSessions.size() >= 5) {
       UserSession oldest = activeSessions.get(0);
       oldest.setStatus(SessionStatus.expired);
@@ -136,54 +143,55 @@ public class AuthService {
     String accessToken = jwtService.generateAccessToken(user.getId(), user.getRole().name(), accessJTI);
     String refreshToken = jwtService.generateRefreshToken(user.getId(), refreshJTI);
     UserSession session = UserSession.builder()
-      .user(user)
-      .device(device)
-      .refreshTokenHash(hashToken(refreshToken))
-      .accessTokenJTI(accessJTI)
-      .tokenFamilyId(tokenFamilyId)
-      .issuedIPAddress(clientIP)
-      .IPAddress(clientIP)
-      .userAgent(httpRequest.getHeader("User-Agent"))
-      .status(SessionStatus.active)
-      .issuedAt(now)
-      .lastSeenAt(now)
-      .expiresAt(now.plusSeconds(604800))
-      .build();
+        .user(user)
+        .device(device)
+        .refreshTokenHash(hashToken(refreshToken))
+        .accessTokenJTI(accessJTI)
+        .tokenFamilyId(tokenFamilyId)
+        .issuedIPAddress(clientIP)
+        .IPAddress(clientIP)
+        .userAgent(httpRequest.getHeader("User-Agent"))
+        .status(SessionStatus.active)
+        .issuedAt(now)
+        .lastSeenAt(now)
+        .expiresAt(now.plusSeconds(604800))
+        .build();
     session = userSessionRepository.save(session);
     recordLoginHistory(user, session, device, clientIP, httpRequest, LoginStatus.success, null);
     UserProfileResponse userProfile = new UserProfileResponse(
-      user.getId(),
-      user.getUsername(),
-      user.getFullname(),
-      user.getEmail(),
-      user.getPhone(),
-      user.getRole(),
-      user.getEmailVerifiedAt(),
-      user.getCreatedAt()
-    );
+        user.getId(),
+        user.getUsername(),
+        user.getFullname(),
+        user.getEmail(),
+        user.getPhone(),
+        user.getRole(),
+        user.getEmailVerifiedAt(),
+        user.getCreatedAt());
     return new AuthResult(accessToken, refreshToken, "Bearer", userProfile);
   }
+
   @Transactional
   public void forgotPassword(ForgotPasswordRequest request) {
     ValidationUtils.validateEmail(request.email());
     boolean allowed = redisRateLimiter.tryAcquire("RateLimit:OTP:" + request.email(), 3, 300000);
     if (!allowed) {
-      throw AppException.tooManyRequests("Too Many OTP Requests - Please Try Again Later");
+      throw AppException.tooManyRequests("Quá nhiều yêu cầu nhận OTP - Vui lòng thử lại sau");
     }
     User user = userRepository.findByEmail(request.email())
-      .orElseThrow(() -> AppException.notFound("User With Given Email Not Found"));
+        .orElseThrow(() -> AppException.notFound("Không tìm thấy tài khoản tương ứng với email này"));
     String otp = String.format("%06d", new SecureRandom().nextInt(1000000));
     UserOTP userOTP = UserOTP.builder()
-      .user(user)
-      .codeHash(passwordEncoder.encode(otp))
-      .purpose(OTPPurpose.forgotPassword)
-      .expiresAt(Instant.now().plusSeconds(300))
-      .build();
-    userOTPRepository.findTopByUserIdAndPurposeAndUsedAtIsNullOrderByCreatedAtDesc(user.getId(), OTPPurpose.forgotPassword)
-      .ifPresent(existingOTP -> {
-        existingOTP.setUsedAt(Instant.now());
-        userOTPRepository.saveAndFlush(existingOTP);
-      });
+        .user(user)
+        .codeHash(passwordEncoder.encode(otp))
+        .purpose(OTPPurpose.forgotPassword)
+        .expiresAt(Instant.now().plusSeconds(300))
+        .build();
+    userOTPRepository
+        .findTopByUserIdAndPurposeAndUsedAtIsNullOrderByCreatedAtDesc(user.getId(), OTPPurpose.forgotPassword)
+        .ifPresent(existingOTP -> {
+          existingOTP.setUsedAt(Instant.now());
+          userOTPRepository.saveAndFlush(existingOTP);
+        });
     try {
       SimpleMailMessage message = new SimpleMailMessage();
       message.setFrom(senderEmail);
@@ -193,40 +201,44 @@ public class AuthService {
       mailSender.send(message);
     } catch (Exception e) {
       log.warn("Failed To Send Password Reset OTP Email To {}: {}", user.getEmail(), e.getMessage());
-      throw AppException.internal("Unable To Send OTP Email");
+      throw AppException.internal("Không thể gửi email chứa mã OTP");
     }
     userOTPRepository.save(userOTP);
   }
+
   @Transactional(readOnly = true)
   public void verifyOTP(VerifyOTPRequest request) {
     ValidationUtils.validateEmail(request.email());
     User user = userRepository.findByEmail(request.email())
-      .orElseThrow(() -> AppException.notFound("User With Given Email Not Found"));
-    UserOTP userOTP = userOTPRepository.findTopByUserIdAndPurposeAndUsedAtIsNullOrderByCreatedAtDesc(user.getId(), OTPPurpose.forgotPassword)
-      .orElseThrow(() -> AppException.badRequest("Invalid Or Expired OTP Code"));
+        .orElseThrow(() -> AppException.notFound("Không tìm thấy tài khoản tương ứng với email này"));
+    UserOTP userOTP = userOTPRepository
+        .findTopByUserIdAndPurposeAndUsedAtIsNullOrderByCreatedAtDesc(user.getId(), OTPPurpose.forgotPassword)
+        .orElseThrow(() -> AppException.badRequest("Mã OTP không hợp lệ hoặc đã hết hạn"));
     if (userOTP.getExpiresAt().isBefore(Instant.now())) {
-      throw AppException.badRequest("OTP Code Has Expired");
+      throw AppException.badRequest("Mã OTP đã hết hạn");
     }
     if (!passwordEncoder.matches(request.otp(), userOTP.getCodeHash())) {
-      throw AppException.badRequest("Invalid OTP Code");
+      throw AppException.badRequest("Mã OTP không chính xác");
     }
   }
+
   @Transactional
   public void resetPassword(ResetPasswordRequest request) {
     ValidationUtils.validateEmail(request.email());
     ValidationUtils.validatePassword(request.newPassword());
     if (!request.newPassword().equals(request.confirmPassword())) {
-      throw AppException.badRequest("Passwords Do Not Match");
+      throw AppException.badRequest("Mật khẩu xác nhận không khớp");
     }
     User user = userRepository.findByEmail(request.email())
-      .orElseThrow(() -> AppException.notFound("User With Given Email Not Found"));
-    UserOTP userOTP = userOTPRepository.findTopByUserIdAndPurposeAndUsedAtIsNullOrderByCreatedAtDesc(user.getId(), OTPPurpose.forgotPassword)
-      .orElseThrow(() -> AppException.badRequest("Invalid Or Expired OTP Code"));
+        .orElseThrow(() -> AppException.notFound("Không tìm thấy tài khoản tương ứng với email này"));
+    UserOTP userOTP = userOTPRepository
+        .findTopByUserIdAndPurposeAndUsedAtIsNullOrderByCreatedAtDesc(user.getId(), OTPPurpose.forgotPassword)
+        .orElseThrow(() -> AppException.badRequest("Mã OTP không hợp lệ hoặc đã hết hạn"));
     if (userOTP.getExpiresAt().isBefore(Instant.now())) {
-      throw AppException.badRequest("OTP Code Has Expired");
+      throw AppException.badRequest("Mã OTP đã hết hạn");
     }
     if (!passwordEncoder.matches(request.otp(), userOTP.getCodeHash())) {
-      throw AppException.badRequest("Invalid OTP Code");
+      throw AppException.badRequest("Mã OTP không chính xác");
     }
     userOTP.setUsedAt(Instant.now());
     userOTPRepository.save(userOTP);
@@ -244,18 +256,20 @@ public class AuthService {
       }
     }
   }
+
   @Transactional
   public TokenResult refreshToken(String refreshToken, HttpServletRequest httpRequest) {
     if (refreshToken == null || refreshToken.isBlank()) {
-      throw AppException.unauthorized("Refresh Token Is Required");
+      throw AppException.unauthorized("Vui lòng cung cấp Refresh Token");
     }
     String token = refreshToken.trim();
     String tokenHash = hashToken(token);
     UserSession session = userSessionRepository.findByRefreshTokenHash(tokenHash)
-      .orElseThrow(() -> AppException.unauthorized("Invalid Or Expired Refresh Token"));
+        .orElseThrow(() -> AppException.unauthorized("Refresh Token không hợp lệ hoặc đã hết hạn"));
     Instant now = Instant.now();
     if (session.getStatus() != SessionStatus.active) {
-      List<UserSession> familySessions = userSessionRepository.findByTokenFamilyIdAndStatus(session.getTokenFamilyId(), SessionStatus.active);
+      List<UserSession> familySessions = userSessionRepository.findByTokenFamilyIdAndStatus(session.getTokenFamilyId(),
+          SessionStatus.active);
       for (UserSession fs : familySessions) {
         fs.setStatus(SessionStatus.revoked);
         fs.setRevokedAt(now);
@@ -265,14 +279,14 @@ public class AuthService {
           redisTemplate.opsForValue().set("blacklist:" + fs.getAccessTokenJTI(), "revoked", 900, TimeUnit.SECONDS);
         }
       }
-      throw AppException.unauthorized("Compromised Refresh Token Family Detected, All Sessions Revoked");
+      throw AppException.unauthorized("Phát hiện bất thường về phiên đăng nhập, tất cả phiên đã bị thu hồi");
     }
     if (session.getExpiresAt().isBefore(now)) {
       session.setStatus(SessionStatus.expired);
       session.setRevokedAt(now);
       session.setRevokedReason(RevokedReason.expired);
       userSessionRepository.save(session);
-      throw AppException.unauthorized("Refresh Token Has Expired");
+      throw AppException.unauthorized("Refresh Token đã hết hạn");
     }
     User user = session.getUser();
     String newAccessJTI = UUID.randomUUID().toString();
@@ -288,22 +302,23 @@ public class AuthService {
     }
     String clientIP = IPUtils.getClientIP(httpRequest);
     UserSession newSession = UserSession.builder()
-      .user(user)
-      .device(session.getDevice())
-      .refreshTokenHash(hashToken(newRefreshToken))
-      .accessTokenJTI(newAccessJTI)
-      .tokenFamilyId(session.getTokenFamilyId())
-      .issuedIPAddress(session.getIssuedIPAddress() != null ? session.getIssuedIPAddress() : clientIP)
-      .IPAddress(clientIP)
-      .userAgent(httpRequest.getHeader("User-Agent"))
-      .status(SessionStatus.active)
-      .issuedAt(now)
-      .lastSeenAt(now)
-      .expiresAt(now.plusSeconds(604800))
-      .build();
+        .user(user)
+        .device(session.getDevice())
+        .refreshTokenHash(hashToken(newRefreshToken))
+        .accessTokenJTI(newAccessJTI)
+        .tokenFamilyId(session.getTokenFamilyId())
+        .issuedIPAddress(session.getIssuedIPAddress() != null ? session.getIssuedIPAddress() : clientIP)
+        .IPAddress(clientIP)
+        .userAgent(httpRequest.getHeader("User-Agent"))
+        .status(SessionStatus.active)
+        .issuedAt(now)
+        .lastSeenAt(now)
+        .expiresAt(now.plusSeconds(604800))
+        .build();
     userSessionRepository.save(newSession);
     return TokenResult.of(newAccessToken, newRefreshToken);
   }
+
   @Transactional
   public void logout(HttpServletRequest request, String refreshTokenCookie) {
     String currentJTI = SecurityUtils.getCurrentJTI();
@@ -351,27 +366,31 @@ public class AuthService {
       });
     }
   }
-  private void recordLoginHistory(User user, UserSession session, UserDevice device, String ip, HttpServletRequest request, LoginStatus status, String reason) {
+
+  private void recordLoginHistory(User user, UserSession session, UserDevice device, String ip,
+      HttpServletRequest request, LoginStatus status, String reason) {
     if (user != null) {
-      boolean isNewIP = status == LoginStatus.success && !loginHistoryRepository.existsByUserIdAndIPAddressAndStatus(user.getId(), ip, LoginStatus.success);
+      boolean isNewIP = status == LoginStatus.success
+          && !loginHistoryRepository.existsByUserIdAndIPAddressAndStatus(user.getId(), ip, LoginStatus.success);
       String country = GeoIPUtils.getCountry(request, ip);
       String city = GeoIPUtils.getCity(request, ip);
       String userAgent = request != null ? request.getHeader("User-Agent") : null;
       LoginHistory history = LoginHistory.builder()
-        .user(user)
-        .session(session)
-        .device(device)
-        .IPAddress(ip)
-        .geoCountry(country)
-        .geoCity(city)
-        .isNewIP(isNewIP)
-        .userAgent(userAgent)
-        .status(status)
-        .failureReason(reason)
-        .build();
+          .user(user)
+          .session(session)
+          .device(device)
+          .IPAddress(ip)
+          .geoCountry(country)
+          .geoCity(city)
+          .isNewIP(isNewIP)
+          .userAgent(userAgent)
+          .status(status)
+          .failureReason(reason)
+          .build();
       loginHistoryRepository.save(history);
     }
   }
+
   private String hashToken(String token) {
     try {
       MessageDigest digest = MessageDigest.getInstance("SHA-256");

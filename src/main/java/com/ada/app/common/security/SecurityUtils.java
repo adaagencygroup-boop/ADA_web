@@ -8,7 +8,7 @@ public final class SecurityUtils {
   public static UUID getCurrentUserId() {
     UUID userId = getCurrentUserIdOrNull();
     if (userId == null) {
-      throw AppException.unauthorized("Unauthorized Access");
+      throw AppException.unauthorized("Truy cập không hợp lệ hoặc phiên làm việc đã hết hạn");
     }
     return userId;
   }
