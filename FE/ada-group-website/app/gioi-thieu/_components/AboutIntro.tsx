@@ -19,8 +19,8 @@ export default function AboutIntro() {
     <GsapHeroReveal>
       <section className="section-y">
         <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 items-start gap-x-16 lg:grid-cols-2">
-            <div className="hero-text-left">
+          <div className="grid grid-cols-1 items-center gap-x-16 lg:grid-cols-2">
+            <div className="hero-text-left flex flex-col justify-center">
               <h1 className="text-[28px] leading-[1.2] font-semibold tracking-tight text-zinc-900 lg:text-[44px] lg:leading-[1.1]">
                 {CONTENT.title}
               </h1>

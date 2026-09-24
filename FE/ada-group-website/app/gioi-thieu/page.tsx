@@ -5,7 +5,7 @@ import BusinessProfile from "@/app/gioi-thieu/_components/BusinessProfile";
 import ClosingStatement from "@/app/gioi-thieu/_components/ClosingStatement";
 import CoreValues from "@/app/gioi-thieu/_components/CoreValues";
 import DevelopmentStrategy from "@/app/gioi-thieu/_components/DevelopmentStrategy";
-import LeadershipTeam from "@/app/gioi-thieu/_components/LeadershipTeam";
+// import LeadershipTeam from "@/app/gioi-thieu/_components/LeadershipTeam";
 import MissionBanner from "@/app/gioi-thieu/_components/MissionBanner";
 import MissionDetails from "@/app/gioi-thieu/_components/MissionDetails";
 import ServiceHighlights from "@/app/gioi-thieu/_components/ServiceHighlights";
@@ -38,9 +38,9 @@ export default function AboutPage() {
       <GsapScrollReveal>
         <BusinessProfile />
       </GsapScrollReveal>
-      <GsapScrollReveal>
+      {/* <GsapScrollReveal>
         <LeadershipTeam />
-      </GsapScrollReveal>
+      </GsapScrollReveal> */}
       <GsapScrollReveal>
         <ClosingStatement />
       </GsapScrollReveal>
