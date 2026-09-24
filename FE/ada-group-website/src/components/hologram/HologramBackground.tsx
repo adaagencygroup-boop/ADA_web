@@ -2,13 +2,12 @@
 
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
+import { isHologramEligible } from "@/src/utils/deviceCapabilities";
 import { useActiveSection } from "./useActiveSection";
 
 const HologramField = dynamic(() => import("./HologramField"), {
   ssr: false,
 });
-
-const MOBILE_QUERY = "(max-width: 767px)";
 
 export default function HologramBackground() {
   const activeSection = useActiveSection();
@@ -16,12 +15,7 @@ export default function HologramBackground() {
   const [supported, setSupported] = useState(true);
 
   useEffect(() => {
-    const hasGpu = typeof navigator !== "undefined" && "gpu" in navigator;
-    const mql = window.matchMedia(MOBILE_QUERY);
-    const update = () => setEligible(hasGpu && !mql.matches);
-    update();
-    mql.addEventListener("change", update);
-    return () => mql.removeEventListener("change", update);
+    setEligible(isHologramEligible());
   }, []);
 
   if (!eligible || !supported) return null;
