@@ -45,7 +45,7 @@ const PARTNERS = [
 
 export default function PartnersSection() {
   return (
-    <section className="section-y">
+    <section className="section-y pt-0!">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl sm:text-center">
           <span className="inline-flex items-center rounded-full bg-[#D8E2FF] px-3 py-1 text-[12px] font-semibold text-[#002A64] lg:text-[12px]">

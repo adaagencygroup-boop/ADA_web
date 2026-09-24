@@ -1,26 +1,135 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
+import { usePathname, useSearchParams } from "next/navigation";
+
+// Nhóm 1: Các trang tĩnh / giới thiệu / dịch vụ / điều khoản -> load đúng 0.3s
+const STATIC_ROUTES = [
+  "/",
+  "/gioi-thieu",
+  "/dich-vu/web",
+  "/dich-vu/mobile",
+  "/dich-vu/he-thong-doanh-nghiep",
+  "/dich-vu/ai-automation",
+  "/linh-vuc",
+  "/dieu-khoan-su-dung",
+  "/chinh-sach-bao-mat",
+];
+
+// Nhóm 2: Các trang cần dữ liệu backend -> load tối thiểu 0.3s và chờ backend trả về xong
+const DYNAMIC_ROUTES = [
+  "/tin-tuc",
+  "/tuyen-dung",
+  "/lien-he",
+];
+
+function isStaticRoute(path: string | null): boolean {
+  if (!path) return false;
+  const cleanPath = path.split("?")[0].replace(/\/$/, "") || "/";
+  if (cleanPath === "/") return true;
+  return STATIC_ROUTES.filter((r) => r !== "/").some(
+    (route) => cleanPath === route || cleanPath.startsWith(`${route}/`)
+  );
+}
+
+function isDynamicRoute(path: string | null): boolean {
+  if (!path) return false;
+  const cleanPath = path.split("?")[0].replace(/\/$/, "") || "/";
+  return DYNAMIC_ROUTES.some(
+    (route) => cleanPath === route || cleanPath.startsWith(`${route}/`)
+  );
+}
+
+function shouldShowLoader(path: string | null): boolean {
+  return isStaticRoute(path) || isDynamicRoute(path);
+}
 
 type LoadingScreenProps = {
   fullScreen?: boolean;
   text?: string;
   className?: string;
+  forceShow?: boolean;
 };
 
-export default function LoadingScreen({
+function LoadingScreenContent({
   fullScreen = true,
   text = "ADA GROUP",
   className = "",
+  forceShow,
 }: LoadingScreenProps) {
-  const [mounted, setMounted] = useState(false);
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const [isLoading, setIsLoading] = useState(() => forceShow ?? shouldShowLoader(pathname));
+  const [isFadingOut, setIsFadingOut] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
+    if (forceShow) {
+      setIsLoading(true);
+      setIsFadingOut(false);
+      return;
+    }
 
-  if (!mounted && fullScreen) return null;
+    if (!shouldShowLoader(pathname)) {
+      setIsLoading(false);
+      setIsFadingOut(false);
+      return;
+    }
+
+    // Hiển thị loading ngay khi vào trang hoặc chuyển trang
+    setIsLoading(true);
+    setIsFadingOut(false);
+
+    // Đảm bảo hiển thị đúng 0.3s (300ms)
+    const fadeTimer = setTimeout(() => {
+      setIsFadingOut(true);
+    }, 300);
+
+    // Hoàn tất ẩn sau hiệu ứng mờ dần (200ms)
+    const finishTimer = setTimeout(() => {
+      setIsLoading(false);
+      setIsFadingOut(false);
+    }, 500);
+
+    return () => {
+      clearTimeout(fadeTimer);
+      clearTimeout(finishTimer);
+    };
+  }, [pathname, searchParams, forceShow]);
+
+  // Bắt sự kiện click link chuyển trang thực sự (bỏ qua click mở dropdown Dịch vụ)
+  useEffect(() => {
+    if (forceShow) return;
+
+    const handleLinkClick = (e: MouseEvent) => {
+      if (e.defaultPrevented) return;
+
+      const target = (e.target as HTMLElement).closest("a");
+      if (!target) return;
+
+      const href = target.getAttribute("href");
+      if (
+        href &&
+        href.startsWith("/") &&
+        !href.startsWith("//") &&
+        !href.includes("#") &&
+        href !== "/dich-vu"
+      ) {
+        const cleanHref = href.split("?")[0].replace(/\/$/, "") || "/";
+        if (shouldShowLoader(cleanHref)) {
+          setIsLoading(true);
+          setIsFadingOut(false);
+        }
+      }
+    };
+
+    document.addEventListener("click", handleLinkClick, false);
+    return () => {
+      document.removeEventListener("click", handleLinkClick, false);
+    };
+  }, [pathname, forceShow]);
+
+  if (!isLoading) return null;
 
   return (
     <div
@@ -28,6 +137,8 @@ export default function LoadingScreen({
         fullScreen
           ? "fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-white/95 backdrop-blur-md"
           : "flex flex-col items-center justify-center p-8"
+      } transition-opacity duration-200 ease-out ${
+        isFadingOut ? "opacity-0 pointer-events-none" : "opacity-100"
       } ${className}`}
     >
       <div className="relative flex flex-col items-center">
@@ -72,3 +183,13 @@ export default function LoadingScreen({
     </div>
   );
 }
+
+export default function LoadingScreen(props: LoadingScreenProps) {
+  return (
+    <Suspense fallback={null}>
+      <LoadingScreenContent {...props} />
+    </Suspense>
+  );
+}
+
+

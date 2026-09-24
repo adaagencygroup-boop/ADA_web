@@ -26,7 +26,7 @@ const IMAGES = {
 
 export default function AboutHighlight() {
   return (
-    <section className="section-y">
+    <section className="section-y pt-0!">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 items-center gap-x-12 md:grid-cols-2">
         <div className="order-1 md:order-0 md:col-start-2 md:row-start-1">

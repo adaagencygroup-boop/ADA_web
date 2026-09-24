@@ -3,7 +3,7 @@ import { Be_Vietnam_Pro } from "next/font/google";
 import Header from "@/src/components/layout/Header";
 import Footer from "@/src/components/layout/Footer";
 import FloatingContact from "@/src/components/common/FloatingContact";
-// import PageLoaderProvider from "@/src/components/common/PageLoaderProvider";
+import LoadingScreen from "@/src/components/common/LoadingScreen";
 import "./globals.css";
 
 const beVietnamPro = Be_Vietnam_Pro({
@@ -31,12 +31,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${beVietnamPro.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        {/* <PageLoaderProvider> */}
-          <Header />
-          <main className="flex flex-1 flex-col overflow-x-clip">{children}</main>
-          <Footer />
-          <FloatingContact />
-        {/* </PageLoaderProvider> */}
+        <LoadingScreen />
+        <Header />
+        <main className="flex flex-1 flex-col overflow-x-clip">{children}</main>
+        <Footer />
+        <FloatingContact />
       </body>
     </html>
   );

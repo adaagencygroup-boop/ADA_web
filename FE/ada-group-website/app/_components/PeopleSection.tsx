@@ -15,7 +15,7 @@ const IMAGE = {
 
 export default function PeopleSection() {
   return (
-    <section className="section-y">
+    <section className="section-y pt-0!">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 items-start gap-x-12 md:grid-cols-2">
           <h2 className="text-[28px] leading-[1.2] font-semibold tracking-tight text-zinc-900 md:hidden">

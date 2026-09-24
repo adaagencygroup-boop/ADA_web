@@ -41,7 +41,7 @@ const SERVICES = [
 
 export default function ServicesGrid() {
   return (
-    <section className="section-y">
+    <section className="section-y pt-0!">
       <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-5xl text-center">
           <h2 className="text-[28px] leading-[1.2] text-start sm:text-center font-semibold tracking-tight text-zinc-900 lg:text-[44px] lg:leading-[1.1]">

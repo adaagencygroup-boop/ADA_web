@@ -209,7 +209,7 @@ export default function ContactForm() {
   };
 
   return (
-    <section className="section-y relative">
+    <section className="section-y pt-0!">
       {alertInfo && (
         <Alert
           type={alertInfo.type}
@@ -369,7 +369,7 @@ export default function ContactForm() {
                   <benefit.Icon className="h-5 w-5" />
                 </span>
                 <div>
-                  <h3 className="text-sm font-semibold text-zinc-900">
+                  <h3 className="text-base font-semibold text-zinc-900">
                     {benefit.title}
                   </h3>
                   <p className="mt-1 text-base leading-relaxed text-zinc-600">
