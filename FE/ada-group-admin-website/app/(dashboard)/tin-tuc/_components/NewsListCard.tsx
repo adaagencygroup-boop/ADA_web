@@ -457,7 +457,7 @@ export function NewsToolbarActions() {
         href="/tin-tuc/danh-muc"
         className="flex h-10 shrink-0 items-center gap-2 rounded-lg bg-[#316EE9] px-4 text-sm font-semibold text-white hover:bg-[#316EE9]/90"
       >
-        + Thêm danh mục mới
+        + Quản lý lĩnh vực
       </Link>
       <Link
         href="/tin-tuc/tao-moi"
