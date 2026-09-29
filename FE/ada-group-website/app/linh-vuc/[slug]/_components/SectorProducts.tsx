@@ -7,7 +7,6 @@ export interface SectorProductMockup {
   appName: string;
   userName: string;
   stats: { label: string; value: string }[];
-  suggestion?: { label: string; value: string };
 }
 
 export interface SectorProduct {
@@ -124,7 +123,6 @@ export default function SectorProducts({ products = [] }: SectorProductsProps) {
                       { label: "TRẠNG THÁI", value: "Hoạt động" },
                       { label: "TỐI ƯU HÓA", value: "100%" },
                     ],
-                    suggestion: { label: "Gợi ý hệ thống", value: "Tự động hóa 24/7" },
                   };
 
                   return (
@@ -169,13 +167,6 @@ export default function SectorProducts({ products = [] }: SectorProductsProps) {
                             <div className={`text-sm sm:text-lg font-bold ${idx === 0 ? 'text-[#002A64]' : 'text-slate-800'}`}>{stat.value}</div>
                           </div>
                         ))}
-                        
-                        {mockup.suggestion && (
-                          <div className="hidden sm:block absolute right-0 sm:-right-8 -bottom-6 sm:-bottom-8 bg-white rounded-xl shadow-[0_10px_40px_rgb(0,0,0,0.08)] border border-slate-100 p-4 w-40 sm:w-48 z-10">
-                            <div className="text-[9px] sm:text-[10px] text-slate-400 font-medium mb-1.5 uppercase">{mockup.suggestion.label}</div>
-                            <div className="text-[13px] sm:text-sm font-semibold text-slate-800">{mockup.suggestion.value}</div>
-                          </div>
-                        )}
                       </div>
                     </div>
                   );

@@ -29,7 +29,6 @@ export type SectorProductMockup = {
   appName: string;
   userName: string;
   stats: { label: string; value: string }[];
-  suggestion?: { label: string; value: string };
 };
 
 export type SectorProduct = {
