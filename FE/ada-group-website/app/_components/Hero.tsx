@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
-import HologramAware from "@/src/components/common/HologramAware";
+import { useEffect, useState } from "react";
+import { isHologramEligible } from "@/src/utils/deviceCapabilities";
 
 const CONTENT = {
   title: "Giải pháp công nghệ,\n đồng hành cùng doanh nghiệp Việt",
@@ -8,8 +11,20 @@ const CONTENT = {
 };
 
 export default function Hero() {
+  const [isHologram, setIsHologram] = useState(false);
+
+  useEffect(() => {
+    setIsHologram(isHologramEligible());
+  }, []);
+
   return (
-    <section className="section-y flex flex-col md:min-h-screen justify-center lg:min-h-[calc(100vh-80px)]">
+    <section
+      className={`section-y ${
+        isHologram
+          ? "flex flex-col md:min-h-screen justify-center lg:min-h-[calc(100vh-80px)]"
+          : ""
+      }`}
+    >
       <div className="mx-auto w-full max-w-360 px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 items-center gap-x-12 md:grid-cols-2">
           <div>
@@ -23,7 +38,7 @@ export default function Hero() {
           </div>
 
           {/* Right column: visible on desktop only when discrete GPU is not present (fallback) */}
-          <HologramAware>
+          {!isHologram && (
             <div className="hidden md:block overflow-hidden rounded-2xl mt-0">
               <Image
                 src="/images/home_images/Hero.webp"
@@ -32,12 +47,12 @@ export default function Hero() {
                 height={737}
                 priority
                 placeholder="blur"
-                blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZTJlOGYwIi8+PC9zdmc+"
+                blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIjZTJlOGYwIi8+PC9zdmc+"
                 sizes="(min-width: 1024px) 50vw, 100vw"
                 className="h-auto w-full transition-transform duration-500 hover:scale-105"
               />
             </div>
-          </HologramAware>
+          )}
         </div>
       </div>
     </section>
