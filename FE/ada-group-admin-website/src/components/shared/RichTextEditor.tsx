@@ -6,13 +6,6 @@ import StarterKit from "@tiptap/starter-kit";
 import TextAlign from "@tiptap/extension-text-align";
 import Link from "@tiptap/extension-link";
 import ImageExtension from "@tiptap/extension-image";
-
-// Link's mark defaults to `inclusive: true` (tied to its `autolink` option), which makes it
-// keep swallowing newly typed characters at the cursor until a line break. Force it off so
-// typing right after a link produces plain text instead of extending the link.
-const LinkExtension = Link.extend({
-  inclusive: false,
-});
 import {
   AlignCenter,
   AlignJustify,
@@ -24,16 +17,28 @@ import {
   Link2,
   List,
   ListOrdered,
+  Loader2,
   Redo,
   Strikethrough,
   Undo,
+  Upload,
 } from "lucide-react";
+import { toast } from "sonner";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/src/components/ui/popover";
 import { Button } from "@/src/components/ui/button";
+import { useUploadMedia } from "@/src/hooks/useNews";
+import { uploadMedia } from "@/src/lib/api/news";
+
+// Link's mark defaults to `inclusive: true` (tied to its `autolink` option), which makes it
+// keep swallowing newly typed characters at the cursor until a line break. Force it off so
+// typing right after a link produces plain text instead of extending the link.
+const LinkExtension = Link.extend({
+  inclusive: false,
+});
 
 export const RICH_TEXT_TYPOGRAPHY_CLASS =
   "[&_h1]:mt-2 [&_h1]:mb-1 [&_h1]:text-2xl [&_h1]:font-semibold " +
@@ -180,32 +185,123 @@ function LinkButton({ editor }: { editor: Editor }) {
 }
 
 function ImageButton({ editor }: { editor: Editor }) {
+  const [open, setOpen] = useState(false);
+  const [url, setUrl] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const uploadMutation = useUploadMedia();
 
   function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
     event.target.value = "";
     if (!file) return;
-    const url = URL.createObjectURL(file);
-    editor.chain().focus().setImage({ src: url }).run();
+
+    const toastId = toast.loading("Đang tải ảnh lên máy chủ...");
+    uploadMutation.mutate(file, {
+      onSuccess: (result) => {
+        toast.dismiss(toastId);
+        toast.success("Tải ảnh lên thành công");
+        editor.chain().focus().setImage({ src: result.fileURL }).run();
+        setOpen(false);
+      },
+      onError: (error) => {
+        toast.dismiss(toastId);
+        toast.error(`Tải ảnh thất bại: ${error.message || "Vui lòng thử lại"}`);
+      },
+    });
+  }
+
+  function handleApplyUrl() {
+    const trimmed = url.trim();
+    if (!trimmed) return;
+    editor.chain().focus().setImage({ src: trimmed }).run();
+    setUrl("");
+    setOpen(false);
   }
 
   return (
-    <>
-      <input
-        ref={fileInputRef}
-        type="file"
-        accept="image/*"
-        className="hidden"
-        onChange={handleFileChange}
-      />
-      <ToolbarButton
-        label="Chèn hình ảnh"
-        onClick={() => fileInputRef.current?.click()}
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger
+        aria-label="Chèn hình ảnh"
+        className={`flex size-7 items-center justify-center rounded outline-none ${
+          open
+            ? "bg-[#E5E7EB] text-[#1C1B1B]"
+            : "text-[#434750] hover:bg-[#EEECEB]"
+        }`}
       >
         <ImageIcon className="size-3.5" />
-      </ToolbarButton>
-    </>
+      </PopoverTrigger>
+      <PopoverContent align="start" className="w-80 p-3">
+        <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium text-[#1C1B1B]">
+              Tải ảnh từ máy tính
+            </label>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleFileChange}
+            />
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              disabled={uploadMutation.isPending}
+              onClick={() => fileInputRef.current?.click()}
+              className="w-full flex items-center justify-center gap-2"
+            >
+              {uploadMutation.isPending ? (
+                <>
+                  <Loader2 className="size-4 animate-spin" />
+                  <span>Đang tải ảnh lên...</span>
+                </>
+              ) : (
+                <>
+                  <Upload className="size-4" />
+                  <span>Chọn tệp ảnh</span>
+                </>
+              )}
+            </Button>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <span className="h-px flex-1 bg-[#E2E8F0]" />
+            <span className="text-xs text-[#94A3B8]">HOẶC</span>
+            <span className="h-px flex-1 bg-[#E2E8F0]" />
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <label className="text-sm font-medium text-[#1C1B1B]">
+              Đường dẫn hình ảnh (URL)
+            </label>
+            <input
+              type="text"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  handleApplyUrl();
+                }
+              }}
+              placeholder="https://..."
+              className="h-9 rounded-lg border border-[#C4C6D2] px-3 text-sm text-[#1C1B1B] outline-none focus-visible:border-[#316EE9]"
+            />
+            <div className="flex justify-end pt-1">
+              <Button
+                type="button"
+                size="sm"
+                disabled={!url.trim()}
+                onClick={handleApplyUrl}
+              >
+                Chèn ảnh
+              </Button>
+            </div>
+          </div>
+        </div>
+      </PopoverContent>
+    </Popover>
   );
 }
 
@@ -367,6 +463,59 @@ export default function RichTextEditor({
     editorProps: {
       attributes: {
         class: CONTENT_CLASS,
+      },
+      handlePaste: (view, event) => {
+        const files = Array.from(event.clipboardData?.files ?? []);
+        const imageFile = files.find((file) => file.type.startsWith("image/"));
+        if (imageFile) {
+          event.preventDefault();
+          const toastId = toast.loading("Đang tải ảnh dán lên máy chủ...");
+          uploadMedia(imageFile)
+            .then((result) => {
+              toast.dismiss(toastId);
+              toast.success("Tải ảnh dán lên thành công");
+              const { schema } = view.state;
+              const node = schema.nodes.image.create({ src: result.fileURL });
+              const transaction = view.state.tr.replaceSelectionWith(node);
+              view.dispatch(transaction);
+            })
+            .catch((err: Error) => {
+              toast.dismiss(toastId);
+              toast.error(`Tải ảnh dán thất bại: ${err?.message || "Vui lòng thử lại"}`);
+            });
+          return true;
+        }
+        return false;
+      },
+      handleDrop: (view, event) => {
+        const files = Array.from(event.dataTransfer?.files ?? []);
+        const imageFile = files.find((file) => file.type.startsWith("image/"));
+        if (imageFile) {
+          event.preventDefault();
+          const coordinates = view.posAtCoords({
+            left: event.clientX,
+            top: event.clientY,
+          });
+          const toastId = toast.loading("Đang tải ảnh kéo thả lên máy chủ...");
+          uploadMedia(imageFile)
+            .then((result) => {
+              toast.dismiss(toastId);
+              toast.success("Tải ảnh kéo thả thành công");
+              const { schema } = view.state;
+              const node = schema.nodes.image.create({ src: result.fileURL });
+              const transaction = view.state.tr.insert(
+                coordinates?.pos ?? view.state.selection.from,
+                node
+              );
+              view.dispatch(transaction);
+            })
+            .catch((err: Error) => {
+              toast.dismiss(toastId);
+              toast.error(`Tải ảnh kéo thả thất bại: ${err?.message || "Vui lòng thử lại"}`);
+            });
+          return true;
+        }
+        return false;
       },
     },
     onUpdate: ({ editor: instance }) => {
