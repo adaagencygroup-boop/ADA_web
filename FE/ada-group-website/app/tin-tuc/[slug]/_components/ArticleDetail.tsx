@@ -100,10 +100,11 @@ function formatViews(views: number) {
 export default function ArticleDetail({ article }: { article: NewsArticle }) {
   const [copied, setCopied] = useState(false);
 
+  const canonicalUrl = `https://adaagencygroup.online/tin-tuc/${article.slug}`;
   const shareUrl =
-    typeof window !== "undefined" && window.location.host.includes("adaagencygroup.online")
-      ? window.location.href
-      : `https://adaagencygroup.online/tin-tuc/${article.slug}`;
+    typeof window !== "undefined" && window.location.origin
+      ? `${window.location.origin}/tin-tuc/${article.slug}`
+      : canonicalUrl;
 
   const handleCopyLink = async () => {
     try {
@@ -142,7 +143,7 @@ export default function ArticleDetail({ article }: { article: NewsArticle }) {
         <div className="flex items-center gap-3">
           <span className="text-sm text-slate-500">Chia sẻ:</span>
           <a
-            href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
+            href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(canonicalUrl)}`}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Chia sẻ lên Facebook"
@@ -151,7 +152,7 @@ export default function ArticleDetail({ article }: { article: NewsArticle }) {
             <FacebookIcon />
           </a>
           <a
-            href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`}
+            href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(canonicalUrl)}`}
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Chia sẻ lên LinkedIn"
