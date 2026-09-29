@@ -86,6 +86,21 @@ export default function NewsForm({
   const coverImageURL = watch("coverImageURL");
   const displayedCover = coverPreview ?? (coverImageURL || null);
 
+  const currentTitle = watch("title");
+  const currentCategoryId = watch("categoryId");
+  const currentContent = watch("content");
+  const currentFeatured = watch("isFeatured");
+
+  const isFormChanged = isEdit && article
+    ? (
+        (currentTitle ?? "").trim() !== (article.title ?? "").trim() ||
+        (currentCategoryId ?? "") !== (article.categoryId ?? "") ||
+        (currentContent ?? "").trim() !== (article.content ?? "").trim() ||
+        (coverImageURL ?? "") !== (article.coverImageURL ?? "") ||
+        (currentFeatured ?? false) !== (article.isFeatured ?? false)
+      )
+    : false;
+
   function selectCoverFile(file: File | undefined) {
     if (!file) return;
     setCropSource((prev) => {
@@ -141,6 +156,12 @@ export default function NewsForm({
 
   const isSaving = createMutation.isPending || updateMutation.isPending;
   const isBusy = isSaving || uploadMutation.isPending;
+
+  const isDraftDisabled =
+    isBusy || (isEdit && article?.status === "draft" && !isFormChanged);
+
+  const isPublishDisabled =
+    isBusy || (isEdit && article?.status === "published" && !isFormChanged);
 
   const requestSubmit = (status: NewsStatus) =>
     handleSubmit((values) => {
@@ -220,7 +241,7 @@ export default function NewsForm({
           </button>
           <button
             type="button"
-            disabled={isBusy || (isEdit && article?.status === "draft")}
+            disabled={isDraftDisabled}
             onClick={requestSubmit("draft")}
             className="flex h-10.5 items-center gap-2 rounded-lg border border-[#BFDBFE] bg-[#EFF6FF] px-4 text-sm font-medium text-[#2563EB] hover:bg-[#DBEAFE] disabled:cursor-not-allowed disabled:opacity-50"
           >
@@ -231,7 +252,7 @@ export default function NewsForm({
           </button>
           <button
             type="button"
-            disabled={isBusy || (isEdit && article?.status === "published")}
+            disabled={isPublishDisabled}
             onClick={requestSubmit("published")}
             className="flex h-10 items-center gap-2 rounded-lg bg-[#2563EB] px-4 text-sm font-medium text-white hover:bg-[#2563EB]/90 disabled:cursor-not-allowed disabled:opacity-50"
           >
