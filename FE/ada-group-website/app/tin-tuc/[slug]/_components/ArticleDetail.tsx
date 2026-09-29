@@ -97,6 +97,17 @@ function formatViews(views: number) {
   return `${views.toLocaleString("vi-VN")} lượt xem`;
 }
 
+const RICH_TEXT_TYPOGRAPHY_CLASS =
+  "[&_h1]:mt-2 [&_h1]:mb-1 [&_h1]:text-2xl [&_h1]:font-semibold " +
+  "[&_h2]:mt-2 [&_h2]:mb-1 [&_h2]:text-xl [&_h2]:font-semibold " +
+  "[&_h3]:mt-2 [&_h3]:mb-1 [&_h3]:text-lg [&_h3]:font-semibold " +
+  "[&_p]:mb-2 [&_p:last-child]:mb-0 " +
+  "[&_ul]:mb-2 [&_ul]:list-disc [&_ul]:pl-5 " +
+  "[&_ol]:mb-2 [&_ol]:list-decimal [&_ol]:pl-5 " +
+  "[&_li]:mb-1 " +
+  "[&_a]:text-[#316EE9] [&_a]:underline " +
+  "[&_img]:my-2 [&_img]:max-w-full [&_img]:rounded-lg";
+
 export default function ArticleDetail({ article }: { article: NewsArticle }) {
   const [copied, setCopied] = useState(false);
 
@@ -193,7 +204,7 @@ export default function ArticleDetail({ article }: { article: NewsArticle }) {
       </div>
 
       <div
-        className="prose prose-slate flex-1 w-full max-w-none text-[14px] lg:text-[16px] leading-6.75 text-[#334155] text-justify [text-align-last:left] [word-break:break-word] [&_p]:text-justify [&_p]:[text-align-last:left] [&_h1]:text-black [&_h2]:text-black [&_h3]:text-black [&_strong]:text-black"
+        className={`prose prose-slate flex-1 w-full max-w-none text-[14px] lg:text-[16px] leading-6.75 text-[#334155] [text-align-last:left] [word-break:break-word] [&_p]:[text-align-last:left] [&_h1]:text-black [&_h2]:text-black [&_h3]:text-black [&_strong]:text-black ${RICH_TEXT_TYPOGRAPHY_CLASS}`}
         dangerouslySetInnerHTML={{ __html: article.content }}
       />
     </article>
