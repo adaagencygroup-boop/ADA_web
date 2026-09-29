@@ -98,15 +98,17 @@ function formatViews(views: number) {
 }
 
 const RICH_TEXT_TYPOGRAPHY_CLASS =
-  "[&_h1]:mt-2 [&_h1]:mb-1 [&_h1]:text-2xl [&_h1]:font-semibold " +
-  "[&_h2]:mt-2 [&_h2]:mb-1 [&_h2]:text-xl [&_h2]:font-semibold " +
-  "[&_h3]:mt-2 [&_h3]:mb-1 [&_h3]:text-lg [&_h3]:font-semibold " +
+  "[&_h1]:mt-2 [&_h1]:mb-1 [&_h1]:text-2xl [&_h1]:font-semibold [&_h1]:text-black " +
+  "[&_h2]:mt-2 [&_h2]:mb-1 [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-black " +
+  "[&_h3]:mt-2 [&_h3]:mb-1 [&_h3]:text-lg [&_h3]:font-semibold [&_h3]:text-black " +
   "[&_p]:mb-2 [&_p:last-child]:mb-0 " +
   "[&_ul]:mb-2 [&_ul]:list-disc [&_ul]:pl-5 " +
   "[&_ol]:mb-2 [&_ol]:list-decimal [&_ol]:pl-5 " +
   "[&_li]:mb-1 " +
   "[&_a]:text-[#316EE9] [&_a]:underline " +
-  "[&_img]:my-2 [&_img]:max-w-full [&_img]:rounded-lg";
+  "[&_img]:my-2 [&_img]:max-w-full [&_img]:rounded-lg " +
+  "[&_strong]:font-semibold [&_strong]:text-black " +
+  "[&_blockquote]:border-l-4 [&_blockquote]:border-slate-300 [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:my-2";
 
 export default function ArticleDetail({ article }: { article: NewsArticle }) {
   const [copied, setCopied] = useState(false);
@@ -204,7 +206,7 @@ export default function ArticleDetail({ article }: { article: NewsArticle }) {
       </div>
 
       <div
-        className={`prose prose-slate flex-1 w-full max-w-none text-[14px] lg:text-[16px] leading-6.75 text-[#334155] [text-align-last:left] [word-break:break-word] [&_p]:[text-align-last:left] [&_h1]:text-black [&_h2]:text-black [&_h3]:text-black [&_strong]:text-black ${RICH_TEXT_TYPOGRAPHY_CLASS}`}
+        className={`w-full flex-1 text-[15px] lg:text-[16px] leading-relaxed text-[#334155] break-words ${RICH_TEXT_TYPOGRAPHY_CLASS}`}
         dangerouslySetInnerHTML={{ __html: article.content }}
       />
     </article>
