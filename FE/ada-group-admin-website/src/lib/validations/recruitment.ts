@@ -3,6 +3,7 @@ import { z } from "zod";
 function createCleanTextSchema(fieldName: string, maxLength?: number) {
   let schema = z
     .string()
+    .min(1, `Vui lòng nhập ${fieldName.toLowerCase()}`)
     .refine(
       (val) => !!val && val.replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ").trim().length > 0,
       { message: `${fieldName} không được để trống hoặc chỉ chứa khoảng trắng/tab` }
@@ -10,6 +11,10 @@ function createCleanTextSchema(fieldName: string, maxLength?: number) {
     .refine((val) => !/\t/.test(val || ""), {
       message: `${fieldName} không được chứa phím Tab`,
     })
+    .refine(
+      (val) => !/^\s+/.test(val || "") && !/\s+$/.test(val || ""),
+      { message: `${fieldName} không được chứa khoảng trắng ở đầu hoặc cuối` }
+    )
     .refine(
       (val) => !/\s{2,}/.test(val ? val.replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ") : ""),
       { message: `${fieldName} không được chứa nhiều dấu cách liên tiếp` }
@@ -31,9 +36,7 @@ export const recruitmentSchema = z.object({
   employmentType: z.enum(["fulltime", "parttime", "remote", "hybrid"], {
     message: "Vui lòng chọn hình thức làm việc",
   }),
-  status: z.enum(["draft", "hiring", "closed"], {
-    message: "Vui lòng chọn trạng thái",
-  }),
+  status: z.enum(["draft", "hiring", "closed"]),
   workingHours: createCleanTextSchema("Thời gian làm việc", 100),
   description: createCleanTextSchema("Mô tả công việc"),
   requirements: createCleanTextSchema("Yêu cầu ứng viên"),

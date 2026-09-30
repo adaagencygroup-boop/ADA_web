@@ -132,13 +132,13 @@ export default function NewsListCard() {
             <SelectValue>
               {(value: string) =>
                 value === "all"
-                  ? "Tất cả lĩnh vực"
+                  ? "Tất cả danh mục"
                   : (categories?.find((c) => c.id === value)?.name ?? value)
               }
             </SelectValue>
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">Tất cả lĩnh vực</SelectItem>
+            <SelectItem value="all">Tất cả danh mục</SelectItem>
             {categories?.map((option) => (
               <SelectItem key={option.id} value={option.id}>
                 {option.name}
@@ -457,7 +457,7 @@ export function NewsToolbarActions() {
         href="/tin-tuc/danh-muc"
         className="flex h-10 shrink-0 items-center gap-2 rounded-lg bg-[#316EE9] px-4 text-sm font-semibold text-white hover:bg-[#316EE9]/90"
       >
-        + Quản lý lĩnh vực
+        + Quản lý danh mục
       </Link>
       <Link
         href="/tin-tuc/tao-moi"

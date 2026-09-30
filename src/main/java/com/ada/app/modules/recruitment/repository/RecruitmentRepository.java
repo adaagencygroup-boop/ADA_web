@@ -33,9 +33,10 @@ public interface RecruitmentRepository extends JpaRepository<Recruitment, UUID>,
   @Query(value = "UPDATE recruitments SET status = 'closed'::\"recruitmentStatus\" WHERE status = 'hiring'::\"recruitmentStatus\" AND \"expiresAt\" IS NOT NULL AND \"expiresAt\" <= :now", nativeQuery = true)
   int closeExpiredRecruitments(@Param("now") Instant now);
   long countByStatus(RecruitmentStatus status);
-
   @Query("SELECT COUNT(r) FROM Recruitment r WHERE r.status = :status AND r.createdAt >= :startDate AND r.createdAt < :endDate")
   long countByStatusAndCreatedAtBetween(@Param("status") RecruitmentStatus status, @Param("startDate") Instant startDate, @Param("endDate") Instant endDate);
+  @Query("SELECT COUNT(r) FROM Recruitment r WHERE r.createdAt >= :startDate AND r.createdAt < :endDate")
+  long countByCreatedAtBetween(@Param("startDate") Instant startDate, @Param("endDate") Instant endDate);
 
   @Query("SELECT count(r) FROM Recruitment r WHERE r.status = 'hiring' AND r.expiresAt IS NOT NULL AND r.expiresAt BETWEEN :now AND :soon")
   long countExpiringSoon(@Param("now") Instant now, @Param("soon") Instant soon);

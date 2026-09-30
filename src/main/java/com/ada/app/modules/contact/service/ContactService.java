@@ -18,24 +18,33 @@ import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import jakarta.mail.internet.MimeMessage;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class ContactService {
+  @Value("${app.storage.path}")
+  private String storagePath;
   private final ContactRepository contactRepository;
   private final NotificationService notificationService;
   private final ExcelExportService excelExportService;
   private final JavaMailSender mailSender;
 
-  @org.springframework.beans.factory.annotation.Value("${spring.mail.username}")
+  @Value("${spring.mail.username}")
   private String senderEmail;
   @Transactional(readOnly = true)
   public PageResponse<ContactResponse> getContacts(int page, int size, ContactStatus status, String search, Instant fromDate, Instant toDate) {
@@ -60,12 +69,32 @@ public class ContactService {
     contact = contactRepository.save(contact);
     if (contact.getCustomerEmail() != null && !contact.getCustomerEmail().isBlank()) {
       try {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(senderEmail);
-        message.setTo(contact.getCustomerEmail());
-        message.setSubject("Phản Hồi Yêu Cầu Liên Hệ Từ ADA Group");
-        message.setText("Kính Gửi " + contact.getCustomerFullname() + ",\n\n" + request.feedbackContent() + "\n\nTrân Trọng,\nĐội Ngũ ADA Group");
-        mailSender.send(message);
+        String subject = "Phản Hồi Yêu Cầu Liên Hệ Từ ADA Group";
+        String content = "Kính Gửi " + contact.getCustomerFullname() + ",\n\n" + request.feedbackContent() + "\n\nTrân Trọng,\nĐội Ngũ ADA Group";
+        String attachmentUrl = request.feedbackAttachmentURL();
+        File attachmentFile = resolveAttachmentFile(attachmentUrl);
+
+        if (attachmentFile != null && attachmentFile.exists()) {
+          MimeMessage mimeMessage = mailSender.createMimeMessage();
+          MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+          helper.setFrom(senderEmail);
+          helper.setTo(contact.getCustomerEmail());
+          helper.setSubject(subject);
+          helper.setText(content);
+          String ext = "";
+          if (attachmentFile.getName().contains(".")) {
+            ext = attachmentFile.getName().substring(attachmentFile.getName().lastIndexOf('.'));
+          }
+          helper.addAttachment("Dinh_Kem_Lien_He_ADA" + ext, attachmentFile);
+          mailSender.send(mimeMessage);
+        } else {
+          SimpleMailMessage message = new SimpleMailMessage();
+          message.setFrom(senderEmail);
+          message.setTo(contact.getCustomerEmail());
+          message.setSubject(subject);
+          message.setText(content);
+          mailSender.send(message);
+        }
       } catch (Exception e) {
         log.warn("Failed To Send Email Feedback To Customer {}: {}", contact.getCustomerEmail(), e.getMessage());
       }
@@ -157,5 +186,36 @@ public class ContactService {
       c.getCreatedAt(),
       c.getUpdatedAt()
     );
+  }
+
+  private File resolveAttachmentFile(String url) {
+    if (url == null || url.isBlank()) {
+      return null;
+    }
+    String cleanUrl = url.trim();
+    if (cleanUrl.contains("?")) {
+      cleanUrl = cleanUrl.substring(0, cleanUrl.indexOf('?'));
+    }
+    if (cleanUrl.contains("/files/")) {
+      String pathAfterFiles = cleanUrl.substring(cleanUrl.indexOf("/files/") + "/files/".length());
+      Path resolvedPath = Paths.get(storagePath, pathAfterFiles.replace('/', File.separatorChar));
+      if (Files.exists(resolvedPath)) {
+        return resolvedPath.toFile();
+      }
+    }
+    String rawFilename = cleanUrl.substring(cleanUrl.lastIndexOf('/') + 1);
+    Path mediaPath = Paths.get(storagePath, "media", rawFilename);
+    if (Files.exists(mediaPath)) {
+      return mediaPath.toFile();
+    }
+    Path resumePath = Paths.get(storagePath, "resumes", rawFilename);
+    if (Files.exists(resumePath)) {
+      return resumePath.toFile();
+    }
+    Path rootPath = Paths.get(storagePath, rawFilename);
+    if (Files.exists(rootPath)) {
+      return rootPath.toFile();
+    }
+    return null;
   }
 }

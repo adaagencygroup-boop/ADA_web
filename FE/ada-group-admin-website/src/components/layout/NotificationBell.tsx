@@ -26,6 +26,7 @@ const PAGE_SIZE = 5;
 export default function NotificationBell() {
   const router = useRouter();
   useNotificationRealtime();
+  const [open, setOpen] = useState(false);
   const [rootEl, setRootEl] = useState<HTMLDivElement | null>(null);
   const [sentinelEl, setSentinelEl] = useState<HTMLDivElement | null>(null);
 
@@ -53,6 +54,7 @@ export default function NotificationBell() {
   }, [rootEl, sentinelEl, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   function handleItemClick(notification: Notification) {
+    setOpen(false);
     if (!notification.isRead) {
       markAsReadMutation.mutate(notification.id);
     }
@@ -60,10 +62,10 @@ export default function NotificationBell() {
   }
 
   return (
-    <DropdownMenu>
+    <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger
         aria-label="Thông báo"
-        className="relative flex size-9 items-center justify-center rounded-full text-foreground/70 outline-none hover:bg-muted"
+        className="cursor-pointer relative flex size-9 items-center justify-center rounded-full text-foreground/70 outline-none hover:bg-muted"
       >
         <Bell className="size-5" />
         {unreadCount > 0 && (
@@ -83,7 +85,7 @@ export default function NotificationBell() {
               type="button"
               onClick={() => markAllAsReadMutation.mutate()}
               disabled={markAllAsReadMutation.isPending}
-              className="text-sm font-medium text-[#2563EB] hover:underline disabled:cursor-not-allowed disabled:opacity-50"
+              className="cursor-pointer text-sm font-medium text-[#2563EB] hover:underline disabled:cursor-not-allowed disabled:opacity-50"
             >
               Đánh dấu tất cả đã đọc
             </button>
@@ -102,8 +104,14 @@ export default function NotificationBell() {
               return (
                 <DropdownMenuItem
                   key={item.id}
-                  className="items-start gap-3 rounded-none px-5 py-3"
-                  onClick={() => handleItemClick(item)}
+                  render={<Link href={`/cai-dat/thong-bao/${item.id}`} />}
+                  className="cursor-pointer items-start gap-3 rounded-none px-5 py-3 hover:bg-[#F8FAFC] transition-colors"
+                  onClick={() => {
+                    setOpen(false);
+                    if (!item.isRead) {
+                      markAsReadMutation.mutate(item.id);
+                    }
+                  }}
                 >
                   <span className="relative shrink-0">
                     <span
@@ -145,7 +153,8 @@ export default function NotificationBell() {
         <div className="border-t border-[#F3F4F6] p-3 text-center">
           <Link
             href="/cai-dat/thong-bao"
-            className="text-sm font-medium text-[#2563EB] hover:underline"
+            onClick={() => setOpen(false)}
+            className="cursor-pointer inline-block text-sm font-medium text-[#2563EB] hover:underline"
           >
             Xem tất cả thông báo
           </Link>

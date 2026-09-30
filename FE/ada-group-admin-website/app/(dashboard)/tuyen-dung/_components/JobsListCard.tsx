@@ -25,6 +25,18 @@ const TABS: { value: Tab; label: string }[] = [
   { value: "closed", label: "Đã đóng" },
 ];
 
+const STATUS_STYLES: Record<RecruitmentStatus, string> = {
+  hiring: "bg-[#E1FCEF] text-[#15803D]",
+  closed: "bg-[#FFDAD6] text-[#BA1A1A]",
+  draft: "bg-[#FEF3C7] text-[#92400E]",
+};
+
+const STATUS_LABELS: Record<RecruitmentStatus, string> = {
+  hiring: "Đang tuyển",
+  closed: "Đã đóng",
+  draft: "Nháp",
+};
+
 const EMPLOYMENT_TYPE_LABELS: Record<EmploymentType, string> = {
   fulltime: "Full-time",
   parttime: "Part-time",
@@ -172,6 +184,9 @@ export default function JobsListCard({
               <th className="px-3 py-3 text-sm font-medium text-[#434750]">
                 Hạn ứng tuyển
               </th>
+              <th className="px-3 py-3 text-sm font-medium text-[#434750]">
+                Trạng thái
+              </th>
               <th className="px-3 py-3 text-right text-sm font-medium text-[#434750]">
                 Thao tác
               </th>
@@ -180,14 +195,14 @@ export default function JobsListCard({
           <tbody>
             {isLoading && (
               <tr>
-                <td colSpan={8} className="px-6 py-10 text-center text-sm text-[#6B7280]">
+                <td colSpan={9} className="px-6 py-10 text-center text-sm text-[#6B7280]">
                   Đang tải...
                 </td>
               </tr>
             )}
             {isError && (
               <tr>
-                <td colSpan={8} className="px-6 py-10 text-center text-sm text-red-600">
+                <td colSpan={9} className="px-6 py-10 text-center text-sm text-red-600">
                   {error?.message ?? "Đã có lỗi xảy ra khi tải danh sách tin tuyển dụng."}
                 </td>
               </tr>
@@ -230,6 +245,15 @@ export default function JobsListCard({
                     <td className="px-3 py-4 text-sm text-[#434750]">
                       {formatDeadline(job.expiresAt)}
                     </td>
+                    <td className="px-3 py-4 text-sm">
+                      <span
+                        className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium ${
+                          STATUS_STYLES[job.status] ?? "bg-[#F3F4F6] text-[#434750]"
+                        }`}
+                      >
+                        {STATUS_LABELS[job.status] ?? job.status}
+                      </span>
+                    </td>
                     <td className="px-3 py-4">
                       <div className="flex items-center justify-end gap-2">
                         <Link
@@ -262,7 +286,7 @@ export default function JobsListCard({
             {!isLoading && !isError && items.length === 0 && (
               <tr>
                 <td
-                  colSpan={8}
+                  colSpan={9}
                   className="px-6 py-10 text-center text-sm text-[#6B7280]"
                 >
                   Không có tin tuyển dụng nào.

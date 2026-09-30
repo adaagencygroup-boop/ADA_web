@@ -59,12 +59,6 @@ const EMPLOYMENT_TYPE_OPTIONS: { value: EmploymentType; label: string }[] = [
   { value: "hybrid", label: "Hybrid" },
 ];
 
-const STATUS_OPTIONS: { value: RecruitmentStatus; label: string }[] = [
-  { value: "draft", label: "Nháp" },
-  { value: "hiring", label: "Đang tuyển" },
-  { value: "closed", label: "Đã đóng" },
-];
-
 const DEFAULT_DEADLINE = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
 
 export type JobFormMode = "create" | "edit";
@@ -94,7 +88,7 @@ export default function JobForm({
     watch,
     setValue,
     trigger,
-    formState: { errors, isDirty },
+    formState: { errors },
   } = useForm<RecruitmentFormValues>({
     resolver: zodResolver(recruitmentSchema),
     mode: "onChange",
@@ -146,8 +140,6 @@ export default function JobForm({
     DEFAULT_WORK_SCHEDULE
   );
   const [addDepartmentOpen, setAddDepartmentOpen] = useState(false);
-  const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
-  const statusOptions = isEdit ? STATUS_OPTIONS : STATUS_OPTIONS.filter((o) => o.value !== "closed");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -163,6 +155,118 @@ export default function JobForm({
   const displayedCover = coverPreview ?? (coverImageURL || null);
 
   const isSalaryMissing = !isNegotiable && !minSalaryValue && !maxSalaryValue;
+
+  const currentJobTitle = watch("jobTitle");
+  const currentDeptId = watch("departmentId");
+  const currentLocation = watch("location");
+  const currentEmpType = watch("employmentType");
+  const currentWorkingHours = watch("workingHours");
+  const currentDescription = watch("description");
+  const currentRequirements = watch("requirements");
+  const currentBenefits = watch("benefits");
+  const currentReqNum = watch("requiredCandidateNum");
+
+  const isFormChanged = isEdit && job
+    ? (
+        (currentJobTitle ?? "").trim() !== (job.jobTitle ?? "").trim() ||
+        (currentDeptId ?? "") !== (job.departmentId ?? "") ||
+        (currentLocation ?? "").trim() !== (job.location ?? "").trim() ||
+        currentEmpType !== job.employmentType ||
+        (currentWorkingHours ?? "").trim() !== (job.workingHours ?? "").trim() ||
+        (currentDescription ?? "").trim() !== (job.description ?? "").trim() ||
+        (currentRequirements ?? "").trim() !== (job.requirements ?? "").trim() ||
+        (currentBenefits ?? "").trim() !== (job.benefits ?? "").trim() ||
+        (coverImageURL ?? "") !== (job.coverImageURL ?? "") ||
+        (minSalaryValue ?? "") !== (job.minSalary != null ? String(job.minSalary) : "") ||
+        (maxSalaryValue ?? "") !== (job.maxSalary != null ? String(job.maxSalary) : "") ||
+        (isNegotiable ?? true) !== (job.isNegotiable ?? true) ||
+        (currentReqNum ?? "") !== (job.requiredCandidateNum != null ? String(job.requiredCandidateNum) : "") ||
+        coverPreview !== null
+      )
+    : (
+        (currentJobTitle ?? "").trim().length > 0 ||
+        (currentDeptId ?? "").trim().length > 0 ||
+        (currentLocation ?? "").trim().length > 0 ||
+        (currentDescription ?? "").trim().length > 0 ||
+        (currentRequirements ?? "").trim().length > 0 ||
+        (currentBenefits ?? "").trim().length > 0 ||
+        (coverImageURL ?? "").trim().length > 0 ||
+        (currentReqNum ?? "").trim().length > 0 ||
+        coverPreview !== null
+      );
+
+  const isNavigatingAwayRef = useRef(false);
+  const isDirtyRef = useRef(false);
+  isDirtyRef.current = isFormChanged;
+
+  const [leaveConfirmOpen, setLeaveConfirmOpen] = useState(false);
+  const [pendingNavigationUrl, setPendingNavigationUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (isDirtyRef.current && !isNavigatingAwayRef.current) {
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    };
+
+    const handleClick = (e: MouseEvent) => {
+      if (!isDirtyRef.current || isNavigatingAwayRef.current) return;
+
+      const target = e.target as HTMLElement | null;
+      const anchor = target?.closest("a");
+      if (!anchor) return;
+
+      const href = anchor.getAttribute("href");
+      if (!href) return;
+
+      if (
+        href.startsWith("#") ||
+        href.startsWith("mailto:") ||
+        href.startsWith("tel:") ||
+        href.startsWith("javascript:") ||
+        anchor.target === "_blank"
+      ) {
+        return;
+      }
+
+      try {
+        const targetUrl = new URL(href, window.location.origin);
+        const currentUrl = new URL(window.location.href);
+        if (
+          targetUrl.pathname === currentUrl.pathname &&
+          targetUrl.search === currentUrl.search
+        ) {
+          return;
+        }
+      } catch {
+        // ignore
+      }
+
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+
+      setPendingNavigationUrl(href);
+      setLeaveConfirmOpen(true);
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    document.addEventListener("click", handleClick, { capture: true });
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      document.removeEventListener("click", handleClick, { capture: true });
+    };
+  }, []);
+
+  function handleConfirmLeave() {
+    if (pendingNavigationUrl) {
+      isNavigatingAwayRef.current = true;
+      setLeaveConfirmOpen(false);
+      router.push(pendingNavigationUrl);
+    }
+  }
 
   function selectCoverFile(file: File | undefined) {
     if (!file) return;
@@ -201,53 +305,65 @@ export default function JobForm({
   const isSaving = createMutation.isPending || updateMutation.isPending;
   const isBusy = isSaving || uploadMutation.isPending;
 
+  const isDraftDisabled =
+    isBusy || (isEdit && job?.status === "draft" && !isFormChanged);
+
+  const isPublishDisabled =
+    isBusy || (isEdit && job?.status === "hiring" && !isFormChanged);
+
   const cancelHref = isEdit ? `/tuyen-dung/${jobId}` : "/tuyen-dung";
   function handleCancelClick() {
-    if (isDirty) {
-      setCancelDialogOpen(true);
+    if (isFormChanged) {
+      setPendingNavigationUrl(cancelHref);
+      setLeaveConfirmOpen(true);
     } else {
       router.push(cancelHref);
     }
   }
-  const [pendingSubmit, setPendingSubmit] = useState<RecruitmentPayload | null>(
-    null
-  );
-  const requestSubmit = handleSubmit(
-    (values) => {
-      const payload: RecruitmentPayload = {
-        jobTitle: values.jobTitle.trim(),
-        departmentId: values.departmentId || null,
-        location: values.location?.trim() || null,
-        employmentType: values.employmentType,
-        workingHours: values.workingHours?.trim() || null,
-        description: values.description.trim(),
-        requirements: values.requirements.trim(),
-        benefits: values.benefits.trim(),
-        coverImageURL: values.coverImageURL || null,
-        status: values.status,
-        minSalary: values.minSalary ? Number(values.minSalary.replace(/,/g, "")) : null,
-        maxSalary: values.maxSalary ? Number(values.maxSalary.replace(/,/g, "")) : null,
-        isNegotiable: values.isNegotiable ?? false,
-        requiredCandidateNum: values.requiredCandidateNum
-          ? Number(values.requiredCandidateNum)
-          : null,
-        expiresAt: (() => {
-          const d = new Date(values.expiresAt);
-          d.setHours(23, 59, 59, 999);
-          return d.toISOString();
-        })(),
-      };
-      setPendingSubmit(payload);
-    },
-    () => {
-      toast.error("Vui lòng kiểm tra các ô thông tin và không nhập chỉ toàn khoảng trắng.");
-    }
-  );
+
+  const [pendingSubmit, setPendingSubmit] = useState<{
+    status: RecruitmentStatus;
+    payload: RecruitmentPayload;
+  } | null>(null);
+
+  const requestSubmit = (status: RecruitmentStatus) =>
+    handleSubmit(
+      (values) => {
+        const payload: RecruitmentPayload = {
+          jobTitle: values.jobTitle.trim(),
+          departmentId: values.departmentId || null,
+          location: values.location?.trim() || null,
+          employmentType: values.employmentType,
+          workingHours: values.workingHours?.trim() || null,
+          description: values.description.trim(),
+          requirements: values.requirements.trim(),
+          benefits: values.benefits.trim(),
+          coverImageURL: values.coverImageURL || null,
+          status,
+          minSalary: values.minSalary ? Number(values.minSalary.replace(/,/g, "")) : null,
+          maxSalary: values.maxSalary ? Number(values.maxSalary.replace(/,/g, "")) : null,
+          isNegotiable: values.isNegotiable ?? false,
+          requiredCandidateNum: values.requiredCandidateNum
+            ? Number(values.requiredCandidateNum)
+            : null,
+          expiresAt: (() => {
+            const d = new Date(values.expiresAt);
+            d.setHours(23, 59, 59, 999);
+            return d.toISOString();
+          })(),
+        };
+        setPendingSubmit({ status, payload });
+      },
+      () => {
+        toast.error("Vui lòng kiểm tra lại các thông tin bắt buộc và không nhập chỉ toàn khoảng trắng.");
+      }
+    );
 
   function handleConfirmSubmit() {
     if (!pendingSubmit) return;
-    const payload = pendingSubmit;
+    const { payload } = pendingSubmit;
     const onSuccess = () => {
+      isNavigatingAwayRef.current = true;
       setPendingSubmit(null);
       router.push("/tuyen-dung");
     };
@@ -276,7 +392,7 @@ export default function JobForm({
   }
 
   return (
-    <form onSubmit={requestSubmit} noValidate className="flex flex-1 flex-col gap-6">
+    <div className="flex flex-1 flex-col gap-6">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div className="flex flex-col gap-2">
           <nav className="flex items-center gap-2 text-sm text-[#434750]">
@@ -297,40 +413,63 @@ export default function JobForm({
           </h1>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           <button
             type="button"
+            disabled={isBusy}
             onClick={handleCancelClick}
-            className="flex h-8.5 items-center gap-2 rounded-lg border border-[#C4C6D2] px-4 text-sm font-medium text-[#1C1B1B] hover:bg-[#F8FAFC]"
+            className="flex h-10 items-center gap-2 rounded-lg border border-[#CBD5E1] bg-white px-4 text-sm font-medium text-[#334155] hover:bg-[#F8FAFC] disabled:cursor-not-allowed disabled:opacity-50"
           >
-            <X className="size-3.5" />
+            <X className="size-4" />
             Hủy bỏ
           </button>
           {isEdit && (
             <Link
               href={`/tuyen-dung/${jobId}`}
-              className="flex h-8.5 items-center gap-2 rounded-lg border border-[#C4C6D2] px-4 text-sm font-medium text-[#1C1B1B] hover:bg-[#F8FAFC]"
+              className="flex h-10 items-center gap-2 rounded-lg border border-[#CBD5E1] bg-white px-4 text-sm font-medium text-[#334155] hover:bg-[#F8FAFC]"
             >
-              <Eye className="size-3.5" />
+              <Eye className="size-4" />
               Xem trước
             </Link>
           )}
           <button
-            type="submit"
-            disabled={isBusy}
-            className="flex h-8.5 items-center gap-2 rounded-lg border border-white bg-[#316EE9] px-4 text-sm font-medium text-white hover:bg-[#316EE9]/90 disabled:cursor-not-allowed disabled:opacity-50"
+            type="button"
+            disabled={isDraftDisabled}
+            onClick={requestSubmit("draft")}
+            className="flex h-10 items-center gap-2 rounded-lg border border-[#BFDBFE] bg-[#EFF6FF] px-4 text-sm font-medium text-[#2563EB] hover:bg-[#DBEAFE] disabled:cursor-not-allowed disabled:opacity-50"
           >
-            {isEdit ? (
-              <>
-                <Save className="size-3.5" />
-                {isSaving ? "Đang lưu..." : "Lưu thay đổi"}
-              </>
-            ) : (
-              <>
-                <Plus className="size-3.5" />
-                {isSaving ? "Đang đăng..." : "Đăng tin tuyển dụng"}
-              </>
-            )}
+            <Save className="size-4" />
+            {isSaving && pendingSubmit?.status === "draft"
+              ? "Đang lưu..."
+              : isEdit && job?.status === "hiring"
+                ? "Lưu nháp"
+                : "Lưu nháp"}
+          </button>
+          {isEdit && job?.status === "hiring" && (
+            <button
+              type="button"
+              disabled={isBusy}
+              onClick={requestSubmit("closed")}
+              className="flex h-10 items-center gap-2 rounded-lg border border-[#FED7AA] bg-[#FFF7ED] px-4 text-sm font-medium text-[#C2410C] hover:bg-[#FFEDD5] disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              <X className="size-4" />
+              {isSaving && pendingSubmit?.status === "closed"
+                ? "Đang đóng..."
+                : "Đóng tin"}
+            </button>
+          )}
+          <button
+            type="button"
+            disabled={isPublishDisabled}
+            onClick={requestSubmit("hiring")}
+            className="flex h-10 items-center gap-2 rounded-lg bg-[#2563EB] px-4 text-sm font-medium text-white hover:bg-[#2563EB]/90 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            <Plus className="size-4" />
+            {isSaving && pendingSubmit?.status === "hiring"
+              ? isEdit ? "Đang lưu..." : "Đang đăng..."
+              : isEdit
+                ? (job?.status === "draft" || job?.status === "closed" ? "Đăng tuyển ngay" : "Lưu thay đổi")
+                : "Đăng tin tuyển dụng"}
           </button>
         </div>
       </div>
@@ -352,7 +491,11 @@ export default function JobForm({
               <input
                 type="text"
                 placeholder="Ví dụ: Backend Developer"
-                className="h-9.5 rounded-lg border border-[#C4C6D2] bg-[#FCF9F8] px-4 text-sm text-[#1C1B1B] outline-none placeholder:text-[#9CA3AF] focus-visible:border-[#316EE9]"
+                className={`h-9.5 rounded-lg border bg-[#FCF9F8] px-4 text-sm text-[#1C1B1B] outline-none placeholder:text-[#9CA3AF] transition-colors ${
+                  errors.jobTitle
+                    ? "border-red-500 focus-visible:border-red-500"
+                    : "border-[#C4C6D2] focus-visible:border-[#316EE9]"
+                }`}
                 {...register("jobTitle")}
               />
               {errors.jobTitle && (
@@ -478,37 +621,7 @@ export default function JobForm({
               </div>
             </div>
 
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
-              <div className="flex flex-col gap-1.5">
-                <label className="text-sm font-medium text-[#1C1B1B]">
-                  Trạng thái <span className="text-red-500">*</span>
-                </label>
-                <Controller
-                  control={control}
-                  name="status"
-                  render={({ field }) => (
-                    <Select
-                      value={field.value}
-                      onValueChange={(next) => next && field.onChange(next)}
-                    >
-                      <SelectTrigger className="w-full rounded-lg border-[#C4C6D2] bg-[#FCF9F8] text-sm data-[size=default]:h-9.5">
-                        <SelectValue>
-                          {(value: RecruitmentStatus) =>
-                            statusOptions.find((o) => o.value === value)?.label
-                          }
-                        </SelectValue>
-                      </SelectTrigger>
-                      <SelectContent>
-                        {statusOptions.map((option) => (
-                          <SelectItem key={option.value} value={option.value}>
-                            {option.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  )}
-                />
-              </div>
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
               <div className="flex flex-col gap-1.5">
                 <label className="text-sm font-medium text-[#1C1B1B]">
                   Số lượng cần tuyển <span className="text-red-500">*</span>
@@ -764,29 +877,55 @@ export default function JobForm({
         onOpenChange={(open) => {
           if (!open) setPendingSubmit(null);
         }}
-        title={isEdit ? "Xác nhận lưu thay đổi" : "Xác nhận đăng tin tuyển dụng"}
-        description={
-          isEdit
-            ? "Bạn có chắc chắn muốn lưu các thay đổi này không? Thông tin mới sẽ được cập nhật ngay lập tức trên hệ thống."
-            : "Bạn có chắc chắn muốn đăng tin tuyển dụng này không? Thông tin mới sẽ được cập nhật ngay lập tức trên hệ thống."
+        title={
+          pendingSubmit?.status === "draft"
+            ? isEdit && job?.status === "hiring"
+              ? "Xác nhận chuyển về bản nháp"
+              : "Xác nhận lưu nháp"
+            : pendingSubmit?.status === "closed"
+              ? "Xác nhận đóng tin tuyển dụng"
+              : isEdit
+                ? "Xác nhận lưu thay đổi"
+                : "Xác nhận đăng tin tuyển dụng"
         }
-        cancelLabel="Tiếp tục chỉnh sửa"
-        confirmLabel={isEdit ? "Lưu ngay" : "Đăng tin ngay"}
+        description={
+          pendingSubmit?.status === "draft"
+            ? isEdit && job?.status === "hiring"
+              ? "Bạn có chắc chắn muốn chuyển tin tuyển dụng này về bản nháp không? Tin sẽ không còn hiển thị công khai trên website."
+              : "Bạn có chắc chắn muốn lưu tin tuyển dụng này dưới dạng bản nháp không?"
+            : pendingSubmit?.status === "closed"
+              ? "Bạn có chắc chắn muốn đóng tin tuyển dụng này không? Ứng viên sẽ không thể gửi hồ sơ ứng tuyển được nữa."
+              : isEdit
+                ? "Bạn có chắc chắn muốn lưu các thay đổi cho tin tuyển dụng này không? Thông tin mới sẽ được cập nhật ngay lập tức."
+                : "Bạn có chắc chắn muốn đăng tin tuyển dụng này lên website không? Tin tuyển dụng sẽ được hiển thị công khai ngay lập tức."
+        }
+        confirmLabel={
+          pendingSubmit?.status === "draft"
+            ? isEdit && job?.status === "hiring"
+              ? "Chuyển về nháp"
+              : "Lưu nháp"
+            : pendingSubmit?.status === "closed"
+              ? "Đóng tin"
+              : isEdit
+                ? "Lưu thay đổi"
+                : "Đăng tin ngay"
+        }
         onConfirm={handleConfirmSubmit}
         isConfirming={isSaving}
       />
+
       <ConfirmDialog
-        open={cancelDialogOpen}
-        onOpenChange={setCancelDialogOpen}
-        title="Xác nhận hủy bỏ"
-        description="Bạn có chắc chắn muốn hủy? Mọi thay đổi chưa được lưu sẽ bị mất."
-        cancelLabel="Tiếp tục chỉnh sửa"
-        confirmLabel="Rời khỏi"
-        onConfirm={() => {
-          setCancelDialogOpen(false);
-          router.push(cancelHref);
+        open={leaveConfirmOpen}
+        onOpenChange={(open) => {
+          setLeaveConfirmOpen(open);
+          if (!open) setPendingNavigationUrl(null);
         }}
+        title="Xác nhận rời khỏi trang"
+        description="Bạn có các thay đổi chưa được lưu. Bạn có chắc chắn muốn rời khỏi trang không? Mọi nội dung thay đổi sẽ bị mất."
+        cancelLabel="Ở lại tiếp tục"
+        confirmLabel="Rời khỏi"
+        onConfirm={handleConfirmLeave}
       />
-    </form>
+    </div>
   );
 }

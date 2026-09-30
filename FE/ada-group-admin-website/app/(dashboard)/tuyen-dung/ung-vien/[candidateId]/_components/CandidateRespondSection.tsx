@@ -157,12 +157,34 @@ export default function CandidateRespondSection({
     });
   }
 
+  function parseDateTimeFromInput(str: string): { date: Date; hasTime: boolean } | null {
+    if (!str) return null;
+    const matchWithTime = str.match(/(\d{1,2}):(\d{2})\s*[-–]?\s*(?:Ngày\s*)?(\d{1,2})\/(\d{1,2})\/(\d{4})/i);
+    if (matchWithTime) {
+      const [, timeHour, timeMin, day, month, year] = matchWithTime;
+      const date = new Date(Number(year), Number(month) - 1, Number(day), Number(timeHour), Number(timeMin));
+      return isNaN(date.getTime()) ? null : { date, hasTime: true };
+    }
+    const matchDateOnly = str.match(/(?:Ngày\s*)?(\d{1,2})\/(\d{1,2})\/(\d{4})/i);
+    if (matchDateOnly) {
+      const [, day, month, year] = matchDateOnly;
+      const date = new Date(Number(year), Number(month) - 1, Number(day), 23, 59, 59);
+      return isNaN(date.getTime()) ? null : { date, hasTime: false };
+    }
+    return null;
+  }
+
   function validateForm(): boolean {
     const newErrors: Record<string, string> = {};
 
     if (responseType === "passed") {
       if (!interviewTime.trim()) {
         newErrors.interviewTime = "Vui lòng nhập thời gian phỏng vấn.";
+      } else {
+        const parsed = parseDateTimeFromInput(interviewTime);
+        if (parsed && parsed.date.getTime() < Date.now()) {
+          newErrors.interviewTime = "Thời gian phỏng vấn không thể ở trong quá khứ.";
+        }
       }
       if (!interviewLocation.trim()) {
         newErrors.interviewLocation = "Vui lòng nhập địa điểm phỏng vấn.";
@@ -173,6 +195,13 @@ export default function CandidateRespondSection({
     } else if (responseType === "interview_passed") {
       if (!startDate.trim()) {
         newErrors.startDate = "Vui lòng nhập ngày bắt đầu làm việc.";
+      } else {
+        const parsed = parseDateTimeFromInput(startDate);
+        const todayStart = new Date();
+        todayStart.setHours(0, 0, 0, 0);
+        if (parsed && parsed.date.getTime() < todayStart.getTime()) {
+          newErrors.startDate = "Ngày bắt đầu làm việc không thể ở trong quá khứ.";
+        }
       }
       if (!workLocation.trim()) {
         newErrors.workLocation = "Vui lòng nhập địa điểm làm việc.";
@@ -192,7 +221,8 @@ export default function CandidateRespondSection({
     setFormErrors(newErrors);
 
     if (Object.keys(newErrors).length > 0) {
-      toast.error("Vui lòng điền đầy đủ các thông tin bắt buộc.");
+      const firstError = Object.values(newErrors)[0];
+      toast.error(firstError || "Vui lòng điền đầy đủ các thông tin bắt buộc.");
       return false;
     }
 
@@ -328,6 +358,7 @@ export default function CandidateRespondSection({
     setConfirmOpen(true);
   }
   function handleActualSend() {
+    setConfirmOpen(false);
     if (attachment) {
       uploadMutation.mutate(attachment, {
         onSuccess: (uploadRes) => {
@@ -341,7 +372,12 @@ export default function CandidateRespondSection({
               },
             },
             {
-              onSuccess: () => setConfirmOpen(false),
+              onSuccess: () => {
+                setAttachment(null);
+                if (fileInputRef.current) {
+                  fileInputRef.current.value = "";
+                }
+              },
             }
           );
         },
@@ -357,7 +393,12 @@ export default function CandidateRespondSection({
         },
       },
       {
-        onSuccess: () => setConfirmOpen(false),
+        onSuccess: () => {
+          setAttachment(null);
+          if (fileInputRef.current) {
+            fileInputRef.current.value = "";
+          }
+        },
       }
     );
   }
@@ -824,7 +865,12 @@ export default function CandidateRespondSection({
                 <button
                   type="button"
                   disabled={isFormDisabled}
-                  onClick={() => setAttachment(null)}
+                  onClick={() => {
+                    setAttachment(null);
+                    if (fileInputRef.current) {
+                      fileInputRef.current.value = "";
+                    }
+                  }}
                   className="text-[#9CA3AF] hover:text-[#EF4444] disabled:cursor-not-allowed disabled:opacity-40"
                 >
                   <X className="size-3.5" />

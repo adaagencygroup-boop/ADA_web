@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ChevronDown, LogOut, Settings, User } from "lucide-react";
 import {
@@ -75,8 +76,8 @@ export default function Topbar() {
 
             <div className="border-t border-[#F3F4F6] py-2">
               <DropdownMenuItem
+                render={<Link href="/tai-khoan-admin" />}
                 className="items-start gap-4 rounded-none px-5 py-3"
-                onClick={() => router.push("/tai-khoan-admin")}
               >
                 <User className="mt-0.5 size-5 text-[#1E293B]" />
                 <div className="flex flex-col">
@@ -89,8 +90,8 @@ export default function Topbar() {
                 </div>
               </DropdownMenuItem>
               <DropdownMenuItem
+                render={<Link href="/cai-dat" />}
                 className="items-start gap-4 rounded-none px-5 py-3"
-                onClick={() => router.push("/cai-dat")}
               >
                 <Settings className="mt-0.5 size-5 text-[#1E293B]" />
                 <div className="flex flex-col">

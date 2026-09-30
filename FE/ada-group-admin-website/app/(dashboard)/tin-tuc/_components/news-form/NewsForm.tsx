@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -28,6 +28,12 @@ import { useNewsCategories } from "@/src/hooks/useNewsCategories";
 import type { NewsStatus, NewsPayload } from "@/src/lib/api/news";
 import { newsSchema, type NewsFormValues } from "@/src/lib/validations/news";
 import ArticlePreviewDialog from "@/app/(dashboard)/tin-tuc/_components/news-form/ArticlePreviewDialog";
+
+function isContentEmpty(html?: string): boolean {
+  if (!html) return true;
+  const stripped = html.replace(/<[^>]*>/g, "").trim();
+  return stripped.length === 0 && !html.includes("<img");
+}
 
 export type NewsFormMode = "create" | "edit";
 
@@ -58,6 +64,7 @@ export default function NewsForm({
     formState: { errors },
   } = useForm<NewsFormValues>({
     resolver: zodResolver(newsSchema),
+    mode: "onChange",
     defaultValues: {
       title: "",
       categoryId: "",
@@ -97,9 +104,90 @@ export default function NewsForm({
         (currentCategoryId ?? "") !== (article.categoryId ?? "") ||
         (currentContent ?? "").trim() !== (article.content ?? "").trim() ||
         (coverImageURL ?? "") !== (article.coverImageURL ?? "") ||
-        (currentFeatured ?? false) !== (article.isFeatured ?? false)
+        (currentFeatured ?? false) !== (article.isFeatured ?? false) ||
+        coverPreview !== null
       )
-    : false;
+    : (
+        (currentTitle ?? "").trim().length > 0 ||
+        (currentCategoryId ?? "").trim().length > 0 ||
+        !isContentEmpty(currentContent) ||
+        (coverImageURL ?? "").trim().length > 0 ||
+        (currentFeatured ?? false) === true ||
+        coverPreview !== null
+      );
+
+  const isNavigatingAwayRef = useRef(false);
+  const isDirtyRef = useRef(false);
+  isDirtyRef.current = isFormChanged;
+
+  const [leaveConfirmOpen, setLeaveConfirmOpen] = useState(false);
+  const [pendingNavigationUrl, setPendingNavigationUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (isDirtyRef.current && !isNavigatingAwayRef.current) {
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    };
+
+    const handleClick = (e: MouseEvent) => {
+      if (!isDirtyRef.current || isNavigatingAwayRef.current) return;
+
+      const target = e.target as HTMLElement | null;
+      const anchor = target?.closest("a");
+      if (!anchor) return;
+
+      const href = anchor.getAttribute("href");
+      if (!href) return;
+
+      if (
+        href.startsWith("#") ||
+        href.startsWith("mailto:") ||
+        href.startsWith("tel:") ||
+        href.startsWith("javascript:") ||
+        anchor.target === "_blank"
+      ) {
+        return;
+      }
+
+      try {
+        const targetUrl = new URL(href, window.location.origin);
+        const currentUrl = new URL(window.location.href);
+        if (
+          targetUrl.pathname === currentUrl.pathname &&
+          targetUrl.search === currentUrl.search
+        ) {
+          return;
+        }
+      } catch {
+        // ignore invalid urls
+      }
+
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+
+      setPendingNavigationUrl(href);
+      setLeaveConfirmOpen(true);
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    document.addEventListener("click", handleClick, { capture: true });
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      document.removeEventListener("click", handleClick, { capture: true });
+    };
+  }, []);
+
+  function handleConfirmLeave() {
+    if (pendingNavigationUrl) {
+      isNavigatingAwayRef.current = true;
+      setLeaveConfirmOpen(false);
+      router.push(pendingNavigationUrl);
+    }
+  }
 
   function selectCoverFile(file: File | undefined) {
     if (!file) return;
@@ -180,6 +268,7 @@ export default function NewsForm({
     if (!pendingSubmit) return;
     const { payload } = pendingSubmit;
     const onSuccess = () => {
+      isNavigatingAwayRef.current = true;
       setPendingSubmit(null);
       router.push("/tin-tuc");
     };
@@ -278,7 +367,11 @@ export default function NewsForm({
               <input
                 type="text"
                 placeholder="Nhập tiêu đề bài viết"
-                className="h-9.5 rounded-lg border border-[#CBD5E1] px-3 text-sm text-[#1E293B] outline-none placeholder:text-[#94A3B8] focus-visible:border-[#2563EB]"
+                className={`h-9.5 rounded-lg border px-3 text-sm text-[#1E293B] outline-none placeholder:text-[#94A3B8] transition-colors ${
+                  errors.title
+                    ? "border-red-500 focus-visible:border-red-500"
+                    : "border-[#CBD5E1] focus-visible:border-[#2563EB]"
+                }`}
                 {...register("title")}
               />
               {errors.title && (
@@ -495,6 +588,19 @@ export default function NewsForm({
         }
         onConfirm={handleConfirmSubmit}
         isConfirming={isSaving}
+      />
+
+      <ConfirmDialog
+        open={leaveConfirmOpen}
+        onOpenChange={(open) => {
+          setLeaveConfirmOpen(open);
+          if (!open) setPendingNavigationUrl(null);
+        }}
+        title="Xác nhận rời khỏi trang"
+        description="Bạn có các thay đổi chưa được lưu. Bạn có chắc chắn muốn rời khỏi trang không? Mọi nội dung thay đổi sẽ bị mất."
+        cancelLabel="Ở lại tiếp tục"
+        confirmLabel="Rời khỏi"
+        onConfirm={handleConfirmLeave}
       />
     </div>
   );

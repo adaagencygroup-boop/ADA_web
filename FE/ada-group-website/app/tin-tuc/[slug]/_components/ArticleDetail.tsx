@@ -106,7 +106,7 @@ const RICH_TEXT_TYPOGRAPHY_CLASS =
   "[&_ol]:mb-2 [&_ol]:list-decimal [&_ol]:pl-5 " +
   "[&_li]:mb-1 " +
   "[&_a]:text-[#316EE9] [&_a]:underline " +
-  "[&_img]:my-2 [&_img]:max-w-full [&_img]:rounded-lg " +
+  "[&_img]:mx-auto [&_img]:block [&_img]:my-2 [&_img]:max-w-full [&_img]:rounded-lg " +
   "[&_strong]:font-semibold [&_strong]:text-black " +
   "[&_blockquote]:border-l-4 [&_blockquote]:border-slate-300 [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:my-2";
 

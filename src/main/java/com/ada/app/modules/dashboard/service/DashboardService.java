@@ -87,14 +87,14 @@ public class DashboardService {
     List<News> topNewsList;
 
     if (isCustomDateRange) {
-      totalNews = newsRepository.countByStatusAndCreatedAtBetween(NewsStatus.published, startInstant, endInstant);
-      totalRecruitments = recruitmentRepository.countByStatusAndCreatedAtBetween(RecruitmentStatus.hiring, startInstant, endInstant);
+      totalNews = newsRepository.countByCreatedAtBetween(startInstant, endInstant);
+      totalRecruitments = recruitmentRepository.countByCreatedAtBetween(startInstant, endInstant);
       totalContacts = contactRepository.countByDeletedAtIsNullAndCreatedAtBetween(startInstant, endInstant);
       topRecruitList = recruitmentRepository.findByStatusAndCreatedAtBetweenOrderByViewCountDesc(RecruitmentStatus.hiring, startInstant, endInstant, PageRequest.of(0, 5));
       topNewsList = newsRepository.findByStatusAndCreatedAtBetweenOrderByViewCountDesc(NewsStatus.published, startInstant, endInstant, PageRequest.of(0, 5));
     } else {
-      totalNews = newsRepository.countByStatus(NewsStatus.published);
-      totalRecruitments = recruitmentRepository.countByStatus(RecruitmentStatus.hiring);
+      totalNews = newsRepository.count();
+      totalRecruitments = recruitmentRepository.count();
       totalContacts = contactRepository.countByDeletedAtIsNull();
       topRecruitList = recruitmentRepository.findByStatusOrderByViewCountDesc(RecruitmentStatus.hiring, PageRequest.of(0, 5));
       topNewsList = newsRepository.findByStatusOrderByViewCountDesc(NewsStatus.published, PageRequest.of(0, 5));

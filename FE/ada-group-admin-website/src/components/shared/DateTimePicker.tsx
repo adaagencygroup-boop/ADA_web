@@ -11,7 +11,21 @@ import {
 } from "@/src/components/ui/popover";
 import { Button } from "@/src/components/ui/button";
 
+function isSameDay(d1: Date, d2: Date) {
+  return (
+    d1.getFullYear() === d2.getFullYear() &&
+    d1.getMonth() === d2.getMonth() &&
+    d1.getDate() === d2.getDate()
+  );
+}
 
+function isDateInPast(date: Date) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const target = new Date(date);
+  target.setHours(0, 0, 0, 0);
+  return target.getTime() < today.getTime();
+}
 
 function parseDateTimeString(str: string): { date: Date | undefined; time: string } {
   if (!str) return { date: undefined, time: "09:00" };
@@ -62,6 +76,7 @@ export interface DateTimePickerProps {
   showTime?: boolean;
   formatMode?: "interview" | "dateOnly";
   disabled?: boolean;
+  disablePast?: boolean;
   error?: string;
   className?: string;
 }
@@ -73,12 +88,16 @@ export default function DateTimePicker({
   showTime = true,
   formatMode = "interview",
   disabled = false,
+  disablePast = true,
   error,
   className = "",
 }: DateTimePickerProps) {
   const [open, setOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [selectedTime, setSelectedTime] = useState<string>("09:00");
+
+  const today = new Date();
+  const startOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
   // Sync internal state when popover opens or value changes
   useEffect(() => {
@@ -87,22 +106,51 @@ export default function DateTimePicker({
     setSelectedTime(parsed.time);
   }, [value, open]);
 
+  function getValidTimeForDate(targetDate: Date, currentTime: string): string {
+    if (!disablePast || !isSameDay(targetDate, new Date())) {
+      return currentTime || "09:00";
+    }
+
+    const now = new Date();
+    const [h, m] = (currentTime || "09:00").split(":").map(Number);
+    if (h < now.getHours() || (h === now.getHours() && m < now.getMinutes())) {
+      const nextHour = String(Math.min(23, now.getHours())).padStart(2, "0");
+      const nextMin = String(Math.min(55, Math.ceil(now.getMinutes() / 5) * 5)).padStart(2, "0");
+      return `${nextHour}:${nextMin}`;
+    }
+    return currentTime;
+  }
+
   function handleOpenChange(nextOpen: boolean) {
     if (disabled) return;
     if (nextOpen) {
       const parsed = parseDateTimeString(value);
-      setSelectedDate(parsed.date ?? new Date());
-      setSelectedTime(parsed.time || "09:00");
+      let initialDate = parsed.date;
+      if (!initialDate || (disablePast && isDateInPast(initialDate))) {
+        initialDate = new Date();
+      }
+
+      const initialTime = getValidTimeForDate(initialDate, parsed.time || "09:00");
+
+      setSelectedDate(initialDate);
+      setSelectedTime(initialTime);
     }
     setOpen(nextOpen);
   }
 
   function handleSelectDate(date: Date | undefined) {
-    setSelectedDate(date);
-    if (date) {
-      const formatted = formatDateTimeOutput(date, selectedTime, showTime, formatMode);
-      onChange(formatted);
+    if (!date) {
+      setSelectedDate(undefined);
+      return;
     }
+    if (disablePast && isDateInPast(date)) return;
+
+    const timeToUse = getValidTimeForDate(date, selectedTime);
+    setSelectedDate(date);
+    setSelectedTime(timeToUse);
+
+    const formatted = formatDateTimeOutput(date, timeToUse, showTime, formatMode);
+    onChange(formatted);
   }
 
   function handleSelectTime(time: string) {
@@ -114,7 +162,16 @@ export default function DateTimePicker({
   }
 
   function handleHourChange(h: string) {
-    const currentMin = (selectedTime || "09:00").split(":")[1] || "00";
+    const hNum = Number(h);
+    let currentMin = (selectedTime || "09:00").split(":")[1] || "00";
+
+    if (disablePast && selectedDate && isSameDay(selectedDate, new Date())) {
+      const now = new Date();
+      if (hNum === now.getHours() && Number(currentMin) < now.getMinutes()) {
+        currentMin = String(Math.min(55, Math.ceil(now.getMinutes() / 5) * 5)).padStart(2, "0");
+      }
+    }
+
     const newTime = `${h}:${currentMin}`;
     handleSelectTime(newTime);
   }
@@ -141,6 +198,28 @@ export default function DateTimePicker({
   }
 
   const [currentHour, currentMinute] = (selectedTime || "09:00").split(":");
+
+  const now = new Date();
+  const isToday = Boolean(selectedDate && isSameDay(selectedDate, now));
+
+  const availableHours = HOURS.map((h) => {
+    const isPastHour = Boolean(disablePast && isToday && Number(h) < now.getHours());
+    return {
+      value: h,
+      disabled: isPastHour,
+    };
+  });
+
+  const selectedHourNum = Number(currentHour || "09");
+  const isCurrentHourToday = Boolean(disablePast && isToday && selectedHourNum === now.getHours());
+
+  const availableMinutes = MINUTES.map((m) => {
+    const isPastMinute = Boolean(isCurrentHourToday && Number(m) < now.getMinutes());
+    return {
+      value: m,
+      disabled: isPastMinute,
+    };
+  });
 
   return (
     <div className={`relative flex flex-col gap-1 ${className}`}>
@@ -171,7 +250,7 @@ export default function DateTimePicker({
                   e.stopPropagation();
                   onChange("");
                 }}
-                className="p-1 text-[#9CA3AF] hover:text-[#374151]"
+                className="cursor-pointer p-1 text-[#9CA3AF] hover:text-[#374151]"
                 title="Xóa"
               >
                 <X className="size-3.5" />
@@ -194,6 +273,7 @@ export default function DateTimePicker({
               mode="single"
               selected={selectedDate}
               onSelect={handleSelectDate}
+              disabled={disablePast ? { before: startOfToday } : undefined}
               locale={vi}
               captionLayout="dropdown"
               className="p-0"
@@ -213,11 +293,11 @@ export default function DateTimePicker({
                     <select
                       value={currentHour || "09"}
                       onChange={(e) => handleHourChange(e.target.value)}
-                      className="h-8 rounded-md border border-[#D1D5DB] bg-white px-2 text-xs font-medium text-[#111827] outline-none focus:border-[#316EE9]"
+                      className="cursor-pointer h-8 rounded-md border border-[#D1D5DB] bg-white px-2 text-xs font-medium text-[#111827] outline-none focus:border-[#316EE9]"
                     >
-                      {HOURS.map((h) => (
-                        <option key={h} value={h}>
-                          {h} giờ
+                      {availableHours.map(({ value: h, disabled: isHourDisabled }) => (
+                        <option key={h} value={h} disabled={isHourDisabled}>
+                          {h} giờ {isHourDisabled ? "(Đã qua)" : ""}
                         </option>
                       ))}
                     </select>
@@ -228,14 +308,11 @@ export default function DateTimePicker({
                     <select
                       value={currentMinute || "00"}
                       onChange={(e) => handleMinuteChange(e.target.value)}
-                      className="h-8 rounded-md border border-[#D1D5DB] bg-white px-2 text-xs font-medium text-[#111827] outline-none focus:border-[#316EE9]"
+                      className="cursor-pointer h-8 rounded-md border border-[#D1D5DB] bg-white px-2 text-xs font-medium text-[#111827] outline-none focus:border-[#316EE9]"
                     >
-                      {(MINUTES.includes(currentMinute || "00")
-                        ? MINUTES
-                        : [currentMinute, ...MINUTES].filter(Boolean).sort()
-                      ).map((m) => (
-                        <option key={m} value={m}>
-                          {m} phút
+                      {availableMinutes.map(({ value: m, disabled: isMinDisabled }) => (
+                        <option key={m} value={m} disabled={isMinDisabled}>
+                          {m} phút {isMinDisabled ? "(Đã qua)" : ""}
                         </option>
                       ))}
                     </select>
@@ -246,10 +323,10 @@ export default function DateTimePicker({
 
             {/* Actions */}
             <div className="flex items-center justify-between border-t border-[#E5E7EB] pt-3">
-              <Button type="button" variant="outline" size="sm" onClick={handleClear} className="h-8 text-xs">
+              <Button type="button" variant="outline" size="sm" onClick={handleClear} className="cursor-pointer h-8 text-xs">
                 Xóa
               </Button>
-              <Button type="button" size="sm" onClick={handleConfirm} className="h-8 text-xs bg-[#316EE9] hover:bg-[#1D4ED8]">
+              <Button type="button" size="sm" onClick={handleConfirm} className="cursor-pointer h-8 text-xs bg-[#316EE9] hover:bg-[#1D4ED8]">
                 Xác nhận
               </Button>
             </div>

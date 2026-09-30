@@ -38,6 +38,8 @@ public interface NewsRepository extends JpaRepository<News, UUID>, JpaSpecificat
   long countByStatus(NewsStatus status);
   @Query("SELECT COUNT(n) FROM News n WHERE n.status = :status AND n.createdAt >= :startDate AND n.createdAt < :endDate")
   long countByStatusAndCreatedAtBetween(@Param("status") NewsStatus status, @Param("startDate") Instant startDate, @Param("endDate") Instant endDate);
+  @Query("SELECT COUNT(n) FROM News n WHERE n.createdAt >= :startDate AND n.createdAt < :endDate")
+  long countByCreatedAtBetween(@Param("startDate") Instant startDate, @Param("endDate") Instant endDate);
 
   @EntityGraph(attributePaths = {"author", "category"})
   List<News> findByStatusOrderByViewCountDesc(NewsStatus status, Pageable pageable);

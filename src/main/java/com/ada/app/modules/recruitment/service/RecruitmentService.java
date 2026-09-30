@@ -26,6 +26,9 @@ import com.ada.app.modules.recruitment.enums.EmploymentType;
 import com.ada.app.modules.recruitment.enums.RecruitmentStatus;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import jakarta.mail.internet.MimeMessage;
+import java.io.File;
 import com.ada.app.modules.recruitment.repository.CandidateRepository;
 import com.ada.app.modules.recruitment.repository.CandidateSpecs;
 import com.ada.app.modules.recruitment.repository.DepartmentRepository;
@@ -458,9 +461,6 @@ public class RecruitmentService {
 
     if (c.getEmail() != null && !c.getEmail().isBlank()) {
       try {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(senderEmail);
-        message.setTo(c.getEmail());
         String subject;
         if (request.status() == CandidateStatus.passed) {
           subject = "Thông Báo Kết Quả Ứng Tuyển - Thư Mời Phỏng Vấn (ADA Group)";
@@ -469,9 +469,32 @@ public class RecruitmentService {
         } else {
           subject = "Thông Báo Kết Quả Ứng Tuyển (ADA Group)";
         }
-        message.setSubject(subject);
-        message.setText(request.feedbackContent());
-        mailSender.send(message);
+
+        String attachmentUrl = request.feedbackAttachmentURL();
+        File attachmentFile = resolveAttachmentFile(attachmentUrl);
+
+        if (attachmentFile != null && attachmentFile.exists()) {
+          log.info("Sending email feedback with attachment to {}: file={}", c.getEmail(), attachmentFile.getAbsolutePath());
+          MimeMessage mimeMessage = mailSender.createMimeMessage();
+          MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+          helper.setFrom(senderEmail);
+          helper.setTo(c.getEmail());
+          helper.setSubject(subject);
+          helper.setText(request.feedbackContent());
+          String attachmentDisplayName = getAttachmentDisplayName(request.status(), attachmentFile.getName());
+          helper.addAttachment(attachmentDisplayName, attachmentFile);
+          mailSender.send(mimeMessage);
+        } else {
+          if (attachmentUrl != null && !attachmentUrl.isBlank()) {
+            log.warn("Candidate feedback attachment specified ({}) but could not be resolved on disk", attachmentUrl);
+          }
+          SimpleMailMessage message = new SimpleMailMessage();
+          message.setFrom(senderEmail);
+          message.setTo(c.getEmail());
+          message.setSubject(subject);
+          message.setText(request.feedbackContent());
+          mailSender.send(message);
+        }
       } catch (Exception e) {
         log.warn("Failed To Send Email Feedback To Candidate {}: {}", c.getEmail(), e.getMessage());
       }
@@ -865,5 +888,50 @@ public class RecruitmentService {
       finalSlug = baseSlug + counter++;
     }
     return finalSlug;
+  }
+
+  private File resolveAttachmentFile(String url) {
+    if (url == null || url.isBlank()) {
+      return null;
+    }
+    String cleanUrl = url.trim();
+    if (cleanUrl.contains("?")) {
+      cleanUrl = cleanUrl.substring(0, cleanUrl.indexOf('?'));
+    }
+    if (cleanUrl.contains("/files/")) {
+      String pathAfterFiles = cleanUrl.substring(cleanUrl.indexOf("/files/") + "/files/".length());
+      Path resolvedPath = Paths.get(storagePath, pathAfterFiles.replace('/', File.separatorChar));
+      if (Files.exists(resolvedPath)) {
+        return resolvedPath.toFile();
+      }
+    }
+    String rawFilename = cleanUrl.substring(cleanUrl.lastIndexOf('/') + 1);
+    Path mediaPath = Paths.get(storagePath, "media", rawFilename);
+    if (Files.exists(mediaPath)) {
+      return mediaPath.toFile();
+    }
+    Path resumePath = Paths.get(storagePath, "resumes", rawFilename);
+    if (Files.exists(resumePath)) {
+      return resumePath.toFile();
+    }
+    Path rootPath = Paths.get(storagePath, rawFilename);
+    if (Files.exists(rootPath)) {
+      return rootPath.toFile();
+    }
+    return null;
+  }
+
+  private String getAttachmentDisplayName(CandidateStatus status, String filename) {
+    String ext = "";
+    if (filename != null && filename.contains(".")) {
+      ext = filename.substring(filename.lastIndexOf('.'));
+    }
+    if (status == CandidateStatus.passed) {
+      return "Thu_Moi_Phong_Van_ADA" + ext;
+    } else if (status == CandidateStatus.interview_passed) {
+      return "Thu_Moi_Nhan_Viec_ADA" + ext;
+    } else {
+      return "Dinh_Kem_ADA" + ext;
+    }
   }
 }

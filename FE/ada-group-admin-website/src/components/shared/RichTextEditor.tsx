@@ -49,7 +49,7 @@ export const RICH_TEXT_TYPOGRAPHY_CLASS =
   "[&_ol]:mb-2 [&_ol]:list-decimal [&_ol]:pl-5 " +
   "[&_li]:mb-1 " +
   "[&_a]:text-[#316EE9] [&_a]:underline " +
-  "[&_img]:my-2 [&_img]:max-w-full [&_img]:rounded-lg";
+  "[&_img]:mx-auto [&_img]:block [&_img]:my-2 [&_img]:max-w-full [&_img]:rounded-lg";
 
 const CONTENT_CLASS = `min-h-33 px-4 py-4 text-sm text-[#1C1B1B] outline-none ${RICH_TEXT_TYPOGRAPHY_CLASS}`;
 
@@ -307,6 +307,35 @@ function ImageButton({ editor }: { editor: Editor }) {
 
 export type RichTextEditorVariant = "full" | "basic";
 
+function getBlockType(editor: Editor): string {
+  if (!editor || editor.isDestroyed) return "p";
+
+  try {
+    const { selection } = editor.state;
+    const { $from } = selection;
+
+    for (let d = $from.depth; d > 0; d--) {
+      const node = $from.node(d);
+      if (node?.type?.name === "heading") {
+        const level = node.attrs?.level;
+        if (level === 1 || level === 2 || level === 3) {
+          return `h${level}`;
+        }
+      }
+      if (node?.type?.name === "paragraph") {
+        return "p";
+      }
+    }
+  } catch {
+    // fallback
+  }
+
+  if (editor.isActive("heading", { level: 1 })) return "h1";
+  if (editor.isActive("heading", { level: 2 })) return "h2";
+  if (editor.isActive("heading", { level: 3 })) return "h3";
+  return "p";
+}
+
 function Toolbar({
   editor,
   variant,
@@ -314,25 +343,48 @@ function Toolbar({
   editor: Editor;
   variant: RichTextEditorVariant;
 }) {
-  function paragraphValue() {
-    if (editor.isActive("heading", { level: 1 })) return "h1";
-    if (editor.isActive("heading", { level: 2 })) return "h2";
-    if (editor.isActive("heading", { level: 3 })) return "h3";
-    return "p";
-  }
+  const [currentBlock, setCurrentBlock] = useState(() => getBlockType(editor));
+  const [, setTick] = useState(0);
+
+  useEffect(() => {
+    if (!editor) return;
+
+    const handleUpdate = () => {
+      setCurrentBlock(getBlockType(editor));
+      setTick((t) => t + 1);
+    };
+
+    handleUpdate();
+
+    editor.on("selectionUpdate", handleUpdate);
+    editor.on("transaction", handleUpdate);
+    editor.on("update", handleUpdate);
+    editor.on("focus", handleUpdate);
+    editor.on("blur", handleUpdate);
+
+    return () => {
+      editor.off("selectionUpdate", handleUpdate);
+      editor.off("transaction", handleUpdate);
+      editor.off("update", handleUpdate);
+      editor.off("focus", handleUpdate);
+      editor.off("blur", handleUpdate);
+    };
+  }, [editor]);
 
   function handleParagraphChange(value: string) {
-    if (value === "p") editor.chain().focus().setParagraph().run();
-    else {
+    setCurrentBlock(value);
+    if (value === "p") {
+      editor.chain().focus().setParagraph().run();
+    } else {
       const level = Number(value.slice(1)) as 1 | 2 | 3;
-      editor.chain().focus().toggleHeading({ level }).run();
+      editor.chain().focus().setHeading({ level }).run();
     }
   }
 
   return (
-    <div className="flex flex-wrap items-center gap-1 border-b border-[#C4C6D2] bg-[#F6F3F2] p-2">
+    <div className="sticky top-16 z-20 flex flex-wrap items-center gap-1 rounded-t-lg border-b border-[#C4C6D2] bg-[#F6F3F2] p-2 shadow-2xs">
       <select
-        value={paragraphValue()}
+        value={currentBlock}
         onChange={(event) => handleParagraphChange(event.target.value)}
         className="h-7 rounded border-none bg-transparent px-1 text-sm text-[#434750] outline-none"
       >
@@ -543,10 +595,10 @@ export default function RichTextEditor({
     : 0;
 
   return (
-    <div className="overflow-hidden rounded-lg border border-[#C4C6D2]">
+    <div className="relative rounded-lg border border-[#C4C6D2] bg-white">
       <Toolbar editor={editor} variant={variant} />
       <EditorContent editor={editor} />
-      <div className="flex justify-end border-t border-[#C4C6D2] bg-[#F6F3F2] px-3 py-1">
+      <div className="flex justify-end rounded-b-lg border-t border-[#C4C6D2] bg-[#F6F3F2] px-3 py-1">
         <span className="text-xs text-[#434750]">{wordCount} từ</span>
       </div>
     </div>
