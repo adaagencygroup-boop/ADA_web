@@ -52,6 +52,8 @@ function validateForm(data: {
 
   if (!data.name.trim()) {
     errors.name = "Vui lòng nhập họ và tên.";
+  } else if (/^\s+/.test(data.name) || /\s+$/.test(data.name)) {
+    errors.name = "Họ và tên không được chứa khoảng trắng ở đầu hoặc cuối.";
   } else if (data.name.trim().length < 2) {
     errors.name = "Họ và tên phải có ít nhất 2 ký tự.";
   } else if (data.name.trim().length > 100) {
@@ -60,6 +62,8 @@ function validateForm(data: {
 
   if (!data.email.trim()) {
     errors.email = "Vui lòng nhập địa chỉ email.";
+  } else if (/\s/.test(data.email)) {
+    errors.email = "Email không được chứa khoảng trắng.";
   } else if (!EMAIL_REGEX.test(data.email.trim())) {
     errors.email = "Địa chỉ email không hợp lệ (ví dụ: example@domain.com).";
   }
@@ -67,12 +71,18 @@ function validateForm(data: {
   const phoneDigits = data.phone.trim().replace(/[\s\-.()+]/g, "");
   if (!data.phone.trim()) {
     errors.phone = "Vui lòng nhập số điện thoại.";
+  } else if (/\s/.test(data.phone)) {
+    errors.phone = "Số điện thoại không được chứa khoảng trắng.";
   } else if (!PHONE_REGEX.test(data.phone.trim()) || phoneDigits.length < 7 || phoneDigits.length > 15) {
     errors.phone = "Số điện thoại không hợp lệ. (ví dụ: 0912345678 hoặc +84912345678).";
   }
 
   if (!data.message.trim()) {
     errors.message = "Vui lòng nhập nội dung liên hệ.";
+  } else if (/^\s+/.test(data.message) || /\s+$/.test(data.message)) {
+    errors.message = "Nội dung không được chứa khoảng trắng ở đầu hoặc cuối.";
+  } else if (/ {2,}/.test(data.message)) {
+    errors.message = "Nội dung không được chứa nhiều dấu cách liên tiếp.";
   } else if (data.message.trim().length < 10) {
     errors.message = "Nội dung phải có ít nhất 10 ký tự.";
   } else if (data.message.trim().length > 2000) {
@@ -132,7 +142,18 @@ export default function ContactForm() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    const updated = { ...formData, [name]: value };
+    let nextValue = value;
+    if (name === "name") {
+      nextValue = value.replace(/^\s+/, "").replace(/\s{2,}/g, " ");
+    } else if (name === "email") {
+      nextValue = value.replace(/\s/g, "");
+    } else if (name === "phone") {
+      nextValue = value.replace(/\s/g, "");
+    } else if (name === "message") {
+      nextValue = value.replace(/^\s+/, "").replace(/ {2,}/g, " ");
+    }
+
+    const updated = { ...formData, [name]: nextValue };
     setFormData(updated);
     if (touched[name]) {
       const errors = validateForm(updated);
@@ -146,9 +167,12 @@ export default function ContactForm() {
   const handleBlur = (
     e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const { name } = e.target;
+    const { name, value } = e.target;
+    const trimmed = value.trim();
+    const updated = { ...formData, [name]: trimmed };
+    setFormData(updated);
     setTouched((prev) => ({ ...prev, [name]: true }));
-    const errors = validateForm(formData);
+    const errors = validateForm(updated);
     setFieldErrors((prev) => ({
       ...prev,
       [name]: errors[name as keyof FieldErrors],
@@ -160,7 +184,16 @@ export default function ContactForm() {
     if (isSubmitting || cooldown) return;
     setAlertInfo(null);
     setTouched({ name: true, email: true, phone: true, message: true });
-    const errors = validateForm(formData);
+
+    const trimmedData = {
+      name: formData.name.trim(),
+      email: formData.email.trim(),
+      phone: formData.phone.trim(),
+      message: formData.message.trim(),
+    };
+    setFormData(trimmedData);
+
+    const errors = validateForm(trimmedData);
     setFieldErrors(errors);
     if (Object.keys(errors).length > 0) {
       const firstKey = Object.keys(errors)[0];
@@ -170,10 +203,10 @@ export default function ContactForm() {
     setIsSubmitting(true);
     try {
       const response = await submitContact({
-        customerFullname: formData.name,
-        customerEmail: formData.email || null,
-        customerPhone: formData.phone || null,
-        message: formData.message,
+        customerFullname: trimmedData.name,
+        customerEmail: trimmedData.email || null,
+        customerPhone: trimmedData.phone || null,
+        message: trimmedData.message,
       });
       if (response.success) {
         setAlertInfo({

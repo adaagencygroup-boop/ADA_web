@@ -70,7 +70,7 @@ export default function CategoryManager() {
     try {
       const checkRes = await getNews({ categoryId: deleteTarget.id, page: 1, size: 1 });
       if (checkRes?.pagination?.totalElements && checkRes.pagination.totalElements > 0) {
-        toast.error(`Lĩnh vực "${deleteTarget.name}" đang có ${checkRes.pagination.totalElements} bài viết tin tức sử dụng, không thể xóa!`);
+        toast.error(`Danh mục "${deleteTarget.name}" đang có ${checkRes.pagination.totalElements} bài viết tin tức sử dụng, không thể xóa!`);
         setDeleteTarget(null);
         return;
       }
@@ -111,16 +111,16 @@ export default function CategoryManager() {
       >
         <h2 className="flex items-center gap-3 border-b border-[#E2E8F0] pb-4 text-lg font-semibold text-[#1E293B]">
           <Bookmark className="size-4 text-[#1A56DB]" />
-          Thêm lĩnh vực mới
+          Thêm danh mục mới
         </h2>
 
         <div className="flex flex-col gap-1.5">
           <label className="text-sm font-medium text-[#1E293B]">
-            Tên lĩnh vực <span className="text-red-500">*</span>
+            Tên danh mục <span className="text-red-500">*</span>
           </label>
           <input
             type="text"
-            placeholder="Nhập tên lĩnh vực"
+            placeholder="Nhập tên danh mục"
             className="h-10.5 rounded-lg border border-[#E2E8F0] px-4 text-sm text-[#1E293B] shadow-xs outline-none placeholder:text-[#94A3B8] focus-visible:border-[#1A56DB]"
             {...addForm.register("name")}
           />
@@ -137,7 +137,7 @@ export default function CategoryManager() {
           className="flex h-10 w-fit items-center gap-2 self-end rounded-lg bg-[#1A56DB] px-6 text-sm font-medium text-white shadow-xs hover:bg-[#1A56DB]/90 disabled:cursor-not-allowed disabled:opacity-50"
         >
           <Plus className="size-3.5" />
-          {createMutation.isPending ? "Đang thêm..." : "Thêm lĩnh vực"}
+          {createMutation.isPending ? "Đang thêm..." : "Thêm danh mục"}
         </button>
       </form>
 
@@ -145,7 +145,7 @@ export default function CategoryManager() {
         <div className="flex flex-wrap items-center gap-4 border-b border-[#E2E8F0] p-6">
           <h2 className="flex items-center gap-3 text-lg font-semibold text-[#1E293B]">
             <List className="size-4 text-[#1A56DB]" />
-            Danh sách lĩnh vực
+            Danh sách danh mục
           </h2>
 
           <div className="relative w-full max-w-md flex-1">
@@ -154,7 +154,7 @@ export default function CategoryManager() {
               type="text"
               value={searchInput}
               onChange={(event) => setSearchInput(event.target.value)}
-              placeholder="Tìm kiếm lĩnh vực..."
+              placeholder="Tìm kiếm danh mục..."
               className="h-9.5 w-full rounded-lg border border-[#E2E8F0] pr-4 pl-10 text-sm text-[#1E293B] outline-none placeholder:text-[#64748B] focus-visible:border-[#1A56DB]"
             />
           </div>
@@ -168,7 +168,7 @@ export default function CategoryManager() {
                   STT
                 </th>
                 <th className="px-6 py-3 text-xs font-semibold tracking-wider text-[#64748B] uppercase">
-                  Tên lĩnh vực
+                  Tên danh mục
                 </th>
                 <th className="px-6 py-3 text-right text-xs font-semibold tracking-wider text-[#64748B] uppercase">
                   Thao tác
@@ -186,7 +186,7 @@ export default function CategoryManager() {
               {isError && (
                 <tr>
                   <td colSpan={3} className="px-6 py-10 text-center text-sm text-red-600">
-                    {error?.message ?? "Đã có lỗi xảy ra khi tải danh sách lĩnh vực."}
+                    {error?.message ?? "Đã có lỗi xảy ra khi tải danh sách danh mục."}
                   </td>
                 </tr>
               )}
@@ -275,7 +275,7 @@ export default function CategoryManager() {
                     colSpan={3}
                     className="px-6 py-10 text-center text-sm text-[#64748B]"
                   >
-                    Không tìm thấy lĩnh vực nào.
+                    Không tìm thấy danh mục nào.
                   </td>
                 </tr>
               )}
@@ -287,7 +287,7 @@ export default function CategoryManager() {
           <span className="text-sm text-[#64748B]">
             Hiển thị {items.length === 0 ? 0 : (currentPage - 1) * PAGE_SIZE + 1} -{" "}
             {Math.min(currentPage * PAGE_SIZE, items.length)} của{" "}
-            {items.length} lĩnh vực
+            {items.length} danh mục
           </span>
 
           <div className="flex items-center gap-1">

@@ -23,7 +23,7 @@ export function useCreateNewsCategory() {
     mutationFn: createNewsCategory,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: CATEGORIES_QUERY_KEY });
-      toast.success("Đã thêm lĩnh vực thành công");
+      toast.success("Đã thêm danh mục thành công");
     },
     onError: (error: Error) => toast.error(error.message),
   });
@@ -41,7 +41,7 @@ export function useUpdateNewsCategory() {
     }) => updateNewsCategory(id, payload),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: CATEGORIES_QUERY_KEY });
-      toast.success("Đã cập nhật lĩnh vực thành công");
+      toast.success("Đã cập nhật danh mục thành công");
     },
     onError: (error: Error) => toast.error(error.message),
   });
@@ -53,7 +53,7 @@ export function useDeleteNewsCategory() {
     mutationFn: (id: string) => deleteNewsCategory(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: CATEGORIES_QUERY_KEY });
-      toast.success("Đã xóa lĩnh vực thành công");
+      toast.success("Đã xóa danh mục thành công");
     },
     onError: (error: Error) => toast.error(error.message),
   });

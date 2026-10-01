@@ -15,14 +15,14 @@ export default function DanhMucPage() {
             Quản lý tin tức
           </Link>
           <ChevronRight className="size-3" />
-          <span className="font-medium text-[#1C1B1B]">Lĩnh vực</span>
+          <span className="font-medium text-[#1C1B1B]">Danh mục</span>
         </nav>
         <div className="flex flex-col gap-1">
           <h1 className="text-3xl font-semibold text-[#1C1B1B]">
             Danh mục tin tức
           </h1>
           <p className="text-sm text-[#434750]">
-            Quản lý danh sách lĩnh vực của tin tức.
+            Quản lý danh mục của tin tức.
           </p>
         </div>
       </div>

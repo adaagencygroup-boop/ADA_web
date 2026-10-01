@@ -165,6 +165,7 @@ export default function JobForm({
   const currentRequirements = watch("requirements");
   const currentBenefits = watch("benefits");
   const currentReqNum = watch("requiredCandidateNum");
+  const currentExpiresAt = watch("expiresAt");
 
   const isFormChanged = isEdit && job
     ? (
@@ -181,6 +182,11 @@ export default function JobForm({
         (maxSalaryValue ?? "") !== (job.maxSalary != null ? String(job.maxSalary) : "") ||
         (isNegotiable ?? true) !== (job.isNegotiable ?? true) ||
         (currentReqNum ?? "") !== (job.requiredCandidateNum != null ? String(job.requiredCandidateNum) : "") ||
+        (() => {
+          const jobExpires = job.expiresAt ? new Date(job.expiresAt).toDateString() : null;
+          const currentExpires = currentExpiresAt instanceof Date ? currentExpiresAt.toDateString() : null;
+          return jobExpires !== currentExpires;
+        })() ||
         coverPreview !== null
       )
     : (
@@ -192,6 +198,12 @@ export default function JobForm({
         (currentBenefits ?? "").trim().length > 0 ||
         (coverImageURL ?? "").trim().length > 0 ||
         (currentReqNum ?? "").trim().length > 0 ||
+        (() => {
+          if (!currentExpiresAt) return false;
+          const defaultStr = DEFAULT_DEADLINE.toDateString();
+          const currentStr = currentExpiresAt instanceof Date ? currentExpiresAt.toDateString() : null;
+          return currentStr !== defaultStr;
+        })() ||
         coverPreview !== null
       );
 
@@ -311,7 +323,7 @@ export default function JobForm({
   const isPublishDisabled =
     isBusy || (isEdit && job?.status === "hiring" && !isFormChanged);
 
-  const cancelHref = isEdit ? `/tuyen-dung/${jobId}` : "/tuyen-dung";
+  const cancelHref = "/tuyen-dung";
   function handleCancelClick() {
     if (isFormChanged) {
       setPendingNavigationUrl(cancelHref);

@@ -590,16 +590,16 @@ export default function RichTextEditor({
 
   if (!editor) return null;
 
-  const wordCount = editor.getText().trim()
-    ? editor.getText().trim().split(/\s+/).length
-    : 0;
+  // const wordCount = editor.getText().trim()
+  //   ? editor.getText().trim().split(/\s+/).length
+  //   : 0;
 
   return (
     <div className="relative rounded-lg border border-[#C4C6D2] bg-white">
       <Toolbar editor={editor} variant={variant} />
       <EditorContent editor={editor} />
       <div className="flex justify-end rounded-b-lg border-t border-[#C4C6D2] bg-[#F6F3F2] px-3 py-1">
-        <span className="text-xs text-[#434750]">{wordCount} từ</span>
+        {/* <span className="text-xs text-[#434750]">{wordCount} từ</span> */}
       </div>
     </div>
   );
