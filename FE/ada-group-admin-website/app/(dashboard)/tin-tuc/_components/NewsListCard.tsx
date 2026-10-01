@@ -276,9 +276,9 @@ export default function NewsListCard() {
                             <span className="line-clamp-2 text-sm font-semibold text-[#111827]">
                               {article.title}
                             </span>
-                            <span className="truncate font-mono text-xs text-[#9CA3AF]">
+                            {/* <span className="truncate font-mono text-xs text-[#9CA3AF]">
                               {article.slug}
-                            </span>
+                            </span> */}
                           </div>
                         </div>
                       </td>

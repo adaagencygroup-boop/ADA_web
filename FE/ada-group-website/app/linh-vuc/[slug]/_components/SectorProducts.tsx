@@ -76,11 +76,11 @@ export default function SectorProducts({ products = [] }: SectorProductsProps) {
                   {product.title}
                 </h3>
                 
-                <p className="text-[14px] lg:text-[16px] leading-relaxed text-[#475569] whitespace-pre-line mb-6 lg:mb-8">
+                <p className="text-justify text-[14px] lg:text-[16px] leading-relaxed text-[#475569] whitespace-pre-line mb-6 lg:mb-8">
                   {product.description}
                 </p>
 
-                <ul className="space-y-3 lg:space-y-4">
+                <ul className="text-justify space-y-3 lg:space-y-4">
                   {product.features.map((feature, idx) => (
                     <li key={idx} className="flex items-center gap-3 lg:gap-4">
                       <div className="shrink-0 w-5 h-5 rounded-full bg-blue-50 text-[#002A64] flex items-center justify-center">

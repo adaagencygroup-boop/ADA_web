@@ -85,7 +85,7 @@ export default async function NewsListing({
             />
           </div>
 
-          <aside className="flex w-full flex-col gap-5 lg:w-105 lg:shrink-0 lg:gap-8">
+          <aside className="flex w-full flex-col gap-5 lg:sticky lg:top-24 lg:self-start lg:w-105 lg:shrink-0 lg:gap-8">
             <div className="hidden lg:block">
               <NewsCategories
                 categories={categories}

@@ -53,10 +53,10 @@ export default function SectorApproach({ sector }: { sector: Sector }) {
               </div>
 
               <div className="flex min-w-0 flex-col items-start gap-4 lg:gap-6">
-                <p className="text-[14px] lg:text-base leading-relaxed text-[#4B5563]">
+                <p className="text-[14px] lg:text-base leading-relaxed text-[#4B5563] text-justify">
                   {block.paragraph}
                 </p>
-                <ul className="flex flex-col items-start gap-3 lg:gap-4">
+                <ul className="text-justify flex flex-col items-start gap-3 lg:gap-4">
                   {block.checklist.map((item) => (
                     <li key={item} className="flex items-center gap-3">
                       <span className="flex h-5 w-5 lg:h-6 lg:w-6 shrink-0 items-center justify-center rounded-full bg-[#2563EB] text-white">

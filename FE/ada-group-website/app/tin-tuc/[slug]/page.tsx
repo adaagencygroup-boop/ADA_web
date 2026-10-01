@@ -56,7 +56,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
               <RelatedArticles articles={relatedArticles} />
             </div>
 
-            <aside className="hidden w-full flex-col gap-5 lg:flex lg:w-105 lg:shrink-0 lg:gap-8">
+            <aside className="hidden w-full flex-col gap-5 lg:sticky lg:top-24 lg:self-start lg:flex lg:w-105 lg:shrink-0 lg:gap-8">
               <FeaturedPosts posts={featuredPosts} />
               <AISolutionBanner />
             </aside>

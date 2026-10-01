@@ -14,7 +14,7 @@ export default function SectorHero({ sector }: { sector: Sector }) {
             <h1 className="text-[28px] lg:text-[44px] font-semibold leading-[1.2] lg:leading-[1.1] text-[#0F172A]">
               {sector.title}
             </h1>
-            <p className="text-[14px] lg:text-[16px] leading-relaxed text-[#475569]">
+            <p className="text-justify text-[14px] lg:text-[16px] leading-relaxed text-[#475569]">
               {sector.content}
             </p>
           </div>

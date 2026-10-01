@@ -59,7 +59,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
         badge: "HEALTHCARE",
         title: "ADAMEC",
         description:
-          "AI hỗ trợ bác sĩ đọc và phân tích hình ảnh y khoa (X-quang, CT, MRI),\ncảnh báo bất thường và gợi ý chẩn đoán chính xác.",
+          "AI hỗ trợ bác sĩ đọc và phân tích hình ảnh y khoa (X-quang, CT, MRI), cảnh báo bất thường và gợi ý chẩn đoán chính xác.",
         features: [
           "Phát hiện bất thường với độ chính xác cao",
           "Tích hợp dễ dàng với hệ thống PACS/RIS",
@@ -123,7 +123,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
         badge: "SMART FARM",
         title: "ADAFARM",
         description:
-          "Hệ thống giám sát nông nghiệp thông minh ứng dụng AI và IoT.\nCho phép điều khiển tưới tiêu tự động và theo dõi sức khỏe cây trồng.",
+          "Hệ thống giám sát nông nghiệp thông minh ứng dụng AI và IoT. Cho phép điều khiển tưới tiêu tự động và theo dõi sức khỏe cây trồng.",
         features: [
           "Phân tích độ ẩm, nhiệt độ đất theo thời gian thực",
           "Cảnh báo sâu bệnh sớm qua Camera AI",
@@ -251,7 +251,7 @@ const RAW_SECTORS: Omit<Sector, "slug">[] = [
         badge: "E-COMMERCE",
         title: "ADATIK",
         description:
-          "Công cụ AI Livestream tự động bán hàng trên các nền tảng TMĐT.\nNgười mẫu ảo tương tác thời gian thực với khách hàng.",
+          "Công cụ AI Livestream tự động bán hàng trên các nền tảng TMĐT. Người mẫu ảo tương tác thời gian thực với khách hàng.",
         features: [
           "MC ảo Livestream 24/7 không cần nghỉ ngơi",
           "Tự động trả lời bình luận chốt đơn",

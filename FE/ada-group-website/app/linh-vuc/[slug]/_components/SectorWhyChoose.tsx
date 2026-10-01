@@ -28,7 +28,7 @@ export default function SectorWhyChoose({ sector }: { sector: Sector }) {
           {sector.title}?
         </h2>
 
-        <div className="mt-(--inner-space) flex flex-col gap-4 lg:grid lg:grid-cols-2 lg:items-center lg:gap-(--inner-space)">
+        <div className="text-justify mt-(--inner-space) flex flex-col gap-4 lg:grid lg:grid-cols-2 lg:items-center lg:gap-(--inner-space)">
           <div className="min-w-0 rounded-2xl border border-slate-200 bg-white p-5 lg:border-none lg:bg-transparent lg:p-0">
             <p className="text-base leading-6 font-semibold text-[#0F172A] lg:text-2xl lg:leading-9 lg:font-semibold lg:text-[#1E293B]">
               <span
@@ -49,7 +49,7 @@ export default function SectorWhyChoose({ sector }: { sector: Sector }) {
                 ”
               </span>
             </p>
-            <p className="mt-(--heading-space) hidden max-w-xl text-base leading-6.5 text-[#475569] lg:block">
+            <p className="text-justify mt-(--heading-space) hidden max-w-2xl text-base leading-6.5 text-[#475569] lg:block">
               {whyChoose.paragraph}
             </p>
           </div>
