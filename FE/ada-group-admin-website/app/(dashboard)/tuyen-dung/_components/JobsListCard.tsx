@@ -348,6 +348,8 @@ export default function JobsListCard({
           if (!open) setDeleteTarget(null);
         }}
         jobTitle={deleteTarget?.jobTitle ?? ""}
+        status={deleteTarget?.status ?? "hiring"}
+        applicantCount={deleteTarget?.applicantCount ?? 0}
         onConfirm={handleConfirmDelete}
         isDeleting={deleteMutation.isPending}
       />

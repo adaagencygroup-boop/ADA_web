@@ -355,6 +355,8 @@ export default function JobDetailView({ job }: { job: RecruitmentDetail }) {
         open={deleteOpen}
         onOpenChange={setDeleteOpen}
         jobTitle={job.jobTitle}
+        status={job.status}
+        applicantCount={job.applicantCount ?? 0}
         onConfirm={handleConfirmDelete}
         isDeleting={deleteMutation.isPending}
       />
