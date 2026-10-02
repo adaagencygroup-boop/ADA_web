@@ -4,8 +4,8 @@ import GsapHeroReveal from "@/app/_components/GsapHeroReveal";
 const CONTENT = {
   title: "Về ADA Group",
   paragraphs: [
-    "Công nghệ không chỉ là những dãy mã máy khô khan, nó là nền tảng để kiến tạo tương lai. Tại ADA Group, chúng tôi tin rằng sức mạnh của công nghệ nằm ở khả năng giải quyết các vấn đề thực tiễn của doanh nghiệp.",
-    "Chúng tôi xây dựng các giải pháp CNTT toàn diện, linh hoạt và bảo mật cao, tập trung vào việc tối ưu hóa quy trình, nâng cao hiệu suất và thúc đẩy đổi mới sáng tạo, giúp khách hàng tự tin bứt phá trong kỷ nguyên số.",
+    "Công nghệ không chỉ là những dòng mã phức tạp khó đọc, mà là công cụ để tạo ra những giải pháp thiết thực cho cuộc sống và công việc. Tại ADA Group, chúng tôi tin rằng công nghệ có giá trị nhất khi có thể giải quyết những vấn đề thực tế và tạo ra trải nghiệm đơn giản, hiệu quả cho mọi người.",
+    "Chúng tôi phát triển các giải pháp công nghệ toàn diện, linh hoạt và bảo mật, phục vụ cá nhân, hộ kinh doanh, startup, tổ chức và doanh nghiệp. Từ tự động hóa quy trình đến ứng dụng AI và các nền tảng số, ADA Group đồng hành cùng khách hàng trong việc biến ý tưởng thành giải pháp thực tế và thúc đẩy đổi mới.",
   ],
 };
 

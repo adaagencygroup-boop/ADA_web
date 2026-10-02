@@ -5,11 +5,13 @@ function StatCard({ stat }: { stat: SectorStat }) {
   const Icon = STAT_ICONS[stat.icon];
   return (
     <div className="flex flex-1 flex-col items-center gap-1 rounded-xl bg-white p-4 text-center lg:items-start lg:gap-4 lg:rounded-2xl lg:border lg:border-slate-100 lg:p-8 lg:text-left lg:shadow-[0_1px_2px_rgba(0,0,0,0.05)]">
-      <Icon className="hidden h-10 w-10 text-[#2563EB] lg:block" />
-      <span className="text-2xl leading-8.75 font-semibold text-[#002A64] lg:leading-10 lg:text-[#1E3A8A]">
-        {stat.value}
-      </span>
-      <p className="text-[11px] leading-4 text-slate-400 lg:text-sm lg:leading-5 lg:text-[#64748B]">
+      <div className="flex flex-row items-center">
+        <Icon className="hidden h-10 w-10 text-[#2563EB] lg:block shrink-0" />
+        <span className="text-2xl pl-2 leading-8.75 font-semibold text-[#002A64] lg:leading-10 lg:text-[#1E3A8A]">
+          {stat.value}
+        </span>
+      </div>
+      <p className="text-justify text-[11px] leading-4 text-slate-400 lg:text-sm lg:leading-5 lg:text-[#64748B]">
         {stat.label}
       </p>
     </div>
