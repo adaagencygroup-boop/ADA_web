@@ -15,7 +15,7 @@ const SELECTOR = "[data-hologram-section]";
 const TRIGGER_LINE_FROM_TOP: Record<SectionId, number> = {
   hero: 0.4,
   about: 0.6,
-  services: 0.6,
+  services: 0.2,
   partners: 0.4,
   people: 0.4,
   techstack: 0.4,

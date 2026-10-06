@@ -1,5 +1,15 @@
-import type { SectionHologramConfig, SectionId } from "./types";
+import type { JourneyConfig, SectionHologramConfig, SectionId } from "./types";
 import { MAX_PARTICLE_COUNT } from "./types";
+
+// Page background behind the (transparent) hologram canvas. Kept as the
+// light pastel gradient on purpose — the dark trio from the
+// hologram-particles panel (#495155/#495258/#305269) was tried and reverted
+// because it broke text contrast across every section (dark-on-dark).
+export const HOLOGRAM_BG = {
+  center: "#fbfcfe",
+  mid: "#f2f6fb",
+  edge: "#e2eaf5",
+};
 
 const ADA_GLB = "/glb/ada.glb";
 const ADA_GLB1 = "/glb/bb8.glb";
@@ -12,6 +22,13 @@ const VIETNAM_GLB = "/glb/vietnam.glb";
  * GLBs (Web / Mobile / Enterprise / AI) exist; the transition machinery
  * already supports morphing between different models.
  */
+/**
+ * Last section that shows particles. Sections after it have no hologram:
+ * this section's model (with followScroll) rides up with the page as you
+ * scroll on and simply leaves the top of the viewport.
+ */
+export const HOLOGRAM_LAST_SECTION: SectionId = "people";
+
 export const SECTION_ORDER: SectionId[] = [
   "hero",
   "about",
@@ -52,6 +69,7 @@ export const SECTION_CONFIG: Record<SectionId, SectionHologramConfig> = {
     bobAmp: 0,
     ...UNUSED_RING,
     mouseGlowColor: "#ffada7",
+    followScroll: true,
   },
   about: {
     shape: "glb",
@@ -64,7 +82,7 @@ export const SECTION_CONFIG: Record<SectionId, SectionHologramConfig> = {
     light2Color: "#8bb4d5",
     light2Intensity: 1.05,
     modelX: -2.8,
-    modelY: -2.2,
+    modelY: -2.6,
     modelScale: 1.5,
     autoRotateSpeed: 8,
     bobAmp: 0,
@@ -142,6 +160,7 @@ export const SECTION_CONFIG: Record<SectionId, SectionHologramConfig> = {
     bobAmp: 0,
     ...UNUSED_RING,
     mouseGlowColor: "#aecaff",
+    followScroll: true,
   },
   techstack: {
     shape: "ring",
@@ -212,4 +231,26 @@ export const SECTION_CONFIG: Record<SectionId, SectionHologramConfig> = {
     ringTiltX: Math.PI / 2,
     mouseGlowColor: "#a7c4ff",
   },
+};
+
+/**
+ * about -> people scroll journey (see JourneyConfig). The ribbon starts at the
+ * Earth model's centre, swings right through services, touches the right
+ * edge at the services/partners boundary, curls back left through partners
+ * and drops into the Vietnam model in people. `about` has no followScroll —
+ * the journey itself carries the Earth up with the page once about's centre
+ * passes the viewport centre.
+ */
+export const JOURNEY: JourneyConfig = {
+  from: "about",
+  to: "people",
+  through: ["services", "partners"],
+  // Start a bit before about's centre reaches the viewport centre.
+  startAt: 0.65,
+  waypoints: [
+    { section: "services", at: 0.55, x: 0.58 },
+    { section: "partners", at: 0.02, x: 0.88 },
+    { section: "partners", at: 0.6, x: 0.42 },
+    { section: "people", at: 0.0, x: 0.3 },
+  ],
 };

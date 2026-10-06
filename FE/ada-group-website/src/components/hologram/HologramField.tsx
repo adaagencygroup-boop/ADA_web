@@ -4,6 +4,32 @@
    API (uniform/material nodes, PointsNodeMaterial's `*Node` properties)
    doesn't ship precise TypeScript types for composed expressions. */
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Scroll-scrubbed hologram particle field.
+//
+// EVERYTHING the particles do between sections is a pure function of the
+// scroll position — there is no time-based transition state machine. Each
+// frame we read window.scrollY (driven by Lenis, see SmoothScroll), find the
+// timeline segment it falls in (A -> B, progress t in [0, 1]) and the shader
+// places every particle from that alone. Scrolling fast, flinging, jumping
+// with an anchor link or scrolling back up all land on exactly the frame the
+// scroll position describes; nothing can be left half-finished.
+//
+// Timeline: "stations" are the sections that show their own shape (every
+// homepage section except JOURNEY.through). Between consecutive stations:
+//   - a MORPH segment (default), or
+//   - the JOURNEY segment (JOURNEY.from -> JOURNEY.to): particles peel off
+//     model 1 into a wave ribbon along an S-curve and land in model 2.
+// While holding a station the model may follow its section up the page
+// (followScroll), computed here in JS — Lenis + one shared ticker keep the
+// DOM and the canvas on the same frame, so no CSS scroll-timeline needed.
+//
+// All positions are computed in WORLD space in the shader from two per-frame
+// model matrices (M1 = station A's pose, M2 = station B's pose, each
+// including its rotation and scroll-follow offset), so the mesh itself never
+// moves and pose changes interpolate per particle.
+// ─────────────────────────────────────────────────────────────────────────────
+
 import { useEffect, useRef } from "react";
 import {
   Scene,
@@ -12,17 +38,18 @@ import {
   PlaneGeometry,
   InstancedBufferAttribute,
   Object3D,
-  Group,
   Matrix3,
+  Matrix4,
+  Euler,
+  Quaternion,
   Vector2,
   Vector3,
-  Quaternion,
   Box3,
   Plane,
   Raycaster,
   Mesh,
   Color,
-  CanvasTexture,
+  CatmullRomCurve3,
 } from "three";
 import {
   WebGPURenderer,
@@ -36,10 +63,14 @@ import {
   cos,
   time,
   uniform,
+  uniformArray,
   uv,
   vec2,
   vec3,
+  vec4,
   float,
+  int,
+  floor,
   fract,
   normalize,
   dot,
@@ -62,19 +93,25 @@ import { bloom } from "three/addons/tsl/display/BloomNode.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 import { MeshSurfaceSampler } from "three/addons/math/MeshSurfaceSampler.js";
+import gsap from "gsap";
 import type { GeometryData, SectionHologramConfig, SectionId } from "./types";
 import { MAX_PARTICLE_COUNT } from "./types";
-import { SECTION_CONFIG } from "./sectionConfig";
+import {
+  HOLOGRAM_LAST_SECTION,
+  JOURNEY,
+  SECTION_CONFIG,
+  SECTION_ORDER,
+} from "./sectionConfig";
 
 // ── Tunable constants (no live GUI in production — edit here) ───────────────
 // Rendered as camera-facing billboard sprites (PointsNodeMaterial). With
-// sizeAttenuation on (default), sizeNode is a WORLD-space size — it's
-// converted to screen pixels via size * canvasHeight/2 / distanceToCamera,
-// the same perspective-shrink-with-distance rule the old mesh radius had.
+// sizeAttenuation on (default), sizeNode is a WORLD-space size.
 const PARTICLE_SIZE = 0.1;
 const FLOAT_AMP = 0.01;
 const WRAP = 0.35;
 
+// Idle "breathing" noise on every shape (scaled by the current model scale
+// so it looks the same as when it lived in model-local space).
 const NOISE_AMP = 0.29;
 const NOISE_SCALE = 0.9;
 const NOISE_SPEED = 1;
@@ -82,14 +119,57 @@ const NOISE_GAIN = 0.65;
 const MASK_SCALE = 0.95;
 const MASK_SPEED = 0.5;
 const MASK_CONTRAST = 3.8;
+// Lower contrast = the noise mask covers more of the shape; used mid-morph
+// so the cloud visibly dissolves while it changes shape.
 const TRANSITION_MASK_CONTRAST = 1.65;
 
-const TRANSITION_DEFORM_DUR = 0.4;
-const TRANSITION_MORPH_DUR = 1.05;
-const TRANSITION_REFORM_DUR = 0.45;
-const ENTRANCE_MORPH_DUR = 1.4;
-const ENTRANCE_REFORM_DUR = 1.1;
+// ── Morph segments (scroll ranges) ──────────────────────────────────────────
+// A -> B morph runs while station B's TOP edge travels from START to END
+// (fractions of viewport height from the top). Purely scroll-driven.
+const MORPH_START_LINE = 0.9;
+const MORPH_END_LINE = 0.4;
+// Per-particle stagger (like JOURNEY_SPREAD) so the morph ripples through the
+// cloud instead of every particle moving in lockstep.
+const MORPH_SPREAD = 0.35;
+// Mid-flight scatter (world units) so the cloud dissolves between shapes.
+const MORPH_SCATTER = 0.6;
 
+// ── Page-load entrance (the only time-based transition left) ────────────────
+const ENTRANCE_DUR = 1.4; // s, scattered cloud -> first shape
+
+// ── Scroll journey (JOURNEY in sectionConfig) ───────────────────────────────
+// Progress p: 0 when the `from` section's centre is at JOURNEY.startAt of
+// the viewport, 1 when the `to` section's centre is at the viewport centre.
+// Each particle gets its own progress q = clamp(p * (1 + SPREAD) - stagger *
+// SPREAD), so part of the cloud is still in model 1, part is in flight along
+// the curve and part has landed.
+const JOURNEY_SPREAD = 0.5;
+const JOURNEY_LEAVE = 0.12;
+const JOURNEY_ARRIVE = 0.12;
+// ── In-flight shape: a SPIRAL stream along the S-curve ────────────────────
+// Particles travel along the curve while orbiting it on helical strands
+// (like a twisted rope / DNA). Each particle has a fixed strand, a fixed
+// offset inside the strand and its own stagger, so the spiral peels off
+// model 1 front-first and winds into model 2.
+const SPIRAL_STRANDS = 3; // helical strands around the path
+const SPIRAL_RADIUS = 0.35; // orbit radius around the path (world units)
+const SPIRAL_TURNS = 5; // full turns along the whole path
+const SPIRAL_SPIN = 1.6; // rad/s the whole spiral rotates around the path
+const SPIRAL_THICKNESS = 0.3; // strand thickness (world units)
+// Radius breathes along the path so the spiral bulges and pinches.
+const SPIRAL_PULSE = 0.3; // fraction of SPIRAL_RADIUS
+const SPIRAL_PULSE_FREQ = 3; // bulges along the whole path
+// Share of particles scattered loosely around the spiral (dust halo).
+const SPIRAL_HALO = 0.05;
+// Only this many particles fly the spiral; all the others dissolve out of
+// model 1 (drift + fade) and condense back into model 2.
+const SPIRAL_PARTICLES = 3000;
+// How far the dissolving particles drift while fading out / in (world units).
+const SPIRAL_DUST_DRIFT = 0.9;
+const JOURNEY_GLOW = 0.35;
+const JOURNEY_PATH_POINTS = 48;
+
+// ── Mouse pusher (GPU compute, collider cylinder along the view axis) ───────
 const PUSHER_RADIUS = 0.05;
 const PUSHER_INFLUENCE = 0.4;
 const PUSHER_FALLOFF = 2.5;
@@ -118,51 +198,39 @@ const BLOOM_STRENGTH = 0.15;
 const BLOOM_RADIUS = 0.15;
 const BLOOM_THRESHOLD = 0.34;
 
-// NOTE: left as the light pastel gradient on purpose — the dark trio from
-// the hologram-particles panel (#495155/#495258/#305269) was tried and
-// reverted earlier in this session because it broke text contrast across
-// every section (dark-on-dark). See chat before applying it again.
-const BG_COLOR_CENTER = "#fbfcfe";
-const BG_COLOR_MID = "#f2f6fb";
-const BG_COLOR_EDGE = "#e2eaf5";
-
-// Exponential-smoothing rate used to ease color/light/position toward a new
-// section's config instead of snapping instantly.
-const UNIFORM_LERP_SPEED = 2.5;
-
-// modelX offsets in sectionConfig were tuned by eye against a normal desktop
-// browser window (~1.9 aspect). Visible half-WIDTH in world units at a given
-// depth scales with the camera's aspect ratio (width/height) — half-height
-// does not, since `fov` is the vertical FOV and is independent of window
-// shape — so a fixed modelX offset represents a growing fraction of the
-// screen as the window gets narrower/taller, eventually pushing the model
-// off-screen. Scaling modelX by (current aspect / reference aspect), capped
-// at 1 so wide/ultrawide windows keep the originally-tuned offset, keeps the
-// model at roughly the same fractional on-screen position at any width.
+// modelX offsets / modelScale were tuned by eye on a ~1.9 aspect, ~1600px
+// wide desktop window; scale them down (never up) for narrower windows so
+// the model keeps its on-screen position and fits width-driven layouts.
 const MODEL_X_REFERENCE_ASPECT = 1.9;
 
-// modelScale values were also tuned by eye against a normal desktop window
-// (~1600px wide). The camera's vertical FOV/distance are fixed, so a
-// model's rendered PIXEL height only tracks viewport HEIGHT, not width — a
-// DOM layout that reserves space for it based on WIDTH (e.g. an
-// aspect-square column, which shrinks as the window narrows) can then fall
-// out of sync with the model's actual on-screen size and get overflowed by
-// it. Scaling modelScale by (current width / reference width), capped at 1,
-// shrinks the model together with any width-driven reserved space instead
-// of leaving it a fixed size regardless of window width.
+// The canvas is hidden (and rendering skipped) once the last hologram
+// section's bottom edge is this far (fraction of viewport height) above
+// the top of the viewport — by then its model has scrolled away.
+const END_HIDE_MARGIN = 0.3;
 const MODEL_SCALE_REFERENCE_WIDTH = 1600;
 
-// Wraps an angle (radians) into [-PI, PI]. The auto-rotate spin accumulates
-// via `+= rotDelta` every frame indefinitely on whichever axis is active
-// (see the animate loop) — without wrapping, a section left spinning for a
-// while builds up a large raw angle (many full turns), and when the other
-// axis takes over and eases *this* one back to 0, it "unwinds" through that
-// entire accumulated history instead of the short way round, reading as a
-// sudden, violent multi-rotation spin. Wrapping after every increment caps
-// the worst case at half a turn.
 function wrapAngle(angle: number): number {
   return ((angle + Math.PI) % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2) - Math.PI;
 }
+
+function geometryCentroid(g: GeometryData): Vector3 {
+  const c = new Vector3();
+  let n = 0;
+  for (let i = 0; i < g.visible.length; i++) {
+    if (g.visible[i] < 0.5) continue;
+    c.x += g.positions[i * 3];
+    c.y += g.positions[i * 3 + 1];
+    c.z += g.positions[i * 3 + 2];
+    n++;
+  }
+  return n > 0 ? c.divideScalar(n) : c;
+}
+
+const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
+const smooth01 = (v: number) => {
+  const x = clamp01(v);
+  return x * x * (3 - 2 * x);
+};
 
 // ── Module-level geometry cache ───────────────────────────────────────────────
 
@@ -300,35 +368,6 @@ async function sampleGLBGeometry(
   return promise;
 }
 
-// Entrance start state: particles begin scattered across a generous volume
-// (roughly screen-covering, in local space around the Hero model's origin)
-// instead of collapsed at a point, so the very first paint gathers them in
-// from everywhere rather than growing outward from the centre.
-function makeScatteredStart(count: number): GeometryData {
-  const positions = new Float32Array(count * 3);
-  const normals = new Float32Array(count * 3);
-  // All visible at the start: any slot that is filler in the very first
-  // section's real target geometry fades to invisible as transitionProgress
-  // blends instancePos -> instancePosTarget (see visCur/visTgt below), so
-  // the entrance scatter itself doesn't need to know that split in advance.
-  const visible = new Float32Array(count).fill(1);
-  for (let i = 0; i < count; i++) {
-    const b = i * 3;
-    positions[b] = (Math.random() * 2 - 1) * 6;
-    positions[b + 1] = (Math.random() * 2 - 1) * 6;
-    positions[b + 2] = (Math.random() * 2 - 1) * 2.5;
-
-    const x = Math.random() * 2 - 1;
-    const y = Math.random() * 2 - 1;
-    const z = Math.random() * 2 - 1;
-    const len = Math.hypot(x, y, z) || 1;
-    normals[b] = x / len;
-    normals[b + 1] = y / len;
-    normals[b + 2] = z / len;
-  }
-  return { positions, normals, visible };
-}
-
 // Procedural ring formation: a thin circular band instead of a GLB-sampled
 // shape, parameterised per section (see SectionHologramConfig's ring* /
 // bobAmp fields) so each ring-shaped section can look distinct. The
@@ -408,29 +447,58 @@ function sampleSectionGeometry(
   return sampleGLBGeometry(cfg.url, maxCount, visibleCount);
 }
 
+// ── Per-particle timeline coordinates (shared by vertex + compute) ──────────
+// Built from instanceIndex hashes only, so the vertex shader (drawing) and
+// the physics compute shader (mouse pusher rest position) agree exactly on
+// where every particle is in the current morph / spiral journey.
+function particleCoords(t: any) {
+  const pIdx = float(instanceIndex);
+  const hash = (k: number, m: number) => fract(sin(pIdx.mul(k)).mul(m));
+  const hStagger = hash(91.3458, 47453.5453);
+  // Morph: staggered progress + eased blend.
+  const qM = clamp(t.mul(1 + MORPH_SPREAD).sub(hStagger.mul(MORPH_SPREAD)), float(0), float(1));
+  const eM = tslSmoothstep(float(0), float(1), qM);
+
+  // Spiral: random stagger (front of the stream leaves model 1 first).
+  const uBody = hash(41.27, 18337.53);
+  const jq = clamp(
+    t.mul(1 + JOURNEY_SPREAD).sub(float(1).sub(uBody).mul(JOURNEY_SPREAD)),
+    float(0),
+    float(1),
+  );
+  // Particles [0, SPIRAL_PARTICLES) fly the spiral; the rest dissolve.
+  const keep = float(1).sub(step(float(SPIRAL_PARTICLES - 0.5), pIdx));
+  return { hash, qM, eM, jq, uBody, keep };
+}
+
+// ── Scroll timeline types ────────────────────────────────────────────────────
+interface SectionBox {
+  top: number; // page Y of the top edge (px, scroll-invariant)
+  height: number;
+}
+
+interface Segment {
+  kind: "morph" | "journey";
+  from: SectionId;
+  to: SectionId;
+  start: number; // scrollY where t = 0
+  end: number; // scrollY where t = 1
+}
+
+// Sections that show their own shape (journey "through" sections don't).
+// Nothing after HOLOGRAM_LAST_SECTION gets a station (no particles there).
+const STATIONS: SectionId[] = SECTION_ORDER.filter(
+  (id, i) =>
+    !JOURNEY.through.includes(id) && i <= SECTION_ORDER.indexOf(HOLOGRAM_LAST_SECTION),
+);
+
 interface HologramFieldProps {
-  activeSection: SectionId;
   onReady?: () => void;
   onUnsupported?: () => void;
 }
 
-export default function HologramField({
-  activeSection,
-  onReady,
-  onUnsupported,
-}: HologramFieldProps) {
+export default function HologramField({ onReady, onUnsupported }: HologramFieldProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const groupRef = useRef<Group | null>(null);
-  const uniformsRef = useRef<Record<string, any> | null>(null);
-  const restPosBufRef = useRef<StorageInstancedBufferAttribute | null>(null);
-  const physOffBufRef = useRef<StorageInstancedBufferAttribute | null>(null);
-  const physVelBufRef = useRef<StorageInstancedBufferAttribute | null>(null);
-  const physHoldBufRef = useRef<StorageInstancedBufferAttribute | null>(null);
-  const bloomNodeRef = useRef<any>(null);
-  const bgCtxRef = useRef<CanvasRenderingContext2D | null>(null);
-  const bgTexRef = useRef<CanvasTexture | null>(null);
-
-  const autoRotateSpeedRef = useRef(SECTION_CONFIG[activeSection].autoRotateSpeed);
   const onReadyRef = useRef(onReady);
   const onUnsupportedRef = useRef(onUnsupported);
   useEffect(() => {
@@ -438,53 +506,11 @@ export default function HologramField({
     onUnsupportedRef.current = onUnsupported;
   }, [onReady, onUnsupported]);
 
-  // Target config the per-frame loop eases uniforms toward (no live GUI —
-  // values only change when `activeSection` changes).
-  const sectionTargetRef = useRef(SECTION_CONFIG[activeSection]);
-  const activeSectionRef = useRef(activeSection);
-  useEffect(() => {
-    sectionTargetRef.current = SECTION_CONFIG[activeSection];
-  }, [activeSection]);
-
-  const transitionStateRef = useRef<
-    "idle" | "deform-out" | "morphing" | "deform-in"
-  >("idle");
-  const transitionTimeRef = useRef(0);
-  const isEntranceRef = useRef(true);
-  const posAttrRef = useRef<InstancedBufferAttribute | null>(null);
-  const normAttrRef = useRef<InstancedBufferAttribute | null>(null);
-  const posAttrTargetRef = useRef<InstancedBufferAttribute | null>(null);
-  const normAttrTargetRef = useRef<InstancedBufferAttribute | null>(null);
-  const isFirstSectionRef = useRef(true);
-
-  const redrawBg = () => {
-    const ctx = bgCtxRef.current;
-    const tex = bgTexRef.current;
-    if (!ctx || !tex) return;
-    const { width, height } = ctx.canvas;
-    const grad = ctx.createRadialGradient(
-      width * 0.5,
-      height * 0.45,
-      0,
-      width * 0.5,
-      height * 0.5,
-      width * 0.8,
-    );
-    grad.addColorStop(0, BG_COLOR_CENTER);
-    grad.addColorStop(0.5, BG_COLOR_MID);
-    grad.addColorStop(1, BG_COLOR_EDGE);
-    ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, width, height);
-    tex.needsUpdate = true;
-  };
-
-  // ── Full init — runs once ─────────────────────────────────────────────────
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 
-    let animId: number;
-    let renderer: WebGPURenderer;
+    let renderer: WebGPURenderer | null = null;
     let disposed = false;
     let cleanupInner: (() => void) | undefined;
 
@@ -494,32 +520,23 @@ export default function HologramField({
         return;
       }
 
-      renderer = new WebGPURenderer({ antialias: true, alpha: true });
+      const r = new WebGPURenderer({ antialias: true, alpha: true });
+      renderer = r;
       try {
-        await renderer.init();
+        await r.init();
       } catch {
         onUnsupportedRef.current?.();
         return;
       }
       if (disposed) return;
 
-      renderer.setSize(container.clientWidth, container.clientHeight);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-      container.appendChild(renderer.domElement);
+      r.setSize(container.clientWidth, container.clientHeight);
+      r.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      // Fully transparent clear — the page background shows through.
+      r.setClearColor(0x000000, 0);
+      container.appendChild(r.domElement);
 
       const scene = new Scene();
-
-      {
-        const bgCanvas = document.createElement("canvas");
-        bgCanvas.width = bgCanvas.height = 512;
-        const bgCtx = bgCanvas.getContext("2d")!;
-        bgCtxRef.current = bgCtx;
-        const bgTex = new CanvasTexture(bgCanvas);
-        bgTexRef.current = bgTex;
-        scene.background = bgTex;
-        redrawBg();
-      }
-
       const camera = new PerspectiveCamera(
         50,
         container.clientWidth / container.clientHeight,
@@ -528,70 +545,141 @@ export default function HologramField({
       );
       camera.position.set(0, 0, 6);
 
-      const { positions, normals, visible } = await sampleSectionGeometry(
-        sectionTargetRef.current,
-        MAX_PARTICLE_COUNT,
-      );
+      // ── Layout cache (page coordinates; re-measured on resize) ────────────
+      const sectionEls = new Map<SectionId, HTMLElement>();
+      const layout = new Map<SectionId, SectionBox>();
+      let layoutDirty = true;
+      const measureLayout = () => {
+        layout.clear();
+        const sy = window.scrollY;
+        for (const id of SECTION_ORDER) {
+          let el = sectionEls.get(id);
+          if (!el || !el.isConnected) {
+            el =
+              document.querySelector<HTMLElement>(`[data-hologram-section="${id}"]`) ??
+              undefined;
+            if (el) sectionEls.set(id, el);
+          }
+          if (!el) continue;
+          const rect = el.getBoundingClientRect();
+          layout.set(id, { top: rect.top + sy, height: rect.height });
+        }
+        layoutDirty = false;
+      };
+
+      const buildSegments = (): Segment[] => {
+        const winH = window.innerHeight;
+        const stations = STATIONS.filter((id) => layout.has(id));
+        const segs: Segment[] = [];
+        let prevEnd = -Infinity;
+        for (let k = 0; k < stations.length - 1; k++) {
+          const a = stations[k];
+          const b = stations[k + 1];
+          const la = layout.get(a)!;
+          const lb = layout.get(b)!;
+          let start: number;
+          let end: number;
+          let kind: Segment["kind"] = "morph";
+          if (a === JOURNEY.from && b === JOURNEY.to) {
+            kind = "journey";
+            start = la.top + la.height / 2 - (JOURNEY.startAt ?? 0.5) * winH;
+            end = lb.top + lb.height / 2 - 0.5 * winH;
+          } else {
+            start = lb.top - MORPH_START_LINE * winH;
+            end = lb.top - MORPH_END_LINE * winH;
+          }
+          // Keep segments ordered and non-overlapping.
+          start = Math.max(start, prevEnd);
+          end = Math.max(end, start + 1);
+          segs.push({ kind, from: a, to: b, start, end });
+          prevEnd = end;
+        }
+        return segs;
+      };
+
+      let segments: Segment[] = [];
+      const refreshLayout = () => {
+        measureLayout();
+        segments = buildSegments();
+      };
+      refreshLayout();
+
+      // Which pair / progress the current scroll position describes.
+      const resolveScroll = (scrollY: number) => {
+        if (segments.length === 0) {
+          const only = STATIONS.find((id) => layout.has(id)) ?? STATIONS[0];
+          return { kind: "morph" as const, from: only, to: only, t: 0 };
+        }
+        let k = 0;
+        while (k < segments.length - 1 && scrollY >= segments[k + 1].start) k++;
+        const s = segments[k];
+        return {
+          kind: s.kind,
+          from: s.from,
+          to: s.to,
+          t: clamp01((scrollY - s.start) / (s.end - s.start)),
+        };
+      };
+
+      // ── Geometry store (all stations preloaded) ───────────────────────────
+      const geoStore = new Map<SectionId, GeometryData>();
+      const centroids = new Map<SectionId, Vector3>();
+      const loadStation = (id: SectionId) =>
+        sampleSectionGeometry(SECTION_CONFIG[id], MAX_PARTICLE_COUNT).then((g) => {
+          geoStore.set(id, g);
+          centroids.set(id, geometryCentroid(g));
+          return g;
+        });
+
+      const initial = resolveScroll(window.scrollY);
+      await Promise.all([loadStation(initial.from), loadStation(initial.to)]);
       if (disposed) return;
+      for (const id of STATIONS) {
+        if (!geoStore.has(id)) loadStation(id).catch(() => {});
+      }
 
       // ── Particle geometry ─────────────────────────────────────────────────
-      // A flat 1x1 quad — PointsNodeMaterial (via its SpriteNodeMaterial
-      // base) billboards each instance to face the camera and masks it into
-      // a circle (see opacityNode below), so particles read as true round
-      // dots at any viewing/rotation angle instead of a faceted mesh shape.
+      // Flat 1x1 quad billboarded by PointsNodeMaterial, masked to a circle.
+      // WebGPU caps a pipeline at 8 vertex buffers, so the plane's unused
+      // normal is dropped and visibility rides in instancePos.w.
       const sphereGeo = new PlaneGeometry(1, 1);
-      // WebGPU caps a pipeline at 8 vertex buffers. The plane's own "normal"
-      // attribute is dead weight now (no per-facet lighting on a billboard),
-      // so drop it to make room for the 4 custom instanced attributes below
-      // plus the physics-offset storage buffer bound as an attribute.
       sphereGeo.deleteAttribute("normal");
-      const scatterStart = makeScatteredStart(MAX_PARTICLE_COUNT);
-      sphereGeo.setAttribute(
-        "instanceNormal",
-        new InstancedBufferAttribute(scatterStart.normals, 3),
+      const posAttr = new InstancedBufferAttribute(
+        new Float32Array(MAX_PARTICLE_COUNT * 4),
+        4,
       );
-      sphereGeo.setAttribute(
-        "instancePos",
-        new InstancedBufferAttribute(
-          packPosVisible(scatterStart.positions, scatterStart.visible),
-          4,
-        ),
+      const posAttrTgt = new InstancedBufferAttribute(
+        new Float32Array(MAX_PARTICLE_COUNT * 4),
+        4,
       );
-      sphereGeo.setAttribute(
-        "instanceNormalTarget",
-        new InstancedBufferAttribute(normals.slice(), 3),
+      const normAttr = new InstancedBufferAttribute(
+        new Float32Array(MAX_PARTICLE_COUNT * 3),
+        3,
       );
-      sphereGeo.setAttribute(
-        "instancePosTarget",
-        new InstancedBufferAttribute(packPosVisible(positions, visible), 4),
+      const normAttrTgt = new InstancedBufferAttribute(
+        new Float32Array(MAX_PARTICLE_COUNT * 3),
+        3,
       );
+      sphereGeo.setAttribute("instancePos", posAttr);
+      sphereGeo.setAttribute("instancePosTarget", posAttrTgt);
+      sphereGeo.setAttribute("instanceNormal", normAttr);
+      sphereGeo.setAttribute("instanceNormalTarget", normAttrTgt);
 
-      const instancedMesh = new InstancedMesh(
-        sphereGeo,
-        null as any,
-        MAX_PARTICLE_COUNT,
-      );
+      const instancedMesh = new InstancedMesh(sphereGeo, null as any, MAX_PARTICLE_COUNT);
       instancedMesh.instanceMatrix.needsUpdate = true;
+      instancedMesh.frustumCulled = false;
 
-      posAttrRef.current = sphereGeo.getAttribute(
-        "instancePos",
-      ) as InstancedBufferAttribute;
-      normAttrRef.current = sphereGeo.getAttribute(
-        "instanceNormal",
-      ) as InstancedBufferAttribute;
-      posAttrTargetRef.current = sphereGeo.getAttribute(
-        "instancePosTarget",
-      ) as InstancedBufferAttribute;
-      normAttrTargetRef.current = sphereGeo.getAttribute(
-        "instanceNormalTarget",
-      ) as InstancedBufferAttribute;
-
-      transitionStateRef.current = "morphing";
-      transitionTimeRef.current = 0;
-
-      // ── TSL uniforms ──────────────────────────────────────────────────────
-      const cfg0 = sectionTargetRef.current;
+      // ── Uniforms ──────────────────────────────────────────────────────────
+      const cfg0 = SECTION_CONFIG[initial.from];
       const u = {
+        // timeline
+        t: uniform(0), // segment progress
+        mode: uniform(0), // 0 = morph, 1 = journey
+        m1: uniform(new Matrix4()), // station A pose (world)
+        m2: uniform(new Matrix4()), // station B pose (world)
+        scaleMix: uniform(1), // current model scale, for local-space-looking noise
+        entrance: uniform(0),
+        // look
         color: uniform(new Color(cfg0.color)),
         floatAmp: uniform(FLOAT_AMP),
         particleSize: uniform(PARTICLE_SIZE),
@@ -609,8 +697,11 @@ export default function HologramField({
         noiseGain: uniform(NOISE_GAIN),
         maskScale: uniform(MASK_SCALE),
         maskSpeed: uniform(MASK_SPEED),
-        maskContrast: uniform(TRANSITION_MASK_CONTRAST),
-        // Pusher physics (GPU compute, collider cylinder along view axis).
+        maskContrast: uniform(MASK_CONTRAST),
+        bobAmp: uniform(cfg0.bobAmp),
+        mouseGlowColor: uniform(new Color(cfg0.mouseGlowColor)),
+        glowSensitivity: uniform(GLOW_SENSITIVITY),
+        // pusher physics
         physDt: uniform(0),
         pusherPos: uniform(new Vector3()),
         pusherVel: uniform(new Vector3()),
@@ -629,60 +720,68 @@ export default function HologramField({
         pusherTurbulence: uniform(PUSHER_TURBULENCE),
         pusherTurbScale: uniform(PUSHER_TURB_SCALE),
         pusherTurbSpeed: uniform(PUSHER_TURB_SPEED),
-        // Invisible containment boundary (no rendered mesh).
         containRadius: uniform(CONTAIN_RADIUS),
         containBounce: uniform(CONTAIN_BOUNCE),
         containHoldTime: uniform(CONTAIN_HOLD_TIME),
-        mouseGlowColor: uniform(new Color(cfg0.mouseGlowColor)),
-        glowSensitivity: uniform(GLOW_SENSITIVITY),
-        transitionProgress: uniform(0),
-        entranceGlow: uniform(1),
-        bobAmp: uniform(cfg0.bobAmp),
       };
-      uniformsRef.current = u;
+      // Journey curve samples, world space at the current scroll position.
+      const journeyPathPts = Array.from({ length: JOURNEY_PATH_POINTS }, () => new Vector3());
+      const journeyPath = uniformArray(journeyPathPts, "vec3");
 
       // ── Per-particle physics state (GPU compute) ──────────────────────────
-      const restPosBuf = new StorageInstancedBufferAttribute(
-        positions.slice(),
-        3,
+      const restSrcBuf = new StorageInstancedBufferAttribute(
+        new Float32Array(MAX_PARTICLE_COUNT * 4),
+        4,
+      );
+      const restTgtBuf = new StorageInstancedBufferAttribute(
+        new Float32Array(MAX_PARTICLE_COUNT * 4),
+        4,
       );
       const physOffBuf = new StorageInstancedBufferAttribute(MAX_PARTICLE_COUNT, 3);
       const physVelBuf = new StorageInstancedBufferAttribute(MAX_PARTICLE_COUNT, 3);
       const physHoldBuf = new StorageInstancedBufferAttribute(MAX_PARTICLE_COUNT, 1);
       const physRandArr = new Float32Array(MAX_PARTICLE_COUNT * 3);
       for (let i = 0; i < MAX_PARTICLE_COUNT; i++) {
-        let x = Math.random() * 2 - 1;
-        let y = Math.random() * 2 - 1;
-        let z = Math.random() * 2 - 1;
+        const x = Math.random() * 2 - 1;
+        const y = Math.random() * 2 - 1;
+        const z = Math.random() * 2 - 1;
         const len = Math.hypot(x, y, z) || 1;
-        x /= len;
-        y /= len;
-        z /= len;
-        physRandArr[i * 3] = x;
-        physRandArr[i * 3 + 1] = y;
-        physRandArr[i * 3 + 2] = z;
+        physRandArr[i * 3] = x / len;
+        physRandArr[i * 3 + 1] = y / len;
+        physRandArr[i * 3 + 2] = z / len;
       }
       const physRandBuf = new StorageInstancedBufferAttribute(physRandArr, 3);
 
-      restPosBufRef.current = restPosBuf;
-      physOffBufRef.current = physOffBuf;
-      physVelBufRef.current = physVelBuf;
-      physHoldBufRef.current = physHoldBuf;
-
-      const restPosStorage = storage(restPosBuf, "vec3", MAX_PARTICLE_COUNT);
+      const restSrcStorage = storage(restSrcBuf, "vec4", MAX_PARTICLE_COUNT);
+      const restTgtStorage = storage(restTgtBuf, "vec4", MAX_PARTICLE_COUNT);
       const physOffStorage = storage(physOffBuf, "vec3", MAX_PARTICLE_COUNT);
       const physVelStorage = storage(physVelBuf, "vec3", MAX_PARTICLE_COUNT);
       const physHoldStorage = storage(physHoldBuf, "float", MAX_PARTICLE_COUNT);
       const physRandStorage = storage(physRandBuf, "vec3", MAX_PARTICLE_COUNT);
-
       const physOffNode = physOffStorage.toAttribute();
 
       const computePhysics = Fn(() => {
         const off = physOffStorage.element(instanceIndex);
         const vel = physVelStorage.element(instanceIndex);
         const hold = physHoldStorage.element(instanceIndex);
-        const rest = restPosStorage.toReadOnly().element(instanceIndex);
+        const rs = restSrcStorage.toReadOnly().element(instanceIndex) as any;
+        const rt = restTgtStorage.toReadOnly().element(instanceIndex) as any;
         const rnd = physRandStorage.toReadOnly().element(instanceIndex);
+        // Rest = where the particle is currently drawn (world space).
+        // Rest = where this particle's base position currently is (world),
+        // using the SAME timeline coords as the vertex shader.
+        const pcc = particleCoords(u.t);
+        const restA = u.m1.mul(vec4(rs.xyz, 1)).xyz;
+        const restB = u.m2.mul(vec4(rt.xyz, 1)).xyz;
+        const restMorph = mix(restA, restB, pcc.eM);
+        const restJourney = mix(restA, restB, step(float(0.5), pcc.jq));
+        const rest = mix(restMorph, restJourney, u.mode) as any;
+        // Particles flying in the spiral ignore the pusher (they are still
+        // sprung back); the ones sitting in either model stay pushable.
+        const inFlight = step(float(1e-4), pcc.jq).mul(
+          float(1).sub(step(float(1 - 1e-4), pcc.jq)),
+        );
+        const pushGate = float(1).sub(u.mode.mul(inFlight));
 
         const eps = float(1e-5);
         const held = step(float(1e-4), hold);
@@ -696,9 +795,11 @@ export default function HologramField({
         const dPerp = perp.length();
         const dirOut = perp.div(dPerp.add(eps));
 
-        const reach = u.pusherRadius.add(u.pusherInfluence);
-        const perpFall = float(1).sub(tslSmoothstep(u.pusherRadius, reach, dPerp));
-        const halfDepth = u.pusherDepth.mul(float(0.5));
+        // Pusher sizes were tuned in model-local units — scale with the model.
+        const pr = u.pusherRadius.mul(u.scaleMix);
+        const reach = pr.add(u.pusherInfluence.mul(u.scaleMix));
+        const perpFall = float(1).sub(tslSmoothstep(pr, reach, dPerp));
+        const halfDepth = u.pusherDepth.mul(float(0.5)).mul(u.scaleMix);
         const axialInfl = float(1).sub(
           tslSmoothstep(halfDepth.mul(float(0.7)), halfDepth, abs(axial)),
         );
@@ -724,8 +825,7 @@ export default function HologramField({
           .mul(clamp(speed.mul(0.3).add(float(0.1)), float(0), float(1)));
         const turbForce = mx_fractal_noise_vec3(nCoord, 2, 2.0, 0.5).mul(turbAmp);
 
-        const pushAccel = pushForce.add(turbForce).mul(u.pusherActive);
-
+        const pushAccel = pushForce.add(turbForce).mul(u.pusherActive).mul(pushGate);
         const accel = pushAccel
           .sub(off.mul(u.pusherSpring).mul(float(1).sub(held)))
           .sub(vel.mul(u.pusherDamping));
@@ -737,7 +837,7 @@ export default function HologramField({
         const scale = min(float(1), u.pusherMaxOffset.div(offLen.add(eps)));
         off.mulAssign(scale);
 
-        // ── Invisible containment boundary ──────────────────────────────────
+        // Invisible containment boundary.
         const cpos = rest.add(off);
         const rXZ = vec2(cpos.x, cpos.z).length();
         const clampF = min(float(1), u.containRadius.div(rXZ.add(eps)));
@@ -748,7 +848,6 @@ export default function HologramField({
             cpos.z.mul(clampF).sub(rest.z),
           ),
         );
-
         const outAmt = max(rXZ.sub(u.containRadius), float(0));
         const isOut = outAmt.div(outAmt.add(eps));
         const nrm = vec2(cpos.x, cpos.z).div(rXZ.add(eps));
@@ -759,51 +858,140 @@ export default function HologramField({
         vel.assign(
           vec3(vel.x.sub(nrm.x.mul(vRemove)), vel.y, vel.z.sub(nrm.y.mul(vRemove))),
         );
-
         const atWall = step(u.containRadius.add(float(0.01)), rXZ);
         const decremented = max(hold.sub(u.physDt), float(0));
         hold.assign(mix(decremented, u.containHoldTime, atWall));
       })().compute(MAX_PARTICLE_COUNT);
 
-      // ── TSL material ──────────────────────────────────────────────────────
+      // ── Material ──────────────────────────────────────────────────────────
       const material = new PointsNodeMaterial() as any;
-      // PointsNodeMaterial's own defaults (PointsMaterial) reset transparent
-      // to false, which renders the quad's corners as an opaque white square
-      // instead of a soft circular cutout — force it back on, and skip depth
-      // writes so overlapping alpha-blended particles don't occlude each
-      // other's transparent corners.
+      // PointsMaterial defaults reset transparent to false (opaque square
+      // corners) — force it on, and skip depth writes so overlapping
+      // alpha-blended sprites don't occlude each other's corners.
       material.transparent = true;
       material.depthWrite = false;
 
-      const instNorm = attribute("instanceNormal", "vec3");
-      const instNormTgt = attribute("instanceNormalTarget", "vec3");
-      // xyz + a visibility flag packed into .w (see packPosVisible) — split
-      // back out here so the rest of the shader below reads plain vec3
-      // positions same as before.
       const instPos4 = attribute("instancePos", "vec4");
       const instPosTgt4 = attribute("instancePosTarget", "vec4");
-      const instPos = instPos4.xyz;
-      const instPosTgt = instPosTgt4.xyz;
-      const visibility = mix(instPos4.w, instPosTgt4.w, u.transitionProgress);
+      const instNorm = attribute("instanceNormal", "vec3");
+      const instNormTgt = attribute("instanceNormalTarget", "vec3");
+      const srcLocal = instPos4.xyz;
+      const tgtLocal = instPosTgt4.xyz;
 
-      const blendPos = mix(instPos, instPosTgt, u.transitionProgress);
-      const blendNorm = normalize(
-        mix(instNorm, instNormTgt, u.transitionProgress),
+      // Both endpoints in world space — poses, rotation and scroll-follow
+      // are all inside m1 / m2.
+      const W1 = u.m1.mul(vec4(srcLocal, 1)).xyz as any;
+      const W2 = u.m2.mul(vec4(tgtLocal, 1)).xyz as any;
+      const N1 = normalize(u.m1.mul(vec4(instNorm, 0)).xyz);
+      const N2 = normalize(u.m2.mul(vec4(instNormTgt, 0)).xyz);
+
+      const pc = particleCoords(u.t);
+      const { hash, qM, eM, jq, keep } = pc;
+      const hDep = hash(63.137, 15731.743).mul(2).sub(1);
+      const hX = hash(17.913, 39139.317).mul(2).sub(1);
+      const hY = hash(53.719, 21557.911).mul(2).sub(1);
+
+      // ── Morph mode ────────────────────────────────────────────────────────
+      const envM = sin(qM.mul(Math.PI));
+      const morphScatter = mx_fractal_noise_vec3(
+        W1.mul(0.35).add(vec3(time.mul(0.15), float(0), time.mul(0.1))),
+        2,
+        2.0,
+        0.5,
+      )
+        .mul(MORPH_SCATTER)
+        .mul(envM);
+      const posMorph = mix(W1, W2, eM).add(morphScatter);
+
+      // ── Journey mode: spiral stream along the S-curve ─────────────────────
+      const jF = jq.mul(JOURNEY_PATH_POINTS - 1);
+      const jI0 = int(min(floor(jF), float(JOURNEY_PATH_POINTS - 2)));
+      const jT = jF.sub(float(jI0));
+      // (uniformArray elements are untyped in @types/three — cast to any.)
+      const jA = journeyPath.element(jI0) as any;
+      const jB = journeyPath.element(jI0.add(int(1))) as any;
+      const jPathPt = mix(jA, jB, jT) as any;
+      const jTan = normalize(jB.sub(jA).add(vec3(0, 1e-5, 0))) as any;
+      const jSide = vec3(jTan.y.negate(), jTan.x, 0) as any; // in-plane normal
+      const jOut = vec3(0, 0, 1); // towards camera
+      const jEnv = sin(jq.mul(Math.PI)); // 0 at both ends, 1 mid-flight
+
+      // Strand + position inside the strand (fixed per particle).
+      const sStrand = floor(hash(5.137, 24631.17).mul(SPIRAL_STRANDS - 0.001));
+      const sR1 = hash(71.93, 33713.29);
+      const sR2 = hash(13.71, 52817.61);
+      const sR3 = hash(88.41, 12763.97);
+      const isHalo = step(float(1 - SPIRAL_HALO), hash(62.11, 41981.37));
+      // Helix angle: winds along the path, strands evenly offset, whole
+      // spiral spins over time.
+      const sAngle = jq
+        .mul(SPIRAL_TURNS * Math.PI * 2)
+        .add(sStrand.mul((Math.PI * 2) / SPIRAL_STRANDS))
+        .add(time.mul(SPIRAL_SPIN));
+      const sRadius = float(SPIRAL_RADIUS)
+        .mul(
+          float(1).add(
+            sin(jq.mul(SPIRAL_PULSE_FREQ * Math.PI * 2).sub(time.mul(0.8))).mul(SPIRAL_PULSE),
+          ),
+        )
+        // halo particles drift further out
+        .mul(mix(float(1), sR3.mul(1.6).add(1.2), isHalo));
+      const sRadial = jSide.mul(cos(sAngle)).add(jOut.mul(sin(sAngle)));
+      // Strand thickness: small disc around the strand centre.
+      const sTh = sR1.mul(Math.PI * 2);
+      const sThick = jSide
+        .mul(cos(sTh))
+        .add(jOut.mul(sin(sTh)))
+        .add(jTan.mul(sR2.sub(0.5)))
+        .mul(float(SPIRAL_THICKNESS).mul(sR2.sqrt()).mul(mix(float(1), float(3), isHalo)));
+      const dOffset = sRadial.mul(sRadius).add(sThick);
+      const dUnd = vec3(0, 0, 0);
+
+      // Fully formed for almost the whole flight; tiny ramp at the ends.
+      const dForm = tslSmoothstep(float(0), float(0.06), jq).mul(
+        float(1).sub(tslSmoothstep(float(0.94), float(1), jq)),
+      );
+      const jStream = jPathPt.add(dUnd.add(dOffset).mul(dForm));
+      const jLeave = tslSmoothstep(float(0), float(JOURNEY_LEAVE), jq);
+      const jArrive = tslSmoothstep(float(1 - JOURNEY_ARRIVE), float(1), jq);
+      // 1 while this particle is out of both models.
+      const jPresence = jLeave.mul(float(1).sub(jArrive));
+      // Non-spiral particles dissolve: drift outward + fade while leaving
+      // model 1, condense back while arriving in model 2 (invisible between).
+      const hDust = vec3(
+        hash(17.13, 31337.71).sub(0.5),
+        hash(29.71, 17717.29).sub(0.5),
+        hash(43.19, 27183.11).sub(0.5),
+      ).mul(2 * SPIRAL_DUST_DRIFT);
+      const posDust = mix(
+        W1.add(hDust.mul(jLeave)),
+        W2.add(hDust.mul(float(1).sub(jArrive))),
+        step(float(0.5), jq),
+      );
+      const posJourney = mix(posDust, mix(mix(W1, jStream, jLeave), W2, jArrive), keep);
+      const dustAlpha = mix(float(1).sub(jPresence), float(1), keep);
+
+      // ── Select mode + page-load entrance ──────────────────────────────────
+      const qSel = mix(qM, jq, u.mode);
+      const posSel = mix(posMorph, posJourney, u.mode);
+      const entranceStart = vec3(hX.mul(6), hY.mul(6), hDep.mul(2.5));
+      const basePos = mix(entranceStart, posSel, u.entrance) as any;
+      const baseNorm = normalize(mix(N1, N2, qSel));
+      const visibility = mix(instPos4.w, instPosTgt4.w, qSel).mul(
+        mix(float(1), dustAlpha, u.mode),
       );
 
+      // ── Idle motion (scaled so it reads like model-local units) ───────────
+      const localish = basePos.div(u.scaleMix);
       const phase = fract(
-        sin(dot(instPosTgt, vec3(12.9898, 78.233, 37.719))).mul(43758.5453),
+        sin(dot(tgtLocal, vec3(12.9898, 78.233, 37.719))).mul(43758.5453),
       ).mul(Math.PI * 2);
-
       const floatDisp = vec3(
         cos(time.mul(1.3).add(phase)).mul(u.floatAmp).mul(0.6),
         sin(time.mul(1.6).add(phase)).mul(u.floatAmp),
-        sin(time.mul(1.1).add(phase.add(1.0)))
-          .mul(u.floatAmp)
-          .mul(0.6),
+        sin(time.mul(1.1).add(phase.add(1.0))).mul(u.floatAmp).mul(0.6),
       );
-
-      const maskCoord = blendPos
+      const maskCoord = localish
         .mul(u.maskScale)
         .add(
           vec3(
@@ -812,333 +1000,321 @@ export default function HologramField({
             time.mul(u.maskSpeed).mul(1.3),
           ),
         );
-
-      const rawMask = mx_noise_float(maskCoord);
       const mask = pow(
-        clamp(rawMask.mul(0.5).add(0.5), float(0), float(1)),
+        clamp(mx_noise_float(maskCoord).mul(0.5).add(0.5), float(0), float(1)),
         u.maskContrast,
       );
-
-      const noiseCoord = blendPos
+      const noiseCoord = localish
         .mul(u.noiseScale)
-        .add(
-          vec3(
-            time.mul(u.noiseSpeed),
-            float(0),
-            time.mul(u.noiseSpeed).mul(0.7),
-          ),
-        );
-
+        .add(vec3(time.mul(u.noiseSpeed), float(0), time.mul(u.noiseSpeed).mul(0.7)));
       const noiseDisp = mx_fractal_noise_vec3(noiseCoord, 2, 2.0, u.noiseGain)
         .mul(u.noiseAmp)
         .mul(mask);
-
-      // Independent up/down bob per particle: phase AND speed are both
-      // hashed from instanceIndex (two different magic constants so they
-      // don't correlate), so particles drift out of sync with each other
-      // instead of moving as one coordinated wave — reads as random
-      // bobbing rather than a mechanically perfect motion.
-      const bobIndexF = float(instanceIndex);
-      const bobPhase = fract(sin(bobIndexF.mul(12.9898)).mul(43758.5453)).mul(
-        Math.PI * 2,
-      );
-      const bobFreqJitter = fract(sin(bobIndexF.mul(78.233)).mul(43758.5453));
-      const bobFreq = float(0.5).add(bobFreqJitter.mul(1.5));
+      // Independent per-particle bob (phase + speed hashed from the index).
+      const bobPhase = hash(12.9898, 43758.5453).mul(Math.PI * 2);
+      const bobFreq = float(0.5).add(hash(78.233, 43758.5453).mul(1.5));
       const bobY = sin(time.mul(bobFreq).add(bobPhase)).mul(u.bobAmp);
 
-      const instCenter = blendPos
-        .add(floatDisp)
-        .add(noiseDisp)
-        .add(physOffNode)
-        .add(vec3(float(0), bobY, float(0)));
+      const instCenter = basePos
+        .add(floatDisp.add(noiseDisp).add(vec3(0, bobY, 0)).mul(u.scaleMix))
+        .add(physOffNode);
       const rCenter = vec2(instCenter.x, instCenter.z).length();
       const centerClampF = min(float(1), u.containRadius.div(rCenter.add(float(1e-5))));
-      const containedCenter = vec3(
+      material.positionNode = vec3(
         instCenter.x.mul(centerClampF),
         instCenter.y,
         instCenter.z.mul(centerClampF),
       );
-
-      // Sprite/point centre in object space — SpriteNodeMaterial billboards
-      // the quad to face the camera and applies size/perspective itself, so
-      // no per-vertex offset (no `positionLocal`) is added here.
-      material.positionNode = containedCenter;
       material.sizeNode = vec2(u.particleSize);
 
-      // Circular mask: a flat billboard quad renders as a square by
-      // default, so cut it down to a soft-edged circle using the quad's own
-      // UV (0..1) distance from centre.
-      const particleUV = uv();
-      const distFromCenter = particleUV.sub(0.5).length();
+      // Circular sprite mask.
       const circleMask = float(1).sub(
-        tslSmoothstep(float(0.35), float(0.5), distFromCenter),
+        tslSmoothstep(float(0.35), float(0.5), uv().sub(0.5).length()),
       );
 
-      // ── Shading ───────────────────────────────────────────────────────────
-      // No per-facet local normal on a flat billboard (unlike the old
-      // icosahedron mesh), so lighting uses only the figure's macro normal.
+      // ── Shading (macro normal of the figure, wrap lighting) ───────────────
       const lightContrib = (lightPos: any, lightCol: any, lightInt: any) => {
-        const dir = normalize(lightPos.sub(blendPos));
+        const dir = normalize(lightPos.sub(basePos));
         const figW = clamp(
-          dot(blendNorm, dir).add(u.wrap).div(float(1.0).add(u.wrap)),
+          dot(baseNorm, dir).add(u.wrap).div(float(1.0).add(u.wrap)),
           float(0),
           float(1),
         );
         return lightCol.mul(figW).mul(lightInt);
       };
-
-      const litColor = lightContrib(
-        u.light1Pos,
-        u.light1Color,
-        u.light1Intensity,
-      ).add(lightContrib(u.light2Pos, u.light2Color, u.light2Intensity));
-
-      const shadedColor = u.color.mul(
-        clamp(litColor.add(u.ambient), float(0), float(1)),
+      const litColor = lightContrib(u.light1Pos, u.light1Color, u.light1Intensity).add(
+        lightContrib(u.light2Pos, u.light2Color, u.light2Intensity),
       );
+      const shadedColor = u.color.mul(clamp(litColor.add(u.ambient), float(0), float(1)));
 
-      // ── Glow (touch + transition) ──────────────────────────────────────────
-      const physDispMag = physOffNode.length();
-      const mouseGlowFactor = pow(
-        clamp(physDispMag.mul(u.glowSensitivity), float(0), float(1)),
+      // ── Glow: mouse disturbance + mid-transition + entrance ───────────────
+      const mouseGlow = pow(
+        clamp(physOffNode.length().mul(u.glowSensitivity), float(0), float(1)),
         MOUSE_GLOW_POW,
       ).mul(MOUSE_GLOW_ACTIVE);
-
-      const morphActivity = u.transitionProgress
-        .mul(float(1).sub(u.transitionProgress))
-        .mul(float(4));
-      const transDispMag = instPosTgt.sub(instPos).length();
-      const transNorm = clamp(transDispMag.mul(float(0.35)), float(0), float(1));
-      const transGlow = transNorm.mul(morphActivity);
-
-      const glowFactor = clamp(
-        mouseGlowFactor.add(transGlow),
+      const morphGlow = clamp(
+        W2.sub(W1).length().div(u.scaleMix).mul(float(0.35)),
         float(0),
         float(1),
-      ).mul(u.entranceGlow);
+      )
+        .mul(qM.mul(float(1).sub(qM)).mul(4))
+        .mul(float(1).sub(u.mode));
+      const journeyGlow = jEnv.mul(JOURNEY_GLOW).mul(u.mode).mul(keep);
+      const entranceGlow = sin(u.entrance.mul(Math.PI)).mul(0.6);
+      const glowFactor = clamp(
+        mouseGlow.add(morphGlow).add(journeyGlow).add(entranceGlow),
+        float(0),
+        float(1),
+      );
       material.colorNode = mix(shadedColor, u.mouseGlowColor, glowFactor);
       material.opacityNode = circleMask.mul(visibility);
-
       instancedMesh.material = material;
+      scene.add(instancedMesh);
 
-      const posGroup = new Group();
-      const modelXScale = Math.min(1, camera.aspect / MODEL_X_REFERENCE_ASPECT);
-      posGroup.position.set(cfg0.modelX * modelXScale, cfg0.modelY, 0);
-      const modelSizeScale = Math.min(1, container.clientWidth / MODEL_SCALE_REFERENCE_WIDTH);
-      posGroup.scale.setScalar(cfg0.modelScale * modelSizeScale);
-      const rotGroup = new Group();
-      rotGroup.add(instancedMesh);
-      posGroup.add(rotGroup);
+      // ── Post-processing (bloom, alpha-preserving) ─────────────────────────
+      const postProcessing = new PostProcessing(r);
+      const scenePass = pass(scene, camera);
+      const sceneColor = (scenePass as any).getTextureNode("output");
+      const bloomPass: any = bloom(sceneColor, BLOOM_STRENGTH, BLOOM_RADIUS, BLOOM_THRESHOLD);
+      // Transparent canvas (premultiplied): alpha must cover the bloom halo.
+      const outRgb = sceneColor.rgb.add(bloomPass.rgb);
+      const outA = clamp(
+        max(sceneColor.a, max(outRgb.r, max(outRgb.g, outRgb.b))),
+        float(0),
+        float(1),
+      );
+      postProcessing.outputNode = vec4(outRgb, outA);
 
-      scene.add(posGroup);
-      groupRef.current = posGroup;
-      onReadyRef.current?.();
-
-      // ── Post-processing (bloom) ─────────────────────────────────────────────
-      let postProcessing: PostProcessing | null = null;
-      {
-        const pp = new PostProcessing(renderer);
-        const scenePass = pass(scene, camera);
-        const sceneColor = (scenePass as any).getTextureNode("output");
-        const bloomPass = bloom(sceneColor, BLOOM_STRENGTH, BLOOM_RADIUS, BLOOM_THRESHOLD);
-        bloomNodeRef.current = bloomPass;
-        pp.outputNode = sceneColor.add(bloomPass);
-        postProcessing = pp;
-      }
-
-      const onResize = () => {
-        if (disposed || !container) return;
-        camera.aspect = container.clientWidth / container.clientHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(container.clientWidth, container.clientHeight);
+      // ── Pair buffers ──────────────────────────────────────────────────────
+      let pairFrom: SectionId | null = null;
+      let pairTo: SectionId | null = null;
+      const writePair = (from: SectionId, to: SectionId) => {
+        const ga = geoStore.get(from)!;
+        const gb = geoStore.get(to)!;
+        const pa = packPosVisible(ga.positions, ga.visible);
+        const pb = packPosVisible(gb.positions, gb.visible);
+        (posAttr.array as Float32Array).set(pa);
+        (posAttrTgt.array as Float32Array).set(pb);
+        (normAttr.array as Float32Array).set(ga.normals);
+        (normAttrTgt.array as Float32Array).set(gb.normals);
+        posAttr.needsUpdate = true;
+        posAttrTgt.needsUpdate = true;
+        normAttr.needsUpdate = true;
+        normAttrTgt.needsUpdate = true;
+        (restSrcBuf.array as Float32Array).set(pa);
+        (restTgtBuf.array as Float32Array).set(pb);
+        restSrcBuf.needsUpdate = true;
+        restTgtBuf.needsUpdate = true;
+        pairFrom = from;
+        pairTo = to;
       };
-      window.addEventListener("resize", onResize);
 
-      // ── Mouse interaction (listens on window — page content sits visually
-      // on top of this fixed background canvas, so events must be captured
-      // globally rather than on the canvas container itself) ─────────────────
+      // ── Poses ─────────────────────────────────────────────────────────────
+      const angles = new Map<SectionId, number>(STATIONS.map((id) => [id, 0]));
+      const tmpPos = new Vector3();
+      const tmpScale = new Vector3();
+      const tmpQuat = new Quaternion();
+      const tmpRot = new Matrix4();
+      const tmpEuler = new Euler();
+      const viewHeight = () =>
+        2 * camera.position.z * Math.tan((camera.fov * Math.PI) / 360);
+
+      // Scroll-follow offset (px, upward) for a station at the current scroll.
+      // `clampAtZero` = pinned until its anchor line, then rides with the
+      // page; unclamped = always page-anchored (journey endpoints).
+      const followAnchor = (id: SectionId): number | null => {
+        if (SECTION_CONFIG[id].followScroll) return 0.5;
+        if (id === JOURNEY.from) return JOURNEY.startAt ?? 0.5;
+        if (id === JOURNEY.to) return 0.5;
+        return null;
+      };
+      const followPx = (id: SectionId, scrollY: number, clampAtZero: boolean) => {
+        const anchor = followAnchor(id);
+        const box = layout.get(id);
+        if (anchor === null || !box) return 0;
+        const centre = box.top + box.height / 2 - scrollY;
+        const off = anchor * window.innerHeight - centre;
+        return clampAtZero ? Math.max(0, off) : off;
+      };
+      const poseMatrix = (id: SectionId, followY: number, out: Matrix4) => {
+        const c = SECTION_CONFIG[id];
+        const xScale = Math.min(1, camera.aspect / MODEL_X_REFERENCE_ASPECT);
+        const sScale = Math.min(1, container.clientWidth / MODEL_SCALE_REFERENCE_WIDTH);
+        const s = c.modelScale * sScale;
+        tmpPos.set(c.modelX * xScale, c.modelY + followY, 0);
+        tmpScale.setScalar(s);
+        tmpQuat.identity();
+        out.compose(tmpPos, tmpQuat, tmpScale);
+        const a = angles.get(id) ?? 0;
+        if (c.shape === "ring") tmpEuler.set(c.ringTiltX, 0, a);
+        else tmpEuler.set(0, a, 0);
+        tmpRot.makeRotationFromEuler(tmpEuler);
+        out.multiply(tmpRot);
+        return s;
+      };
+
+      // ── Journey curve (world space, current scroll) ───────────────────────
+      const curvePts: Vector3[] = [];
+      const updateJourneyPath = (from: SectionId, to: SectionId, scrollY: number) => {
+        const winH = window.innerHeight;
+        const vh = viewHeight();
+        const wpp = vh / winH;
+        const viewW = vh * camera.aspect;
+        curvePts.length = 0;
+        curvePts.push(
+          (centroids.get(from) ?? new Vector3()).clone().applyMatrix4(u.m1.value).setZ(0),
+        );
+        for (const wp of JOURNEY.waypoints) {
+          const box = layout.get(wp.section);
+          if (!box) continue;
+          const screenY = box.top + wp.at * box.height - scrollY;
+          curvePts.push(new Vector3((wp.x - 0.5) * viewW, -(screenY - winH / 2) * wpp, 0));
+        }
+        curvePts.push(
+          (centroids.get(to) ?? new Vector3()).clone().applyMatrix4(u.m2.value).setZ(0),
+        );
+        const spaced = new CatmullRomCurve3(curvePts, false, "centripetal").getSpacedPoints(
+          JOURNEY_PATH_POINTS - 1,
+        );
+        for (let i = 0; i < JOURNEY_PATH_POINTS; i++) journeyPathPts[i].copy(spaced[i]);
+      };
+
+      // ── Mouse (window-level; content sits above the fixed canvas) ─────────
       const raycaster = new Raycaster();
       const mouseNDC = new Vector2();
-      const mousePlane = new Plane();
+      const mousePlane = new Plane(new Vector3(0, 0, 1), 0); // z = 0
       const mouseHit = new Vector3();
-      const modelCenter = new Vector3();
-      const cameraDir = new Vector3();
       const targetMousePos = new Vector3();
       const pusherPos = new Vector3();
       const pusherPrev = new Vector3();
       const pusherVelVec = new Vector3();
-      const invRotQ = new Quaternion();
-      const localAxisVec = new Vector3();
       let pusherInit = false;
       let mouseOver = false;
       let mouseEverMoved = false;
-      let lastFrameTime = performance.now();
-      const smoothstep = (p: number) => p * p * (3 - 2 * p);
-
       const onMouseMove = (e: MouseEvent) => {
         mouseNDC.set(
           (e.clientX / window.innerWidth) * 2 - 1,
           -(e.clientY / window.innerHeight) * 2 + 1,
         );
-        raycaster.setFromCamera(mouseNDC, camera);
-        if (raycaster.ray.intersectPlane(mousePlane, mouseHit)) {
-          const localPos = mouseHit
-            .clone()
-            .sub(posGroup.position)
-            .applyQuaternion(rotGroup.quaternion.clone().invert())
-            .divideScalar(posGroup.scale.x);
-          targetMousePos.copy(localPos);
-          mouseEverMoved = true;
-        }
+        mouseEverMoved = true;
         mouseOver = true;
       };
-
       const onMouseLeave = () => {
         mouseOver = false;
         pusherInit = false;
       };
-
       window.addEventListener("mousemove", onMouseMove);
       document.addEventListener("mouseleave", onMouseLeave);
 
-      const animate = () => {
+      const onResize = () => {
         if (disposed) return;
-        animId = requestAnimationFrame(animate);
+        camera.aspect = container.clientWidth / container.clientHeight;
+        camera.updateProjectionMatrix();
+        r.setSize(container.clientWidth, container.clientHeight);
+        layoutDirty = true;
+      };
+      window.addEventListener("resize", onResize);
+      // Sections change height as images/fonts/data load.
+      const resizeObserver = new ResizeObserver(() => {
+        layoutDirty = true;
+      });
+      resizeObserver.observe(document.body);
 
-        const now = performance.now();
-        const delta = Math.min((now - lastFrameTime) / 1000, 0.1);
-        lastFrameTime = now;
+      const tgtColorA = new Color();
+      const tgtColorB = new Color();
+      let entranceTime = 0;
+      let canvasHidden = false;
+      let readyFired = false;
 
-        // ── Ease per-section params (color/light/position) toward target ─────
-        const cfg = sectionTargetRef.current;
-        const alpha = 1 - Math.exp(-UNIFORM_LERP_SPEED * delta);
-        u.color.value.lerp(new Color(cfg.color), alpha);
-        u.ambient.value += (cfg.ambient - u.ambient.value) * alpha;
-        u.light1Color.value.lerp(new Color(cfg.light1Color), alpha);
-        u.light2Color.value.lerp(new Color(cfg.light2Color), alpha);
-        u.mouseGlowColor.value.lerp(new Color(cfg.mouseGlowColor), alpha);
-        u.light1Intensity.value +=
-          (cfg.light1Intensity - u.light1Intensity.value) * alpha;
-        u.light2Intensity.value +=
-          (cfg.light2Intensity - u.light2Intensity.value) * alpha;
-        u.bobAmp.value += (cfg.bobAmp - u.bobAmp.value) * alpha;
-        const targetModelX =
-          cfg.modelX * Math.min(1, camera.aspect / MODEL_X_REFERENCE_ASPECT);
-        posGroup.position.x += (targetModelX - posGroup.position.x) * alpha;
-        posGroup.position.y += (cfg.modelY - posGroup.position.y) * alpha;
-        const targetModelScale =
-          cfg.modelScale * Math.min(1, container.clientWidth / MODEL_SCALE_REFERENCE_WIDTH);
-        posGroup.scale.setScalar(
-          posGroup.scale.x + (targetModelScale - posGroup.scale.x) * alpha,
-        );
-        autoRotateSpeedRef.current +=
-          (cfg.autoRotateSpeed - autoRotateSpeedRef.current) * alpha;
+      // ── Frame (on GSAP's ticker, after Lenis has applied this frame's scroll)
+      const frame = (_time: number, deltaMs: number) => {
+        if (disposed) return;
+        const delta = Math.min(deltaMs / 1000, 0.1);
+        if (layoutDirty) refreshLayout();
 
-        // ── Transition state machine ──────────────────────────────────────────
-        const tState = transitionStateRef.current;
-
-        if (tState === "deform-out") {
-          transitionTimeRef.current += delta;
-          const p = Math.min(transitionTimeRef.current / TRANSITION_DEFORM_DUR, 1);
-          u.maskContrast.value =
-            MASK_CONTRAST + (TRANSITION_MASK_CONTRAST - MASK_CONTRAST) * smoothstep(p);
-          if (p >= 1) {
-            u.maskContrast.value = TRANSITION_MASK_CONTRAST;
-            transitionTimeRef.current = 0;
-            transitionStateRef.current = "morphing";
-          }
-        } else if (tState === "morphing") {
-          transitionTimeRef.current += delta;
-          const morphDur = isEntranceRef.current
-            ? ENTRANCE_MORPH_DUR
-            : TRANSITION_MORPH_DUR;
-          const p = Math.min(transitionTimeRef.current / morphDur, 1);
-          u.transitionProgress.value = smoothstep(p);
-          if (p >= 1) {
-            const srcPos = posAttrRef.current!.array as Float32Array;
-            const tgtPos = posAttrTargetRef.current!.array as Float32Array;
-            const srcNorm = normAttrRef.current!.array as Float32Array;
-            const tgtNorm = normAttrTargetRef.current!.array as Float32Array;
-            srcPos.set(tgtPos);
-            srcNorm.set(tgtNorm);
-            posAttrRef.current!.needsUpdate = true;
-            normAttrRef.current!.needsUpdate = true;
-            u.transitionProgress.value = 0;
-            transitionTimeRef.current = 0;
-            transitionStateRef.current = "deform-in";
-          }
-        } else if (tState === "deform-in") {
-          transitionTimeRef.current += delta;
-          const reformDur = isEntranceRef.current
-            ? ENTRANCE_REFORM_DUR
-            : TRANSITION_REFORM_DUR;
-          const p = Math.min(transitionTimeRef.current / reformDur, 1);
-          u.maskContrast.value =
-            TRANSITION_MASK_CONTRAST + (MASK_CONTRAST - TRANSITION_MASK_CONTRAST) * smoothstep(p);
-          if (isEntranceRef.current) {
-            u.entranceGlow.value = 1 - smoothstep(p);
-          }
-          if (p >= 1) {
-            u.maskContrast.value = MASK_CONTRAST;
-            transitionStateRef.current = "idle";
-            if (isEntranceRef.current) isEntranceRef.current = false;
-            onReadyRef.current?.();
+        const scrollY = window.scrollY;
+        // Past the last hologram section: its model has ridden up and off the
+        // top of the viewport — hide the canvas and skip GPU work entirely.
+        const lastBox = layout.get(HOLOGRAM_LAST_SECTION);
+        const pastEnd =
+          !!lastBox &&
+          lastBox.top + lastBox.height - scrollY < -END_HIDE_MARGIN * window.innerHeight;
+        if (pastEnd !== canvasHidden) {
+          canvasHidden = pastEnd;
+          r.domElement.style.visibility = pastEnd ? "hidden" : "";
+        }
+        if (pastEnd) return;
+        let { kind, from, to, t } = resolveScroll(scrollY);
+        // Geometry not loaded yet (first seconds only): hold the pair we have.
+        if (!geoStore.has(from) || !geoStore.has(to)) {
+          if (pairFrom && pairTo) {
+            from = pairFrom;
+            to = pairTo;
+          } else {
+            return;
           }
         }
+        if (from !== pairFrom || to !== pairTo) writePair(from, to);
 
-        if (!isEntranceRef.current && mouseEverMoved && u.entranceGlow.value < 1) {
-          u.entranceGlow.value = Math.min(u.entranceGlow.value + delta / 1.0, 1);
+        // Idle spin per station (time-based, independent of scroll).
+        for (const id of STATIONS) {
+          const c = SECTION_CONFIG[id];
+          const speed = ((2 * Math.PI) / 60) * c.autoRotateSpeed;
+          angles.set(id, wrapAngle((angles.get(id) ?? 0) + speed * delta));
         }
 
-        // The ring formation lies flat in the XY plane (facing the camera).
-        // Spinning it around Y like a 3-D model would tumble it edge-on
-        // twice per revolution, so ring sections spin around Z instead
-        // (like a wheel) while easing any residual Y-tilt back to 0; GLB
-        // sections do the opposite so a leftover ring Z-spin unwinds away.
-        const rotDelta = ((2 * Math.PI) / 60) * autoRotateSpeedRef.current * delta;
-        if (cfg.shape === "ring") {
-          rotGroup.rotation.z = wrapAngle(rotGroup.rotation.z + rotDelta);
-          rotGroup.rotation.y += (0 - rotGroup.rotation.y) * alpha;
-          // Fixed tilt around X (doesn't accumulate over time like the Z
-          // spin) so the ring reads as an inclined hoop instead of a flat
-          // coin — tilting around X keeps it face-enough-on since the spin
-          // itself stays on Z.
-          rotGroup.rotation.x += (cfg.ringTiltX - rotGroup.rotation.x) * alpha;
-        } else {
-          rotGroup.rotation.y = wrapAngle(rotGroup.rotation.y + rotDelta);
-          rotGroup.rotation.z += (0 - rotGroup.rotation.z) * alpha;
-          rotGroup.rotation.x += (0 - rotGroup.rotation.x) * alpha;
+        const wpp = viewHeight() / window.innerHeight;
+        const journey = kind === "journey";
+        const sA = poseMatrix(from, followPx(from, scrollY, !journey) * wpp, u.m1.value);
+        const sB = poseMatrix(to, followPx(to, scrollY, !journey) * wpp, u.m2.value);
+        if (journey) updateJourneyPath(from, to, scrollY);
+
+        const te = smooth01(t);
+        u.t.value = t;
+        u.mode.value = journey ? 1 : 0;
+        u.scaleMix.value = sA + (sB - sA) * te;
+        u.maskContrast.value = journey
+          ? MASK_CONTRAST
+          : MASK_CONTRAST + (TRANSITION_MASK_CONTRAST - MASK_CONTRAST) * Math.sin(Math.PI * t);
+
+        // Look: straight interpolation between the two stations' configs.
+        const ca = SECTION_CONFIG[from];
+        const cb = SECTION_CONFIG[to];
+        const lerp = (a: number, b: number) => a + (b - a) * te;
+        u.color.value.copy(tgtColorA.set(ca.color)).lerp(tgtColorB.set(cb.color), te);
+        u.light1Color.value
+          .copy(tgtColorA.set(ca.light1Color))
+          .lerp(tgtColorB.set(cb.light1Color), te);
+        u.light2Color.value
+          .copy(tgtColorA.set(ca.light2Color))
+          .lerp(tgtColorB.set(cb.light2Color), te);
+        u.mouseGlowColor.value
+          .copy(tgtColorA.set(ca.mouseGlowColor))
+          .lerp(tgtColorB.set(cb.mouseGlowColor), te);
+        u.ambient.value = lerp(ca.ambient, cb.ambient);
+        u.light1Intensity.value = lerp(ca.light1Intensity, cb.light1Intensity);
+        u.light2Intensity.value = lerp(ca.light2Intensity, cb.light2Intensity);
+        u.bobAmp.value = lerp(ca.bobAmp, cb.bobAmp);
+
+        // Page-load entrance.
+        if (entranceTime < ENTRANCE_DUR) {
+          entranceTime += delta;
+          u.entrance.value = smooth01(entranceTime / ENTRANCE_DUR);
         }
 
-        posGroup.getWorldPosition(modelCenter);
-        camera.getWorldDirection(cameraDir);
-        mousePlane.setFromNormalAndCoplanarPoint(cameraDir, modelCenter);
-
-        invRotQ.copy(rotGroup.quaternion).invert();
-        localAxisVec.copy(cameraDir).applyQuaternion(invRotQ).normalize();
-        u.pusherAxis.value.copy(localAxisVec);
-
+        // ── Pusher (active everywhere; spiral particles gate themselves) ───
+        u.physDt.value = delta;
         if (mouseEverMoved) {
           raycaster.setFromCamera(mouseNDC, camera);
           if (raycaster.ray.intersectPlane(mousePlane, mouseHit)) {
-            mouseHit
-              .sub(posGroup.position)
-              .applyQuaternion(invRotQ)
-              .divideScalar(posGroup.scale.x);
             targetMousePos.copy(mouseHit);
           }
-        }
-
-        // ── Pusher (collider cylinder) physics input ────────────────────────
-        u.physDt.value = delta;
-        if (mouseEverMoved) {
           if (!pusherInit) {
             pusherPos.copy(targetMousePos);
             pusherPrev.copy(targetMousePos);
             pusherInit = true;
           }
-          const pa = 1 - Math.exp(-PUSHER_FOLLOW * delta);
-          pusherPos.lerp(targetMousePos, pa);
+          pusherPos.lerp(targetMousePos, 1 - Math.exp(-PUSHER_FOLLOW * delta));
           pusherVelVec
             .subVectors(pusherPos, pusherPrev)
             .divideScalar(Math.max(delta, 0.001))
@@ -1149,110 +1325,41 @@ export default function HologramField({
         }
         u.pusherActive.value = mouseEverMoved && mouseOver ? 1 : 0;
 
-        renderer.computeAsync(computePhysics);
+        r.computeAsync(computePhysics);
+        postProcessing.renderAsync();
 
-        if (postProcessing) {
-          postProcessing.renderAsync();
-        } else {
-          renderer.renderAsync(scene, camera);
+        if (!readyFired) {
+          readyFired = true;
+          onReadyRef.current?.();
         }
       };
-      animate();
+      // Lenis registers its own ticker callback first (prioritised), so by
+      // the time this runs window.scrollY is this frame's scroll.
+      gsap.ticker.add(frame);
 
       cleanupInner = () => {
+        gsap.ticker.remove(frame);
         window.removeEventListener("resize", onResize);
         window.removeEventListener("mousemove", onMouseMove);
         document.removeEventListener("mouseleave", onMouseLeave);
+        resizeObserver.disconnect();
         sphereGeo.dispose();
         material.dispose();
-        bgCtxRef.current = null;
-        bgTexRef.current = null;
+        computePhysics.dispose?.();
+        bloomPass?.dispose?.();
+        (postProcessing as any)?.dispose?.();
       };
     })();
 
     return () => {
       disposed = true;
-      cancelAnimationFrame(animId);
       cleanupInner?.();
-      groupRef.current = null;
-      uniformsRef.current = null;
-      restPosBufRef.current = null;
-      physOffBufRef.current = null;
-      physVelBufRef.current = null;
-      physHoldBufRef.current = null;
       if (renderer) {
         renderer.dispose();
         renderer.domElement?.remove();
       }
     };
   }, []);
-
-  // ── Trigger dissolve/morph/reform pulse on section change ────────────────
-  useEffect(() => {
-    if (isFirstSectionRef.current) {
-      isFirstSectionRef.current = false;
-      activeSectionRef.current = activeSection;
-      return;
-    }
-    if (activeSectionRef.current === activeSection) return;
-    activeSectionRef.current = activeSection;
-
-    if (
-      !uniformsRef.current ||
-      !posAttrTargetRef.current ||
-      !normAttrTargetRef.current
-    )
-      return;
-
-    const cfg = SECTION_CONFIG[activeSection];
-    const wasIdle = transitionStateRef.current === "idle";
-
-    sampleSectionGeometry(cfg, MAX_PARTICLE_COUNT).then(
-      ({ positions: newPos, normals: newNorm, visible: newVisible }) => {
-        if (
-          !posAttrTargetRef.current ||
-          !normAttrTargetRef.current ||
-          !uniformsRef.current
-        )
-          return;
-
-        const prog = uniformsRef.current.transitionProgress.value as number;
-        if (prog > 0) {
-          const srcPos = posAttrRef.current!.array as Float32Array;
-          const tgtPos = posAttrTargetRef.current.array as Float32Array;
-          const srcNorm = normAttrRef.current!.array as Float32Array;
-          const tgtNorm = normAttrTargetRef.current.array as Float32Array;
-          for (let i = 0; i < srcPos.length; i++) {
-            srcPos[i] = srcPos[i] * (1 - prog) + tgtPos[i] * prog;
-            srcNorm[i] = srcNorm[i] * (1 - prog) + tgtNorm[i] * prog;
-          }
-          posAttrRef.current!.needsUpdate = true;
-          normAttrRef.current!.needsUpdate = true;
-          uniformsRef.current.transitionProgress.value = 0;
-        }
-
-        (posAttrTargetRef.current.array as Float32Array).set(
-          packPosVisible(newPos, newVisible),
-        );
-        (normAttrTargetRef.current.array as Float32Array).set(newNorm);
-        posAttrTargetRef.current.needsUpdate = true;
-        normAttrTargetRef.current.needsUpdate = true;
-        transitionTimeRef.current = 0;
-
-        if (restPosBufRef.current) {
-          (restPosBufRef.current.array as Float32Array).set(newPos);
-          restPosBufRef.current.needsUpdate = true;
-        }
-
-        if (wasIdle) {
-          transitionStateRef.current = "deform-out";
-        } else {
-          uniformsRef.current.maskContrast.value = TRANSITION_MASK_CONTRAST;
-          transitionStateRef.current = "morphing";
-        }
-      },
-    );
-  }, [activeSection]);
 
   return <div ref={containerRef} style={{ width: "100%", height: "100%" }} />;
 }

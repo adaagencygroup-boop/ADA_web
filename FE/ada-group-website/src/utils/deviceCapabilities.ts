@@ -41,7 +41,8 @@ export function hasDiscreteGpu(): boolean {
       /intel.*(hd|uhd|iris|graphics)/, // Intel integrated
       /amd.*vega/, // AMD APU / Ryzen iGPU
       /radeon.*vega/,
-      /apple.*gpu/, // Apple Silicon iGPU (M-series)
+      // Apple Silicon (M-series) is intentionally NOT blocked: its unified
+      // GPU handles this WebGPU scene comfortably, unlike older Intel iGPUs.
       /llvmpipe/, // Software renderer (Mesa)
       /swiftshader/, // Google's software renderer
       /microsoft basic render/, // Windows fallback renderer

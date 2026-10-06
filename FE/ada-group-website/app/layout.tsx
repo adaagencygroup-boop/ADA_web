@@ -4,6 +4,7 @@ import Header from "@/src/components/layout/Header";
 import Footer from "@/src/components/layout/Footer";
 import FloatingContact from "@/src/components/common/FloatingContact";
 import LoadingScreen from "@/src/components/common/LoadingScreen";
+import SmoothScroll from "@/src/components/common/SmoothScroll";
 import "./globals.css";
 
 const beVietnamPro = Be_Vietnam_Pro({
@@ -31,6 +32,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${beVietnamPro.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <SmoothScroll />
         <LoadingScreen />
         <Header />
         <main className="flex flex-1 flex-col overflow-x-clip">{children}</main>

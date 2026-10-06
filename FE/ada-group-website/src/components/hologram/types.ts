@@ -81,4 +81,37 @@ export interface SectionHologramConfig {
   ringTiltX: number;
   /** Glow color particles flash toward when disturbed by the pusher. */
   mouseGlowColor: string;
+  /** When true, once this section's vertical centre scrolls past the
+   * viewport centre, the model moves up with it 1:1 (as if it lived inside
+   * the section's DOM box) instead of staying pinned to the fixed canvas.
+   * Before that point the model stays put at modelY. */
+  followScroll?: boolean;
+}
+
+/** Scroll-scrubbed "journey" between two GLB sections: particles peel off
+ * the `from` model into a waving ribbon, travel along a curve through the
+ * `through` sections as the page scrolls, and reassemble into the `to`
+ * model. Fully reversible — progress is a pure function of scroll. */
+export interface JourneyWaypoint {
+  /** Section whose box anchors this point vertically. */
+  section: SectionId;
+  /** 0 = that section's top edge, 1 = its bottom edge. */
+  at: number;
+  /** Horizontal position as a fraction of viewport width (0 = left, 1 = right). */
+  x: number;
+}
+
+export interface JourneyConfig {
+  from: SectionId;
+  to: SectionId;
+  /** Sections the ribbon passes through — they don't morph to their own shape. */
+  through: SectionId[];
+  /** Intermediate curve points between the two models' centres. */
+  waypoints: JourneyWaypoint[];
+  /** Where (fraction of viewport height from the top) the `from` section's
+   * centre must be for the journey to start — 0.5 = viewport centre; larger
+   * starts earlier (model 1 begins riding up with the page sooner). The end
+   * stays at the `to` section's centre reaching the viewport centre.
+   * Default 0.5. */
+  startAt?: number;
 }
