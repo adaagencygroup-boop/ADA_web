@@ -10,7 +10,7 @@ import SearchBar from "@/app/tin-tuc/_components/SearchBar";
 export const revalidate = 0;
 
 export const metadata: Metadata = {
-  title: "Tin tức | ADA Group",
+  title: "Tin tức",
   description:
     "Cập nhật tin tức, sự kiện và bài viết công nghệ mới nhất từ ADA Group.",
 };

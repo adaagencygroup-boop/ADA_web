@@ -9,7 +9,7 @@ import WebCTA from "./_components/WebCTA";
 import WebIntro from "./_components/WebIntro";
 
 export const metadata: Metadata = {
-  title: "Web Application | Dịch vụ | ADA Group",
+  title: "Web Application | Dịch vụ",
   description:
     "ADA Group thiết kế và phát triển website, ứng dụng web và các hệ thống trực tuyến theo nhu cầu của doanh nghiệp.",
 };

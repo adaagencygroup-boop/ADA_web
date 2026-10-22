@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import React from "react";
 import { notFound } from "next/navigation";
 import Image from "next/image";
@@ -9,6 +10,45 @@ export const revalidate = 60;
 
 interface PageProps {
   params: Promise<{ slug: string }>;
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const job = await getRecruitmentBySlug(slug);
+
+  if (!job) {
+    return {
+      title: "Tuyển dụng",
+      description: "Cơ hội nghề nghiệp hấp dẫn tại ADA Group.",
+    };
+  }
+
+  const plainDesc = job.description
+    ? job.description.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim().slice(0, 160) + "…"
+    : `Ứng tuyển vị trí ${job.jobTitle} tại ADA Group.`;
+
+  const title = `${job.jobTitle} | Tuyển dụng`;
+
+  return {
+    title,
+    description: plainDesc,
+    alternates: {
+      canonical: `/tuyen-dung/${slug}`,
+    },
+    openGraph: {
+      title,
+      description: plainDesc,
+      url: `/tuyen-dung/${slug}`,
+      siteName: "ADA Group",
+      locale: "vi_VN",
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description: plainDesc,
+    },
+  };
 }
 
 const RICH_TEXT_TYPOGRAPHY_CLASS =
@@ -32,6 +72,49 @@ export default async function JobDetailsPage({ params }: PageProps) {
     notFound();
   }
 
+  const jobSchema = {
+    "@context": "https://schema.org/",
+    "@type": "JobPosting",
+    title: job.jobTitle,
+    description: job.description || job.requirements || job.jobTitle,
+    identifier: {
+      "@type": "PropertyValue",
+      name: "ADA Group",
+      value: job.id,
+    },
+    datePosted: job.createdAt,
+    validThrough: job.expiresAt || undefined,
+    employmentType: job.employmentType.toUpperCase(),
+    hiringOrganization: {
+      "@type": "Organization",
+      name: "ADA Group",
+      sameAs: "https://adaagencygroup.online",
+      logo: "https://adaagencygroup.online/images/logo/logo.webp",
+    },
+    jobLocation: {
+      "@type": "Place",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: job.location || "Việt Nam",
+        addressCountry: "VN",
+      },
+    },
+    ...(!job.isNegotiable && job.minSalary && job.maxSalary
+      ? {
+          baseSalary: {
+            "@type": "MonetaryAmount",
+            currency: "VND",
+            value: {
+              "@type": "QuantitativeValue",
+              minValue: job.minSalary,
+              maxValue: job.maxSalary,
+              unitText: "MONTH",
+            },
+          },
+        }
+      : {}),
+  };
+
   const displaySalary = job.isNegotiable 
     ? "Thỏa thuận" 
     : (job.minSalary && job.maxSalary)
@@ -44,6 +127,10 @@ export default async function JobDetailsPage({ params }: PageProps) {
 
   return (
     <div className="bg-slate-50 w-full flex-1 flex flex-col">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jobSchema) }}
+      />
       {/* Breadcrumb Area (White Background) */}
       <div className="py-4 border-b border-slate-100">
         <div className="mx-auto max-w-360 px-4 sm:px-6 lg:px-8">

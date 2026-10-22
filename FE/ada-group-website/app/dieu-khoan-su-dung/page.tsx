@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Điều khoản sử dụng | ADA Group",
+  title: "Điều khoản sử dụng",
   description: "Điều khoản và điều kiện sử dụng các dịch vụ và nền tảng của ADA Group theo quy định của pháp luật Việt Nam.",
 };
 

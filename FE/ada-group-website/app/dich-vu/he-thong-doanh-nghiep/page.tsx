@@ -7,7 +7,7 @@ import EnterpriseIntro from "./_components/EnterpriseIntro";
 import EnterpriseCTASection from "./_components/EnterpriseCTASection";
 
 export const metadata: Metadata = {
-  title: "Hệ thống doanh nghiệp | Dịch vụ | ADA Group",
+  title: "Hệ thống doanh nghiệp | Dịch vụ",
   description:
     "ADA Group tư vấn và triển khai các hệ thống phần mềm doanh nghiệp: ERP, CRM, HRM và các nền tảng quản trị nội bộ theo đặc thù ngành.",
 };

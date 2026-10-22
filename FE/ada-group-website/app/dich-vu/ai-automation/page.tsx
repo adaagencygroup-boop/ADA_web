@@ -7,7 +7,7 @@ import AIUseCases from "./_components/AIUseCases";
 import AICTASection from "./_components/AICTASection";
 
 export const metadata: Metadata = {
-  title: "AI & Automation | Dịch vụ | ADA Group",
+  title: "AI & Automation | Dịch vụ",
   description:
     "ADA Group cung cấp giải pháp AI và tự động hóa giúp doanh nghiệp tối ưu quy trình, giảm chi phí và nâng cao hiệu suất vận hành.",
 };

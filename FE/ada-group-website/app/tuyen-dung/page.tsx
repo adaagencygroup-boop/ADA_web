@@ -14,9 +14,9 @@ export const dynamic = "force-dynamic";
 export const revalidate = 900; // 15 minutes
 
 export const metadata: Metadata = {
-  title: "Tuyển dụng | ADA Group",
+  title: "Tuyển dụng",
   description:
-    "Tuyển dụng ADA Group để được tư vấn và hỗ trợ về các dịch vụ của chúng tôi.",
+    "Khám phá các cơ hội nghề nghiệp và phát triển sự nghiệp công nghệ tại ADA Group.",
 };
 
 export default async function TuyendungPage() {

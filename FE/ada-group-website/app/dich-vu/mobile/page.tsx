@@ -13,7 +13,7 @@ import MobileCoreValues from "./_components/MobileCoreValues";
 import MobileCTASection from "./_components/MobileCTASection";
 
 export const metadata: Metadata = {
-  title: "Mobile App | Dịch vụ | ADA Group",
+  title: "Mobile App | Dịch vụ",
   description:
     "ADA Group phát triển ứng dụng di động trên nền tảng iOS và Android với hiệu năng cao và trải nghiệm người dùng tối ưu.",
 };

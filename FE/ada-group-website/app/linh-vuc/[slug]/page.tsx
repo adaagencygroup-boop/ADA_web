@@ -22,11 +22,38 @@ export async function generateMetadata({
   const { slug } = await params;
   const sector = getSectorBySlug(slug);
 
-  if (!sector) return { title: "Lĩnh vực | ADA Group" };
+  if (!sector) return { title: "Lĩnh vực" };
+
+  const title = `${sector.title} | Lĩnh vực`;
 
   return {
-    title: `${sector.title} | Lĩnh vực | ADA Group`,
+    title,
     description: sector.description,
+    alternates: {
+      canonical: `/linh-vuc/${slug}`,
+    },
+    openGraph: {
+      title,
+      description: sector.description,
+      url: `/linh-vuc/${slug}`,
+      siteName: "ADA Group",
+      locale: "vi_VN",
+      type: "website",
+      images: [
+        {
+          url: sector.imageUrl,
+          width: 1200,
+          height: 630,
+          alt: sector.title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description: sector.description,
+      images: [sector.imageUrl],
+    },
   };
 }
 

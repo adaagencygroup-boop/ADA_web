@@ -11,7 +11,7 @@ import MissionDetails from "@/app/gioi-thieu/_components/MissionDetails";
 import ServiceHighlights from "@/app/gioi-thieu/_components/ServiceHighlights";
 
 export const metadata: Metadata = {
-  title: "Giới thiệu | ADA Group",
+  title: "Giới thiệu",
   description:
     "ADA Group phát triển sản phẩm và giải pháp công nghệ giúp doanh nghiệp Việt Nam số hóa hoạt động và chuyển đổi số.",
 };

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Chính sách bảo mật | ADA Group",
+  title: "Chính sách bảo mật",
   description: "Chính sách bảo mật thông tin và dữ liệu cá nhân của ADA Group, tuân thủ Nghị định 13/2023/NĐ-CP.",
 };
 

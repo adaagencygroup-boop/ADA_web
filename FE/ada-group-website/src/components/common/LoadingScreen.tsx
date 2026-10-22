@@ -89,6 +89,9 @@ function LoadingScreenContent({
     const finishTimer = setTimeout(() => {
       setIsLoading(false);
       setIsFadingOut(false);
+      if (!window.location.hash) {
+        window.scrollTo(0, 0);
+      }
     }, 500);
 
     return () => {
@@ -119,6 +122,7 @@ function LoadingScreenContent({
         if (shouldShowLoader(cleanHref)) {
           setIsLoading(true);
           setIsFadingOut(false);
+          window.scrollTo(0, 0);
         }
       }
     };

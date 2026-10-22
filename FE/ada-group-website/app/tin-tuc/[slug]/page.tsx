@@ -25,11 +25,39 @@ export async function generateMetadata({
   const { slug } = await params;
   const article = await getArticleBySlug(slug);
 
-  if (!article) return { title: "Tin tức | ADA Group" };
+  if (!article) return { title: "Tin tức" };
+
+  const title = `${article.title} | Tin tức`;
+  const description = article.excerpt || article.title;
 
   return {
-    title: `${article.title} | ADA Group`,
-    description: article.excerpt,
+    title,
+    description,
+    alternates: {
+      canonical: `/tin-tuc/${slug}`,
+    },
+    openGraph: {
+      title,
+      description,
+      url: `/tin-tuc/${slug}`,
+      siteName: "ADA Group",
+      locale: "vi_VN",
+      type: "article",
+      images: [
+        {
+          url: article.imageUrl,
+          width: 1200,
+          height: 630,
+          alt: article.title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [article.imageUrl],
+    },
   };
 }
 
@@ -44,8 +72,39 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     getRelatedArticles(article),
   ]);
 
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    headline: article.title,
+    description: article.excerpt,
+    image: [article.imageUrl],
+    datePublished: article.date,
+    dateModified: article.date,
+    author: {
+      "@type": "Organization",
+      name: "ADA Group",
+      url: "https://adaagencygroup.online",
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "ADA Group",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://adaagencygroup.online/images/logo/logo.webp",
+      },
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `https://adaagencygroup.online/tin-tuc/${slug}`,
+    },
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
       <Breadcrumb current={article.title} />
 
       <section className="section-y pt-0!">

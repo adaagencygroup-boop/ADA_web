@@ -5,7 +5,7 @@ import CTASection from "@/app/linh-vuc/_components/CTASection";
 import SectorsGrid from "@/app/linh-vuc/_components/SectorsGrid";
 
 export const metadata: Metadata = {
-  title: "Lĩnh vực | ADA Group",
+  title: "Lĩnh vực",
   description:
     "ADA Group phát triển hệ sinh thái AI trên 14 lĩnh vực trọng điểm của nền kinh tế Việt Nam.",
 };
