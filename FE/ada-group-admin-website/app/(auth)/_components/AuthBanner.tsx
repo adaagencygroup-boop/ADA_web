@@ -10,7 +10,7 @@ export default function AuthBanner({
   return (
     <div className="relative hidden overflow-hidden bg-linear-to-br from-[#001A40]/90 via-[#001E4B]/80 to-[#0B1220]/90 p-12 lg:flex lg:w-1/2 lg:flex-col lg:items-center lg:justify-center">
       <Image
-        src="https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/auth-banner.jpg"
+        src="/logo/auth.webp"
         alt=""
         fill
         className="object-cover opacity-40"
@@ -20,7 +20,7 @@ export default function AuthBanner({
         <div className="flex items-center gap-3">
           <div className="relative size-8 shrink-0">
             <Image
-              src="https://wtxsbaavzdvpzogiwoei.supabase.co/storage/v1/object/public/ADA%20Group%20website/logo.webp"
+              src="/logo/logo.webp"
               alt="ADA Group"
               fill
               className="object-contain"

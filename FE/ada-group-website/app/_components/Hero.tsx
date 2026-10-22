@@ -5,9 +5,9 @@ import { useEffect, useState } from "react";
 import { isHologramEligible } from "@/src/utils/deviceCapabilities";
 
 const CONTENT = {
-  title: "Giải pháp công nghệ,\n đồng hành cùng doanh nghiệp Việt",
+  title: "Giải pháp công nghệ, đồng hành cùng doanh nghiệp Việt",
   description:
-    "ADA Group phát triển sản phẩm và giải pháp công nghệ giúp doanh nghiệp\n số hóa hoạt động, tối ưu quy trình và tạo ra những trải nghiệm tốt hơn cho khách hàng.",
+    "ADA Group phát triển sản phẩm và giải pháp công nghệ giúp doanh nghiệp số hóa hoạt động, tối ưu quy trình và tạo ra những trải nghiệm tốt hơn cho khách hàng.",
 };
 
 export default function Hero() {

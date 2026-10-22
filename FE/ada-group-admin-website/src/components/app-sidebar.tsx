@@ -60,7 +60,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <div className="flex items-center gap-3">
           <div className="relative w-10 aspect-square shrink-0">
             <Image
-              src="/logo/logo.png"
+              src="/logo/logo.webp"
               alt="ADA Group"
               fill
               className="object-contain"
