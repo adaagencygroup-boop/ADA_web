@@ -108,6 +108,11 @@ import {
 // sizeAttenuation on (default), sizeNode is a WORLD-space size.
 const PARTICLE_SIZE = 0.1;
 const FLOAT_AMP = 0.01;
+// Depth-correct sprites: pixels whose circle mask is below this are
+// discarded (higher = crisper, smaller dots), and particles faded below
+// SPRITE_DEPTH_CUTOFF stop drawing/occluding entirely.
+const SPRITE_EDGE_CUTOFF = 0.5;
+const SPRITE_DEPTH_CUTOFF = 0.05;
 const WRAP = 0.35;
 
 // Idle "breathing" noise on every shape (scaled by the current model scale
@@ -865,11 +870,15 @@ export default function HologramField({ onReady, onUnsupported }: HologramFieldP
 
       // ── Material ──────────────────────────────────────────────────────────
       const material = new PointsNodeMaterial() as any;
-      // PointsMaterial defaults reset transparent to false (opaque square
-      // corners) — force it on, and skip depth writes so overlapping
-      // alpha-blended sprites don't occlude each other's corners.
+      // PointsMaterial defaults reset transparent to false — keep it on so
+      // the soft sprite edge and fades still alpha-blend. Depth WRITE is on
+      // so particles occlude each other by real distance (otherwise the
+      // draw order wins: e.g. a model's sphere mesh, sampled last, would be
+      // painted over panels that are actually in front of it). The square
+      // sprite corners and fully faded particles are DISCARDED via maskNode
+      // (below) so they don't write depth and punch holes in what's behind.
       material.transparent = true;
-      material.depthWrite = false;
+      material.depthWrite = true;
 
       const instPos4 = attribute("instancePos", "vec4");
       const instPosTgt4 = attribute("instancePosTarget", "vec4");
@@ -1068,6 +1077,11 @@ export default function HologramField({ onReady, onUnsupported }: HologramFieldP
       );
       material.colorNode = mix(shadedColor, u.mouseGlowColor, glowFactor);
       material.opacityNode = circleMask.mul(visibility);
+      // Discard (no colour, no depth) outside the round sprite and for
+      // particles faded below SPRITE_DEPTH_CUTOFF.
+      material.maskNode = circleMask
+        .greaterThan(SPRITE_EDGE_CUTOFF)
+        .and(visibility.greaterThan(SPRITE_DEPTH_CUTOFF));
       instancedMesh.material = material;
       scene.add(instancedMesh);
 
