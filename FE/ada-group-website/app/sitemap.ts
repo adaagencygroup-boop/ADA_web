@@ -3,7 +3,7 @@ import { getSectors } from "@/app/linh-vuc/_lib/sectors";
 import { apiGet, type PageResponse } from "@/src/lib/api/http";
 import { getRecruitments } from "@/src/lib/api/recruitments";
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://adaagencygroup.online";
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://adagroup.com.vn";
 
 type NewsItemSummary = {
   id: string;

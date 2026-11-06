@@ -113,7 +113,7 @@ const RICH_TEXT_TYPOGRAPHY_CLASS =
 export default function ArticleDetail({ article }: { article: NewsArticle }) {
   const [copied, setCopied] = useState(false);
 
-  const canonicalUrl = `https://adaagencygroup.online/tin-tuc/${article.slug}`;
+  const canonicalUrl = `https://adagroup.com.vn/tin-tuc/${article.slug}`;
   const shareUrl =
     typeof window !== "undefined" && window.location.origin
       ? `${window.location.origin}/tin-tuc/${article.slug}`
@@ -178,11 +178,10 @@ export default function ArticleDetail({ article }: { article: NewsArticle }) {
               type="button"
               onClick={handleCopyLink}
               aria-label="Sao chép liên kết"
-              className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded-full transition-all ${
-                copied
-                  ? "bg-green-100 text-green-700 scale-105"
-                  : "bg-slate-100 text-[#003274] hover:bg-slate-200"
-              }`}
+              className={`flex h-8 w-8 cursor-pointer items-center justify-center rounded-full transition-all ${copied
+                ? "bg-green-100 text-green-700 scale-105"
+                : "bg-slate-100 text-[#003274] hover:bg-slate-200"
+                }`}
             >
               {copied ? <CheckIcon className="h-4 w-4 text-green-600" /> : <LinkIcon />}
             </button>

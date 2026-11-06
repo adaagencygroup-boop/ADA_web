@@ -13,7 +13,7 @@ const beVietnamPro = Be_Vietnam_Pro({
   weight: ["300", "400", "500", "600", "700", "800"],
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://adaagencygroup.online";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://adagroup.com.vn";
 
 export const viewport: Viewport = {
   width: "device-width",

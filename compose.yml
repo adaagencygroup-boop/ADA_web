@@ -31,13 +31,13 @@ services:
       context: ./FE/ada-group-admin-website
       target: runner
       args:
-        NEXT_PUBLIC_API_BASE_URL: ${nextPublicApiBaseUrl:-https://adaagencygroup.online/api/v1}
+        NEXT_PUBLIC_API_BASE_URL: ${nextPublicApiBaseUrl:-https://adagroup.com.vn/api/v1}
     container_name: admin
     restart: always
     environment:
       NODE_ENV: production
       API_BASE_URL: http://app:8080/api/v1
-      NEXT_PUBLIC_API_BASE_URL: ${nextPublicApiBaseUrl:-https://adaagencygroup.online/api/v1}
+      NEXT_PUBLIC_API_BASE_URL: ${nextPublicApiBaseUrl:-https://adagroup.com.vn/api/v1}
       NODE_OPTIONS: "--max-old-space-size=256"
     depends_on:
       - app
@@ -57,13 +57,13 @@ services:
       context: ./FE/ada-group-website
       target: runner
       args:
-        NEXT_PUBLIC_API_BASE_URL: ${nextPublicApiBaseUrl:-https://adaagencygroup.online/api/v1}
+        NEXT_PUBLIC_API_BASE_URL: ${nextPublicApiBaseUrl:-https://adagroup.com.vn/api/v1}
     container_name: public
     restart: always
     environment:
       NODE_ENV: production
       API_BASE_URL: http://app:8080/api/v1
-      NEXT_PUBLIC_API_BASE_URL: ${nextPublicApiBaseUrl:-https://adaagencygroup.online/api/v1}
+      NEXT_PUBLIC_API_BASE_URL: ${nextPublicApiBaseUrl:-https://adagroup.com.vn/api/v1}
       NODE_OPTIONS: "--max-old-space-size=256"
     depends_on:
       - app

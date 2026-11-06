@@ -12,11 +12,11 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "adaagencygroup.online",
+        hostname: "adagroup.com.vn",
       },
       {
         protocol: "https",
-        hostname: "*.adaagencygroup.online",
+        hostname: "*.adagroup.com.vn",
       },
       {
         protocol: "http",
@@ -39,8 +39,8 @@ const nextConfig: NextConfig = {
         destination: process.env.API_BASE_URL
           ? `${process.env.API_BASE_URL.replace("/api/v1", "")}/files/:path*`
           : (process.env.NEXT_PUBLIC_API_BASE_URL
-              ? `${process.env.NEXT_PUBLIC_API_BASE_URL.replace("/api/v1", "")}/files/:path*`
-              : "http://app:8080/files/:path*"),
+            ? `${process.env.NEXT_PUBLIC_API_BASE_URL.replace("/api/v1", "")}/files/:path*`
+            : "http://app:8080/files/:path*"),
       },
     ];
   },

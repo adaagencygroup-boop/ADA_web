@@ -83,19 +83,19 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     author: {
       "@type": "Organization",
       name: "ADA Group",
-      url: "https://adaagencygroup.online",
+      url: "https://adagroup.com.vn",
     },
     publisher: {
       "@type": "Organization",
       name: "ADA Group",
       logo: {
         "@type": "ImageObject",
-        url: "https://adaagencygroup.online/images/logo/logo.webp",
+        url: "https://adagroup.com.vn/images/logo/logo.webp",
       },
     },
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `https://adaagencygroup.online/tin-tuc/${slug}`,
+      "@id": `https://adagroup.com.vn/tin-tuc/${slug}`,
     },
   };
 
